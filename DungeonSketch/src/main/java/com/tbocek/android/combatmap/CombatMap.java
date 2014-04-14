@@ -53,6 +53,9 @@ import com.tbocek.android.combatmap.view.DrawOptionsView;
 import com.tbocek.android.combatmap.view.TagNavigator;
 import com.tbocek.android.combatmap.view.TokenSelectorView;
 import com.tbocek.dungeonsketch.R;
+import com.tbocek.dungeonsketch.BuildConfig;
+
+import static android.support.v7.view.ActionMode.*;
 
 /**
  * This is the main activity that allows the user to sketch a map, and place and
@@ -311,7 +314,7 @@ public final class CombatMap extends ActionBarActivity {
 		public void onSelectBackgroundImage(BackgroundImage selectedImage) {
 			if (mActionMode == null) {
 				CombatMap.this.mActionMode = CombatMap.this
-						.startActionMode(new ImageSelectionActionModeCallback());
+						.startSupportActionMode(new ImageSelectionActionModeCallback());
 			}
 
 			Menu m = CombatMap.this.mActionMode.getMenu();
@@ -1294,7 +1297,7 @@ public final class CombatMap extends ActionBarActivity {
 		@Override
 		public void selectionStarted() {
 			CombatMap.this.mActionMode = CombatMap.this
-					.startActionMode(new TokenSelectionActionModeCallback());
+					.startSupportActionMode(new TokenSelectionActionModeCallback());
 		}
 	}
 
@@ -1344,7 +1347,7 @@ public final class CombatMap extends ActionBarActivity {
 	 * 
 	 */
 	private class TokenSelectionActionModeCallback implements
-			ActionMode.Callback {
+			Callback {
 
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
@@ -1500,7 +1503,7 @@ public final class CombatMap extends ActionBarActivity {
 	 * 
 	 */
 	private class ImageSelectionActionModeCallback implements
-			ActionMode.Callback {
+			Callback {
 
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {

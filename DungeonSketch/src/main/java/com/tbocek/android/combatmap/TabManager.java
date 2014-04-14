@@ -12,8 +12,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import com.tbocek.dungeonsketch.R;
 
-import com.tbocek.dungeonsketchalpha.R;
-
 /**
  * Interface that allows management of a tabbing system without caring whether
  * the tabs are implemented in the ActionBar or in a TabWidget. Tab actions are

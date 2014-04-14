@@ -54,6 +54,7 @@ import com.tbocek.android.combatmap.model.primitives.PlaceholderToken;
 import com.tbocek.android.combatmap.model.primitives.SolidColorToken;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.dungeonsketch.R;
+import com.tbocek.dungeonsketch.BuildConfig;
 
 /**
  * Provides a lightweight database storing a list of tokens and allowing them to

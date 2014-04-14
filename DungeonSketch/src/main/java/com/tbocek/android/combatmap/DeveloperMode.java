@@ -2,6 +2,8 @@ package com.tbocek.android.combatmap;
 
 import android.os.StrictMode;
 
+import com.tbocek.dungeonsketch.BuildConfig;
+
 /**
  * Central location to enable debug options.
  * 

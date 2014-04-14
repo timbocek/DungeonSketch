@@ -14,9 +14,14 @@ import android.os.Bundle;
 import android.os.Debug;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.DragEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -27,11 +32,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.DeveloperMode;
@@ -53,7 +53,7 @@ import com.tbocek.android.combatmap.view.TokenLoadTask;
  * @author Tim Bocek
  * 
  */
-public final class TokenManager extends SherlockActivity {
+public final class TokenManager extends ActionBarActivity {
 
     /**
      * The minimum number of tokens to display in the grid across the smallest
@@ -89,7 +89,7 @@ public final class TokenManager extends SherlockActivity {
 				@Override
 				public void onTagSelected(TagTreeNode selectedTag) {
 					TokenManager.this.setScrollViewTag(selectedTag.getPath());
-					TokenManager.this.getActionBar().setTitle(selectedTag.getName());
+					TokenManager.this.getSupportActionBar().setTitle(selectedTag.getName());
 				}
 
 				@Override
@@ -461,7 +461,7 @@ public final class TokenManager extends SherlockActivity {
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        MenuInflater inflater = this.getSupportMenuInflater();
+        MenuInflater inflater = this.getMenuInflater();
         inflater.inflate(R.menu.token_manager_menu, menu);
         this.mDeleteTagMenuItem = menu.findItem(R.id.token_manager_delete_tag);
         this.mTagActiveMenuItem = menu.findItem(R.id.token_manager_is_active);
