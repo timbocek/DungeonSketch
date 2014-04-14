@@ -9,9 +9,9 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
+import com.tbocek.dungeonsketchalpha.R;
 
 /**
  * Interface that allows management of a tabbing system without caring whether
@@ -87,17 +87,17 @@ public class TabManager {
         tab.setText(description);
         tab.setTabListener(new ActionBar.TabListener() {
             @Override
-            public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
+            public void onTabReselected(ActionBar.Tab arg0, FragmentTransaction arg1) {
 
             }
 
             @Override
-            public void onTabSelected(Tab arg0, FragmentTransaction arg1) {
+            public void onTabSelected(ActionBar.Tab arg0, FragmentTransaction arg1) {
                 TabManager.this.onTabSelected(mode);
             }
 
             @Override
-            public void onTabUnselected(Tab arg0, FragmentTransaction arg1) {
+            public void onTabUnselected(ActionBar.Tab arg0, FragmentTransaction arg1) {
                 // TODO Auto-generated method stub
 
             }

@@ -23,6 +23,12 @@ import android.os.Debug;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -31,12 +37,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
 import com.tbocek.android.combatmap.model.Grid;
 import com.tbocek.android.combatmap.model.MapData;
@@ -52,6 +52,7 @@ import com.tbocek.android.combatmap.view.CombatView;
 import com.tbocek.android.combatmap.view.DrawOptionsView;
 import com.tbocek.android.combatmap.view.TagNavigator;
 import com.tbocek.android.combatmap.view.TokenSelectorView;
+import com.tbocek.dungeonsketchalpha.R;
 
 /**
  * This is the main activity that allows the user to sketch a map, and place and
@@ -60,7 +61,7 @@ import com.tbocek.android.combatmap.view.TokenSelectorView;
  * 
  * @author Tim Bocek
  */
-public final class CombatMap extends SherlockActivity {
+public final class CombatMap extends ActionBarActivity {
 	/**
 	 * Dialog ID to use for the draw text dialog.
 	 */
@@ -772,7 +773,7 @@ public final class CombatMap extends SherlockActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
-		MenuInflater inflater = this.getSupportMenuInflater();
+		MenuInflater inflater = this.getMenuInflater();
 		inflater.inflate(R.menu.combat_map_menu, menu);
 
 		this.mSnapToGridMenuItem = menu.findItem(R.id.menu_snap_to_grid);
@@ -977,7 +978,7 @@ public final class CombatMap extends SherlockActivity {
 			this.mDrawOptionsView.setDefault();
 			this.mDrawOptionsView.setMaskToolVisibility(true);
 			this.mDrawOptionsView
-					.setBackgroundImageButtonVisibility(BuildConfig.DEBUG);
+					.setBackgroundImageButtonVisibility(true); // TODO: set to whether debug mode.
 			this.setTagSelectorVisibility(false);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.GONE);
