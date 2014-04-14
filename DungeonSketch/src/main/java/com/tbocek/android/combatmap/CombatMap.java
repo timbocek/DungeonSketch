@@ -290,6 +290,9 @@ public final class CombatMap extends ActionBarActivity {
 			if (mData != null && selectedTag.getParent() != null) {
 				mData.setLastTag(selectedTag.getPath());
 			}
+
+            mDeployTokensButton.setVisibility(selectedTag.getParent() != null
+                    ? View.VISIBLE : View.GONE);
 		}
 
 		@Override
