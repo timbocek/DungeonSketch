@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/token_delete_from_tag"
+        android:title="@string/remove_tag">
+    </item>
+    <item
+        android:id="@+id/token_delete_entire_token"
+        android:title="@string/delete_token">
+    </item>
+
+</menu>

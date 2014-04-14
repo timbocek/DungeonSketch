@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/new_tag_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:tag="new_tag_name" >
+
+        <requestFocus />
+    </EditText>
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/new_tag_name" >
+	    <RadioButton
+	        android:id="@+id/new_tag_under_top_level"
+	        android:checked="true"
+	        android:tag="new_tag_under_top_level"
+	        android:text="Top-Level Tag" />
+	    <RadioButton
+	        android:id="@+id/new_tag_under_selected"
+	        android:tag="new_tag_under_selected"
+	        android:text="Underneath &apos;&lt;Current>&apos;" />
+    </RadioGroup>
+
+
+
+    <Button
+        android:id="@+id/new_tag_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/radioGroup1"
+        android:layout_alignParentRight="true"
+        android:tag="new_tag_create"
+        android:text="Create Tag" />
+
+</RelativeLayout>

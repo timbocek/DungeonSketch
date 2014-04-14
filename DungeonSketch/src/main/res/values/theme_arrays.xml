@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="themeNames">
+<item>Whiteboard</item>
+<item>Graph Paper</item>
+<item>Grass</item>
+<item>Ice</item>
+<item>Forest</item>
+<item>Night</item>
+<item>Dungeon</item>
+<item>Hologram</item>
+<item>Console</item>
+</string-array>
+</resources>

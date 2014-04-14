@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    
+    <CheckBoxPreference
+        android:key="autosave"
+        android:title="@string/autosave" 
+        android:defaultValue="true"
+        android:summary="If set, will save the latest version of your map when you exit."        
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+        
+    <CheckBoxPreference 
+        android:key="gmscreen"
+        android:title="@string/gm_screen"
+        android:summary="@string/gm_screen_explanation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+    </CheckBoxPreference>
+    
+    <PreferenceCategory
+        android:title="@string/mask_settings"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        
+	    <CheckBoxPreference
+	        android:key="fogofwar"
+	        android:title="@string/fog_of_war_enabled" 
+	        android:defaultValue="true"
+	        android:summary="Use this to temporarily disable the mask if you need to.  Note that the entire map will draw if no mask regions have been added yet."
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    
+	     <CheckBoxPreference
+            android:key="mask_tokens"
+            android:title="@string/mask_tokens" 
+            android:defaultValue="false"
+            android:summary="@string/mask_tokens_explanation"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+        
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Snap to Grid"
+	    android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+	    <CheckBoxPreference
+	        android:key="snapdrawing"
+	        android:defaultValue="true"
+	        android:title="Snap drawing to grid"
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"/>
+	      
+	    <CheckBoxPreference
+	        android:key="snaptokens"
+	        android:defaultValue="true"
+	        android:title="Snap tokens to grid" 
+	        android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+	    
+	    <CheckBoxPreference
+	        android:key="tokenssnaptogridlines"
+	        android:title="Snap tokens to grid lines"
+	        android:defaultValue="false" 
+	        android:summary="Tokens snap to intersections of grid lines instead of the spaces between grid lines."
+	        android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+	</PreferenceCategory>
+
+
+	<PreferenceCategory
+	    android:title="App Info"
+	    android:layout_width="fill_parent"
+        android:layout_height="wrap_content">    
+	    <Preference
+	        android:key="about"
+	        android:title="@string/about"
+	        android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+	
+	    <Preference
+	        android:key="artcredits"
+	        android:title="@string/art_credits"
+	        android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Data"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <Preference
+            android:key="migrate_data"
+            android:title="@string/import_data"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:summary="Copy data from another installed version of Dungeon Sketch"/>
+        </PreferenceCategory>
+</PreferenceScreen>

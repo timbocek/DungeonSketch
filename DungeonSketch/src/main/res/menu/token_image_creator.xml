@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/token_image_creator_accept"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/accept">
+    </item>
+    <item
+        android:id="@+id/token_image_creator_pick"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/change_image">
+    </item>
+
+</menu>

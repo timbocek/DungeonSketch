@@ -1,11 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dungeonsketch">
+    package="com.tbocek.android.combatmap"
+    android:versionCode="4"
+    android:versionName="1.1" >
 
-    <application android:allowBackup="true"
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="false"
+        android:smallScreens="false"
+        android:xlargeScreens="true" />
+
+    <uses-sdk android:minSdkVersion="11" 
+              android:targetSdkVersion="17"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher"
-        android:theme="@style/AppTheme">
+        android:largeHeap="true" 
+        android:allowBackup="true">
+        <activity
+            android:name="com.tbocek.android.combatmap.CombatMap"
+            android:label="@string/app_name" 
+            android:configChanges="keyboardHidden|orientation">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tbocek.android.combatmap.Settings"
+            android:label="Settings" >
+        </activity>
+        <activity
+            android:name="com.tbocek.android.combatmap.Load"
+            android:label="Load" >
+        </activity>
+        <activity
+            android:name=".about.ArtCredits"
+            android:label="Art Credits" >
+        </activity>
+        <activity
+            android:name="com.tbocek.android.combatmap.tokenmanager.TokenCreator"
+            android:hardwareAccelerated="false"
+            android:label="Token Creator" >
+        </activity>
+        <activity
+            android:name=".tokenmanager.TokenManager"
+            android:label="Token Manager" >
+        </activity>
     </application>
 
 </manifest>

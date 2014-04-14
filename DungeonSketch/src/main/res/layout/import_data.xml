@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tagnavigator_current_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/import_from"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:tag="import_source_group">
+
+        <RadioButton
+            android:id="@+id/import_legacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/import_option_legacy_install"
+            android:tag="import_legacy" />
+
+        <RadioButton
+            android:id="@+id/import_current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/import_option_google_play_version" 
+            android:tag="import_current" />
+
+        <RadioButton
+            android:id="@+id/import_alpha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/import_option_alpha_version"
+            android:tag="import_alpha"  />
+        <RadioButton
+            android:id="@+id/import_debug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/import_option_debug_version"
+            android:tag="import_debug"  />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/import_overwrite_existing"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <CheckBox
+        android:id="@+id/import_overwrite_maps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/import_overwrite_maps" 
+        android:tag="check_overwrite_maps"/>
+    
+    <CheckBox
+        android:id="@+id/import_overwrite_tokens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/import_overwrite_tokens" 
+        android:tag="check_overwrite_tokens"/>
+
+    <CheckBox
+        android:id="@+id/import_overwrite_token_lib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/import_overwrite_token_lib" 
+        android:tag="check_overwrite_token_lib"/>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/import_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="button_import"
+            android:text="@string/import_start" />
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="spinner_import_data"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</LinearLayout>

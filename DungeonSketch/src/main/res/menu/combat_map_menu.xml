@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_undo" android:icon="@drawable/undo" android:showAsAction="ifRoom" android:title="Undo"></item>
+    <item android:id="@+id/menu_redo" android:icon="@drawable/redo" android:showAsAction="ifRoom" android:title="Redo"></item>
+    <item
+        android:id="@+id/menu_save"
+        android:title="@string/save"
+        android:icon="@drawable/document_save"
+        android:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_load"
+        android:title="@string/load"
+        android:icon="@drawable/document_open"
+        android:showAsAction="ifRoom"/>
+	<item
+		android:id="@+id/menu_clear_all_submenu"
+		android:title="@string/new_map"
+		android:icon="@drawable/document_new"
+		android:showAsAction="ifRoom">
+		<menu>
+			<item
+				android:id="@+id/menu_clear_all"
+				android:title="@string/confirm"/>
+		</menu>
+	</item>
+	<item
+		android:id="@+id/menu_resize_grid"
+		android:title="@string/resize_grid"/>
+	<item
+	   android:id="@+id/menu_snap_to_grid"
+	   android:title="@string/snap_to_grid"
+	   android:checkable = "true"></item>
+	<item
+	    android:id="@+id/menu_export"
+	    android:title="Export Image">
+	    
+	</item>
+	<item
+	    android:id="@+id/menu_grid_properties"
+	    android:title="Grid Properties">
+	</item>
+	<item
+	    android:id="@+id/menu_token_database"
+	    android:title="@string/token_database">
+	    
+	</item>
+	<item
+		android:id="@+id/menu_settings"
+		android:title="@string/settings"/>
+	<item android:id="@+id/menu_help" android:title="@string/help" android:showAsAction="never"></item>
+	
+</menu>

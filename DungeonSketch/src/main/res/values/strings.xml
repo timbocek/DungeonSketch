@@ -1,3 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Dungeon Sketch</string>
+    <string name="preferences">com.tbocek.combatmap_preferences</string>
+    <string name="save">Save</string>
+    <string name="no_maps_line1">There are no saved maps to load.</string>
+    <string name="no_maps_line2">Why not press "back" and create one?</string>
+    <string name="font_size">Font Size (grid spaces):</string>
+    <string name="background">Map</string>
+    <string name="gm_notes">GM Notes</string>
+    <string name="combat">Combat</string>
+    <string name="annotations">Player Notes</string>
+    <string name="save_map">Save Map</string>
+    <string name="load">Load</string>
+    <string name="new_map">New</string>
+    <string name="confirm">Confirm</string>
+    <string name="resize_grid">Resize Grid</string>
+    <string name="snap_to_grid">Snap To Grid</string>
+    <string name="settings">Settings</string>
+    <string name="delete">Delete</string>
+    <string name="delete_mask_region">Delete Mask Region</string>
+    <string name="delete_token">Delete Token</string>
+    <string name="resize_token">Resize Token</string>
+    <string name="accept">Accept</string>
+    <string name="change_image">Change Image</string>
+    <string name="remove_tag">Remove Tag</string>
+    <string name="new_token">New Token</string>
+    <string name="new_tag">New Tag</string>
+    <string name="theme">Theme</string>
+    <string name="grid_type">Grid Type</string>
+    <string name="fog_of_war_enabled">Mask Enabled</string>
+    <string name="art_credits">Art Credits</string>
+    <string name="about">About Dungeon Sketch</string>
+    <string name="map_preview">Map Preview</string>
+    <string name="draw_text">Draw Text</string>
+    <string name="create">Create</string>
+    <string name="filter_tokens">Filter Tokens</string>
+    <string name="token_manager">Token Manager</string>
+    <string name="autosave">Auto-Save</string>
+    <string name="about_text">        Dungeon Sketch Beta\n
+        Written by Tim Bocek\n
+        \n
+        Licensed under the GNU Lesser General Public License, available at http://www.gnu.org/licenses/lgpl.html\n
+        \n
+        Uses the Android APIs, available at http://source.android.com.\n
+        Uses the Guava Google Core Library, available at http://code.google.com/p/guava-libraries/.\n
+        Uses the Apache Commons Library, available at http://commons.apache.org.\n
+        Uses Attenzione\'s ColorPickerPreference, available at https://github.com/attenzione/android-ColorPickerPreference/downloads.\n
+        All libraries above licensed under Apache Software License 2.0, available at http://code.google.com/p/guava-libraries/.\n
+        \n
+        Uses icons from the Oxygen, available at http://www.oxygen-icons.org.\n
+        Licensed under Creative Commons BY-SA 3.0, available at http://creativecommons.org/licenses/by-sa/3.0/.\n
+        \n
+        Not all token images are compatible with the LGPL.  They are provided for this distribution of the application only.  Please ensure that you have artist permission before redistributing these icons or including them in a commercial distribution of Dungeon Sketch.</string>
+
+    <!-- GM Screen -->
+    <string name="gm_screen">GM Screen</string>
+    <string name="gm_screen_explanation">        Provides a prompt when switching to the Map or GM Notes layers.  
+        This is meant to prevent accidental spoilers, but will not stop players from snooping!</string>
+    <string name="gm_screen_spoiler_warning">        The Game Master has enabled GM Screen.\n
+        There may be spoilers if you continue!</string>
+    <string name="gm_screen_mistchief_managed">I solemnly swear that I am up to no good!</string>
+    <string name="gm_screen_cancel">Cancel</string>
+    <!-- Color Picker -->
+    <string name="dialog_color_picker">Color Picker</string>
+    <string name="press_color_to_apply">Press on Color to apply</string>
+    <string name="grid_appearence">Grid Appearence</string>
+    <string name="add_to_tag">Add to tag</string>
+    <string name="delete_tag">Delete Tag</string>
+    <string name="help">Help</string>
+    <string name="token_database">Token Database</string>
+    <string name="keep_aspect_ratio">Keep Aspect Ratio</string>
+    <string name="mask_settings">Mask Settings</string>
+    <string name="mask_tokens">Apply Mask to Tokens</string>
+    <string name="mask_tokens_explanation">If checked, the background mask will also apply to tokens.  Use this to hide monsters you have placed in rooms that PCs haven\'t discovered yet.</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_beta">BetaActivity</string>
+    <string name="import_data">Migrate Data</string>
+    <string name="import_option_legacy_install">Legacy Install</string>
+    <string name="import_option_google_play_version">Current Google Play version</string>
+    <string name="import_from">Migrate From:</string>
+    <string name="import_option_alpha_version">Alpha Version</string>
+    <string name="import_overwrite_existing">Overwrite Existing:</string>
+    <string name="import_overwrite_tokens">Token Files</string>
+    <string name="import_overwrite_maps">Maps</string>
+    <string name="import_start">Migrate</string>
+    <string name="import_overwrite_token_lib">Token Tag Settings</string>
+    <string name="import_option_debug_version">Local Debugging Efforts</string>
+    <string name="token_manager_active">Active</string>
+    <string name="drawer_open">OPEN</string>
+    <string name="drawer_close">CLOSE</string>
+    <string name="disabled_tag_explanation"><b>This tag is deactivated.</b>\n
+    • It will not appear in the tag list in the combat view.\n
+    • If this is the only non-system tag it is added to, the token will not load at all (System tags include "built-in", "custom", "image", etc.)
+    </string>
+    <string name="deploy_tokens">Deploy Tokens</string>
+    <string name="deploy">Deploy</string>
+
 </resources>
