@@ -23,7 +23,8 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:allowBackup="true"
-        android:name="com.tbocek.android.combatmap.DungeonSketchApp">
+        android:name="com.tbocek.android.combatmap.DungeonSketchApp"
+        android:theme="@style/Theme.AppCompat">
         <activity
             android:name="com.tbocek.android.combatmap.CombatMap"
             android:label="@string/app_name"
