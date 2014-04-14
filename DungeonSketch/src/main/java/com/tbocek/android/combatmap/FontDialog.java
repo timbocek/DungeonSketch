@@ -8,6 +8,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.tbocek.android.combatmap.model.primitives.Util;
+import com.tbocek.dungeonsketch.R;
 
 /**
  * An Android dialog that allows the user to enter text. Provides a text entry

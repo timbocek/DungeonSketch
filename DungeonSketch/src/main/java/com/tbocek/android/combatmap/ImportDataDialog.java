@@ -24,6 +24,8 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.tbocek.dungeonsketch.R;
+
 /**
  * Dialog that allows importing data from other installed instances of Dungeon
  * Sketch.

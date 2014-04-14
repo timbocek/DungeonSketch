@@ -3,7 +3,7 @@ package com.tbocek.android.combatmap.about;
 import android.app.Dialog;
 import android.content.Context;
 
-import com.tbocek.android.combatmap.R;
+import com.tbocek.dungeonsketch.R;
 
 /**
  * Dialog that displays info about the application.

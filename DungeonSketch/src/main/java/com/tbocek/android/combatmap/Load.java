@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.tbocek.android.combatmap.model.MapData;
 import com.tbocek.android.combatmap.view.SaveFileButton;
+import com.tbocek.dungeonsketch.R;
 
 /**
  * This activity allows the user to select a new file to load.

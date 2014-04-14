@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.tbocek.android.combatmap.about.AboutDialog;
 import com.tbocek.android.combatmap.about.ArtCredits;
+import com.tbocek.dungeonsketch.R;
 
 /**
  * Preferences activity for Dungeon Sketch.

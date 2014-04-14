@@ -8,7 +8,7 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.tbocek.android.combatmap.R;
+import com.tbocek.dungeonsketch.R;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 
 /**

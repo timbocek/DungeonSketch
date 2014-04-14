@@ -9,8 +9,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.tbocek.android.combatmap.R;
 import com.tbocek.android.combatmap.model.primitives.Util;
+import com.tbocek.dungeonsketch.R;
 
 /**
  * Provides a tool and color selector for drawing.

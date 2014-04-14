@@ -16,7 +16,7 @@
 
 package net.margaritov.preference.colorpicker;
 
-import com.tbocek.android.combatmap.R;
+import com.tbocek.dungeonsketch.R;
 
 import android.app.Dialog;
 import android.content.Context;

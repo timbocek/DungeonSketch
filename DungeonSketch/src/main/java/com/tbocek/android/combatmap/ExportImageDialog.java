@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.tbocek.android.combatmap.model.MapData;
 import com.tbocek.android.combatmap.model.MapDrawer;
 import com.tbocek.android.combatmap.model.MapDrawer.FogOfWarMode;
+import com.tbocek.dungeonsketch.R;
 
 /**
  * Provides a dialog for the user to export an image.

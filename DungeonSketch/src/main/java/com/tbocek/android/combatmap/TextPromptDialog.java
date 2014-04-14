@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.tbocek.dungeonsketch.R;
+
 /**
  * An Android dialog that allows the user to enter text. Provides a text entry
  * field, and a confirm button. The system back button is used to cancel. Allows

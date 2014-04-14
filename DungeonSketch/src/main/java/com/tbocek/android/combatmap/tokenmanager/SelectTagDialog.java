@@ -1,6 +1,6 @@
 package com.tbocek.android.combatmap.tokenmanager;
 
-import com.tbocek.android.combatmap.R;
+import com.tbocek.dungeonsketch.R;
 import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.view.TagNavigator;
 

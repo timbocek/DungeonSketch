@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.view.TokenDeploymentLineItem;
+import com.tbocek.dungeonsketch.R;
 
 import android.app.Dialog;
 import android.content.Context;

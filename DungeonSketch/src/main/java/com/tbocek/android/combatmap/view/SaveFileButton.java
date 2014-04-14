@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.tbocek.android.combatmap.R;
+import com.tbocek.dungeonsketch.R;
 
 /**
  * A button that displays the name and preview of a save file.

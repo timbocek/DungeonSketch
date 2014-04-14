@@ -22,6 +22,7 @@ import com.tbocek.android.combatmap.model.MapData;
 import com.tbocek.android.combatmap.model.RectangularGridStrategy;
 import com.tbocek.android.combatmap.view.ImageToggleButton;
 import com.tbocek.android.combatmap.view.ToggleButtonGroup;
+import com.tbocek.dungeonsketch.R;
 
 /**
  * A dialog that allows the user to edit the grid geometry and color.

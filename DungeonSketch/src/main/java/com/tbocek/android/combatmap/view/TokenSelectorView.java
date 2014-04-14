@@ -25,7 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.common.collect.Lists;
-import com.tbocek.android.combatmap.R;
+import com.tbocek.dungeonsketch.R;
 import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.TokenLoadManager;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;

@@ -10,6 +10,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import com.tbocek.dungeonsketch.R;
 
 import com.tbocek.dungeonsketchalpha.R;
 

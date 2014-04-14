@@ -52,7 +52,7 @@ import com.tbocek.android.combatmap.view.CombatView;
 import com.tbocek.android.combatmap.view.DrawOptionsView;
 import com.tbocek.android.combatmap.view.TagNavigator;
 import com.tbocek.android.combatmap.view.TokenSelectorView;
-import com.tbocek.dungeonsketchalpha.R;
+import com.tbocek.dungeonsketch.R;
 
 /**
  * This is the main activity that allows the user to sketch a map, and place and
