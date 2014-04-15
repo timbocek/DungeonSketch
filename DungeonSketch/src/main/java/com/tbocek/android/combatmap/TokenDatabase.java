@@ -569,11 +569,14 @@ public final class TokenDatabase {
      * 
      * @param toDelete
      *            The tag to remove from the database.
+     *
+     * @return The parent node of the deleted node.
      */
-    public void deleteTag(String toDelete) {
+    public TagTreeNode deleteTag(String toDelete) {
     	TagTreeNode node = this.mTagTreeRoot.getNamedChild(toDelete, false);
-    	node.deleteSelf();
-    	
+    	TagTreeNode parent = node.getParent();
+        node.deleteSelf();
+        return parent;
     }
 
     /**

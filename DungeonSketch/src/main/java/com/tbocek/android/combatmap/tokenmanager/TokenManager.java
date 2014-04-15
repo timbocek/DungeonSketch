@@ -262,8 +262,10 @@ public final class TokenManager extends ActionBarActivity {
             if (this.mTagNavigator.getCurrentTag().equals(this.mContextMenuTag)) {
                 this.mTagNavigator.selectRoot();
             }
-            this.mTokenDatabase.deleteTag(this.mContextMenuTag);
+            TagTreeNode parent = this.mTokenDatabase.deleteTag(this.mContextMenuTag);
+            String path = parent.getPath();
             this.updateTagList();
+            this.mTagNavigator.setTagPath(path);
             return true;
         } else {
             return super.onContextItemSelected(item);
@@ -496,10 +498,11 @@ public final class TokenManager extends ActionBarActivity {
                         @Override
                         public void onClick(DialogInterface dialog,
                                 int which) {
-                            TokenManager.this.mTokenDatabase
-                            .deleteTag(TokenManager.this
-                                    .getActiveTagPath());
+                            TagTreeNode parent = TokenManager.this.mTokenDatabase.deleteTag(
+                                    TokenManager.this.getActiveTagPath());
+                            String path = parent.getPath();
                             TokenManager.this.updateTagList();
+                            mTagNavigator.setTagPath(path);
                         }
                     })
                     .setNegativeButton("No",
