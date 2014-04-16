@@ -239,11 +239,16 @@ public final class BoundingRectangle {
         this.mYMin = Math.min(this.mYMin, p.y);
         this.mYMax = Math.max(this.mYMax, p.y);
     }
-    
-    
-    
+
+
+
+    public PointF getUpperLeft() {
+        return new PointF(this.mXMin, this.mYMin);
+    }
+
     /**
      * Tests whether this rectangle partially falls within the given rectangle.
+     *
      * @param clipRegion The rectangle to test against.
      */
     public boolean testClip(final RectF clipRegion) {
@@ -259,5 +264,6 @@ public final class BoundingRectangle {
 		this.mYMin -= margin;
 		this.mYMax += margin;
 	}
+
 
 }

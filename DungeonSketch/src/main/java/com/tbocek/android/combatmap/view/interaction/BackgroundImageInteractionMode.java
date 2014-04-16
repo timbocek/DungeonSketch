@@ -283,6 +283,12 @@ public class BackgroundImageInteractionMode extends BaseDrawInteractionMode {
                 break;
             default:
                 selectedImage.moveImage(wsDistX, wsDistY);
+                // Snap the upper left hand corner of the image to the grid if needed.
+                if (this.getView().shouldSnapToGrid()) {
+                    PointF pointWS = selectedImage.getBoundingRectangle().getUpperLeft();
+                    PointF snapPointWS = this.getData().getGrid().getNearestSnapPoint(pointWS, 0);
+                    selectedImage.moveImage(snapPointWS.x - pointWS.x, snapPointWS.y - pointWS.y);
+                }
                 break;
             }
             this.getView().refreshMap();
@@ -392,7 +398,7 @@ public class BackgroundImageInteractionMode extends BaseDrawInteractionMode {
             } else if (Util.distance(p, this.getLowerRight()) < r) {
                 return this.getLowerRight();
             } else {
-                return this.getUpperLeft();
+                return p;
             }
         }
 
