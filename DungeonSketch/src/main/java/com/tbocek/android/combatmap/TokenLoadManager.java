@@ -19,7 +19,7 @@ import com.tbocek.android.combatmap.model.primitives.BaseToken;
  * 
  * Registering a token to load provides a handle that allows the load action to
  * be cancelled at any time.
- * 
+ * @deprecated Use TokenImageManager
  * @author Tim
  * 
  */
