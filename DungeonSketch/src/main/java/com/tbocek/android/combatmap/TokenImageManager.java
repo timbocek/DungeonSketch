@@ -29,12 +29,12 @@ public class TokenImageManager {
     private static final int INITIAL_POOL_SIZE = 100;
     private static TokenImageManager mInstance;
 
-    public TokenImageManager getInstance() {
+    public static TokenImageManager getInstance() {
         if (mInstance == null) throw new RuntimeException("No token image manager instance");
         return mInstance;
     }
 
-    public TokenImageManager getInstance(Context context) {
+    public static TokenImageManager getInstance(Context context) {
         context = context.getApplicationContext();
         if (mInstance == null) {
             mInstance = new TokenImageManager(context);
@@ -45,7 +45,7 @@ public class TokenImageManager {
 
     private Context mContext;
 
-    public class Loader extends HandlerThread {
+    public static class Loader extends HandlerThread {
         private static final int MESSAGE_LOAD = 0;
         Handler mHandler;
         Handler mResponseHandler;
