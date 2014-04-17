@@ -2,6 +2,7 @@ package com.tbocek.android.combatmap;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
@@ -9,11 +10,13 @@ import android.os.Message;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * Manages a set of token images.  Anything needing a token image can request a bitmap.
@@ -42,8 +45,6 @@ public class TokenImageManager {
         }
         return mInstance;
     }
-
-    private Context mContext;
 
     public static class Loader extends HandlerThread {
         private static final int MESSAGE_LOAD = 0;
@@ -91,12 +92,14 @@ public class TokenImageManager {
 
     public class TokenImageWrapper {
         private Bitmap mImage;
+        private Drawable mDrawable;
         private BaseToken mToken;
         private int mReferenceCount;
 
         public Bitmap getImage() {
             return mImage;
         }
+        public Drawable getDrawable() { return mDrawable; }
 
         public void release() {
             mReferenceCount--;
@@ -129,8 +132,9 @@ public class TokenImageManager {
         }
     }
 
-    Queue<TokenImageWrapper> mRecycledImages;
-    Map<String, TokenImageWrapper> mCurrentImages;
+    Queue<TokenImageWrapper> mRecycledImages = new SynchronousQueue<TokenImageWrapper>();
+    Map<String, TokenImageWrapper> mCurrentImages = new HashMap<String, TokenImageWrapper>();
+    private Context mContext;
 
     private TokenImageManager(Context context) {
         mContext = context;
@@ -144,6 +148,9 @@ public class TokenImageManager {
     }
 
     public synchronized void requireTokenImage(BaseToken token, Loader loader, Callback callback) {
+        if (!token.needsLoad()) {
+            callback.imageLoaded(token);
+        }
         String tokenId = token.getTokenId();
         if (mCurrentImages.containsKey(tokenId)) {
             TokenImageWrapper image = mCurrentImages.get(tokenId);
@@ -154,15 +161,22 @@ public class TokenImageManager {
         }
     }
 
-    public synchronized void releaseTokenImage(BaseToken token) {
-        if (mCurrentImages.containsKey(token.getTokenId())) {
-            mCurrentImages.get(token.getTokenId()).release();
+    public synchronized void releaseTokenImage(String tokenId) {
+        if (mCurrentImages.containsKey(tokenId)) {
+            mCurrentImages.get(tokenId).release();
         }
     }
 
-    public Bitmap getTokenImage(BaseToken token) {
-        if (mCurrentImages.containsKey(token.getTokenId())) {
-            return mCurrentImages.get(token.getTokenId()).getImage();
+    public Bitmap getTokenImage(String tokenId) {
+        if (mCurrentImages.containsKey(tokenId)) {
+            return mCurrentImages.get(tokenId).getImage();
+        }
+        return null;
+    }
+
+    public Drawable getTokenDrawable(String tokenId) {
+        if (mCurrentImages.containsKey(tokenId)) {
+            return mCurrentImages.get(tokenId).getDrawable();
         }
         return null;
     }

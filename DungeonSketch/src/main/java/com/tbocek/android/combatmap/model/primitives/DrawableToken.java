@@ -3,6 +3,7 @@ package com.tbocek.android.combatmap.model.primitives;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
@@ -14,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.tbocek.android.combatmap.DeveloperMode;
+import com.tbocek.android.combatmap.TokenImageManager;
 
 /**
  * Base class for tokens that display some sort of drawable. Provides standard
@@ -170,13 +172,13 @@ public abstract class DrawableToken extends BaseToken {
      * @return The drawable.
      */
     private Drawable getDrawable() {
-        synchronized (drawableCache) {
-            if (drawableCache.containsKey(this.getTokenId())) {
-                return drawableCache.get(this.getTokenId());
-            }
-            return this.mDrawable;
-        }
+        TokenImageManager mgr = TokenImageManager.getInstance();
+        if (mgr == null) return null;
+        return mgr.getTokenDrawable(this.getTokenId());
     }
+
+    // TODO: make use of cached buffers.
+    public abstract Bitmap loadBitmap();
 
     @Override
     public final void load() {
@@ -196,9 +198,7 @@ public abstract class DrawableToken extends BaseToken {
 
     @Override
     public final boolean needsLoad() {
-        synchronized (drawableCache) {
-            return !drawableCache.containsKey(this.getTokenId());
-        }
+        return true;
     }
 
 }

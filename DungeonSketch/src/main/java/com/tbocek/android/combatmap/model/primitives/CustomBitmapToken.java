@@ -54,6 +54,15 @@ public final class CustomBitmapToken extends DrawableToken {
     }
 
     @Override
+    public Bitmap loadBitmap() {
+        try {
+            return dataManager.loadTokenImage(this.mFilename);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    @Override
     protected Drawable createDrawable() {
         if (dataManager == null) {
             return null;

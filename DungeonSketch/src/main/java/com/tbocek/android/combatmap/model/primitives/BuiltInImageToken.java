@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import com.tbocek.android.combatmap.DungeonSketchApp;
@@ -58,6 +60,18 @@ public final class BuiltInImageToken extends DrawableToken {
     public BaseToken clone() {
         return this.copyAttributesTo(new BuiltInImageToken(this.mResourceName,
                 this.mSortOrder, this.mDefaultTags));
+    }
+
+    @Override
+    public Bitmap loadBitmap() {
+        int id =
+                DungeonSketchApp.getContext().getResources().getIdentifier(
+                        this.mResourceName, "drawable",
+                        DungeonSketchApp.getContext().getPackageName());
+        if (id == 0) {
+            return null;
+        }
+        return ((BitmapDrawable)DungeonSketchApp.getContext().getResources().getDrawable(id)).getBitmap();
     }
 
     @Override
