@@ -1,44 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="right" >
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <HorizontalScrollView
+            android:id="@+id/token_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/token_selector_button_tray" >
 
-    <LinearLayout
-        android:id="@+id/token_selector_button_tray"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:alpha="1"
-        android:gravity="right"
-        android:orientation="vertical" >
+        </HorizontalScrollView>
+        <com.tbocek.android.combatmap.view.HorizontalListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/token_selector_list_view">
 
+
+        </com.tbocek.android.combatmap.view.HorizontalListView>
+        </FrameLayout>
         <Button
             android:id="@+id/token_category_selector_button"
             android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_height="match_parent"
             android:src="@drawable/filter"
             android:contentDescription="@string/filter_tokens"
             android:text="...">       
         </Button>
 
-        <ImageButton
-            android:id="@+id/token_manager_button"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:alpha="1"
-            android:contentDescription="@string/token_manager"
-            android:src="@drawable/tag"
-            android:visibility="gone" >
-       </ImageButton>
-    </LinearLayout>
 
-    <HorizontalScrollView
-        android:id="@+id/token_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/token_selector_button_tray" >
-    </HorizontalScrollView>
-
-</RelativeLayout>
+</LinearLayout>

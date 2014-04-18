@@ -614,7 +614,7 @@ public final class CombatMap extends ActionBarActivity {
 			public void onClick(final View arg0) {
 				CombatMap.this.mIsControlTrayExpanded = !CombatMap.this.mIsControlTrayExpanded;
 				if (CombatMap.this.mIsControlTrayExpanded) {
-					CombatMap.this.mBottomControlFrame.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+					CombatMap.this.mBottomControlFrame.getLayoutParams().height = (int) Util.convertDpToPixel(80, CombatMap.this);
 					collapseButton
 							.setImageResource(R.drawable.vertical_contract);
 				} else {
@@ -1340,6 +1340,8 @@ public final class CombatMap extends ActionBarActivity {
 			CombatMap.this.mTagNavigator.setShowInactiveTags(false);
 			CombatMap.this.mTagNavigator.setTokenDatabase(CombatMap.this.mTokenDatabase);
 			CombatMap.this.mTagNavigator.setTagPath(mData.getLastTag());
+
+            CombatMap.this.mTokenSelector.setSelectedTag(TokenDatabase.ALL, null);
 		}
 	}
 
