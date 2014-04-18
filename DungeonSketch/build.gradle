@@ -23,8 +23,8 @@ android {
         debugFlavor {
             packageName 'com.tbocek.dungeonsketchdebug'
         }
-        alphaFlavor {
-            packageName 'com.tbocek.dungeonsketchalpha'
+        betaFlavor {
+            packageName 'com.tbocek.dungeonsketchbeta'
         }
     }
 }

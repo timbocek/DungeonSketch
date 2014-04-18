@@ -82,6 +82,7 @@
     <string name="import_option_google_play_version">Current Google Play version</string>
     <string name="import_from">Migrate From:</string>
     <string name="import_option_alpha_version">Alpha Version</string>
+    <string name="import_option_beta_version">Beta Version</string>
     <string name="import_overwrite_existing">Overwrite Existing:</string>
     <string name="import_overwrite_tokens">Token Files</string>
     <string name="import_overwrite_maps">Maps</string>

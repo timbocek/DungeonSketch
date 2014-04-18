@@ -8,11 +8,10 @@
     </facet>
     <facet type="android" name="Android">
       <configuration>
-        <option name="SELECTED_BUILD_VARIANT" value="alphaFlavorDebug" />
-        <option name="ASSEMBLE_TASK_NAME" value="assembleAlphaFlavorDebug" />
-        <option name="COMPILE_JAVA_TASK_NAME" value="compileAlphaFlavorDebugJava" />
-        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleAlphaFlavorDebugTest" />
-        <option name="SOURCE_GEN_TASK_NAME" value="generateAlphaFlavorDebugSources" />
+        <option name="SELECTED_BUILD_VARIANT" value="alphaFlavorRelease" />
+        <option name="ASSEMBLE_TASK_NAME" value="assembleAlphaFlavorRelease" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileAlphaFlavorReleaseJava" />
+        <option name="SOURCE_GEN_TASK_NAME" value="generateAlphaFlavorReleaseSources" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
@@ -22,26 +21,21 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/build/classes/alphaFlavor/debug" />
+    <output url="file://$MODULE_DIR$/build/classes/alphaFlavor/release" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/build/source/r/alphaFlavor/debug" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/aidl/alphaFlavor/debug" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/buildConfig/alphaFlavor/debug" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/rs/alphaFlavor/debug" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/res/rs/alphaFlavor/debug" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorDebug/res" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorDebug/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorDebug/aidl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorDebug/assets" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorDebug/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorDebug/jni" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorDebug/rs" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/r/test/alphaFlavor/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/aidl/test/alphaFlavor/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/buildConfig/test/alphaFlavor/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/rs/test/alphaFlavor/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/res/rs/test/alphaFlavor/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/source/r/alphaFlavor/release" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/source/aidl/alphaFlavor/release" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/source/buildConfig/alphaFlavor/release" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/source/rs/alphaFlavor/release" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/res/rs/alphaFlavor/release" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorRelease/res" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorRelease/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorRelease/aidl" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorRelease/assets" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorRelease/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorRelease/jni" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavorRelease/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavor/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavor/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/alphaFlavor/aidl" isTestSource="false" />
@@ -56,13 +50,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestAlphaFlavor/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestAlphaFlavor/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestAlphaFlavor/rs" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/res" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/aidl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/assets" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/jni" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/release/res" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/release/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/release/aidl" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/release/assets" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/release/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/release/jni" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/release/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/aidl" isTestSource="false" />

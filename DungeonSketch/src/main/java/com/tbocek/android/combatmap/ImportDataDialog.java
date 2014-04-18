@@ -37,6 +37,7 @@ public class ImportDataDialog extends RoboActivity {
 	private static final String TAG = "com.tbocek.android.combatmap.ImportDataDialog";
 
     @InjectView(tag="import_alpha") RadioButton importAlpha;
+    @InjectView(tag="import_beta") RadioButton importBeta;
     @InjectView(tag="import_legacy") RadioButton importLegacy;
     @InjectView(tag="import_current") RadioButton importCurrent;
     @InjectView(tag="import_debug") RadioButton importDebug;
@@ -58,6 +59,8 @@ public class ImportDataDialog extends RoboActivity {
         boolean hasOption = false;
         hasOption = addImportOption(importAlpha, "com.tbocek.dungeonsketchalpha")
         		|| hasOption;
+        hasOption = addImportOption(importBeta, "com.tbocek.dungeonsketchbeta")
+                || hasOption;
         hasOption = addImportOption(importCurrent, "com.tbocek.dungeonsketch")
         		|| hasOption;
         hasOption = addImportOption(importLegacy, "com.tbocek.android.combatmap")
