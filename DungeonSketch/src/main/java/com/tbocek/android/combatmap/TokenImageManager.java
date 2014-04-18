@@ -2,16 +2,19 @@ package com.tbocek.android.combatmap;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.util.Log;
 
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -28,6 +31,8 @@ import java.util.concurrent.SynchronousQueue;
  * Created by Tim on 4/17/14.
  */
 public class TokenImageManager {
+    private static final String TAG = "TokenImageManager";
+
     private static final float POOL_EXPANSION_RATIO = 0.2f;
     private static final int INITIAL_POOL_SIZE = 100;
     private static TokenImageManager mInstance;
@@ -50,7 +55,7 @@ public class TokenImageManager {
         private static final int MESSAGE_LOAD = 0;
         Handler mHandler;
         Handler mResponseHandler;
-        Map<BaseToken, Callback> mCallbacks;
+        Map<BaseToken, Callback> mCallbacks = new HashMap<BaseToken, Callback>();
 
         public Loader(Handler responseHandler) {
             super("TokenImageManager.Loader");
@@ -62,6 +67,7 @@ public class TokenImageManager {
                 public void handleMessage(Message msg) {
                     if (msg.what == MESSAGE_LOAD) {
                         BaseToken token = (BaseToken)msg.obj;
+                        Log.d(TAG, "Handling load request for " + token.getTokenId());
                         handleRequest(token);
                     }
                 }
@@ -69,10 +75,23 @@ public class TokenImageManager {
         }
 
         private void handleRequest(final BaseToken token) {
-            // TODO: Load the damn token
+            //TODO: actually recycle bitmaps
+            TokenImageManager mgr = TokenImageManager.getInstance();
+
+            Bitmap b = token.loadBitmap();
+
+            //TODO: What happens if the image is already loaded when we get here (i.e. was loaded between when the load
+            //was requested and executed?)
+            TokenImageWrapper w = mgr.getUnusedImage();
+            w.mImage = b;
+            w.mDrawable = new BitmapDrawable(b);
+            w.mToken = token;
+            mgr.mCurrentImages.put(token.getTokenId(), w);
+
             mResponseHandler.post(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d(TAG, "Posting token load callback for " + token.getTokenId());
                     mCallbacks.get(token).imageLoaded(token);
                     mCallbacks.remove(token);
                 }
@@ -82,6 +101,7 @@ public class TokenImageManager {
         public void queueTokenLoad(BaseToken token, Callback callback) {
             mCallbacks.put(token, callback);
             mHandler.obtainMessage(MESSAGE_LOAD, token).sendToTarget();
+            Log.d(TAG, "Token load queued: " + token.getTokenId());
         }
 
         public void clearQueue() {
@@ -104,7 +124,7 @@ public class TokenImageManager {
         public void release() {
             mReferenceCount--;
             if (mReferenceCount == 0) {
-                mRecycledImages.add(this);
+                mRecycledImages.addLast(this);
             }
         }
     }
@@ -132,7 +152,7 @@ public class TokenImageManager {
         }
     }
 
-    Queue<TokenImageWrapper> mRecycledImages = new SynchronousQueue<TokenImageWrapper>();
+    LinkedList<TokenImageWrapper> mRecycledImages = new LinkedList<TokenImageWrapper>();
     Map<String, TokenImageWrapper> mCurrentImages = new HashMap<String, TokenImageWrapper>();
     private Context mContext;
 
@@ -200,12 +220,15 @@ public class TokenImageManager {
         if (mRecycledImages.isEmpty()) {
             // Pool empty, allocate some more.
             initializePool((int)(mCurrentImages.size() * POOL_EXPANSION_RATIO) + 1);
-            return mRecycledImages.remove();
+            return mRecycledImages.removeFirst();
         } else {
             assert newImageWrapper.mReferenceCount == 0;
 
-            mCurrentImages.remove(newImageWrapper.mToken.getTokenId());
+            if (newImageWrapper.mToken != null && mCurrentImages.containsKey(newImageWrapper.mToken.getTokenId())) {
+                mCurrentImages.remove(newImageWrapper.mToken.getTokenId());
+            }
             newImageWrapper.mToken = null;
+            newImageWrapper.mReferenceCount++;
             return newImageWrapper;
         }
     }

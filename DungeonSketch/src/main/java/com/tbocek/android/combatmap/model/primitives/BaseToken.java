@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -631,5 +632,9 @@ public abstract class BaseToken {
      */
     public final void setSize(final float size) {
         this.mSize = size;
+    }
+
+    public Bitmap loadBitmap() {
+        return null;
     }
 }

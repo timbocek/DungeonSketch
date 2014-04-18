@@ -176,7 +176,7 @@ public class ImportDataDialog extends RoboActivity {
         }
 
         @Override
-        protected void onPostExecute(Void _) {
+        protected void onPostExecute(Void unused) {
             ImportDataDialog.this.finish();
         }
 

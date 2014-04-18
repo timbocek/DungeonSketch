@@ -44,7 +44,7 @@ public final class DeveloperMode {
      * If in developer mode and the SDK supports it, run in strict mode.
      */
     public static void strictMode() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD
+        if (false && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD
                 && DEVELOPER_MODE) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
             .detectAll().penaltyLog().build());
