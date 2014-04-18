@@ -72,7 +72,7 @@ public final class TokenSelectorView extends LinearLayout {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            BaseToken prototype = this.getItem(position);
+            final BaseToken prototype = this.getItem(position);
             TokenImageManager mgr = TokenImageManager.getInstance(getContext());
             if (convertView != null) {
                 TokenButton oldTokenButton = ((TokenButton)convertView);
@@ -93,6 +93,15 @@ public final class TokenSelectorView extends LinearLayout {
                 public void imageLoaded(BaseToken token) {
                     newTokenButton.setLoadedTokenImage(true);
                     newTokenButton.invalidate();
+                }
+            });
+
+            newTokenButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnTokenSelectedListener != null) {
+                        mOnTokenSelectedListener.onTokenSelected(prototype.clone());
+                    }
                 }
             });
 
