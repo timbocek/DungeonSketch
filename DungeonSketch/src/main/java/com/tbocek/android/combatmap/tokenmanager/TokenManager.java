@@ -29,6 +29,9 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,6 +84,8 @@ public final class TokenManager extends ActionBarActivity {
 
     private MenuItem mDeleteTagMenuItem;
 
+    private MultiSelectManager mMultiSelectManager;
+
     /**
      * The action mode that was started to manage the selection.
      */
@@ -119,8 +124,6 @@ public final class TokenManager extends ActionBarActivity {
      * tag and allows it to scroll.
      */
     private ScrollView mScrollView;
-
-    boolean mSuspendViewUpdates = false;
     
     private TagNavigator mTagNavigator;
 
@@ -128,12 +131,6 @@ public final class TokenManager extends ActionBarActivity {
      * The database to load tags and tokens from.
      */
     private TokenDatabase mTokenDatabase;
-
-    /**
-     * Factory that creates views to display tokens and implements a caching
-     * scheme.
-     */
-    private MultiSelectTokenViewFactory mTokenViewFactory;
 
     /**
      * Drag target to delete tokens.
@@ -157,6 +154,8 @@ public final class TokenManager extends ActionBarActivity {
 	private TextView disabledTagExplanation;
 
     private TokenImageManager.Loader mLoader;
+
+    private GridView mGridView;
 
     /**
      * Deletes the given list of tokens.
@@ -191,71 +190,6 @@ public final class TokenManager extends ActionBarActivity {
     
     private String getActiveTagPath() {
         return this.mTagNavigator.getCurrentTagPath();
-    }
-
-    /**
-     * Given a list of tokens, creates views representing the tokens and lays
-     * them out in a table.
-     * 
-     * @param tokens
-     *            The tokens to represent in the view.
-     * @return Composite view that lays out buttons representing all tokens.
-     */
-    private View getTokenButtonLayout(final Collection<BaseToken> tokens) {
-        TokenImageManager imageManager = TokenImageManager.getInstance(this);
-        GridLayout grid = new GridLayout(this);
-        grid.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        int smallerDimension =
-                Math.min(
-                        this.getWindowManager().getDefaultDisplay().getWidth(),
-                        this.getWindowManager().getDefaultDisplay().getHeight());
-
-        // Make tokens at most TOKEN_BUTTON_SIZE DiP large, but fit at least
-        // three across the smallest screen dimension.
-        int cellDimension =
-                Math.min(smallerDimension / MINIMUM_TOKENS_SHOWN,
-                        (int) (TOKEN_BUTTON_SIZE * this.getResources()
-                                .getDisplayMetrics().density));
-        grid.setCellDimensions(cellDimension, cellDimension);
-
-        // Release references to the tokens currently displayed, if there are any.
-        if (mButtons != null) {
-            for (TokenButton b: mButtons) {
-                imageManager.releaseTokenImage(b.getTokenId());
-            }
-        }
-
-        this.mButtons = Lists.newArrayList();
-        for (BaseToken t : tokens) {
-            final TokenButton b =
-                    (TokenButton) this.mTokenViewFactory.getTokenView(t);
-            b.setShouldDrawDark(true);
-            b.allowDrag(this.isLargeScreen());
-            this.mButtons.add(b);
-
-            // Remove all views from the parent, if there is one.
-            // This is safe because we are totally replacing the view contents
-            // here.
-            ViewGroup parent = (ViewGroup) b.getParent();
-            if (parent != null) {
-                parent.removeAllViews();
-            }
-
-            b.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));
-            grid.addView(b);
-            imageManager.requireTokenImage(t, mLoader, new TokenImageManager.Callback() {
-                @Override
-                public void imageLoaded(BaseToken token) {
-                    b.invalidate();
-                }
-            });
-        }
-        return grid;
     }
 
     private boolean isLargeScreen() {
@@ -296,11 +230,13 @@ public final class TokenManager extends ActionBarActivity {
 
         this.setContentView(R.layout.token_manager_layout);
 
-        this.mTokenViewFactory = new MultiSelectTokenViewFactory(this);
+        mMultiSelectManager = new MultiSelectManager();
         
         this.mTagNavigator = new TagNavigator(this);
         this.mTagNavigator.setTagSelectedListener(this.mTagSelectedListener);
         this.mTagNavigator.setAllowContextMenu(true);
+
+        this.mGridView = (GridView) findViewById(R.id.token_manager_grid_view);
 
         mLoader = new TokenImageManager.Loader(new Handler());
         mLoader.start();
@@ -384,16 +320,13 @@ public final class TokenManager extends ActionBarActivity {
 			}
 		});
 
-        this.mTokenViewFactory.getMultiSelectManager()
-        .setSelectionChangedListener(
+        mMultiSelectManager.setSelectionChangedListener(
                 new MultiSelectManager.SelectionChangedListener() {
 
                     @Override
                     public void selectionChanged() {
                         int numTokens =
-                                TokenManager.this.mTokenViewFactory
-                                .getMultiSelectManager()
-                                .getSelectedTokens().size();
+                                mMultiSelectManager.getSelectedTokens().size();
                         if (TokenManager.this.mMultiSelectActionMode != null) {
                             TokenManager.this.mMultiSelectActionMode
                             .setTitle(Integer
@@ -606,44 +539,16 @@ public final class TokenManager extends ActionBarActivity {
      *            The new tag to display tokens for.
      */
     private void setScrollViewTag(final String tag) {
-        if (!this.mSuspendViewUpdates) {
-            this.mTokenViewFactory.getMultiSelectManager().selectNone();
-            this.mScrollView.removeAllViews();
-            if (tag.equals(TokenDatabase.ALL)) {
-                this.mScrollView.addView(this
-                        .getTokenButtonLayout(this.mTokenDatabase
-                                .getAllTokens()));
-                if (this.mDeleteTagMenuItem != null) {
-                    this.mDeleteTagMenuItem.setVisible(false);
-                }
-                if (this.mTagActiveMenuItem != null) {
-                	this.mTagActiveMenuItem.setVisible(false);
-                }	
-            } else {
-                this.mScrollView.addView(this
-                        .getTokenButtonLayout(this.mTokenDatabase
-                                .getTokensForTag(tag)));
-                this.mDeleteTagMenuItem.setVisible(!TokenDatabase.isSystemTag(tag));
-                this.mTagActiveMenuItem.setChecked(mTokenDatabase.isTagActive(tag));
-                this.mTagActiveMenuItem.setVisible(true);
-                
-            }
-            
-			
-			if (tag.equals(TokenDatabase.ALL) || mTokenDatabase.getRootNode().getNamedChild(tag, false).isActive()) {
-				enableTagButton.setVisibility(View.GONE);
-				disabledTagExplanation.setVisibility(View.GONE);
-			} else {
-				enableTagButton.setVisibility(View.VISIBLE);
-				disabledTagExplanation.setVisibility(View.VISIBLE);
-			}
-            
-        }
-    }
+        List<BaseToken> tokens = mTokenDatabase.getTokensForTag(tag);
+	    this.mGridView.setAdapter(new TokenListArrayAdapter(tokens));
 
-    private void setSuspendViewUpdates(boolean b) {
-        this.mSuspendViewUpdates = b;
-
+		if (tag.equals(TokenDatabase.ALL) || mTokenDatabase.getRootNode().getNamedChild(tag, false).isActive()) {
+			enableTagButton.setVisibility(View.GONE);
+			disabledTagExplanation.setVisibility(View.GONE);
+		} else {
+			enableTagButton.setVisibility(View.VISIBLE);
+			disabledTagExplanation.setVisibility(View.VISIBLE);
+	    }
     }
 
     private void updateTagList() {
@@ -662,8 +567,7 @@ public final class TokenManager extends ActionBarActivity {
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             final Collection<BaseToken> tokens =
-                    TokenManager.this.mTokenViewFactory.getMultiSelectManager()
-                    .getSelectedTokens();
+                    mMultiSelectManager.getSelectedTokens();
             int itemId = item.getItemId();
             if (itemId == R.id.token_manager_action_mode_remove_tag) {
                 TokenManager.this.removeTagFromTokens(tokens,
@@ -707,8 +611,7 @@ public final class TokenManager extends ActionBarActivity {
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            TokenManager.this.mTokenViewFactory.getMultiSelectManager()
-            .selectNone();
+            mMultiSelectManager.selectNone();
         }
 
         @Override
@@ -723,5 +626,40 @@ public final class TokenManager extends ActionBarActivity {
             return true;
         }
 
+    }
+    private class TokenListArrayAdapter extends ArrayAdapter<BaseToken> {
+
+        public TokenListArrayAdapter(List<BaseToken> objects) {
+            super(TokenManager.this, 0, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final BaseToken prototype = this.getItem(position);
+            TokenImageManager mgr = TokenImageManager.getInstance(getContext());
+            if (convertView != null) {
+                TokenButton oldTokenButton = ((TokenButton)convertView);
+                if (oldTokenButton.loadedTokenImage()) {
+                    String oldTokenId = oldTokenButton.getTokenId();
+                    mgr.releaseTokenImage(oldTokenId);
+                }
+            }
+
+            final TokenButton newTokenButton = (convertView!=null) ? (TokenButton)convertView : new MultiSelectTokenButton(getContext(), prototype, mMultiSelectManager);
+            newTokenButton.setPrototype(prototype);
+
+            newTokenButton.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+
+            mgr.requireTokenImage(prototype, mLoader, new TokenImageManager.Callback() {
+
+                @Override
+                public void imageLoaded(BaseToken token) {
+                    newTokenButton.setLoadedTokenImage(true);
+                    newTokenButton.invalidate();
+                }
+            });
+
+            return newTokenButton;
+        }
     }
 }
