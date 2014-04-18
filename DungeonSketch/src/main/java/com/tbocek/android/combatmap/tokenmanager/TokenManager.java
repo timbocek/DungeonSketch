@@ -255,7 +255,6 @@ public final class TokenManager extends ActionBarActivity {
                 }
             });
         }
-        new TokenLoadTask(this.mButtons).execute();
         return grid;
     }
 

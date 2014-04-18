@@ -56,6 +56,10 @@ public class TokenButton extends ImageView {
                 }
             };
 
+    public void setPrototype(BaseToken prototype) {
+        mPrototype = prototype;
+    }
+
     /**
      * The token represented by this button.
      */
@@ -156,5 +160,15 @@ public class TokenButton extends ImageView {
      */
     public boolean shouldDrawDark() {
         return this.mDrawDark;
+    }
+
+    private boolean mLoadedTokenImage;
+
+    public boolean loadedTokenImage() {
+        return mLoadedTokenImage;
+    }
+
+    public void setLoadedTokenImage(boolean loadedTokenImage) {
+        mLoadedTokenImage = loadedTokenImage;
     }
 }

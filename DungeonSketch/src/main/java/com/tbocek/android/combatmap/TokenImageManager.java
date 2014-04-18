@@ -96,8 +96,10 @@ public class TokenImageManager {
                 @Override
                 public void run() {
                     Log.d(TAG, "Posting token load callback for " + token.getTokenId());
-                    mCallbacks.get(token).imageLoaded(token);
-                    mCallbacks.remove(token);
+                    if (mCallbacks.containsKey(token)) {
+                        mCallbacks.get(token).imageLoaded(token);
+                        mCallbacks.remove(token);
+                    }
                 }
             });
         }

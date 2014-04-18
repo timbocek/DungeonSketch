@@ -14,7 +14,6 @@ import com.tbocek.android.combatmap.model.primitives.BaseToken;
  * startup times for activities that need to load the entire token library.
  * 
  * @author Tim
- * @deprecated Use TokenLoadManager instead!
  * 
  */
 @Deprecated

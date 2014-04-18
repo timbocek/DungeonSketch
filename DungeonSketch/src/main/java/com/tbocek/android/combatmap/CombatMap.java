@@ -403,8 +403,9 @@ public final class CombatMap extends ActionBarActivity {
 	private FrameLayout mInnerPopupFrame;
 
 	private Button mDeployTokensButton;
+    private TokenImageManager.Loader mLoader;
 
-	/**
+    /**
 	 * Given a combat mode, returns the snap to grid preference name associated
 	 * with that combat mode.
 	 * 
@@ -519,9 +520,6 @@ public final class CombatMap extends ActionBarActivity {
 		PreferenceManager.setDefaultValues(this, R.layout.settings, false);
 
 		initializeUi();
-
-		// Set up and start the token load manager
-		TokenLoadManager.getInstance().startThread();
 	}
 	
 	//this is called when the screen rotates.
@@ -554,7 +552,12 @@ public final class CombatMap extends ActionBarActivity {
 		this.mTokenSelector = new TokenSelectorView(
 				this.getApplicationContext());
 
-		// Set up listeners for the token selector's category and manager
+        mLoader = new TokenImageManager.Loader(new Handler());
+        mLoader.start();
+        mLoader.getLooper(); // Make sure loader thread is ready to go.
+        mTokenSelector.setLoader(mLoader);
+
+        // Set up listeners for the token selector's category and manager
 		// buttons.
 		this.mTokenSelector
 				.setOnTokenSelectedListener(this.mOnTokenSelectedListener);
@@ -868,6 +871,14 @@ public final class CombatMap extends ActionBarActivity {
 
 		new MapSaver(filename, this.getApplicationContext()).run();
 	}
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mLoader.clearQueue();
+        mLoader.quit();
+        // TODO: Clean up any loaded tokens.
+    }
 
 	@Override
 	protected void onPrepareDialog(final int id, final Dialog dialog) {
@@ -1325,21 +1336,10 @@ public final class CombatMap extends ActionBarActivity {
 					.getInstance(CombatMap.this.getApplicationContext());
 			MapData d = MapData.getInstance();
 			d.getTokens().deplaceholderize(CombatMap.this.mTokenDatabase);
-			CombatMap.this.mTokenSelector
-					.setTokenDatabase(CombatMap.this.mTokenDatabase);
 			
 			CombatMap.this.mTagNavigator.setShowInactiveTags(false);
 			CombatMap.this.mTagNavigator.setTokenDatabase(CombatMap.this.mTokenDatabase);
 			CombatMap.this.mTagNavigator.setTagPath(mData.getLastTag());
-
-			// Load all the tokens that are currently placed on the map.
-			TokenLoadManager.getInstance().startJob(d.getTokens().asList(),
-					new TokenLoadManager.JobCallback() {
-						@Override
-						public void onJobComplete(List<BaseToken> loadedTokens) {
-							CombatMap.this.mCombatView.refreshMap();
-						}
-					}, new Handler());
 		}
 	}
 
