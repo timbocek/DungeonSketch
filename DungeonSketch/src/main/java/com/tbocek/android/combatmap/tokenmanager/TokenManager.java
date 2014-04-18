@@ -640,6 +640,8 @@ public final class TokenManager extends ActionBarActivity {
             newTokenButton.setPrototype(prototype);
 
             newTokenButton.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            newTokenButton.setMinimumWidth(mGridView.getColumnWidth());
+            newTokenButton.setMinimumHeight(mGridView.getColumnWidth());
 
             mgr.requireTokenImage(prototype, mLoader, new TokenImageManager.Callback() {
 

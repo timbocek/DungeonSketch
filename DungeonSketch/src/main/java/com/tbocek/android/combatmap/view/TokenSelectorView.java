@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import com.tbocek.android.combatmap.TokenImageManager;
 import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
+import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.dungeonsketch.R;
 
 /**
@@ -86,6 +87,8 @@ public final class TokenSelectorView extends LinearLayout {
             newTokenButton.setPrototype(prototype);
 
             newTokenButton.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+            newTokenButton.setMinimumWidth((int) Util.convertDpToPixel(80, TokenSelectorView.this.getContext()));
+            newTokenButton.setMinimumHeight((int) Util.convertDpToPixel(80, TokenSelectorView.this.getContext()));
 
             mgr.requireTokenImage(prototype, mLoader, new TokenImageManager.Callback() {
 
