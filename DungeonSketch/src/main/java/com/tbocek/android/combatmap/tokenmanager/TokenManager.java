@@ -119,12 +119,6 @@ public final class TokenManager extends ActionBarActivity {
 				}
 			};
 
-    /**
-     * Scroll view that wraps the layout of tokens for the currently selected
-     * tag and allows it to scroll.
-     */
-    private ScrollView mScrollView;
-    
     private TagNavigator mTagNavigator;
 
     /**
@@ -283,12 +277,9 @@ public final class TokenManager extends ActionBarActivity {
         
         tagListFrame.addView(this.mTagNavigator);
 
-        this.mScrollView =
-                (ScrollView) this.findViewById(R.id.token_manager_scroll_view);
-
         // Set up a drag handler so that the user can drop tokens onto the token
         // view when it switches over after long-holding on a tag.
-        this.mScrollView.setOnDragListener(new View.OnDragListener() {
+        this.mGridView.setOnDragListener(new View.OnDragListener() {
 			
 			@Override
 			public boolean onDrag(View v, DragEvent event) {

@@ -26,20 +26,14 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent" >
-
-        <ScrollView
-            android:id="@+id/token_manager_scroll_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <GridView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/token_manager_grid_view"
-                android:numColumns = "auto_fit"
-                android:columnWidth="120dp"
-                android:stretchMode="columnWidth"
-                />
-        </ScrollView>
+                <GridView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/token_manager_grid_view"
+                    android:numColumns = "auto_fit"
+                    android:columnWidth="120dp"
+                    android:stretchMode="columnWidth"
+                    />
 
         <TextView
             android:id="@+id/token_manager_disabled_explanation"
