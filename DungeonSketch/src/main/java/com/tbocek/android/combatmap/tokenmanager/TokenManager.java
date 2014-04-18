@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -36,6 +37,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.DeveloperMode;
 import com.tbocek.android.combatmap.Help;
+import com.tbocek.android.combatmap.TokenImageManager;
 import com.tbocek.dungeonsketch.R;
 import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
@@ -154,6 +156,8 @@ public final class TokenManager extends ActionBarActivity {
 	
 	private TextView disabledTagExplanation;
 
+    private TokenImageManager.Loader mLoader;
+
     /**
      * Deletes the given list of tokens.
      * 
@@ -198,6 +202,7 @@ public final class TokenManager extends ActionBarActivity {
      * @return Composite view that lays out buttons representing all tokens.
      */
     private View getTokenButtonLayout(final Collection<BaseToken> tokens) {
+        TokenImageManager imageManager = TokenImageManager.getInstance(this);
         GridLayout grid = new GridLayout(this);
         grid.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -216,9 +221,16 @@ public final class TokenManager extends ActionBarActivity {
                                 .getDisplayMetrics().density));
         grid.setCellDimensions(cellDimension, cellDimension);
 
+        // Release references to the tokens currently displayed, if there are any.
+        if (mButtons != null) {
+            for (TokenButton b: mButtons) {
+                imageManager.releaseTokenImage(b.getTokenId());
+            }
+        }
+
         this.mButtons = Lists.newArrayList();
         for (BaseToken t : tokens) {
-            TokenButton b =
+            final TokenButton b =
                     (TokenButton) this.mTokenViewFactory.getTokenView(t);
             b.setShouldDrawDark(true);
             b.allowDrag(this.isLargeScreen());
@@ -236,6 +248,12 @@ public final class TokenManager extends ActionBarActivity {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
             grid.addView(b);
+            imageManager.requireTokenImage(t, mLoader, new TokenImageManager.Callback() {
+                @Override
+                public void imageLoaded(BaseToken token) {
+                    b.invalidate();
+                }
+            });
         }
         new TokenLoadTask(this.mButtons).execute();
         return grid;
@@ -284,6 +302,10 @@ public final class TokenManager extends ActionBarActivity {
         this.mTagNavigator = new TagNavigator(this);
         this.mTagNavigator.setTagSelectedListener(this.mTagSelectedListener);
         this.mTagNavigator.setAllowContextMenu(true);
+
+        mLoader = new TokenImageManager.Loader(new Handler());
+        mLoader.start();
+        mLoader.getLooper(); // Make sure loader thread is ready to go.
 
         // On large screens, set up a seperate column of token tags and possibly
         // set up a trash can to drag tokens too if drag&drop is an option on
@@ -545,6 +567,13 @@ public final class TokenManager extends ActionBarActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mLoader.quit();
+        mLoader.clearQueue();
     }
 
     @Override
