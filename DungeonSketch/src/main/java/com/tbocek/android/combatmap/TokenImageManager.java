@@ -86,6 +86,10 @@ public class TokenImageManager {
                 Bitmap b = token.loadBitmap();
 
                 TokenImageWrapper w = mgr.getUnusedImage();
+                if (w.mImage != null) {
+                    Log.d(TAG, "RECYCLE");
+                    w.mImage.recycle();
+                }
                 w.mImage = b;
                 w.mDrawable = new BitmapDrawable(b);
                 w.mToken = token;
