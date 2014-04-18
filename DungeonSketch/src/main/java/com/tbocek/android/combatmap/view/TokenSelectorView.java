@@ -65,50 +65,30 @@ public final class TokenSelectorView extends LinearLayout {
         void onTokenSelected(final BaseToken t);
     }
 
-    private class TokenListArrayAdapter extends ArrayAdapter<BaseToken> {
+    private class Adapter extends TokenListAdapter {
 
-        public TokenListArrayAdapter(List<BaseToken> objects) {
-            super(TokenSelectorView.this.getContext(), 0, objects);
+        public Adapter(List<BaseToken> objects) {
+            super(TokenSelectorView.this.getContext(), objects, mLoader);
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final BaseToken prototype = this.getItem(position);
-            TokenImageManager mgr = TokenImageManager.getInstance(getContext());
-            if (convertView != null) {
-                TokenButton oldTokenButton = ((TokenButton)convertView);
-                if (oldTokenButton.loadedTokenImage()) {
-                    String oldTokenId = oldTokenButton.getTokenId();
-                    mgr.releaseTokenImage(oldTokenId);
-                }
-            }
+        protected TokenButton createTokenButton() {
+            TokenButton b = new TokenButton(getContext(), null);
 
-            final TokenButton newTokenButton = (convertView!=null) ? (TokenButton)convertView : new TokenButton(getContext(), prototype);
-            newTokenButton.setPrototype(prototype);
+            b.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+            b.setMinimumWidth((int) Util.convertDpToPixel(80, TokenSelectorView.this.getContext()));
+            b.setMinimumHeight((int) Util.convertDpToPixel(80, TokenSelectorView.this.getContext()));
 
-            newTokenButton.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
-            newTokenButton.setMinimumWidth((int) Util.convertDpToPixel(80, TokenSelectorView.this.getContext()));
-            newTokenButton.setMinimumHeight((int) Util.convertDpToPixel(80, TokenSelectorView.this.getContext()));
 
-            mgr.requireTokenImage(prototype, mLoader, new TokenImageManager.Callback() {
-
-                @Override
-                public void imageLoaded(BaseToken token) {
-                    newTokenButton.setLoadedTokenImage(true);
-                    newTokenButton.invalidate();
-                }
-            });
-
-            newTokenButton.setOnClickListener(new OnClickListener() {
+            b.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mOnTokenSelectedListener != null) {
-                        mOnTokenSelectedListener.onTokenSelected(prototype.clone());
+                        mOnTokenSelectedListener.onTokenSelected(((TokenButton)v).getClone());
                     }
                 }
             });
-
-            return newTokenButton;
+            return b;
         }
     }
 
@@ -139,7 +119,6 @@ public final class TokenSelectorView extends LinearLayout {
 
         List<BaseToken> tokens = db.getTokensForTag(path);
 
-        this.mTokenLayout.setAdapter(new TokenListArrayAdapter(tokens));
-        ((TokenListArrayAdapter)this.mTokenLayout.getAdapter()).notifyDataSetChanged();
+        this.mTokenLayout.setAdapter(new Adapter(tokens));
     }
 }

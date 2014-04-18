@@ -41,6 +41,7 @@ import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.DeveloperMode;
 import com.tbocek.android.combatmap.Help;
 import com.tbocek.android.combatmap.TokenImageManager;
+import com.tbocek.android.combatmap.view.TokenListAdapter;
 import com.tbocek.dungeonsketch.R;
 import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
@@ -320,10 +321,10 @@ public final class TokenManager extends ActionBarActivity {
                                 mMultiSelectManager.getSelectedTokens().size();
                         if (TokenManager.this.mMultiSelectActionMode != null) {
                             TokenManager.this.mMultiSelectActionMode
-                            .setTitle(Integer
-                                    .toString(numTokens)
-                                    + (numTokens == 1
-                                    ? " Token "
+                                    .setTitle(Integer
+                                            .toString(numTokens)
+                                            + (numTokens == 1
+                                            ? " Token "
                                             : " Tokens ")
                                             + "Selected.");
                         }
@@ -350,9 +351,10 @@ public final class TokenManager extends ActionBarActivity {
                     public void selectionStarted() {
                         TokenManager.this.mMultiSelectActionMode =
                                 TokenManager.this
-                                .startActionMode(new TokenSelectionActionModeCallback());
+                                        .startActionMode(new TokenSelectionActionModeCallback());
                     }
-                });
+                }
+        );
         
         disabledTagExplanation = (TextView) this.findViewById(R.id.token_manager_disabled_explanation);
         enableTagButton = (Button) this.findViewById(R.id.token_manager_enable_button);
@@ -531,7 +533,7 @@ public final class TokenManager extends ActionBarActivity {
      */
     private void setScrollViewTag(final String tag) {
         List<BaseToken> tokens = mTokenDatabase.getTokensForTag(tag);
-	    this.mGridView.setAdapter(new TokenListArrayAdapter(tokens));
+	    this.mGridView.setAdapter(new Adapter(tokens));
 
 		if (tag.equals(TokenDatabase.ALL) || mTokenDatabase.getRootNode().getNamedChild(tag, false).isActive()) {
 			enableTagButton.setVisibility(View.GONE);
@@ -618,41 +620,21 @@ public final class TokenManager extends ActionBarActivity {
         }
 
     }
-    private class TokenListArrayAdapter extends ArrayAdapter<BaseToken> {
+    private class Adapter extends TokenListAdapter {
 
-        public TokenListArrayAdapter(List<BaseToken> objects) {
-            super(TokenManager.this, 0, objects);
+        public Adapter(List<BaseToken> objects) {
+            super(TokenManager.this, objects, mLoader);
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final BaseToken prototype = this.getItem(position);
-            TokenImageManager mgr = TokenImageManager.getInstance(getContext());
-            if (convertView != null) {
-                TokenButton oldTokenButton = ((TokenButton)convertView);
-                if (oldTokenButton.loadedTokenImage()) {
-                    String oldTokenId = oldTokenButton.getTokenId();
-                    mgr.releaseTokenImage(oldTokenId);
-                }
-            }
+        protected TokenButton createTokenButton() {
+            MultiSelectTokenButton b = new MultiSelectTokenButton(getContext(), null,
+                    mMultiSelectManager);
 
-            final TokenButton newTokenButton = (convertView!=null) ? (TokenButton)convertView : new MultiSelectTokenButton(getContext(), prototype, mMultiSelectManager);
-            newTokenButton.setPrototype(prototype);
+            b.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            b.setMinimumWidth(mGridView.getColumnWidth());
+            b.setMinimumHeight(mGridView.getColumnWidth());
 
-            newTokenButton.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
-            newTokenButton.setMinimumWidth(mGridView.getColumnWidth());
-            newTokenButton.setMinimumHeight(mGridView.getColumnWidth());
-
-            mgr.requireTokenImage(prototype, mLoader, new TokenImageManager.Callback() {
-
-                @Override
-                public void imageLoaded(BaseToken token) {
-                    newTokenButton.setLoadedTokenImage(true);
-                    newTokenButton.invalidate();
-                }
-            });
-
-            return newTokenButton;
+            return b;
         }
     }
 }
