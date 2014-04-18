@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
+import com.tbocek.android.combatmap.model.primitives.Util;
 
 /**
  * Represents a button that contains a prototype for a token. Draws the button
@@ -84,6 +85,8 @@ public class TokenButton extends ImageView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
+        this.setMinimumWidth((int) Util.convertDpToPixel(80, context));
+        this.setMinimumHeight((int) Util.convertDpToPixel(80, context));
     }
 
     /**

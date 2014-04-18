@@ -34,8 +34,6 @@ public final class TokenSelectorView extends LinearLayout {
 
 
     private OnTokenSelectedListener mOnTokenSelectedListener;
-    private OnClickListener mOnClickTokenManagerListener;
-    private OnClickListener mOnClickGroupSelectorListener;
     private boolean mShouldDrawDark;
 
     public void setOnTokenSelectedListener(OnTokenSelectedListener onTokenSelectedListener) {
@@ -47,11 +45,7 @@ public final class TokenSelectorView extends LinearLayout {
     }
 
     public void setOnClickGroupSelectorListener(OnClickListener onClickGroupSelectorListener) {
-        mOnClickGroupSelectorListener = onClickGroupSelectorListener;
-    }
-
-    public OnClickListener getOnClickGroupSelectorListener() {
-        return mOnClickGroupSelectorListener;
+        mGroupSelector.setOnClickListener(onClickGroupSelectorListener);
     }
 
     public void setShouldDrawDark(boolean shouldDrawDark) {
@@ -91,8 +85,7 @@ public final class TokenSelectorView extends LinearLayout {
             final TokenButton newTokenButton = (convertView!=null) ? (TokenButton)convertView : new TokenButton(getContext(), prototype);
             newTokenButton.setPrototype(prototype);
 
-            // TODO: dp.
-            newTokenButton.setLayoutParams(new ListView.LayoutParams(48, 48));
+            newTokenButton.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 
             mgr.requireTokenImage(prototype, mLoader, new TokenImageManager.Callback() {
 
