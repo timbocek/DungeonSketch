@@ -78,15 +78,19 @@ public class TokenImageManager {
             //TODO: actually recycle bitmaps
             TokenImageManager mgr = TokenImageManager.getInstance();
 
-            Bitmap b = token.loadBitmap();
+            // If this token has been loaded since the request was created, just increase
+            // the ref count.
+            if (mgr.mCurrentImages.containsKey(token.getTokenId())) {
+                mgr.mCurrentImages.get(token.getTokenId()).mReferenceCount++;
+            } else {
+                Bitmap b = token.loadBitmap();
 
-            //TODO: What happens if the image is already loaded when we get here (i.e. was loaded between when the load
-            //was requested and executed?)
-            TokenImageWrapper w = mgr.getUnusedImage();
-            w.mImage = b;
-            w.mDrawable = new BitmapDrawable(b);
-            w.mToken = token;
-            mgr.mCurrentImages.put(token.getTokenId(), w);
+                TokenImageWrapper w = mgr.getUnusedImage();
+                w.mImage = b;
+                w.mDrawable = new BitmapDrawable(b);
+                w.mToken = token;
+                mgr.mCurrentImages.put(token.getTokenId(), w);
+            }
 
             mResponseHandler.post(new Runnable() {
                 @Override
