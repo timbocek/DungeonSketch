@@ -46,14 +46,6 @@ public final class TokenSelectorView extends LinearLayout {
         return mOnTokenSelectedListener;
     }
 
-    public void setOnClickTokenManagerListener(OnClickListener onClickTokenManagerListener) {
-        mOnClickTokenManagerListener = onClickTokenManagerListener;
-    }
-
-    public OnClickListener getOnClickTokenManagerListener() {
-        return mOnClickTokenManagerListener;
-    }
-
     public void setOnClickGroupSelectorListener(OnClickListener onClickGroupSelectorListener) {
         mOnClickGroupSelectorListener = onClickGroupSelectorListener;
     }

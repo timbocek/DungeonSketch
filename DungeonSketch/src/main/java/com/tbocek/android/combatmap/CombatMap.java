@@ -561,15 +561,6 @@ public final class CombatMap extends ActionBarActivity {
 		// buttons.
 		this.mTokenSelector
 				.setOnTokenSelectedListener(this.mOnTokenSelectedListener);
-		this.mTokenSelector
-				.setOnClickTokenManagerListener(new View.OnClickListener() {
-					@Override
-					public void onClick(final View arg0) {
-						Debug.startMethodTracing("tokenmanager");
-						CombatMap.this.startActivity(new Intent(CombatMap.this,
-								TokenManager.class));
-					}
-				});
 
 		this.mTokenSelector
 				.setOnClickGroupSelectorListener(new View.OnClickListener() {
