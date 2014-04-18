@@ -229,7 +229,9 @@ public class TokenImageManager {
 
         if (mRecycledImages.isEmpty()) {
             // Pool empty, allocate some more.
-            initializePool((int)(mCurrentImages.size() * POOL_EXPANSION_RATIO) + 1);
+            int poolIncrease = (int)(mCurrentImages.size() * POOL_EXPANSION_RATIO) + 1;
+            Log.i(TAG, "Increasing image pool size by " + poolIncrease);
+            initializePool(poolIncrease);
             return mRecycledImages.removeFirst();
         } else {
             assert newImageWrapper.mReferenceCount == 0;
