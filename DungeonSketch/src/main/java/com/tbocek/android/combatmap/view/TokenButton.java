@@ -21,6 +21,10 @@ import com.tbocek.android.combatmap.model.primitives.Util;
  */
 public class TokenButton extends ImageView {
 
+    public interface TokenSelectedListener {
+        void OnTokenSelected(BaseToken token);
+    }
+
     /**
      * How much to scale the token by. 1.0 means it is completely inscribed in
      * the button element.
@@ -42,6 +46,9 @@ public class TokenButton extends ImageView {
      */
     private GestureDetector mGestureDetector;
 
+
+    private TokenSelectedListener mTokenSelectedListener = null;
+
     /**
      * A gesture listener used to start a drag and drop when a long press
      * occurs.
@@ -54,6 +61,14 @@ public class TokenButton extends ImageView {
                             && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
                         TokenButton.this.onStartDrag();
                     }
+                }
+
+                @Override
+                public boolean onSingleTapConfirmed(final MotionEvent e) {
+                    if (mTokenSelectedListener != null) {
+                        mTokenSelectedListener.OnTokenSelected(getClone());
+                    }
+                    return true;
                 }
             };
 
@@ -171,5 +186,9 @@ public class TokenButton extends ImageView {
 
     public void setLoadedTokenImage(boolean loadedTokenImage) {
         mLoadedTokenImage = loadedTokenImage;
+    }
+
+    public void setTokenSelectedListener(TokenSelectedListener tokenSelectedListener) {
+        mTokenSelectedListener = tokenSelectedListener;
     }
 }
