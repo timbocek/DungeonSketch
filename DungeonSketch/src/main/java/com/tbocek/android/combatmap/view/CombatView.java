@@ -197,9 +197,6 @@ public final class CombatView extends SurfaceView {
      */
     private boolean mApplyMaskToTokens;
 
-    private Set<String> mOwnedTokenIds = new HashSet<String>();
-    private Set<String> mLoadedTokenIds = new HashSet<String>();
-
     /**
      * Callback for the Android graphics surface management system.
      */
@@ -266,6 +263,8 @@ public final class CombatView extends SurfaceView {
     private ScrollBuffer mScrollBuffer = new ScrollBuffer();
 
     private TokenImageManager.Loader mLoader;
+
+    private Set<String> mVisibleTokenImages = new HashSet<String>();
     
     /**
      * Constructor.
@@ -319,7 +318,7 @@ public final class CombatView extends SurfaceView {
                         }
                         toAdd.setLocation(location);
                         CombatView.this.getData().getTokens().addToken(toAdd);
-                        CombatView.this.refreshMap();
+                        CombatView.this.alertTokensChanged();
                         return true;
                     } else if (event.getAction() == DragEvent.ACTION_DRAG_STARTED) {
                         return true;
@@ -629,7 +628,7 @@ public final class CombatView extends SurfaceView {
             this.mInteractionMode.addFinger();
         }
 
-        this.mDrawLatch = FullscreenDrawLatch.BATCHING;
+        startBatchingDraws();
         this.mGestureDetector.onTouchEvent(ev);
         this.mScaleDetector.onTouchEvent(ev);
 
@@ -638,17 +637,31 @@ public final class CombatView extends SurfaceView {
         if (ev.getAction() == MotionEvent.ACTION_UP) {
             this.mInteractionMode.removeFinger();
             this.mInteractionMode.onUp(ev);
+
+            // If the end of a gesture, load any newly required token images.
+            if (this.mInteractionMode.getNumberOfFingers() == 0) {
+               this.loadNewTokenImages();
+            }
         }
         
         // If one or more fullscreen draws was requested, do so now, and either
         // way leave us open to non-touch-event-driven draw requests.
-        if (this.mDrawLatch == FullscreenDrawLatch.BATCHED) {
-        	this.mDrawLatch = FullscreenDrawLatch.NOT_BATCHING;
-        	this.refreshMap();
-        } else {
-        	this.mDrawLatch = FullscreenDrawLatch.NOT_BATCHING;
-        }
+        stopBatchingDraws();
         return true;
+    }
+
+    private void startBatchingDraws() {
+        if (this.mDrawLatch == FullscreenDrawLatch.NOT_BATCHING)
+            this.mDrawLatch = FullscreenDrawLatch.BATCHING;
+    }
+
+    private void stopBatchingDraws() {
+        if (this.mDrawLatch == FullscreenDrawLatch.BATCHED) {
+            this.mDrawLatch = FullscreenDrawLatch.NOT_BATCHING;
+            this.refreshMap();
+        } else {
+            this.mDrawLatch = FullscreenDrawLatch.NOT_BATCHING;
+        }
     }
 
     /**
@@ -701,9 +714,6 @@ public final class CombatView extends SurfaceView {
         if (!this.mSurfaceReady) {
             return;
         }
-
-        // TODO: Is there a smarter place to do this?
-        this.loadVisibleTokens();
 
         SurfaceHolder holder = this.getHolder();
         Canvas canvas = holder.lockCanvas(invalidBounds);
@@ -799,7 +809,7 @@ public final class CombatView extends SurfaceView {
                 useBackgroundLines
                 ? this.mData.getBackgroundLines()
                         : this.mData.getAnnotationLines();
-                this.refreshMap();
+                this.alertTokensChanged();
     }
 
     /**
@@ -1214,42 +1224,36 @@ public final class CombatView extends SurfaceView {
         mLoader = loader;
     }
 
+    private void loadNewTokenImages() {
+        Set<String> newTokenImages = mData.getVisibleTokenIds(this.getWidth(), this.getHeight());
+
+        Set<String> toLoad = Sets.difference(newTokenImages, mVisibleTokenImages);
+        Set<String> toDiscard = Sets.difference(mVisibleTokenImages, newTokenImages);
+
+        for (String id : toDiscard) {
+            mLoader.discardOrCancelTokenLoad(id);
+        }
+
+        if (!toLoad.isEmpty()) {
+            TokenImageManager.getInstance(getContext()).requireTokenImages(toLoad, mLoader,
+                    new TokenImageManager.MultiLoadCallback() {
+                        @Override
+                        protected void imagesLoaded(Collection<String> tokenIds) {
+                            refreshMap();
+                        }
+                    });
+        }
+    }
+
     /**
-     * Checks to see if the set of visible tokens has changed.
-     * Loads any new tokens.
+     * Should be called when tokens are added to or removed from the map instead of just refrshing.
      */
-    private void loadVisibleTokens() {
-        Set<String> visibleTokens = getData().getVisibleTokenIds(this.getWidth(), this.getHeight());
-
-        if (DeveloperMode.DEVELOPER_MODE) {
-            Set<String> leakedTokens = Sets.difference(mLoadedTokenIds, mOwnedTokenIds);
-            if (!leakedTokens.isEmpty()) {
-                Log.w(TAG, "Comabat View leaked " + leakedTokens.size() + " tokens.");
-            }
-        }
-
-        Set<String> tokensToLoad = Sets.difference(Sets.difference(visibleTokens, mLoadedTokenIds),
-                                                   mOwnedTokenIds);
-        Set<String> tokensToDiscard = Sets.difference(Sets.intersection(mLoadedTokenIds, mOwnedTokenIds),
-                                                      visibleTokens);
-        Set<String> tokensToCancelJob = Sets.difference(Sets.difference(mOwnedTokenIds, mLoadedTokenIds),
-                visibleTokens);
-
-        TokenImageManager m = TokenImageManager.getInstance();
-
-        for (String tokenId: tokensToDiscard) {
-            m.releaseTokenImage(tokenId);
-        }
-
-        for (String tokenId: tokensToCancelJob) {
-            mLoader.cancelTokenLoad(tokenId);
-        }
-
-        m.requireTokenImages(tokensToLoad, mLoader, new TokenImageManager.MultiLoadCallback() {
-            @Override
-            protected void imagesLoaded(Collection<String> tokenIds) {
-                CombatView.this.refreshMap();
-            }
-        });
+    public void alertTokensChanged() {
+        // LoadNewTokenImages and RefreshMap could each trigger a redraw, so batch full screen
+        // draws in this method to avoid that.
+        startBatchingDraws();
+        loadNewTokenImages();
+        refreshMap();
+        stopBatchingDraws();
     }
 }

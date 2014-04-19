@@ -74,8 +74,12 @@ public final class TokenDatabase {
 		}
 		return SYSTEM_TAG_NAMES.contains(tag);
 	}
-	
-	public class TagTreeNode {
+
+    public static boolean hasInstance() {
+        return instance != null;
+    }
+
+    public class TagTreeNode {
 		/**
 		 * Map of token names to the amount to deploy.  This is also just used
 		 * as the set of tokens that are directly underneath this tag.

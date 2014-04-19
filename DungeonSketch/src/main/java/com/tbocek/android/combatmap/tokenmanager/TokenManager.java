@@ -233,7 +233,7 @@ public final class TokenManager extends ActionBarActivity {
 
         this.mGridView = (GridView) findViewById(R.id.token_manager_grid_view);
 
-        mLoader = new TokenImageManager.Loader(new Handler());
+        mLoader = new TokenImageManager.Loader(this, new Handler());
         mLoader.start();
         mLoader.getLooper(); // Make sure loader thread is ready to go.
 

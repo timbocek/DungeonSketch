@@ -124,7 +124,7 @@ public class CombatViewInteractionMode extends SimpleOnScaleGestureListener
     /**
      * @return Gets the number of fingers currently down.
      */
-    protected int getNumberOfFingers() {
+    public int getNumberOfFingers() {
         return this.mFingers;
     }
 

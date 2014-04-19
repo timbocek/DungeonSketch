@@ -55,11 +55,13 @@ public class TokenImageManager {
         private static final int MESSAGE_LOAD = 0;
         Handler mHandler;
         Handler mResponseHandler;
+        Context mContext;
         Map<String, Callback> mCallbacks = new HashMap<String, Callback>();
 
-        public Loader(Handler responseHandler) {
+        public Loader(Context context, Handler responseHandler) {
             super("TokenImageManager.Loader");
             mResponseHandler = responseHandler;
+            mContext = context.getApplicationContext();
         }
 
         protected void onLooperPrepared() {
@@ -76,7 +78,7 @@ public class TokenImageManager {
 
         private void handleRequest(final String tokenId) {
             //TODO: actually recycle bitmaps
-            TokenImageManager mgr = TokenImageManager.getInstance();
+            TokenImageManager mgr = TokenImageManager.getInstance(mContext);
             TokenDatabase db = TokenDatabase.getInstanceOrNull();
             // If this token has been loaded since the request was created, just increase
             // the ref count.
@@ -122,8 +124,24 @@ public class TokenImageManager {
 
         public void cancelTokenLoad(String tokenId) {
             // TODO: Do something sane in the case of a multi-token load callback.
-            mCallbacks.get(tokenId).loadCancelled(tokenId);
-            mCallbacks.remove(tokenId);
+            if (mCallbacks.containsKey(tokenId)) {
+                mCallbacks.get(tokenId).loadCancelled(tokenId);
+                mCallbacks.remove(tokenId);
+            }
+        }
+
+        /**
+         * If the given token is queued for load, cancels the load.  Otherwise, assumes that
+         * the token is already loaded and discards it.
+         * @param tokenId
+         */
+        public void discardOrCancelTokenLoad(String tokenId) {
+            TokenImageManager mgr = TokenImageManager.getInstance();
+            if (this.mCallbacks.containsKey(tokenId)) {
+                mgr.releaseTokenImage(tokenId);
+            } else {
+                cancelTokenLoad(tokenId);
+            }
         }
     }
 

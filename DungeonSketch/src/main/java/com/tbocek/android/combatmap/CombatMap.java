@@ -552,7 +552,7 @@ public final class CombatMap extends ActionBarActivity {
 		this.mTokenSelector = new TokenSelectorView(
 				this.getApplicationContext());
 
-        mLoader = new TokenImageManager.Loader(new Handler());
+        mLoader = new TokenImageManager.Loader(this, new Handler());
         mLoader.start();
         mLoader.getLooper(); // Make sure loader thread is ready to go.
         mTokenSelector.setLoader(mLoader);
@@ -670,7 +670,7 @@ public final class CombatMap extends ActionBarActivity {
 		this.mCombatView.getMultiSelect().setSelectionChangedListener(
 				new SelectionChangedListener());
 
-		this.mCombatView.refreshMap();
+		this.mCombatView.alertTokensChanged();
 		this.mCombatView.requestFocus();
 
 	}
@@ -825,11 +825,11 @@ public final class CombatMap extends ActionBarActivity {
 			return true;
 		} else if (itemId == R.id.menu_undo) {
 			this.mCombatView.getUndoRedoTarget().undo();
-			this.mCombatView.refreshMap();
+			this.mCombatView.alertTokensChanged();
 			return true;
 		} else if (itemId == R.id.menu_redo) {
 			this.mCombatView.getUndoRedoTarget().redo();
-			this.mCombatView.refreshMap();
+			this.mCombatView.alertTokensChanged();
 			return true;
 		} else if (itemId == R.id.menu_grid_properties) {
 			this.showDialog(DIALOG_ID_GRID_PROPERTIES);
@@ -1328,6 +1328,7 @@ public final class CombatMap extends ActionBarActivity {
 					.getInstance(CombatMap.this.getApplicationContext());
 			MapData d = MapData.getInstance();
 			d.getTokens().deplaceholderize(CombatMap.this.mTokenDatabase);
+            mCombatView.alertTokensChanged();
 			
 			CombatMap.this.mTagNavigator.setShowInactiveTags(false);
 			CombatMap.this.mTagNavigator.setTokenDatabase(CombatMap.this.mTokenDatabase);
@@ -1435,7 +1436,7 @@ public final class CombatMap extends ActionBarActivity {
 				// We just deleted all the tokens, select none.
 				CombatMap.this.mCombatView.getMultiSelect().selectNone();
 			}
-			CombatMap.this.mCombatView.refreshMap();
+			CombatMap.this.mCombatView.alertTokensChanged();
 			return true;
 		}
 
