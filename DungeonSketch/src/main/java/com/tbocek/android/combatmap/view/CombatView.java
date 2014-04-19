@@ -1,7 +1,10 @@
 package com.tbocek.android.combatmap.view;
 
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Queue;
+import java.util.Set;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,9 +27,12 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.DeveloperMode;
 import com.tbocek.android.combatmap.ScrollBuffer;
 import com.tbocek.android.combatmap.ScrollBuffer.DrawRequest;
+import com.tbocek.android.combatmap.TokenDatabase;
+import com.tbocek.android.combatmap.TokenImageManager;
 import com.tbocek.android.combatmap.model.LineCollection;
 import com.tbocek.android.combatmap.model.MapData;
 import com.tbocek.android.combatmap.model.MapDrawer;
@@ -60,6 +66,7 @@ import com.tbocek.android.combatmap.view.interaction.ZoomPanInteractionMode;
  * 
  */
 public final class CombatView extends SurfaceView {
+    private static final String TAG = "CombatView";
 	
 	/**
 	 * A simple 3-state machine to make sure that full-screen draws performed during
@@ -190,6 +197,9 @@ public final class CombatView extends SurfaceView {
      */
     private boolean mApplyMaskToTokens;
 
+    private Set<String> mOwnedTokenIds = new HashSet<String>();
+    private Set<String> mLoadedTokenIds = new HashSet<String>();
+
     /**
      * Callback for the Android graphics surface management system.
      */
@@ -254,6 +264,8 @@ public final class CombatView extends SurfaceView {
     private float mFramerate;
     
     private ScrollBuffer mScrollBuffer = new ScrollBuffer();
+
+    private TokenImageManager.Loader mLoader;
     
     /**
      * Constructor.
@@ -690,6 +702,9 @@ public final class CombatView extends SurfaceView {
             return;
         }
 
+        // TODO: Is there a smarter place to do this?
+        this.loadVisibleTokens();
+
         SurfaceHolder holder = this.getHolder();
         Canvas canvas = holder.lockCanvas(invalidBounds);
         if (canvas != null) {
@@ -704,7 +719,7 @@ public final class CombatView extends SurfaceView {
         }
         
         // If we called this, then a non-scroll operation triggered a map refresh.
-        // This means the scroll buffer will contain out-of-date info.s
+        // This means the scroll buffer will contain out-of-date info.
         this.mScrollBuffer.invalidateBuffers();
     }
     
@@ -1194,4 +1209,47 @@ public final class CombatView extends SurfaceView {
             holder.unlockCanvasAndPost(canvas);
         }
 	}
+
+    public void setLoader(TokenImageManager.Loader loader) {
+        mLoader = loader;
+    }
+
+    /**
+     * Checks to see if the set of visible tokens has changed.
+     * Loads any new tokens.
+     */
+    private void loadVisibleTokens() {
+        Set<String> visibleTokens = getData().getVisibleTokenIds(this.getWidth(), this.getHeight());
+
+        if (DeveloperMode.DEVELOPER_MODE) {
+            Set<String> leakedTokens = Sets.difference(mLoadedTokenIds, mOwnedTokenIds);
+            if (!leakedTokens.isEmpty()) {
+                Log.w(TAG, "Comabat View leaked " + leakedTokens.size() + " tokens.");
+            }
+        }
+
+        Set<String> tokensToLoad = Sets.difference(Sets.difference(visibleTokens, mLoadedTokenIds),
+                                                   mOwnedTokenIds);
+        Set<String> tokensToDiscard = Sets.difference(Sets.intersection(mLoadedTokenIds, mOwnedTokenIds),
+                                                      visibleTokens);
+        Set<String> tokensToCancelJob = Sets.difference(Sets.difference(mOwnedTokenIds, mLoadedTokenIds),
+                visibleTokens);
+
+        TokenImageManager m = TokenImageManager.getInstance();
+
+        for (String tokenId: tokensToDiscard) {
+            m.releaseTokenImage(tokenId);
+        }
+
+        for (String tokenId: tokensToCancelJob) {
+            mLoader.cancelTokenLoad(tokenId);
+        }
+
+        m.requireTokenImages(tokensToLoad, mLoader, new TokenImageManager.MultiLoadCallback() {
+            @Override
+            protected void imagesLoaded(Collection<String> tokenIds) {
+                CombatView.this.refreshMap();
+            }
+        });
+    }
 }

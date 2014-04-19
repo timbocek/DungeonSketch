@@ -121,6 +121,8 @@ public class TokenImageManager {
         }
 
         public void cancelTokenLoad(String tokenId) {
+            // TODO: Do something sane in the case of a multi-token load callback.
+            mCallbacks.get(tokenId).loadCancelled(tokenId);
             mCallbacks.remove(tokenId);
         }
     }
@@ -144,11 +146,13 @@ public class TokenImageManager {
         }
     }
 
-    public interface Callback {
-        void imageLoaded(String tokenId);
+    public static abstract class Callback {
+        public abstract void imageLoaded(String tokenId);
+
+        public void loadCancelled(String tokenId) { }
     };
 
-    public abstract class MultiLoadCallback implements Callback {
+    public static abstract class MultiLoadCallback extends Callback {
         Collection<String> mTokens;
         Set<String> mStillNeedToLoad;
 
@@ -164,6 +168,11 @@ public class TokenImageManager {
         void setTokens(Collection<String> tokens) {
             mTokens = tokens;
             mStillNeedToLoad = new HashSet<String>(mTokens);
+        }
+
+        @Override
+        public void loadCancelled(String tokenId) {
+            mStillNeedToLoad.remove(tokenId);
         }
     }
 

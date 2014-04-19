@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -14,6 +16,7 @@ import android.graphics.RectF;
 import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
+import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.BoundingRectangle;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 
@@ -414,5 +417,26 @@ public final class MapData {
     
     public String getLastTag() {
     	return mLastTag;
+    }
+
+    /**
+     * Gets the set of tokens currently visible on the screen.
+     * @return
+     */
+    public Set<String> getVisibleTokenIds(int screenWidth, int screenHeight) {
+        CoordinateTransformer trans = getGrid().gridSpaceToScreenSpaceTransformer(getWorldSpaceTransformer());
+        PointF wsOrigin = trans.screenSpaceToWorldSpace(0, 0);
+        float wsWidth = trans.screenSpaceToWorldSpace(screenWidth);
+        float wsHeight = trans.screenSpaceToWorldSpace(screenHeight);
+        RectF worldSpaceBounds = new RectF(wsOrigin.x, wsOrigin.y, wsOrigin.x + wsWidth, wsOrigin.y + wsHeight);
+
+        Set<String> tokens = new HashSet<String>();
+
+        for (BaseToken t: getTokens().asList()) {
+            if (t.getBoundingRectangle().testClip(worldSpaceBounds)) {
+                tokens.add(t.getTokenId());
+            }
+        }
+        return tokens;
     }
 }
