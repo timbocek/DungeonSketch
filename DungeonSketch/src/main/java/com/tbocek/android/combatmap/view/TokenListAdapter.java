@@ -47,10 +47,10 @@ public abstract class TokenListAdapter extends ArrayAdapter<BaseToken> {
         final TokenButton newTokenButton = (convertView!=null) ? (TokenButton)convertView : createTokenButton();
         newTokenButton.setPrototype(prototype);
 
-        mgr.requireTokenImage(prototype, mLoader, new TokenImageManager.Callback() {
+        mgr.requireTokenImage(prototype.getTokenId(), mLoader, new TokenImageManager.Callback() {
 
             @Override
-            public void imageLoaded(BaseToken token) {
+            public void imageLoaded(String tokenId) {
                 newTokenButton.setLoadedTokenImage(true);
                 newTokenButton.invalidate();
             }

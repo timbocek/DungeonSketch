@@ -55,7 +55,7 @@ public class TokenImageManager {
         private static final int MESSAGE_LOAD = 0;
         Handler mHandler;
         Handler mResponseHandler;
-        Map<BaseToken, Callback> mCallbacks = new HashMap<BaseToken, Callback>();
+        Map<String, Callback> mCallbacks = new HashMap<String, Callback>();
 
         public Loader(Handler responseHandler) {
             super("TokenImageManager.Loader");
@@ -66,23 +66,24 @@ public class TokenImageManager {
             mHandler = new Handler() {
                 public void handleMessage(Message msg) {
                     if (msg.what == MESSAGE_LOAD) {
-                        BaseToken token = (BaseToken)msg.obj;
-                        Log.d(TAG, "Handling load request for " + token.getTokenId());
-                        handleRequest(token);
+                        String tokenId = (String)msg.obj;
+                        Log.d(TAG, "Handling load request for " + tokenId);
+                        handleRequest(tokenId);
                     }
                 }
             };
         }
 
-        private void handleRequest(final BaseToken token) {
+        private void handleRequest(final String tokenId) {
             //TODO: actually recycle bitmaps
             TokenImageManager mgr = TokenImageManager.getInstance();
-
+            TokenDatabase db = TokenDatabase.getInstanceOrNull();
             // If this token has been loaded since the request was created, just increase
             // the ref count.
-            if (mgr.mCurrentImages.containsKey(token.getTokenId())) {
-                mgr.mCurrentImages.get(token.getTokenId()).mReferenceCount++;
+            if (mgr.mCurrentImages.containsKey(tokenId)) {
+                mgr.mCurrentImages.get(tokenId).mReferenceCount++;
             } else {
+                BaseToken token = db.createToken(tokenId);
                 Bitmap b = token.loadBitmap();
 
                 TokenImageWrapper w = mgr.getUnusedImage();
@@ -93,30 +94,34 @@ public class TokenImageManager {
                 w.mImage = b;
                 w.mDrawable = new BitmapDrawable(b);
                 w.mToken = token;
-                mgr.mCurrentImages.put(token.getTokenId(), w);
+                mgr.mCurrentImages.put(tokenId, w);
             }
 
             mResponseHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d(TAG, "Posting token load callback for " + token.getTokenId());
-                    if (mCallbacks.containsKey(token)) {
-                        mCallbacks.get(token).imageLoaded(token);
-                        mCallbacks.remove(token);
+                    Log.d(TAG, "Posting token load callback for " + tokenId);
+                    if (mCallbacks.containsKey(tokenId)) {
+                        mCallbacks.get(tokenId).imageLoaded(tokenId);
+                        mCallbacks.remove(tokenId);
                     }
                 }
             });
         }
 
-        public void queueTokenLoad(BaseToken token, Callback callback) {
-            mCallbacks.put(token, callback);
-            mHandler.obtainMessage(MESSAGE_LOAD, token).sendToTarget();
-            Log.d(TAG, "Token load queued: " + token.getTokenId());
+        public void queueTokenLoad(String tokenId, Callback callback) {
+            mCallbacks.put(tokenId, callback);
+            mHandler.obtainMessage(MESSAGE_LOAD, tokenId).sendToTarget();
+            Log.d(TAG, "Token load queued: " + tokenId);
         }
 
         public void clearQueue() {
             mHandler.removeMessages(MESSAGE_LOAD);
             mCallbacks.clear();
+        }
+
+        public void cancelTokenLoad(String tokenId) {
+            mCallbacks.remove(tokenId);
         }
     }
 
@@ -140,25 +145,25 @@ public class TokenImageManager {
     }
 
     public interface Callback {
-        void imageLoaded(BaseToken token);
+        void imageLoaded(String tokenId);
     };
 
     public abstract class MultiLoadCallback implements Callback {
-        Collection<BaseToken> mTokens;
-        Set<BaseToken> mStillNeedToLoad;
+        Collection<String> mTokens;
+        Set<String> mStillNeedToLoad;
 
-        protected abstract void imagesLoaded(Collection<BaseToken> tokens);
+        protected abstract void imagesLoaded(Collection<String> tokenIds);
 
-        public void imageLoaded(BaseToken token) {
-            mStillNeedToLoad.remove(token);
+        public void imageLoaded(String tokenId) {
+            mStillNeedToLoad.remove(tokenId);
             if (mStillNeedToLoad.isEmpty()) {
                 imagesLoaded(mTokens);
             }
         }
 
-        void setTokens(Collection<BaseToken> tokens) {
+        void setTokens(Collection<String> tokens) {
             mTokens = tokens;
-            mStillNeedToLoad = new HashSet<BaseToken>(mTokens);
+            mStillNeedToLoad = new HashSet<String>(mTokens);
         }
     }
 
@@ -170,24 +175,24 @@ public class TokenImageManager {
         mContext = context;
     }
 
-    public synchronized void requireTokenImages(Collection<BaseToken> tokens, Loader loader, MultiLoadCallback callback) {
+    public synchronized void requireTokenImages(Collection<String> tokens, Loader loader, MultiLoadCallback callback) {
         callback.setTokens(tokens);
-        for (BaseToken t: tokens) {
+        for (String t: tokens) {
             requireTokenImage(t, loader, callback);
         }
     }
 
-    public synchronized void requireTokenImage(BaseToken token, Loader loader, Callback callback) {
-        if (!token.needsLoad()) {
-            callback.imageLoaded(token);
+    public synchronized void requireTokenImage(String tokenId, Loader loader, Callback callback) {
+        TokenDatabase db = TokenDatabase.getInstanceOrNull();
+        if (db.createToken(tokenId).needsLoad()) {
+            callback.imageLoaded(tokenId);
         }
-        String tokenId = token.getTokenId();
         if (mCurrentImages.containsKey(tokenId)) {
             TokenImageWrapper image = mCurrentImages.get(tokenId);
             image.mReferenceCount++;
-            callback.imageLoaded(token);
+            callback.imageLoaded(tokenId);
         } else {
-            loader.queueTokenLoad(token, callback);
+            loader.queueTokenLoad(tokenId, callback);
         }
     }
 

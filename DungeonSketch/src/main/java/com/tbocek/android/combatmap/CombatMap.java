@@ -556,6 +556,7 @@ public final class CombatMap extends ActionBarActivity {
         mLoader.start();
         mLoader.getLooper(); // Make sure loader thread is ready to go.
         mTokenSelector.setLoader(mLoader);
+        mCombatView.setLoader(mLoader);
 
         // Set up listeners for the token selector's category and manager
 		// buttons.
