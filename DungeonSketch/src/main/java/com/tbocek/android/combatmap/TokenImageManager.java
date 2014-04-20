@@ -143,9 +143,9 @@ public class TokenImageManager {
         public void discardOrCancelTokenLoad(String tokenId) {
             TokenImageManager mgr = TokenImageManager.getInstance();
             if (this.mCallbacks.containsKey(tokenId)) {
-                mgr.releaseTokenImage(tokenId);
-            } else {
                 cancelTokenLoad(tokenId);
+            } else {
+                mgr.releaseTokenImage(tokenId);
             }
         }
     }
