@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:abc="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/background_image_delete" android:title="@string/delete"></item>
-    <item
-        android:id="@+id/a_More"
-        android:icon="@drawable/ic_action_overflow"
-        android:showAsAction="always"
-        android:title="More">
-        <!-- Implement this menu ourselves, because checkable items don't show up properly in the
-             action bar and the overflow menu isn't working right in action bar compat.-->
-        <menu>
-        <item android:id="@+id/background_image_maintain_aspect_ratio" android:checkable="true" android:title="@string/keep_aspect_ratio" android:showAsAction="never"></item>
-        </menu>
-    </item>
-    
+    <item android:id="@+id/background_image_maintain_aspect_ratio" android:checkable="true" android:title="@string/keep_aspect_ratio" abc:showAsAction="never"></item>
+
 
 </menu>
