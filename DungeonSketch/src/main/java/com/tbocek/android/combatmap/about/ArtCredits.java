@@ -17,14 +17,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.google.common.collect.Lists;
 import com.tbocek.android.combatmap.CombatMap;
+import com.tbocek.android.combatmap.TokenImageManager;
 import com.tbocek.dungeonsketch.R;
 import com.tbocek.android.combatmap.view.TokenButton;
-import com.tbocek.android.combatmap.view.TokenLoadTask;
 
 /**
  * Activity that loads and displays art credits for each built-in token.
@@ -39,6 +40,8 @@ public class ArtCredits extends Activity {
      * here.
      */
     private ArtCreditsView mCreditsView;
+    private TokenImageManager.Loader mLoader;
+    List<TokenButton> mTokenButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,11 @@ public class ArtCredits extends Activity {
                         }
                     }
                 });
+        ArtCreditHandler handler = new ArtCreditHandler();
+
+        mLoader = new TokenImageManager.Loader(this, new Handler());
+        mLoader.start();
+        mLoader.getLooper(); // Make sure loader thread is ready to go.
 
         try {
             InputStream is =
@@ -66,14 +74,11 @@ public class ArtCredits extends Activity {
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser sp = spf.newSAXParser();
             XMLReader xr = sp.getXMLReader();
-            ArtCreditHandler handler = new ArtCreditHandler();
             xr.setContentHandler(handler);
             xr.parse(new InputSource(is));
             is.close();
 
-            // Load created token objects, in case this is the first time that
-            // that was done.
-            new TokenLoadTask(handler.getCreatedTokenButtons()).execute();
+
         } catch (ParserConfigurationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -83,8 +88,31 @@ public class ArtCredits extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        mTokenButtons = handler.getCreatedTokenButtons();
 
         frame.addView(this.mCreditsView);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        TokenImageManager mgr = TokenImageManager.getInstance(this);
+        for (final TokenButton b: mTokenButtons) {
+            mgr.requireTokenImage(b.getTokenId(), mLoader, new TokenImageManager.Callback() {
+                @Override
+                public void imageLoaded(String tokenId) {
+                    b.invalidate();;
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mLoader.clearQueue();
+        mLoader.quit();
+        // TODO: Clean up any loaded tokens.
     }
 
     @Override
