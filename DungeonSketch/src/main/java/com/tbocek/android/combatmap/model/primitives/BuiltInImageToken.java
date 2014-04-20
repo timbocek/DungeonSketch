@@ -7,6 +7,7 @@ import java.util.Set;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.tbocek.android.combatmap.DungeonSketchApp;
 
@@ -67,6 +68,7 @@ public final class BuiltInImageToken extends DrawableToken {
         // Not possible to load these drawables into an exisitng buffer, so just discard the
         // existing buffer.
         if (existingBuffer != null) {
+            Log.i("TokenImageManager", "Recycling image");
             existingBuffer.recycle();
         }
         int id =

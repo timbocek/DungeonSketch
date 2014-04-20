@@ -3,6 +3,7 @@ package com.tbocek.android.combatmap.about;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -18,12 +19,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.CombatMap;
 import com.tbocek.android.combatmap.TokenImageManager;
+import com.tbocek.android.combatmap.view.ListeningScrollView;
 import com.tbocek.dungeonsketch.R;
 import com.tbocek.android.combatmap.view.TokenButton;
 
@@ -34,6 +40,7 @@ import com.tbocek.android.combatmap.view.TokenButton;
  * 
  */
 public class ArtCredits extends Activity {
+    private static final String TAG="ArtCredits";
 
     /**
      * View to display art credit info; credit data will be dynamically added
@@ -42,12 +49,15 @@ public class ArtCredits extends Activity {
     private ArtCreditsView mCreditsView;
     private TokenImageManager.Loader mLoader;
     List<TokenButton> mTokenButtons;
+    ListeningScrollView mScrollView;
+
+    Set<String> mVisibleTokens = Sets.newHashSet();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.art_credits);
-        FrameLayout frame =
+        final FrameLayout frame =
                 (FrameLayout) this.findViewById(R.id.art_credits_frame);
         this.mCreditsView = new ArtCreditsView(this);
         this.mCreditsView
@@ -63,6 +73,14 @@ public class ArtCredits extends Activity {
                     }
                 });
         ArtCreditHandler handler = new ArtCreditHandler();
+
+        this.mScrollView = (ListeningScrollView)findViewById(R.id.art_credits_scroll_view);
+        mScrollView.setOnScrollChangedListener(new ListeningScrollView.OnScrollChangedListener() {
+            @Override
+            public void OnScrollChanged(ScrollView view, int x, int y, int oldx, int oldy) {
+                changeTokenImages();
+            }
+        });
 
         mLoader = new TokenImageManager.Loader(this, new Handler());
         mLoader.start();
@@ -91,21 +109,17 @@ public class ArtCredits extends Activity {
         mTokenButtons = handler.getCreatedTokenButtons();
 
         frame.addView(this.mCreditsView);
+
+        final ViewTreeObserver vto = frame.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                changeTokenImages();
+                frame.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        TokenImageManager mgr = TokenImageManager.getInstance(this);
-        for (final TokenButton b: mTokenButtons) {
-            mgr.requireTokenImage(b.getTokenId(), mLoader, new TokenImageManager.Callback() {
-                @Override
-                public void imageLoaded(String tokenId) {
-                    b.invalidate();;
-                }
-            });
-        }
-    }
 
     @Override
     public void onDestroy() {
@@ -168,5 +182,34 @@ public class ArtCredits extends Activity {
                                 atts.getValue("res"), atts.getValue("url")));
             }
         }
+    }
+
+    private void changeTokenImages() {
+        Set<String> newVisibleIds = Sets.newHashSet();
+        int height = this.getWindowManager().getDefaultDisplay().getHeight();
+        int location[] = new int[2];
+        TokenImageManager mgr = TokenImageManager.getInstance(this);
+        // Determine if each token is on screen.  Load images for only the ones that are.
+        for (final TokenButton b: mTokenButtons) {
+            b.getLocationOnScreen(location);
+            if (location[1] < height && location[1] + b.getHeight() > 0 ) {  // Control is visible
+                newVisibleIds.add(b.getTokenId());
+                if (!mVisibleTokens.contains(b.getTokenId())) {
+                    mgr.requireTokenImage(b.getTokenId(), mLoader, new TokenImageManager.Callback() {
+                        @Override
+                        public void imageLoaded(String tokenId) {
+                            b.invalidate();
+                        }
+                    });
+                }
+            }
+        }
+
+
+        for (String unusedId: Sets.difference(mVisibleTokens, newVisibleIds)) {
+            Log.i("ArtCredits", "Token just went off screen: " + unusedId);
+            mLoader.discardOrCancelTokenLoad(unusedId);
+        }
+        mVisibleTokens = newVisibleIds;
     }
 }

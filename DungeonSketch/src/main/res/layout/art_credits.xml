@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.tbocek.android.combatmap.view.ListeningScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:id="@+id/art_credits_scroll_view">
     <FrameLayout
         android:id="@+id/art_credits_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </FrameLayout>
-</ScrollView>
+</com.tbocek.android.combatmap.view.ListeningScrollView>
