@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -78,16 +79,8 @@ public final class TokenSelectorView extends LinearLayout {
             b.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
             b.setMinimumWidth((int) Util.convertDpToPixel(80, TokenSelectorView.this.getContext()));
             b.setMinimumHeight((int) Util.convertDpToPixel(80, TokenSelectorView.this.getContext()));
+            b.allowDrag(false); // Will be handling dragging in the horizontal scroll view.
 
-
-            b.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mOnTokenSelectedListener != null) {
-                        mOnTokenSelectedListener.onTokenSelected(((TokenButton)v).getClone());
-                    }
-                }
-            });
             return b;
         }
     }
@@ -110,6 +103,32 @@ public final class TokenSelectorView extends LinearLayout {
 
         this.mGroupSelector =
                 (Button) this.findViewById(R.id.token_category_selector_button);
+
+        this.mTokenLayout.setOnItemSelectedListener(new HorizontalListView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                BaseToken token = (BaseToken) parent.getItemAtPosition(position);
+                getOnTokenSelectedListener().onTokenSelected(token.clone());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        this.mTokenLayout.setOnItemLongClickListener(new HorizontalListView.OnItemLongClickListener(){
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+                    ((TokenButton)view).onStartDrag();
+                    return true;
+                }
+                return false;
+            }
+        });
 
     }
 
