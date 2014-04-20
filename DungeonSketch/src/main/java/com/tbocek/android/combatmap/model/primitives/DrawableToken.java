@@ -172,7 +172,7 @@ public abstract class DrawableToken extends BaseToken {
      * @return The drawable.
      */
     private Drawable getDrawable() {
-        TokenImageManager mgr = TokenImageManager.getInstance();
+        TokenImageManager mgr = TokenImageManager.getInstanceOrNull();
         if (mgr == null) return null;
         return mgr.getTokenDrawable(this.getTokenId());
     }

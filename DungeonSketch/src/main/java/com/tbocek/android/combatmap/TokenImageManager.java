@@ -51,6 +51,10 @@ public class TokenImageManager {
         return mInstance;
     }
 
+    public static TokenImageManager getInstanceOrNull() {
+        return mInstance;
+    }
+
     public static class Loader extends HandlerThread {
         private static final int MESSAGE_LOAD = 0;
         Handler mHandler;
