@@ -9,6 +9,8 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 
 import java.util.Collection;
@@ -113,8 +115,11 @@ public class TokenImageManager {
 
         public void queueTokenLoad(String tokenId, Callback callback) {
             mCallbacks.put(tokenId, callback);
-            mHandler.obtainMessage(MESSAGE_LOAD, tokenId).sendToTarget();
-            Log.d(TAG, "Token load queued: " + tokenId);
+            if (mHandler != null) {
+                Message m = mHandler.obtainMessage(MESSAGE_LOAD, tokenId);
+                m.sendToTarget();
+                Log.d(TAG, "Token load queued: " + tokenId);
+            }
         }
 
         public void clearQueue() {
@@ -194,8 +199,8 @@ public class TokenImageManager {
         }
     }
 
-    LinkedList<TokenImageWrapper> mRecycledImages = new LinkedList<TokenImageWrapper>();
-    Map<String, TokenImageWrapper> mCurrentImages = new HashMap<String, TokenImageWrapper>();
+    LinkedList<TokenImageWrapper> mRecycledImages = Lists.newLinkedList();
+    Map<String, TokenImageWrapper> mCurrentImages =  Maps.newHashMap();
     private Context mContext;
 
     private TokenImageManager(Context context) {
@@ -275,5 +280,13 @@ public class TokenImageManager {
             newImageWrapper.mReferenceCount++;
             return newImageWrapper;
         }
+    }
+
+    public synchronized void recycleAll() {
+        for (TokenImageWrapper image: mCurrentImages.values()) {
+            image.mReferenceCount = 0;
+            mRecycledImages.addLast(image);
+        }
+        mCurrentImages = Maps.newHashMap();
     }
 }

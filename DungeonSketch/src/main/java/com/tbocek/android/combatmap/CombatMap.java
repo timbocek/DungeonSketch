@@ -869,7 +869,7 @@ public final class CombatMap extends ActionBarActivity {
         super.onDestroy();
         mLoader.clearQueue();
         mLoader.quit();
-        // TODO: Clean up any loaded tokens.
+        TokenImageManager.getInstance(this).recycleAll();
     }
 
 	@Override

@@ -50,7 +50,6 @@ import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.view.GridLayout;
 import com.tbocek.android.combatmap.view.TagNavigator;
 import com.tbocek.android.combatmap.view.TokenButton;
-import com.tbocek.android.combatmap.view.TokenLoadTask;
 
 /**
  * This activity lets the user view their library of tokens and manage which
@@ -499,6 +498,7 @@ public final class TokenManager extends ActionBarActivity {
         super.onDestroy();
         mLoader.quit();
         mLoader.clearQueue();
+        TokenImageManager.getInstance(this).recycleAll();
     }
 
     @Override
