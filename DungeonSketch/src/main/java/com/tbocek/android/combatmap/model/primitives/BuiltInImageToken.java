@@ -63,7 +63,12 @@ public final class BuiltInImageToken extends DrawableToken {
     }
 
     @Override
-    public Bitmap loadBitmap() {
+    public Bitmap loadBitmap(Bitmap existingBuffer) {
+        // Not possible to load these drawables into an exisitng buffer, so just discard the
+        // existing buffer.
+        if (existingBuffer != null) {
+            existingBuffer.recycle();
+        }
         int id =
                 DungeonSketchApp.getContext().getResources().getIdentifier(
                         this.mResourceName, "drawable",

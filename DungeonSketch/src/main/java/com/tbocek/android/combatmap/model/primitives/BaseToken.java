@@ -634,7 +634,7 @@ public abstract class BaseToken {
         this.mSize = size;
     }
 
-    public Bitmap loadBitmap() {
+    public Bitmap loadBitmap(Bitmap existingBuffer) {
         return null;
     }
 }

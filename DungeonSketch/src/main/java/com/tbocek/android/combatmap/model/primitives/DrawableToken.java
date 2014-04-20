@@ -178,7 +178,7 @@ public abstract class DrawableToken extends BaseToken {
     }
 
     // TODO: make use of cached buffers.
-    public abstract Bitmap loadBitmap();
+    public abstract Bitmap loadBitmap(Bitmap image);
 
     @Override
     public final void load() {

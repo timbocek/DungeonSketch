@@ -3,6 +3,7 @@ package com.tbocek.android.combatmap;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +17,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
@@ -293,10 +295,21 @@ public final class DataManager {
      *             On read error.
      */
     public Bitmap loadTokenImage(final String filename) throws IOException {
-        FileInputStream s =
-                new FileInputStream(this.getTokenImageFile(filename));
-        Bitmap b = BitmapFactory.decodeStream(s);
-        s.close();
+        return loadTokenImage(filename, null);
+    }
+
+    public Bitmap loadTokenImage(final String filename, Bitmap existingBuffer) throws IOException {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inMutable = true; // Make bitmaps mutable so they are reusable.
+        if (existingBuffer != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && existingBuffer.isMutable()) {
+                options.inBitmap = existingBuffer;
+            } else {
+                existingBuffer.recycle();
+            }
+        }
+        Bitmap b = BitmapFactory.decodeFile(
+                this.getTokenImageFile(filename).getAbsolutePath(), options);
         return b;
     }
 

@@ -90,13 +90,9 @@ public class TokenImageManager {
                 mgr.mCurrentImages.get(tokenId).mReferenceCount++;
             } else {
                 BaseToken token = db.createToken(tokenId);
-                Bitmap b = token.loadBitmap();
 
                 TokenImageWrapper w = mgr.getUnusedImage();
-                if (w.mImage != null) {
-                    Log.d(TAG, "RECYCLE");
-                    w.mImage.recycle();
-                }
+                Bitmap b = token.loadBitmap(w.mImage);
                 w.mImage = b;
                 w.mDrawable = new BitmapDrawable(b);
                 w.mToken = token;
