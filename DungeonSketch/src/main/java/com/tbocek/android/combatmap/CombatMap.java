@@ -1506,12 +1506,14 @@ public final class CombatMap extends ActionBarActivity {
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			mode.getMenuInflater().inflate(R.menu.background_image_menu, menu);
+            MenuItem i = menu.findItem(R.id.background_image_maintain_aspect_ratio);
+            i.setChecked(mCombatView.getSelectedBackgroundImage().shouldMaintainAspectRatio());
 			return true;
 		}
 
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			return true;
+            return true;
 		}
 
 		@Override
@@ -1528,6 +1530,7 @@ public final class CombatMap extends ActionBarActivity {
 				mCombatView.setSelectedBackgroundImage(null);
 				mCombatView.refreshMap();
 			} else if (itemId == R.id.background_image_maintain_aspect_ratio) {
+                item.setChecked(!item.isChecked());
 				mData.getBackgroundImages()
 						.checkpointImageBefore(selectedImage);
 				selectedImage.setShouldMaintainAspectRatio(item.isChecked());
