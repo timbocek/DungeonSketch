@@ -12,5 +12,5 @@
         android:contentDescription="@string/map_preview">
     </ImageButton>
 
-    <TextView android:layout_height="wrap_content" android:id="@+id/saved_map_file_name" android:textSize="25sp" android:layout_width="wrap_content" android:layout_gravity="center_horizontal"></TextView>
+    <TextView android:layout_height="wrap_content" android:id="@+id/saved_map_file_name" android:textSize="25sp" android:layout_width="wrap_content" android:layout_gravity="center_horizontal"/>
 </LinearLayout>

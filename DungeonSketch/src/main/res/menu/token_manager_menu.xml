@@ -12,6 +12,6 @@
         abc:showAsAction="ifRoom|withText"
         android:title="@string/new_tag">
     </item>
-    <item android:id="@+id/token_manager_delete_tag" android:title="@string/delete_tag" abc:showAsAction="ifRoom|withText"></item>
-    <item android:id="@+id/token_manager_is_active" android:checkable="true" android:title="@string/token_manager_active" android:checked="true"></item><item android:id="@+id/token_manager_help" android:title="@string/help" abc:showAsAction="never"></item>
+    <item android:id="@+id/token_manager_delete_tag" android:title="@string/delete_tag" abc:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/token_manager_is_active" android:checkable="true" android:title="@string/token_manager_active" android:checked="true"/><item android:id="@+id/token_manager_help" android:title="@string/help" abc:showAsAction="never"/>
 </menu>

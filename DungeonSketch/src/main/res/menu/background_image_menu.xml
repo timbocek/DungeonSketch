@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:abc="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/background_image_delete" android:title="@string/delete"></item>
-    <item android:id="@+id/background_image_maintain_aspect_ratio" android:checkable="true" android:title="@string/keep_aspect_ratio" abc:showAsAction="never"></item>
+    <item android:id="@+id/background_image_delete" android:title="@string/delete"/>
+    <item android:id="@+id/background_image_maintain_aspect_ratio" android:checkable="true" android:title="@string/keep_aspect_ratio" abc:showAsAction="never"/>
 
 
 </menu>

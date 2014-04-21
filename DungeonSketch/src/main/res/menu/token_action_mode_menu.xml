@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/token_action_mode_bloodied" android:checkable="true" android:title="@string/bloodied"></item>
-    <item android:id="@+id/token_action_mode_delete" android:title="@string/delete"></item>
+    <item android:id="@+id/token_action_mode_bloodied" android:checkable="true" android:title="@string/bloodied"/>
+    <item android:id="@+id/token_action_mode_delete" android:title="@string/delete"/>
     <item android:id="@+id/token_action_mode_size" android:title="@string/size">
         <menu>
             <group android:id="@+id/token_action_mode_size_group" android:checkableBehavior="single">

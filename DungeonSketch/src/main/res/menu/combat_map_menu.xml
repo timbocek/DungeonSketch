@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:abc="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/menu_undo" android:icon="@drawable/undo" abc:showAsAction="ifRoom" android:title="@string/undo"></item>
-    <item android:id="@+id/menu_redo" android:icon="@drawable/redo" abc:showAsAction="ifRoom" android:title="@string/redo"></item>
+    <item android:id="@+id/menu_undo" android:icon="@drawable/undo" abc:showAsAction="ifRoom" android:title="@string/undo"/>
+    <item android:id="@+id/menu_redo" android:icon="@drawable/redo" abc:showAsAction="ifRoom" android:title="@string/redo"/>
     <item
         android:id="@+id/menu_save"
         android:title="@string/save"
@@ -30,7 +30,7 @@
 	<item
 	   android:id="@+id/menu_snap_to_grid"
 	   android:title="@string/snap_to_grid"
-	   android:checkable = "true"></item>
+	   android:checkable = "true"/>
 	<item
 	    android:id="@+id/menu_export"
 	    android:title="Export Image">
@@ -48,6 +48,6 @@
 	<item
 		android:id="@+id/menu_settings"
 		android:title="@string/settings"/>
-	<item android:id="@+id/menu_help" android:title="@string/help" abc:showAsAction="never"></item>
+	<item android:id="@+id/menu_help" android:title="@string/help" abc:showAsAction="never"/>
 	
 </menu>
