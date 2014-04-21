@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.Handler;
@@ -853,7 +855,7 @@ public final class CombatMap extends ActionBarActivity {
 	public void onPause() {
 		super.onPause();
 		Editor editor = this.mSharedPreferences.edit();
-		editor.apply();
+        savePrefChanges(editor);
 		String filename = this.mSharedPreferences.getString("filename", null);
 		if (filename == null
 				|| !this.mSharedPreferences.getBoolean("autosave", true)) {
@@ -960,10 +962,19 @@ public final class CombatMap extends ActionBarActivity {
 		// file again.
 		Editor editor = this.mSharedPreferences.edit();
 		editor.putString("filename", newFilename);
-		editor.apply();
-	}
+        savePrefChanges(editor);
+    }
 
-	/**
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    private void savePrefChanges(Editor editor) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD) {
+            editor.apply();
+        } else {
+            editor.commit();
+        }
+    }
+
+    /**
 	 * Sets the manipulation mode to the given mode.
 	 * 
 	 * @param manipulationMode
@@ -973,7 +984,7 @@ public final class CombatMap extends ActionBarActivity {
 	private void setManipulationMode(final int manipulationMode) {
 		Editor editor = this.mSharedPreferences.edit();
 		editor.putInt("manipulation_mode", manipulationMode);
-		editor.apply();
+		savePrefChanges(editor);
 
 		switch (manipulationMode) {
 		case MODE_DRAW_BACKGROUND:
@@ -1060,7 +1071,7 @@ public final class CombatMap extends ActionBarActivity {
 		// file again.
 		Editor editor = this.mSharedPreferences.edit();
 		editor.putInt("manipulation_mode", mode);
-		editor.apply();
+        savePrefChanges(editor);
 	}
 
 	/**
@@ -1077,7 +1088,7 @@ public final class CombatMap extends ActionBarActivity {
 		editor.putBoolean(
 				this.getModeSpecificSnapPreferenceName(manipulationMode),
 				this.mSnapToGridMenuItem.isChecked());
-		editor.apply();
+        savePrefChanges(editor);
 
 		this.mCombatView.setShouldSnapToGrid(shouldSnap);
 	}
@@ -1169,7 +1180,7 @@ public final class CombatMap extends ActionBarActivity {
 				// from that file again.
 				Editor editor = CombatMap.this.mSharedPreferences.edit();
 				editor.putString("filename", null);
-				editor.apply();
+                savePrefChanges(editor);
 
 				// Log the error in a toast
 				e.printStackTrace();
