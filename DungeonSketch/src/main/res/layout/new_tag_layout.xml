@@ -12,7 +12,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:ems="10"
-        android:tag="new_tag_name" >
+        android:tag="new_tag_name"
+        android:hint="@string/new_tag_name">
 
         <requestFocus />
     </EditText>

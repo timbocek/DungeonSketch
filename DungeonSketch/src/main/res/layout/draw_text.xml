@@ -7,7 +7,8 @@
         android:id="@+id/entered_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:hint="@string/text_to_display">
     </EditText>
 
     <Button

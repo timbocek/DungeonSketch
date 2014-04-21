@@ -130,5 +130,8 @@
     <string name="exported_images_location">Exported images will appear in sdcard/Pictures/DungeonSketch</string>
     <string name="top_level_tag">Top-Level Tag</string>
     <string name="theme_presets">Theme Presets</string>
+    <string name="text_to_display">Text to display on map</string>
+    <string name="map_name">Map name</string>
+    <string name="new_tag_name">New tag name</string>
 
 </resources>
