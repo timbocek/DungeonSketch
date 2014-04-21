@@ -10,6 +10,9 @@ import android.content.DialogInterface.OnClickListener;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.util.SparseArray;
+import android.util.SparseBooleanArray;
+
 import com.tbocek.dungeonsketch.R;
 
 /**
@@ -42,15 +45,13 @@ public class TabManager {
      * Reverse lookup so we know what tab to select when forced into an
      * interaction mode.
      */
-    private Map<Integer, ActionBar.Tab> mManipulationModeTabs =
-            new HashMap<Integer, ActionBar.Tab>();
+    private SparseArray<ActionBar.Tab> mManipulationModeTabs = new SparseArray<ActionBar.Tab>();
 
     /**
      * Whether each tab mode (identified by the integer code) requires GM screen
      * confirmation.
      */
-    private HashMap<Integer, Boolean> modesForGm =
-            new HashMap<Integer, Boolean>();
+    private SparseBooleanArray modesForGm = new SparseBooleanArray();
 
     /**
      * Listener that fires when a tab is selected.
@@ -162,8 +163,7 @@ public class TabManager {
                 .getBoolean("gmscreen", false)) {
             return false;
         }
-        return this.modesForGm.get(mode).booleanValue()
-                && !this.modesForGm.get(this.mLastSelectedMode).booleanValue();
+        return this.modesForGm.get(mode) && !this.modesForGm.get(this.mLastSelectedMode);
     }
 
     /**
