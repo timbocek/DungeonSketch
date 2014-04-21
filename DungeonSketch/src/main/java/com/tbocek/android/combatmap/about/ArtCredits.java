@@ -17,6 +17,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -115,7 +116,11 @@ public class ArtCredits extends Activity {
             @Override
             public void onGlobalLayout() {
                 changeTokenImages();
-                frame.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                if (Build.VERSION.SDK_INT >= 16) {
+                    frame.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    frame.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
             }
         });
     }

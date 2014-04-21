@@ -2,7 +2,9 @@ package com.tbocek.android.combatmap.tokenmanager;
 
 import java.util.Collection;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
@@ -29,7 +31,10 @@ public final class TokenDeleteButton extends ImageView {
      * On drag listener that manages changing the color of the button and
      * opening the context menu.
      */
-    private OnDragListener mOnDragToTrashCanListener = new OnDragListener() {
+    private OnDragListener mOnDragToTrashCanListener;
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private class DragListener implements OnDragListener {
         @Override
         public boolean onDrag(final View view, final DragEvent event) {
             Log.d("DRAG", Integer.toString(event.getAction()));
@@ -63,7 +68,11 @@ public final class TokenDeleteButton extends ImageView {
     public TokenDeleteButton(final Context context) {
         super(context);
         this.setImageResource(R.drawable.trashcan);
-        this.setOnDragListener(this.mOnDragToTrashCanListener);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            this.mOnDragToTrashCanListener = new DragListener();
+            this.setOnDragListener(this.mOnDragToTrashCanListener);
+        }
     }
 
     /**

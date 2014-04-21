@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -298,6 +299,7 @@ public final class DataManager {
         return loadTokenImage(filename, null);
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public Bitmap loadTokenImage(final String filename, Bitmap existingBuffer) throws IOException {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true; // Make bitmaps mutable so they are reusable.

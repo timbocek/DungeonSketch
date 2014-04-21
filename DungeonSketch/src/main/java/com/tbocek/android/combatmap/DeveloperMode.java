@@ -1,5 +1,7 @@
 package com.tbocek.android.combatmap;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.StrictMode;
 
 import com.tbocek.dungeonsketch.BuildConfig;
@@ -43,6 +45,7 @@ public final class DeveloperMode {
     /**
      * If in developer mode and the SDK supports it, run in strict mode.
      */
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     public static void strictMode() {
         if (false && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD
                 && DEVELOPER_MODE) {

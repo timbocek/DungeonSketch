@@ -13,6 +13,7 @@ import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.interaction.CombatViewInteractionMode;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -297,7 +298,8 @@ public class TagNavigator extends ScrollView {
 			selectTag(((TagTreeLineItem)v).getTagNode(), true);
 		}
 	}
-	
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private class OnDragListener implements View.OnDragListener {
         private Handler mLongDragHandler = new Handler();
         

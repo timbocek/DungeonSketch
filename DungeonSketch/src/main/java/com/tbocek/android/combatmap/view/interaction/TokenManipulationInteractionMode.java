@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -135,6 +136,7 @@ public final class TokenManipulationInteractionMode extends
      * @param view
      *            The CombatView that this mode will interact with.
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public TokenManipulationInteractionMode(final CombatView view) {
         super(view);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {

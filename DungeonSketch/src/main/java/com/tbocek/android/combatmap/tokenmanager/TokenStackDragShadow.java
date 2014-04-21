@@ -2,8 +2,10 @@ package com.tbocek.android.combatmap.tokenmanager;
 
 import java.util.Collection;
 
+import android.annotation.TargetApi;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.os.Build;
 import android.view.View;
 
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
@@ -15,6 +17,7 @@ import com.tbocek.android.combatmap.model.primitives.BaseToken;
  * @author Tim Bocek
  * 
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public final class TokenStackDragShadow extends View.DragShadowBuilder {
 
     /**

@@ -2,7 +2,9 @@ package com.tbocek.android.combatmap.tokenmanager;
 
 import java.util.ArrayList;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.view.View;
 
 import com.tbocek.android.combatmap.model.MultiSelectManager;
@@ -66,6 +68,7 @@ public final class MultiSelectTokenButton extends TokenButton {
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void onStartDrag() {
         // Add this token to the selection, so we are at least dragging it.
         ArrayList<BaseToken> tokens =
