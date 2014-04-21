@@ -45,12 +45,14 @@
             <ImageButton
                 android:id="@+id/button_background_color"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/background_color"/>
 
             <ImageButton
                 android:id="@+id/button_foreground_color"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/foreground_color"/>
 
     </TableRow>
 

@@ -25,7 +25,8 @@
         android:id="@+id/token_deployment_image"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginRight="16dp" />
+        android:layout_marginRight="16dp"
+        android:contentDescription="@string/token_image"/>
 
     <Button
         android:id="@+id/token_deployment_button_increase"

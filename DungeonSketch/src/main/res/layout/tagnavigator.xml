@@ -14,7 +14,8 @@
             android:layout_alignBottom="@id/tagnavigator_current_tag"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/navigation_back" />
+            android:src="@drawable/navigation_back"
+            android:contentDescription="@string/back"/>
 
         <LinearLayout
             android:id="@+id/tagnavigator_current_tag_list"

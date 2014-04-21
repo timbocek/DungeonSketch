@@ -23,7 +23,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_gravity="left"
 		    android:layout_weight="1"
-		    android:src="@drawable/navigation_cancel" />
+		    android:src="@drawable/navigation_cancel"
+            android:contentDescription="@string/cancel"/>
 
 		<ImageButton
 		    android:id="@+id/select_tag_dialog_accept"
@@ -31,7 +32,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_gravity="right"
 		    android:layout_weight="1"
-		    android:src="@drawable/navigation_accept" />
+		    android:src="@drawable/navigation_accept"
+            android:contentDescription="@string/accept"/>
 
 	</LinearLayout>
 

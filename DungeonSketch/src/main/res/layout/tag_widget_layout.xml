@@ -20,7 +20,8 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:paddingLeft="8dp"
-        android:src="@drawable/navigation_next_item" />
+        android:src="@drawable/navigation_next_item"
+        android:contentDescription="@string/has_subtags"/>
 
     <ImageView
         android:id="@+id/tag_widget_system"
@@ -29,6 +30,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:paddingRight="8dp"
-        android:src="@drawable/gears" />
+        android:src="@drawable/gears"
+        android:contentDescription="@string/system_tag"/>
 
 </RelativeLayout>
