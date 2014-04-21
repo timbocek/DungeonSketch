@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +17,7 @@ import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.view.ActionMode;
+import android.support.v7.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.DragEvent;
@@ -276,42 +277,8 @@ public final class TokenManager extends ActionBarActivity {
         }
         
         tagListFrame.addView(this.mTagNavigator);
+        setupOnDragListener();
 
-        // Set up a drag handler so that the user can drop tokens onto the token
-        // view when it switches over after long-holding on a tag.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            this.mGridView.setOnDragListener(new View.OnDragListener() {
-
-                @Override
-                public boolean onDrag(View v, DragEvent event) {
-                    if (event.getAction() == DragEvent.ACTION_DROP) {
-                        TagTreeNode tag = mTagNavigator.getCurrentTagNode();
-                        Collection<BaseToken> tokens =
-                                (Collection<BaseToken>) event.getLocalState();
-
-                        // TODO: De-dupe this with the drag handler above.
-                        for (BaseToken t : tokens) {
-                            if (!tag.isSystemTag()) {
-                                TokenManager.this.mTokenDatabase.tagToken(
-                                        t.getTokenId(), tag.getPath());
-                                TokenManager.this.setScrollViewTag(tag.getPath());
-                            } else {
-                                Toast toast = Toast.makeText(
-                                        TokenManager.this,
-                                        "Cannot add token to tag " + tag.getName(),
-                                        Toast.LENGTH_LONG);
-                                toast.show();
-                            }
-                        }
-                    } else if (event.getAction() == DragEvent.ACTION_DRAG_ENTERED) {
-                        mTagNavigator.setDragStyleOnCurrentTag();
-                    } else if (event.getAction() == DragEvent.ACTION_DRAG_EXITED) {
-                        mTagNavigator.resetTextViewColors();
-                    }
-                    return true;
-                }
-            });
-        }
 
         mMultiSelectManager.setSelectionChangedListener(
                 new MultiSelectManager.SelectionChangedListener() {
@@ -352,7 +319,7 @@ public final class TokenManager extends ActionBarActivity {
                     public void selectionStarted() {
                         TokenManager.this.mMultiSelectActionMode =
                                 TokenManager.this
-                                        .startActionMode(new TokenSelectionActionModeCallback());
+                                        .startSupportActionMode(new TokenSelectionActionModeCallback());
                     }
                 }
         );
@@ -368,6 +335,45 @@ public final class TokenManager extends ActionBarActivity {
 			}
         });
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void setupOnDragListener() {
+        // Set up a drag handler so that the user can drop tokens onto the token
+        // view when it switches over after long-holding on a tag.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            this.mGridView.setOnDragListener(new View.OnDragListener() {
+
+                @Override
+                public boolean onDrag(View v, DragEvent event) {
+                    if (event.getAction() == DragEvent.ACTION_DROP) {
+                        TagTreeNode tag = mTagNavigator.getCurrentTagNode();
+                        Collection<BaseToken> tokens =
+                                (Collection<BaseToken>) event.getLocalState();
+
+                        // TODO: De-dupe this with the drag handler above.
+                        for (BaseToken t : tokens) {
+                            if (!tag.isSystemTag()) {
+                                TokenManager.this.mTokenDatabase.tagToken(
+                                        t.getTokenId(), tag.getPath());
+                                TokenManager.this.setScrollViewTag(tag.getPath());
+                            } else {
+                                Toast toast = Toast.makeText(
+                                        TokenManager.this,
+                                        "Cannot add token to tag " + tag.getName(),
+                                        Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        }
+                    } else if (event.getAction() == DragEvent.ACTION_DRAG_ENTERED) {
+                        mTagNavigator.setDragStyleOnCurrentTag();
+                    } else if (event.getAction() == DragEvent.ACTION_DRAG_EXITED) {
+                        mTagNavigator.resetTextViewColors();
+                    }
+                    return true;
+                }
+            });
+        }
     }
 
     @Override
@@ -576,7 +582,11 @@ public final class TokenManager extends ActionBarActivity {
                 final ArrayAdapter<String> adapter =
                         new ArrayAdapter<String>(TokenManager.this,
                                 R.layout.selection_dialog_text_view);
-                adapter.addAll(tags);
+
+                for (String tag: tags) {
+                    adapter.add(tag);
+                }
+                
                 SelectTagDialog selectTagDlg = new SelectTagDialog(TokenManager.this);
                 selectTagDlg.setOnTagSelectedListener(new SelectTagDialog.TagSelectedListener() {	
 					@Override
