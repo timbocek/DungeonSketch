@@ -4,9 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
     <com.tbocek.android.combatmap.view.TagNavigator
         android:id="@+id/select_tag_dialog_tag_navigator"
         android:layout_width="fill_parent"
