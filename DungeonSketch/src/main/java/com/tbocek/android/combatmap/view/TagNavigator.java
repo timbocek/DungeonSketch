@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -179,12 +180,15 @@ public class TagNavigator extends ScrollView {
 		//TODO: should only have to set these once.
 		mCurrentTag.setOnClickListener(new TagLabelClickedListener());
 		mBackButton.setOnClickListener(new TagLabelClickedListener());
-		
-		mCurrentTag.setOnDragListener(new OnDragListener());
+
 		mCurrentTag.setTag(node);
-		mBackButton.setOnDragListener(new OnDragListener());
 		mBackButton.setTag(node.getParent());
-		
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mCurrentTag.setOnDragListener(new OnDragListener());
+            mBackButton.setOnDragListener(new OnDragListener());
+        }
+
 		List<String> tagNames = Lists.newArrayList(node.getTagNames());
 		if (hasTagRestrictions()) {
 			List<String> activeTagNames = Lists.newArrayList();
@@ -243,7 +247,9 @@ public class TagNavigator extends ScrollView {
 			Activity activity = (Activity) this.getContext();
 	        activity.registerForContextMenu(view);
 		}
-		view.setOnDragListener(new OnDragListener());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            view.setOnDragListener(new OnDragListener());
+        }
 		view.setVisibility(View.GONE);
 		
 		return view;

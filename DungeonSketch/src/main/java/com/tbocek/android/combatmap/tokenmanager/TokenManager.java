@@ -279,37 +279,39 @@ public final class TokenManager extends ActionBarActivity {
 
         // Set up a drag handler so that the user can drop tokens onto the token
         // view when it switches over after long-holding on a tag.
-        this.mGridView.setOnDragListener(new View.OnDragListener() {
-			
-			@Override
-			public boolean onDrag(View v, DragEvent event) {
-				if (event.getAction() == DragEvent.ACTION_DROP) {
-					TagTreeNode tag = mTagNavigator.getCurrentTagNode();
-					Collection<BaseToken> tokens =
-	                        (Collection<BaseToken>) event.getLocalState();
-					
-					// TODO: De-dupe this with the drag handler above.
-		            for (BaseToken t : tokens) {
-		            	if (!tag.isSystemTag()) {
-			                TokenManager.this.mTokenDatabase.tagToken(
-			                        t.getTokenId(), tag.getPath());
-			                TokenManager.this.setScrollViewTag(tag.getPath());
-		            	} else {
-		            		Toast toast = Toast.makeText(
-		            				TokenManager.this, 
-		            				"Cannot add token to tag " + tag.getName(), 
-		            				Toast.LENGTH_LONG);
-		            		toast.show();
-		            	}
-		            }
-				} else if (event.getAction() == DragEvent.ACTION_DRAG_ENTERED) {
-					mTagNavigator.setDragStyleOnCurrentTag();
-				} else if (event.getAction() == DragEvent.ACTION_DRAG_EXITED) {
-					mTagNavigator.resetTextViewColors();
-				}
-				return true;
-			}
-		});
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            this.mGridView.setOnDragListener(new View.OnDragListener() {
+
+                @Override
+                public boolean onDrag(View v, DragEvent event) {
+                    if (event.getAction() == DragEvent.ACTION_DROP) {
+                        TagTreeNode tag = mTagNavigator.getCurrentTagNode();
+                        Collection<BaseToken> tokens =
+                                (Collection<BaseToken>) event.getLocalState();
+
+                        // TODO: De-dupe this with the drag handler above.
+                        for (BaseToken t : tokens) {
+                            if (!tag.isSystemTag()) {
+                                TokenManager.this.mTokenDatabase.tagToken(
+                                        t.getTokenId(), tag.getPath());
+                                TokenManager.this.setScrollViewTag(tag.getPath());
+                            } else {
+                                Toast toast = Toast.makeText(
+                                        TokenManager.this,
+                                        "Cannot add token to tag " + tag.getName(),
+                                        Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        }
+                    } else if (event.getAction() == DragEvent.ACTION_DRAG_ENTERED) {
+                        mTagNavigator.setDragStyleOnCurrentTag();
+                    } else if (event.getAction() == DragEvent.ACTION_DRAG_EXITED) {
+                        mTagNavigator.resetTextViewColors();
+                    }
+                    return true;
+                }
+            });
+        }
 
         mMultiSelectManager.setSelectionChangedListener(
                 new MultiSelectManager.SelectionChangedListener() {

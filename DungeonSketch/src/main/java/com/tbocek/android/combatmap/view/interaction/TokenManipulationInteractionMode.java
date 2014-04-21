@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.MotionEvent;
 
 import com.google.common.collect.Lists;
@@ -116,18 +117,7 @@ public final class TokenManipulationInteractionMode extends
     /**
      * Animation update handler that changes the alpha value of the trash can.
      */
-    private ValueAnimator.AnimatorUpdateListener mTrashCanFadeListener =
-            new ValueAnimator.AnimatorUpdateListener() {
-
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    TokenManipulationInteractionMode.this.mTrashCanAlpha =
-                            (Integer) animation.getAnimatedValue();
-                    // TODO: See if it is better to lump this in with the token move refresh.
-                    TokenManipulationInteractionMode.this.getView()
-                            .refreshMap(TRASH_CAN_RECT);
-                }
-            };
+    private ValueAnimator.AnimatorUpdateListener mTrashCanFadeListener = null;
 
     /**
      * Cached drawable for a trash can to move tokens to.
@@ -147,6 +137,18 @@ public final class TokenManipulationInteractionMode extends
      */
     public TokenManipulationInteractionMode(final CombatView view) {
         super(view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mTrashCanFadeListener =  new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    TokenManipulationInteractionMode.this.mTrashCanAlpha =
+                            (Integer) animation.getAnimatedValue();
+                    // TODO: See if it is better to lump this in with the token move refresh.
+                    TokenManipulationInteractionMode.this.getView()
+                            .refreshMap(TRASH_CAN_RECT);
+                }
+            };
+        }
     }
 
     @Override
@@ -212,32 +214,36 @@ public final class TokenManipulationInteractionMode extends
      * Begins an animation to fade the trash can in.
      */
     private void fadeTrashCanIn() {
-        if (this.mTrashCanAnimator != null
-                && this.mTrashCanAnimator.isRunning()) {
-            this.mTrashCanAnimator.cancel();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (this.mTrashCanAnimator != null
+                    && this.mTrashCanAnimator.isRunning()) {
+                this.mTrashCanAnimator.cancel();
+            }
+            this.mTrashCanAnimator = ValueAnimator.ofInt(0, Util.FULL_OPACITY);
+            this.mTrashCanAnimator.setDuration(TRASH_FADE_IN_DURATION);
+            this.mTrashCanAnimator.addUpdateListener(this.mTrashCanFadeListener);
+            this.mTrashCanAnimator.start();
         }
-        this.mTrashCanAnimator = ValueAnimator.ofInt(0, Util.FULL_OPACITY);
-        this.mTrashCanAnimator.setDuration(TRASH_FADE_IN_DURATION);
-        this.mTrashCanAnimator.addUpdateListener(this.mTrashCanFadeListener);
-        this.mTrashCanAnimator.start();
     }
 
     /**
      * Begins an animation to fade the trash can out.
      */
     private void fadeTrashCanOut() {
-    	if (this.mTrashCanAlpha == 0) {
-    		return;
-    	}
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (this.mTrashCanAlpha == 0) {
+                return;
+            }
 
-        if (this.mTrashCanAnimator != null
-                && this.mTrashCanAnimator.isRunning()) {
-            this.mTrashCanAnimator.cancel();
+            if (this.mTrashCanAnimator != null
+                    && this.mTrashCanAnimator.isRunning()) {
+                this.mTrashCanAnimator.cancel();
+            }
+            this.mTrashCanAnimator = ValueAnimator.ofInt(this.mTrashCanAlpha, 0);
+            this.mTrashCanAnimator.setDuration(TRASH_FADE_OUT_DURATION);
+            this.mTrashCanAnimator.addUpdateListener(this.mTrashCanFadeListener);
+            this.mTrashCanAnimator.start();
         }
-        this.mTrashCanAnimator = ValueAnimator.ofInt(this.mTrashCanAlpha, 0);
-        this.mTrashCanAnimator.setDuration(TRASH_FADE_OUT_DURATION);
-        this.mTrashCanAnimator.addUpdateListener(this.mTrashCanFadeListener);
-        this.mTrashCanAnimator.start();
     }
 
     @Override
