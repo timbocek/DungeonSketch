@@ -191,7 +191,8 @@ public final class TokenManager extends ActionBarActivity {
         int layout = this.getResources().getConfiguration().screenLayout;
         int layoutSize = layout & Configuration.SCREENLAYOUT_SIZE_MASK;
         return layoutSize == Configuration.SCREENLAYOUT_SIZE_LARGE
-                || layoutSize == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+                || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD &&
+                    layoutSize == Configuration.SCREENLAYOUT_SIZE_XLARGE);
     }
 
     @Override

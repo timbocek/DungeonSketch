@@ -302,7 +302,9 @@ public final class DataManager {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public Bitmap loadTokenImage(final String filename, Bitmap existingBuffer) throws IOException {
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inMutable = true; // Make bitmaps mutable so they are reusable.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            options.inMutable = true; // Make bitmaps mutable so they are reusable.
+        }
         if (existingBuffer != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && existingBuffer.isMutable()) {
                 options.inBitmap = existingBuffer;
