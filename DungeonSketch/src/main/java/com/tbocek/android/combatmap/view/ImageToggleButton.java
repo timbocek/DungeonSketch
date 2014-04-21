@@ -32,6 +32,8 @@ public final class ImageToggleButton extends ImageButton {
      */
     private boolean mToggled = false;
 
+    private Paint mBorderPaint;
+
     /**
      * Creates a new ImageToggleButton in the given context.
      * 
@@ -48,6 +50,11 @@ public final class ImageToggleButton extends ImageButton {
 
     public ImageToggleButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+
+        mBorderPaint = new Paint();
+        mBorderPaint.setColor(TOGGLE_BORDER_COLOR);
+        mBorderPaint.setStrokeWidth(TOGGLE_BORDER_WIDTH);
+        mBorderPaint.setStyle(Style.STROKE);
     }
 
     /**
@@ -61,12 +68,8 @@ public final class ImageToggleButton extends ImageButton {
     public void onDraw(final Canvas c) {
         super.onDraw(c);
 
-        Paint paint = new Paint();
-        paint.setColor(TOGGLE_BORDER_COLOR);
-        paint.setStrokeWidth(TOGGLE_BORDER_WIDTH);
-        paint.setStyle(Style.STROKE);
         if (this.mToggled) {
-            c.drawRect(0, 0, this.getWidth(), this.getHeight(), paint);
+            c.drawRect(0, 0, this.getWidth(), this.getHeight(), mBorderPaint);
         }
     }
 
