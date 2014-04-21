@@ -7,7 +7,7 @@
     <com.tbocek.android.combatmap.view.TagNavigator
         android:id="@+id/select_tag_dialog_tag_navigator"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="top"
         android:layout_weight="1" />
 
