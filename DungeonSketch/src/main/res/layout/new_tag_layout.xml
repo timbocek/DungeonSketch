@@ -24,14 +24,17 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/new_tag_name" >
 	    <RadioButton
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
 	        android:id="@+id/new_tag_under_top_level"
 	        android:checked="true"
 	        android:tag="new_tag_under_top_level"
-	        android:text="Top-Level Tag" />
+	        android:text="@string/top_level_tag" />
 	    <RadioButton
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
 	        android:id="@+id/new_tag_under_selected"
-	        android:tag="new_tag_under_selected"
-	        android:text="Underneath &apos;&lt;Current>&apos;" />
+	        android:tag="new_tag_under_selected"/>
     </RadioGroup>
 
 

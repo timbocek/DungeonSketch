@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
@@ -8,7 +9,8 @@
         android:id="@+id/token_deployment_button_decrease"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:text="-" />
+        android:text="-"
+        tools:ignore="HardcodedText"/>
 
     <TextView
         android:id="@+id/token_deployment_number"
@@ -29,6 +31,7 @@
         android:id="@+id/token_deployment_button_increase"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:text="+" />
+        android:text="+"
+        tools:ignore="HardcodedText"/>
 
 </LinearLayout>

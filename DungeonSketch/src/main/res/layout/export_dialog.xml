@@ -27,47 +27,47 @@
         android:orientation="horizontal">
         <RadioButton
             android:id="@+id/radio_export_full_map"
-            android:text="Entire Map"
+            android:text="@string/entire_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <RadioButton
             android:id="@+id/radio_export_current_view"
-            android:text="Current View"
+            android:text="@string/current_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>        
     </RadioGroup>
     <CheckBox
         android:id="@+id/checkbox_export_grid_lines"
-        android:text="Include Grid Lines"
+        android:text="@string/include_grid_lines"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <CheckBox
         android:id="@+id/checkbox_export_gm_notes"
-        android:text="Include GM Notes"
+        android:text="@string/include_gm_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <CheckBox
         android:id="@+id/checkbox_export_tokens"
-        android:text="Include Tokens"
+        android:text="@string/include_tokens"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <CheckBox
         android:id="@+id/checkbox_export_annotations"
-        android:text="Include Annotations"
+        android:text="@string/include_annotations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <CheckBox
         android:id="@+id/checkbox_export_fog_of_war"
-        android:text="Apply Mask"
+        android:text="@string/apply_mask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>        
     <Button
         android:id="@+id/button_export"
-        android:text="Export"
+        android:text="@string/export"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView 
-        android:text="Exported images will appear in sdcard/Pictures/DungeonSketch"
+        android:text="@string/exported_images_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>

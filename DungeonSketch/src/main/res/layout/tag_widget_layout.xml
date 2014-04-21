@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/tag_widget_system"
-        android:text="TEST TEXT"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView

@@ -98,5 +98,37 @@
     </string>
     <string name="deploy_tokens">Deploy Tokens</string>
     <string name="deploy">Deploy</string>
+    <string name="bloodied">Bloodied</string>
+    <string name="undo">Undo</string>
+    <string name="redo">Redo</string>
+    <string name="size">Size</string>
+    <string name="border_color">Border Color</string>
+    <string name="none">None</string>
+    <string name="white">White</string>
+    <string name="blue">Blue</string>
+    <string name="black">Black</string>
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="yellow">Yellow</string>
+    <string name="tenth">1/10</string>
+    <string name="quarter">1/4</string>
+    <string name="half">1/2</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="entire_map">Entire Map</string>
+    <string name="current_view">Current View</string>
+    <string name="include_grid_lines">Include Grid Lines</string>
+    <string name="include_gm_notes">Include GM Notes</string>
+    <string name="include_tokens">Include Tokens</string>
+    <string name="include_annotations">Include Annotations</string>
+    <string name="apply_mask">Apply Mask</string>
+    <string name="export">Export</string>
+    <string name="exported_images_location">Exported images will appear in sdcard/Pictures/DungeonSketch</string>
+    <string name="top_level_tag">Top-Level Tag</string>
+    <string name="theme_presets">Theme Presets</string>
 
 </resources>
