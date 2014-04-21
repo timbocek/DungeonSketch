@@ -1,5 +1,6 @@
 package com.tbocek.android.combatmap.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Build;
@@ -152,6 +153,7 @@ public class TokenButton extends ImageView {
     /**
      * Called when a drag and drop operation should start.
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void onStartDrag() {
         this.startDrag(null, new View.DragShadowBuilder(TokenButton.this),
                 this.mPrototype.clone(), 0);
