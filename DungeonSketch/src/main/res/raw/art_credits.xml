@@ -276,6 +276,16 @@
 	    <token res="swordmage" tags="humanoid:female"/>
 	    <token res="bchart_paladin" tags="humanoid:female"/>
 	    <token res="sirida3" tags="humanoid:female"/>
+	    <token res="bchart_atash" tags="humanoid:female" url="http://bchart.deviantart.com/art/C-Atash-400668071"/>
+	    <token res="bchart_elven_ranger" tags="humanoid:female" url="http://bchart.deviantart.com/art/Elven-Ranger-433375284"/>
+	    <token res="bchart_for_the_one_i_must_protect" tags="humanoid:female" url="http://bchart.deviantart.com/art/for-the-one-I-must-protect-264181009"/>
+	    <token res="bchart_jetta_blanche" tags="humanoid:female" url="http://bchart.deviantart.com/art/R-Jetta-Blanche-418961946"/>
+	    <token res="bchart_jun_halsey" tags="humanoid:female" url="http://bchart.deviantart.com/art/R-Jun-Halsey-409340364"/>
+	    <token res="bchart_lady_carre_dcu" tags="humanoid:female" url="http://bchart.deviantart.com/art/Lady-Carre-DCU-269019079"/>
+	    <token res="bchart_no_regrets" tags="humanoid:female" url="http://bchart.deviantart.com/art/no-regrets-264349040"/>
+	    <token res="bchart_shan_dian" tags="humanoid:female" url="http://bchart.deviantart.com/art/Shan-Dian-264180943"/>
+	    <token res="bchart_sura_ashra" tags="humanoid:female" url="http://bchart.deviantart.com/art/Sura-Ashra-the-Blood-Princess-291157280"/>
+	    <token res="bchart_yuuki_nao" tags="humanoid:female" url="http://bchart.deviantart.com/art/Yuuki-Nao-264872499"/>
 	</artist>
 	<artist name="KingAgrian" copyright="Noncommercial use only.  Used with permission."
 	    url="http://kingagrian.deviantart.com/">
