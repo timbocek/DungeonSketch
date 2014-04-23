@@ -320,6 +320,6 @@
 		<token res="vasnetsov3" tags="humanoid:male"/>
 	</artist>
     <artist name="VHM Alex" copyright="CC-BY-SA 3.0" url="http://vhm-alex.deviantart.com/">
-        <token res="vhm_alex_crawl_away" tags="undead" url="http://vhm-alex.deviantart.com/art/Crawl-Away-257342164"/>
+        <token res="vhmalex_crawl_away" tags="undead" url="http://vhm-alex.deviantart.com/art/Crawl-Away-257342164"/>
     </artist>
 </art_credits>
