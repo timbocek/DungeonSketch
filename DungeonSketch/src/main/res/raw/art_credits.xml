@@ -322,4 +322,10 @@
     <artist name="VHM Alex" copyright="CC-BY-SA 3.0" url="http://vhm-alex.deviantart.com/">
         <token res="vhmalex_crawl_away" tags="undead" url="http://vhm-alex.deviantart.com/art/Crawl-Away-257342164"/>
     </artist>
+    <artist name="Amphitaman" copyright="CC-BY-SA 3.0" url="http://amphitaman.deviantart.com/">
+    	<token res="amphitaman_panzerschnecken_1" tags="monster" url="http://amphitaman.deviantart.com/art/Panzerschnecken-159761188"/>
+	<token res="amphitaman_panzerschnecken_2" tags="monster" url="http://amphitaman.deviantart.com/art/Panzerschnecken-159761188"/>
+    	<token res="amphitaman_steppenschrat" tags="monster" url="http://amphitaman.deviantart.com/art/Steppenschrat-159755480"/>
+    	<token res="amphitaman_waldgeist" tags="monster" url="http://amphitaman.deviantart.com/art/Waldgeist-159757832"/>
+    </artist>
 </art_credits>
