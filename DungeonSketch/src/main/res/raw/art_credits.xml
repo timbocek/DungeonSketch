@@ -254,15 +254,38 @@
 	    <token res="gauntes19" tags="humanoid:male"/>
 	    <token res="gauntes20" tags="humanoid:male"/>
 	    <token res="gauntes21" tags="demon"/>
+	    <token res="gauntes22" tags="humanoid:male"/>
+	    <token res="gauntes23" tags="humanoid:male,demon"/>
+	    <token res="gauntes24" tags="humanoid:female"/>
+	    <token res="gauntes25" tags="humanoid:female"/>
+	    <token res="gauntes26" tags="humanoid:male"/>
+	    <token res="gauntes27" tags="humanoid:female,demon"/>
+	    <token res="gauntes28" tags="humanoid:female"/>
+	    <token res="gauntes29" tags="humanoid:female"/>
+	    <token res="gauntes30" tags="humanoid:female"/>
+	    <token res="gauntes31_1" tags="humanoid:male"/>
+	    <token res="gauntes31_2" tags="humanoid:male"/>
+	    <token res="gauntes32" tags="humanoid:male"/>
+	    <token res="gauntes33" tags="humanoid:female"/>
 	</artist>
 	<artist name="~bchart" copyright="Noncommercial use only.  Used with permission."
 	    url="http://www.bchart.deviantart.com/">
-	    <token res="adventuring_princess" tags="humanoid:female"/>
-	    <token res="daemon_blooded_dark_elf_sorcerer" tags="humanoid:female,demon"/>
-	    <token res="steampunk_gal" tags="humanoid:female"/>
-	    <token res="swordmage" tags="humanoid:female"/>
-	    <token res="bchart_paladin" tags="humanoid:female"/>
-	    <token res="sirida3" tags="humanoid:female"/>
+	    <token res="adventuring_princess" tags="humanoid:female" url="http://bchart.deviantart.com/art/C-Lan-Bennet-265004614"/>
+	    <token res="daemon_blooded_dark_elf_sorcerer" tags="humanoid:female,demon" url="http://bchart.deviantart.com/art/R-Daemon-blooded-Dark-Elf-Sorceress-376472746"/>
+	    <token res="steampunk_gal" tags="humanoid:female" url="http://bchart.deviantart.com/art/R-Steampunk-Gal-378093558"/>
+	    <token res="swordmage" tags="humanoid:female" url="http://bchart.deviantart.com/art/C-Sword-Mage-Windsoul-Genasi-440538237"/>
+	    <token res="bchart_paladin" tags="humanoid:female" url="http://bchart.deviantart.com/art/R-Paladin-381083323"/>
+	    <token res="sirida3" tags="humanoid:female" url="http://bchart.deviantart.com/art/Sirida-3-0-382094175"/>
+	    <token res="bchart_atash" tags="humanoid:female" url="http://bchart.deviantart.com/art/C-Atash-400668071"/>
+	    <token res="bchart_elven_ranger" tags="humanoid:female" url="http://bchart.deviantart.com/art/Elven-Ranger-433375284"/>
+	    <token res="bchart_for_the_one_i_must_protect" tags="humanoid:female" url="http://bchart.deviantart.com/art/for-the-one-I-must-protect-264181009"/>
+	    <token res="bchart_jetta_blanche" tags="humanoid:female" url="http://bchart.deviantart.com/art/R-Jetta-Blanche-418961946"/>
+	    <token res="bchart_jun_halsey" tags="humanoid:female" url="http://bchart.deviantart.com/art/R-Jun-Halsey-409340364"/>
+	    <token res="bchart_lady_carre_dcu" tags="humanoid:female" url="http://bchart.deviantart.com/art/Lady-Carre-DCU-269019079"/>
+	    <token res="bchart_no_regrets" tags="humanoid:female" url="http://bchart.deviantart.com/art/no-regrets-264349040"/>
+	    <token res="bchart_shan_dian" tags="humanoid:female" url="http://bchart.deviantart.com/art/Shan-Dian-264180943"/>
+	    <token res="bchart_sura_ashra" tags="humanoid:female" url="http://bchart.deviantart.com/art/Sura-Ashra-the-Blood-Princess-291157280"/>
+	    <token res="bchart_yuuki_nao" tags="humanoid:female" url="http://bchart.deviantart.com/art/Yuuki-Nao-264872499"/>
 	</artist>
 	<artist name="KingAgrian" copyright="Noncommercial use only.  Used with permission."
 	    url="http://kingagrian.deviantart.com/">
@@ -296,4 +319,50 @@
 		<token res="vasnetsov2" tags="humanoid:male"/>
 		<token res="vasnetsov3" tags="humanoid:male"/>
 	</artist>
+    <artist name="VHM Alex" copyright="CC-BY-SA 3.0" url="http://vhm-alex.deviantart.com/">
+        <token res="vhmalex_crawl_away" tags="undead" url="http://vhm-alex.deviantart.com/art/Crawl-Away-257342164"/>
+    </artist>
+    <artist name="Amphitaman" copyright="CC-BY-SA 3.0" url="http://amphitaman.deviantart.com/">
+    	<token res="amphitaman_panzerschnecken_1" tags="monster" url="http://amphitaman.deviantart.com/art/Panzerschnecken-159761188"/>
+	<token res="amphitaman_panzerschnecken_2" tags="monster" url="http://amphitaman.deviantart.com/art/Panzerschnecken-159761188"/>
+    	<token res="amphitaman_steppenschrat" tags="monster" url="http://amphitaman.deviantart.com/art/Steppenschrat-159755480"/>
+    	<token res="amphitaman_waldgeist" tags="monster" url="http://amphitaman.deviantart.com/art/Waldgeist-159757832"/>
+    </artist>
+    <artist name="ArenSH" copyright="CC-BY-SA 3.0" url="http://arensh.deviantart.com/">
+    	<token res="arensh_golem" tags="monster,construct" url="http://arensh.deviantart.com/art/Golem-355241665"/>
+    </artist>
+    <artist name="AshiRox" copyright="CC-BY-SA 3.0" url="http://ashirox.deviantart.com/">
+    	<token res="ashirox_chimera" tags="monster,construct" url="http://ashirox.deviantart.com/art/Chimera-343468346"/>
+    	<token res="ashirox_dark_priest" tags="humanoid" url="http://ashirox.deviantart.com/art/Dark-Priest-373789595"/>
+    	<token res="ashirox_infernal" tags="demon" url="http://ashirox.deviantart.com/art/Infernal-348274172"/>
+    	<token res="ashirox_lava_mollusk" tags="monster,demon" url="http://ashirox.deviantart.com/art/Lava-Mollusk-408867181"/>
+    </artist>
+    <artist name="bagoh2" copyright="CC-BY-SA 3.0" url="http://bagoh2.deviantart.com/">
+    	<token res="bagoh2_the_kapre_and_the_duwende" tags="humanoid,giant" url="http://bagoh2.deviantart.com/art/The-Kapre-and-the-duwende-283397479"/>
+    </artist>
+    <artist name="David Revoy" copyright="CC-BY-SA 3.0" url="http://deevad.deviantart.com/">
+    	<token res="deevad_vulcan" tags="elemental,monster,demon" url="http://deevad.deviantart.com/art/Vulcan-302916233"/>
+    </artist>
+    <artist name="FinalKnight6" copyright="CC-BY-SA 3.0" url="http://finalknight6.deviantart.com/">
+    	<token res="finalknight6_valkyrie" tags="humanoid,angel" url="http://finalknight6.deviantart.com/art/Valkyrie-141415119"/>
+    </artist>
+    <artist name="gvbn10" copyright="CC-BY-SA 3.0" url="http://gvbn10.deviantart.com/">
+    	<token res="gvbn10_gate_arms_demonic" tags="demon" url="http://gvbn10.deviantart.com/art/Gate-arms-demonic-265254956"/>
+    	<token res="gvbn10_stone_giant_and_his_master" tags="giant" url="http://gvbn10.deviantart.com/art/Stone-Giant-and-his-master-213945710"/>
+    </artist>
+    <artist name="Kagehiisa" copyright="CC-BY-SA 3.0" url="http://kagehiisa.deviantart.com/">
+    	<token res="kagehiisa_giant_scorpion" tags="animal" url="http://kagehiisa.deviantart.com/art/Giant-Scorpion-151137943"/>
+    </artist>
+    <artist name="Modexo001" copyright="CC-BY-SA 3.0" url="http://modexo001.deviantart.com/">
+    	<token res="modexo001_cyber_monk" tags="humanoid:male" url="http://modexo001.deviantart.com/art/Cyber-monk-417625990"/>
+    	<token res="modexo001_the_witcher" tags="humanoid:male" url="http://modexo001.deviantart.com/art/The-Witcher-396731802"/>
+    </artist>
+    <artist name="Skoeger" copyright="CC-BY-SA 3.0" url="http://skoeger.deviantart.com/">
+    	<token res="skoeger_goblin" tags="monster" url="http://skoeger.deviantart.com/art/Goblin-365506550"/>
+    </artist>
+    <artist name="TrungTH" copyright="CC-BY-SA 3.0" url="http://trungth.deviantart.com/">
+    	<token res="trungth_amphibian_nation_1" tags="monster,animal" url="http://trungth.deviantart.com/art/Amphibian-Nation-313854043"/>
+    	<token res="trungth_amphibian_nation_2" tags="monster,animal" url="http://trungth.deviantart.com/art/Amphibian-Nation-313854043"/>    	
+    </artist>
+    
 </art_credits>
