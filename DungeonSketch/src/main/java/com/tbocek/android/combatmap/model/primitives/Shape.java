@@ -99,6 +99,8 @@ public abstract class Shape {
             shape = new Text(color, width);
         } else if (shapeType.equals(Rectangle.SHAPE_TYPE)) {
             shape = new Rectangle(color, width);
+        } else if (shapeType.equals(Information.SHAPE_TYPE)) {
+            shape = new Information();
         } else {
             throw new IOException("Unrecognized shape type: " + shapeType);
         }

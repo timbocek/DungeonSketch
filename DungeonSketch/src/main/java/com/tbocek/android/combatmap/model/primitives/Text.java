@@ -14,12 +14,13 @@ import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
 
 /**
- * Represents a short piece of text on the combat map.
+ * Represents a short piece of text on the combat map.  Extends the Information class with data
+ * needed to control the display of text.
  * 
  * @author Tim
  * 
  */
-public class Text extends Shape {
+public class Text extends Information {
 	
 	private static final float TEXT_SCALE_HACK_FACTOR = 20.0f;
 
@@ -34,21 +35,6 @@ public class Text extends Shape {
      * Short character string that is the type of the shape.
      */
     public static final String SHAPE_TYPE = "txt";
-
-    /**
-     * Whether this text object has a pending erase operation.
-     */
-    private boolean mErased;
-
-    /**
-     * Location of the lower left hand corner of the text.
-     */
-    private PointF mLocation;
-
-    /**
-     * Contents of the text field.
-     */
-    private String mText;
 
     /**
      * Text size, in world space. 1 point = 1 grid space, although this is not
@@ -142,30 +128,10 @@ public class Text extends Shape {
      *            Text object to copy parameters from.
      */
     public Text(Text copyFrom) {
-        this.mText = copyFrom.mText;
+        super(copyFrom);
         this.mTextSize = copyFrom.mTextSize;
         this.setColor(copyFrom.getColor());
         this.setWidth(copyFrom.getWidth());
-        this.getBoundingRectangle().clear();
-        this.getBoundingRectangle().updateBounds(
-                copyFrom.getBoundingRectangle());
-        this.mLocation = new PointF(copyFrom.mLocation.x, copyFrom.mLocation.y);
-    }
-
-    @Override
-    public void addPoint(PointF p) {
-        throw new RuntimeException("Adding point to text not supported.");
-    }
-
-    @Override
-    public boolean contains(PointF p) {
-        return this.getBoundingRectangle().contains(p);
-    }
-
-    @Override
-    protected Path createPath() {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override
@@ -193,37 +159,6 @@ public class Text extends Shape {
         }
     }
 
-    @Override
-    public void erase(PointF center, float radius) {
-        if (this.getBoundingRectangle().intersectsWithCircle(center, radius)) {
-            this.mErased = true;
-        }
-    }
-
-    /**
-     * @return The location of the lower left hand corner of the text.
-     */
-    public PointF getLocation() {
-        return this.mLocation;
-    }
-
-    @Override
-    protected Shape getMovedShape(float deltaX, float deltaY) {
-        Text t = new Text(this);
-
-        t.mLocation.x += deltaX;
-        t.mLocation.y += deltaY;
-        t.getBoundingRectangle().move(deltaX, deltaY);
-
-        return t;
-    }
-
-    /**
-     * @return The contents of the text object.
-     */
-    public String getText() {
-        return this.mText;
-    }
 
     /**
      * @return The size of the text in the text object.
@@ -235,23 +170,6 @@ public class Text extends Shape {
     @Override
     public boolean isValid() {
         return this.mText != null && this.mLocation != null;
-    }
-
-    @Override
-    public boolean needsOptimization() {
-        // TODO Auto-generated method stub
-        return this.mErased;
-    }
-
-    @Override
-    public List<Shape> removeErasedPoints() {
-        List<Shape> ret = new ArrayList<Shape>();
-        if (!this.mErased) {
-            ret.add(this);
-        } else {
-            this.mErased = false;
-        }
-        return ret;
     }
 
     @Override
@@ -279,7 +197,13 @@ public class Text extends Shape {
     }
 
     @Override
-    public boolean shouldDrawBelowGrid() {
-        return false; // Text should never draw below the grid.
+    protected Shape getMovedShape(float deltaX, float deltaY) {
+        Text t = new Text(this);
+
+        t.mLocation.x += deltaX;
+        t.mLocation.y += deltaY;
+        t.getBoundingRectangle().move(deltaX, deltaY);
+
+        return t;
     }
 }
