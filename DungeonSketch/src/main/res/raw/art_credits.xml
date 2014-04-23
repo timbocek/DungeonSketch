@@ -337,4 +337,32 @@
     	<token res="ashirox_infernal" tags="demon" url="http://ashirox.deviantart.com/art/Infernal-348274172"/>
     	<token res="ashirox_lava_mollusk" tags="monster,demon" url="http://ashirox.deviantart.com/art/Lava-Mollusk-408867181"/>
     </artist>
+    <artist name="bagoh2" copyright="CC-BY-SA 3.0" url="http://bagoh2.deviantart.com/">
+    	<token res="bagoh2_the_kapre_and_the_duwende" tags="humanoid,giant" url="http://bagoh2.deviantart.com/art/The-Kapre-and-the-duwende-283397479"/>
+    </artist>
+    <artist name="David Revoy" copyright="CC-BY-SA 3.0" url="http://deevad.deviantart.com/">
+    	<token res="deevad_vulcan" tags="elemental,monster,demon" url="http://deevad.deviantart.com/art/Vulcan-302916233"/>
+    </artist>
+    <artist name="FinalKnight6" copyright="CC-BY-SA 3.0" url="http://finalknight6.deviantart.com/">
+    	<token res="finalknight6_valkyrie" tags="humanoid,angel" url="http://finalknight6.deviantart.com/art/Valkyrie-141415119"/>
+    </artist>
+    <artist name="gvbn10" copyright="CC-BY-SA 3.0" url="http://gvbn10.deviantart.com/">
+    	<token res="gvbn10_gate_arms_demonic" tags="demon" url="http://gvbn10.deviantart.com/art/Gate-arms-demonic-265254956"/>
+    	<token res="gvbn10_stone_giant_and_his_master" tags="giant" url="http://gvbn10.deviantart.com/art/Stone-Giant-and-his-master-213945710"/>
+    </artist>
+    <artist name="Kagehiisa" copyright="CC-BY-SA 3.0" url="http://kagehiisa.deviantart.com/">
+    	<token res="kagehiisa_giant_scorpion" tags="animal" url="http://kagehiisa.deviantart.com/art/Giant-Scorpion-151137943"/>
+    </artist>
+    <artist name="Modexo001" copyright="CC-BY-SA 3.0" url="http://modexo001.deviantart.com/">
+    	<token res="modexo001_cyber_monk" tags="humanoid:male" url="http://modexo001.deviantart.com/art/Cyber-monk-417625990"/>
+    	<token res="modexo001_the_witcher" tags="humanoid:male" url="http://modexo001.deviantart.com/art/The-Witcher-396731802"/>
+    </artist>
+    <artist name="Skoeger" copyright="CC-BY-SA 3.0" url="http://skoeger.deviantart.com/">
+    	<token res="skoeger_goblin" tags="monster" url="http://skoeger.deviantart.com/art/Goblin-365506550"/>
+    </artist>
+    <artist name="TrungTH" copyright="CC-BY-SA 3.0" url="http://trungth.deviantart.com/">
+    	<token res="trungth_amphibian_nation_1" tags="monster,animal" url="http://trungth.deviantart.com/art/Amphibian-Nation-313854043"/>
+    	<token res="trungth_amphibian_nation_2" tags="monster,animal" url="http://trungth.deviantart.com/art/Amphibian-Nation-313854043"/>    	
+    </artist>
+    
 </art_credits>
