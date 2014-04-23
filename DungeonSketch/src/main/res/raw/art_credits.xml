@@ -254,19 +254,19 @@
 	    <token res="gauntes19" tags="humanoid:male"/>
 	    <token res="gauntes20" tags="humanoid:male"/>
 	    <token res="gauntes21" tags="demon"/>
-	    <token rew="gauntes22" tags="humanoid:male"/>
-	    <token rew="gauntes23" tags="humanoid:male,demon"/>
-	    <token rew="gauntes24" tags="humanoid:female"/>
-	    <token rew="gauntes25" tags="humanoid:female"/>
-	    <token rew="gauntes26" tags="humanoid:male"/>
-	    <token rew="gauntes27" tags="humanoid:female,demon"/>
-	    <token rew="gauntes28" tags="humanoid:female"/>
-	    <token rew="gauntes29" tags="humanoid:female"/>
-	    <token rew="gauntes30" tags="humanoid:female"/>
-	    <token rew="gauntes31_1" tags="humanoid:male"/>
-	    <token rew="gauntes31_2" tags="humanoid:male"/>
-	    <token rew="gauntes32" tags="humanoid:male"/>
-	    <token rew="gauntes33" tags="humanoid:female"/>
+	    <token res="gauntes22" tags="humanoid:male"/>
+	    <token res="gauntes23" tags="humanoid:male,demon"/>
+	    <token res="gauntes24" tags="humanoid:female"/>
+	    <token res="gauntes25" tags="humanoid:female"/>
+	    <token res="gauntes26" tags="humanoid:male"/>
+	    <token res="gauntes27" tags="humanoid:female,demon"/>
+	    <token res="gauntes28" tags="humanoid:female"/>
+	    <token res="gauntes29" tags="humanoid:female"/>
+	    <token res="gauntes30" tags="humanoid:female"/>
+	    <token res="gauntes31_1" tags="humanoid:male"/>
+	    <token res="gauntes31_2" tags="humanoid:male"/>
+	    <token res="gauntes32" tags="humanoid:male"/>
+	    <token res="gauntes33" tags="humanoid:female"/>
 	</artist>
 	<artist name="~bchart" copyright="Noncommercial use only.  Used with permission."
 	    url="http://www.bchart.deviantart.com/">
