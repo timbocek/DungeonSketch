@@ -328,4 +328,13 @@
     	<token res="amphitaman_steppenschrat" tags="monster" url="http://amphitaman.deviantart.com/art/Steppenschrat-159755480"/>
     	<token res="amphitaman_waldgeist" tags="monster" url="http://amphitaman.deviantart.com/art/Waldgeist-159757832"/>
     </artist>
+    <artist name="ArenSH" copyright="CC-BY-SA 3.0" url="http://arensh.deviantart.com/">
+    	<token res="arensh_golem" tags="monster,construct" url="http://arensh.deviantart.com/art/Golem-355241665"/>
+    </artist>
+    <artist name="AshiRox" copyright="CC-BY-SA 3.0" url="http://ashirox.deviantart.com/">
+    	<token res="ashirox_chimera" tags="monster,construct" url="http://ashirox.deviantart.com/art/Chimera-343468346"/>
+    	<token res="ashirox_dark_priest" tags="humanoid" url="http://ashirox.deviantart.com/art/Dark-Priest-373789595"/>
+    	<token res="ashirox_infernal" tags="demon" url="http://ashirox.deviantart.com/art/Infernal-348274172"/>
+    	<token res="ashirox_lava_mollusk" tags="monster,demon" url="http://ashirox.deviantart.com/art/Lava-Mollusk-408867181"/>
+    </artist>
 </art_credits>
