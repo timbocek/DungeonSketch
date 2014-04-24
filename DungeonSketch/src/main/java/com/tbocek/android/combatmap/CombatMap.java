@@ -59,6 +59,7 @@ import com.tbocek.dungeonsketch.R;
 import com.tbocek.dungeonsketch.BuildConfig;
 
 import static android.support.v7.view.ActionMode.*;
+import static com.tbocek.android.combatmap.view.DrawOptionsView.OnChangeDrawToolListener;
 
 /**
  * This is the main activity that allows the user to sketch a map, and place and
@@ -170,7 +171,7 @@ public final class CombatMap extends ActionBarActivity {
 	/**
 	 * Listener that fires when a new draw tool or color has been selected.
 	 */
-	private DrawOptionsView.OnChangeDrawToolListener mOnChangeDrawToolListener = new DrawOptionsView.OnChangeDrawToolListener() {
+	private OnChangeDrawToolListener mOnChangeDrawToolListener = new OnChangeDrawToolListener() {
 
 		@Override
 		public void onChangeMaskEditing(boolean editingMask) {
@@ -248,7 +249,12 @@ public final class CombatMap extends ActionBarActivity {
 
 		}
 
-		@Override
+        @Override
+        public void onChooseInfoTool() {
+            CombatMap.this.mCombatView.setInfoMode();
+        }
+
+        @Override
 		public void onChooseMoveTokenTool() {
 			CombatMap.this.mCombatView.setTokenManipulationMode();
 		}
@@ -1001,6 +1007,7 @@ public final class CombatMap extends ActionBarActivity {
 			this.setModePreference(manipulationMode);
 			this.mDrawOptionsView.setDefault();
 			this.mDrawOptionsView.setMaskToolVisibility(true);
+            this.mDrawOptionsView.setInformationButtonVisibility(false);
 			this.mDrawOptionsView
 					.setBackgroundImageButtonVisibility(true); // TODO: set to whether debug mode.
 			this.setTagSelectorVisibility(false);
@@ -1021,6 +1028,7 @@ public final class CombatMap extends ActionBarActivity {
 			this.mDrawOptionsView.setDefault();
 			this.mDrawOptionsView.setMaskToolVisibility(false);
 			this.mDrawOptionsView.setBackgroundImageButtonVisibility(false);
+            this.mDrawOptionsView.setInformationButtonVisibility(false);
 			this.setTagSelectorVisibility(false);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.GONE);
@@ -1037,6 +1045,7 @@ public final class CombatMap extends ActionBarActivity {
 			this.mDrawOptionsView.setDefault();
 			this.mDrawOptionsView.setMaskToolVisibility(true);
 			this.mDrawOptionsView.setBackgroundImageButtonVisibility(false);
+            this.mDrawOptionsView.setInformationButtonVisibility(true);
 			this.setTagSelectorVisibility(false);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.GONE);
@@ -1053,6 +1062,7 @@ public final class CombatMap extends ActionBarActivity {
 					.getBoolean("mask_tokens", false));
 			this.mBottomControlFrame.removeAllViews();
 			this.mBottomControlFrame.addView(this.mTokenSelector);
+            this.mDrawOptionsView.setInformationButtonVisibility(false);
 			this.setModePreference(manipulationMode);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.VISIBLE);

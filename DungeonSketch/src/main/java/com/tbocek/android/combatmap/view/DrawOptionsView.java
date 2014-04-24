@@ -93,6 +93,11 @@ public final class DrawOptionsView extends LinearLayout {
     private ImageToggleButton mMaskButton;
 
     /**
+     * Button used to select the Info tool (for placing on-map information hotspots).
+     */
+    private ImageToggleButton mInfoButton;
+
+    /**
      * The listener that is called when something about the current draw tool
      * changes.
      */
@@ -135,6 +140,7 @@ public final class DrawOptionsView extends LinearLayout {
         this.createAndAddRectangleButton();
         this.createAndAddCircleButton();
         this.createAndAddTextButton();
+        this.createAndAddInfoButton();
 
         this.mBackgroundImageButton = this.createAndAddBackgroundImageButton();
         this.createAndAddSeperator();
@@ -482,6 +488,31 @@ public final class DrawOptionsView extends LinearLayout {
     }
 
     /**
+     * Creates a button to switch to draw text tool and adds it to the view.
+     */
+    protected void createAndAddInfoButton() {
+        final ImageToggleButton button =
+                new ImageToggleButton(this.getContext());
+
+        button.setImageResource(R.drawable.info);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                DrawOptionsView.this.mOnChangeDrawToolListener
+                        .onChooseInfoTool();
+                DrawOptionsView.this.mToolsGroup.untoggle();
+                DrawOptionsView.this.mColorGroup
+                        .setGroupVisibility(View.GONE);
+                DrawOptionsView.this.mLineWidthGroup
+                        .setGroupVisibility(View.GONE);
+                button.setToggled(true);
+            }
+        });
+        this.mLayout.addView(button);
+        this.mToolsGroup.add(button);
+    }
+
+    /**
      * Creates a button to switch to the move token tool, and adds it to the view.
      */
     protected void createAndAddMoveTokenButton() {
@@ -526,6 +557,13 @@ public final class DrawOptionsView extends LinearLayout {
                 ? View.VISIBLE
                 : View.GONE);
         if (!visible && this.mBackgroundImageButton.isToggled()) {
+            this.mToolsGroup.forceDefault();
+        }
+    }
+
+    public void setInformationButtonVisibility(boolean visible) {
+        this.mInfoButton.setVisibility((visible ? View.VISIBLE : View.GONE));
+        if (!visible && this.mInfoButton.isToggled()) {
             this.mToolsGroup.forceDefault();
         }
     }
@@ -670,6 +708,10 @@ public final class DrawOptionsView extends LinearLayout {
 		@Override
 		public void onChooseMoveTokenTool() {
 		}
+
+        @Override
+        public void onChooseInfoTool() {
+        }
     }
 
     /**
@@ -745,6 +787,11 @@ public final class DrawOptionsView extends LinearLayout {
          * Called when the text draw tool is chosen.
          */
         void onChooseTextTool();
+
+        /**
+         * Called when the "info spot" tool is chosen.
+         */
+        void onChooseInfoTool();
     }
 
     /**

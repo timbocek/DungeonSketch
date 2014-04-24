@@ -67,8 +67,9 @@ import com.tbocek.android.combatmap.view.interaction.ZoomPanInteractionMode;
  */
 public final class CombatView extends SurfaceView {
     private static final String TAG = "CombatView";
-	
-	/**
+
+
+    /**
 	 * A simple 3-state machine to make sure that full-screen draws performed during
 	 * input processing are batched, and performed once at the very end of the draw.
 	 * @author Tim
@@ -952,6 +953,10 @@ public final class CombatView extends SurfaceView {
      */
     public void setTextMode() {
         this.setInteractionMode(new DrawTextInteractionMode(this));
+    }
+
+
+    public void setInfoMode() {
     }
 
     /**
