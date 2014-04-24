@@ -1,9 +1,16 @@
 package com.tbocek.android.combatmap.model.primitives;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Path;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
+import com.tbocek.dungeonsketch.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +26,12 @@ import java.util.List;
  * Created by Tim on 4/22/2014.
  */
 public class Information extends Shape {
+
+    private static Bitmap sInfoBitmap;
+    public static void loadInfoBitmap(Context c) {
+        sInfoBitmap = BitmapFactory.decodeResource(c.getResources(), R.drawable.info);
+    }
+
     public static final String SHAPE_TYPE = "inf";
     /**
      * Whether this text object has a pending erase operation.
@@ -150,5 +163,14 @@ public class Information extends Shape {
      */
     public String getText() {
         return this.mText;
+    }
+
+    @Override
+    public void draw(Canvas c) {
+        if (sInfoBitmap != null) {
+            c.drawBitmap(sInfoBitmap, new Rect(0,0,sInfoBitmap.getWidth(), sInfoBitmap.getHeight()),
+                    new Rect((int)this.getBoundingRectangle().getXMin(), (int)this.getBoundingRectangle().getYMin(),
+                             (int)this.getBoundingRectangle().getXMax(), (int)this.getBoundingRectangle().getYMax()), null);
+        }
     }
 }

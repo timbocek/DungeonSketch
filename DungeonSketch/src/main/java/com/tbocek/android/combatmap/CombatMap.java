@@ -46,6 +46,7 @@ import com.tbocek.android.combatmap.model.MapDrawer.FogOfWarMode;
 import com.tbocek.android.combatmap.model.MultiSelectManager;
 import com.tbocek.android.combatmap.model.primitives.BackgroundImage;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
+import com.tbocek.android.combatmap.model.primitives.Information;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Text;
 import com.tbocek.android.combatmap.model.primitives.Util;
@@ -535,7 +536,10 @@ public final class CombatMap extends ActionBarActivity {
 	}
 	
 	private void initializeUi() {
-		// Set up the tabs
+        // TODO: get this off the main thread
+        Information.loadInfoBitmap(this);
+
+        // Set up the tabs
 		this.setContentView(R.layout.combat_map_layout);
 		ActionBar actionBar = this.getSupportActionBar();
 		this.mTabManager = new TabManager(actionBar, this);
