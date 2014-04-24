@@ -509,7 +509,11 @@ public final class DrawOptionsView extends LinearLayout {
             }
         });
         this.mLayout.addView(button);
+        button.getLayoutParams().width = (int) Util.convertDpToPixel(80, getContext());
+        button.getLayoutParams().height = (int) Util.convertDpToPixel(80, getContext());
+        button.setScaleType(ImageView.ScaleType.FIT_XY);
         this.mToolsGroup.add(button);
+        mInfoButton = button;
     }
 
     /**
