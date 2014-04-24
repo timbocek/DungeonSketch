@@ -32,7 +32,7 @@ public final class ImageToggleButton extends ImageButton {
      */
     private boolean mToggled = false;
 
-    private Paint mBorderPaint;
+    private static Paint sBorderPaint;
 
     /**
      * Creates a new ImageToggleButton in the given context.
@@ -42,19 +42,26 @@ public final class ImageToggleButton extends ImageButton {
      */
     public ImageToggleButton(final Context context) {
         super(context);
+        createBorderPaint();
     }
 
     public ImageToggleButton(Context context, AttributeSet attrs) {
         super(context, attrs);
+        createBorderPaint();
     }
 
     public ImageToggleButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        createBorderPaint();
+    }
 
-        mBorderPaint = new Paint();
-        mBorderPaint.setColor(TOGGLE_BORDER_COLOR);
-        mBorderPaint.setStrokeWidth(TOGGLE_BORDER_WIDTH);
-        mBorderPaint.setStyle(Style.STROKE);
+    private void createBorderPaint() {
+        if (sBorderPaint == null) {
+            sBorderPaint = new Paint();
+            sBorderPaint.setColor(TOGGLE_BORDER_COLOR);
+            sBorderPaint.setStrokeWidth(TOGGLE_BORDER_WIDTH);
+            sBorderPaint.setStyle(Style.STROKE);
+        }
     }
 
     /**
@@ -69,7 +76,7 @@ public final class ImageToggleButton extends ImageButton {
         super.onDraw(c);
 
         if (this.mToggled) {
-            c.drawRect(0, 0, this.getWidth(), this.getHeight(), mBorderPaint);
+            c.drawRect(0, 0, this.getWidth(), this.getHeight(), sBorderPaint);
         }
     }
 
