@@ -43,11 +43,13 @@ import com.tbocek.android.combatmap.model.UndoRedoTarget;
 import com.tbocek.android.combatmap.model.primitives.BackgroundImage;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
+import com.tbocek.android.combatmap.model.primitives.Information;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Shape;
 import com.tbocek.android.combatmap.model.primitives.Text;
 import com.tbocek.android.combatmap.view.interaction.BackgroundImageInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CombatViewInteractionMode;
+import com.tbocek.android.combatmap.view.interaction.CreateInfoInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.DrawTextInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.EraserInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.FingerDrawInteractionMode;
@@ -67,7 +69,6 @@ import com.tbocek.android.combatmap.view.interaction.ZoomPanInteractionMode;
  */
 public final class CombatView extends SurfaceView {
     private static final String TAG = "CombatView";
-
 
     /**
 	 * A simple 3-state machine to make sure that full-screen draws performed during
@@ -403,6 +404,12 @@ public final class CombatView extends SurfaceView {
                 this.getWorldSpaceTransformer());
         this.refreshMap();
     }
+
+    public void createNewInfo(PointF newObjectLocationWorldSpace, String text, float size) {
+        this.mActiveLines.createInfo(text, newObjectLocationWorldSpace);
+        this.refreshMap();
+    }
+
 
     /**
      * Draws the contents of the view to the given canvas.
@@ -764,6 +771,12 @@ public final class CombatView extends SurfaceView {
         this.mActivityRequestListener.requestEditTextObject(t);
     }
 
+
+    public void requestEditInfoObject(Information t) {
+        this.mActivityRequestListener.requestEditInfoObject(t);
+    }
+
+
     /**
      * Forwards a request to create a text object to the parent activity.
      * 
@@ -776,6 +789,15 @@ public final class CombatView extends SurfaceView {
             .requestNewTextEntry(newTextLocationWorldSpace);
         }
     }
+
+
+    public void requestNewInfoEntry(PointF pointF) {
+        if (this.mActivityRequestListener != null) {
+            this.mActivityRequestListener
+                    .requestNewInfoEntry(pointF);
+        }
+    }
+
 
     /**
      * Sets whether tokens are manipulatable.
@@ -956,8 +978,7 @@ public final class CombatView extends SurfaceView {
     }
 
 
-    public void setInfoMode() {
-    }
+    public void setInfoMode() { this.setInteractionMode(new CreateInfoInteractionMode(this)); }
 
     /**
      * Sets the interaction mode to dragging tokens; this will zoom and pan when
@@ -1118,6 +1139,14 @@ public final class CombatView extends SurfaceView {
          *            Location to place the new image in world space.
          */
         void requestNewBackgroundImage(PointF locationWorldSpace);
+
+        /**
+         * Called when a new information location is requested.
+         * @param locationWorldSpace
+         */
+        void requestNewInfoEntry(PointF locationWorldSpace);
+
+        void requestEditInfoObject(Information information);
     }
 
     /**

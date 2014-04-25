@@ -69,27 +69,33 @@ import static com.tbocek.android.combatmap.view.DrawOptionsView.OnChangeDrawTool
  * @author Tim Bocek
  */
 public final class CombatMap extends ActionBarActivity {
+
+    /**
+     * Dialog ID to use for the save file dialog.
+     */
+    private static final int DIALOG_ID_SAVE = 0;
+
 	/**
 	 * Dialog ID to use for the draw text dialog.
 	 */
 	private static final int DIALOG_ID_DRAW_TEXT = 1;
 
+    /**
+     * Dialog ID to use when confirming a save file name, in case the name would
+     * overwrite a different map file.
+     */
+    private static final int DIALOG_ID_SAVE_NAME_CONFIRM = 2;
+
+    private static final int DIALOG_ID_GRID_PROPERTIES = 3;
+
 	private static final int DIALOG_ID_EXPORT = 4;
 
-	private static final int DIALOG_ID_GRID_PROPERTIES = 3;
+    /**
+     * Dialog ID to use when creating or editing an information location.
+     */
+    private static final int DIALOG_ID_CREATE_INFO_LOCATION = 5;
 
-	/**
-	 * Dialog ID to use for the save file dialog.
-	 */
-	private static final int DIALOG_ID_SAVE = 0;
-
-	/**
-	 * Dialog ID to use when confirming a save file name, in case the name would
-	 * overwrite a different map file.
-	 */
-	private static final int DIALOG_ID_SAVE_NAME_CONFIRM = 2;
-
-	/**
+    /**
 	 * The current map.
 	 */
 	private static MapData mData;
@@ -148,7 +154,7 @@ public final class CombatMap extends ActionBarActivity {
 	 * The text object that the edit dialog is currently editing, or null if a
 	 * new text object is being created.
 	 */
-	private Text mEditedTextObject;
+	private Information mEditedTextObject;
 
 	/**
 	 * Whether the control tray on the bottom of the screen is expanded.
@@ -288,7 +294,20 @@ public final class CombatMap extends ActionBarActivity {
 					REQUEST_PICK_BACKGROUND_IMAGE);
 		}
 
-	};
+        @Override
+        public void requestNewInfoEntry(PointF locationWorldSpace) {
+            CombatMap.this.mEditedTextObject = null;
+            CombatMap.this.mNewObjectLocationWorldSpace = locationWorldSpace;
+            CombatMap.this.showDialog(DIALOG_ID_CREATE_INFO_LOCATION);
+        }
+
+        @Override
+        public void requestEditInfoObject(Information information) {
+            CombatMap.this.mEditedTextObject = information;
+            CombatMap.this.showDialog(DIALOG_ID_CREATE_INFO_LOCATION);
+        }
+
+    };
 	
 	private TagNavigator.TagSelectedListener mTagSelectedListener = new TagNavigator.TagSelectedListener() {
 		
@@ -716,7 +735,7 @@ public final class CombatMap extends ActionBarActivity {
 							.getString(R.string.save));
 		case DIALOG_ID_DRAW_TEXT:
 
-			FontDialog d = new FontDialog(this,
+			return new FontDialog(this,
 					new FontDialog.OnTextConfirmedListener() {
 						@Override
 						public void onTextConfirmed(final String text,
@@ -739,8 +758,32 @@ public final class CombatMap extends ActionBarActivity {
 							}
 						}
 					});
+            case DIALOG_ID_CREATE_INFO_LOCATION:
 
-			return d;
+                return new FontDialog(this,
+                        new FontDialog.OnTextConfirmedListener() {
+                            @Override
+                            public void onTextConfirmed(final String text,
+                                                        final float size) {
+                                if (CombatMap.this.mEditedTextObject == null) {
+                                    CombatMap.this.mCombatView
+                                            .createNewInfo(
+                                                    CombatMap.this.mNewObjectLocationWorldSpace,
+                                                    text, size);
+                                } else {
+                                    CombatMap.this.mCombatView
+                                            .getActiveLines()
+                                            .editInfo(
+                                                    CombatMap.this.mEditedTextObject,
+                                                    text,
+                                                    size,
+                                                    CombatMap.this.mCombatView
+                                                            .getWorldSpaceTransformer()
+                                            );
+                                    CombatMap.this.mCombatView.refreshMap();
+                                }
+                            }
+                        });
 		case DIALOG_ID_SAVE_NAME_CONFIRM:
 			return new AlertDialog.Builder(CombatMap.this)
 					.setMessage("Map already exists.  Save over it?")
@@ -900,13 +943,22 @@ public final class CombatMap extends ActionBarActivity {
 		case DIALOG_ID_DRAW_TEXT:
 			FontDialog fd = (FontDialog) dialog;
 			if (this.mEditedTextObject != null) {
+
 				fd.populateFields(this.mEditedTextObject.getText(),
-						this.mEditedTextObject.getTextSize());
+                        ((Text)this.mEditedTextObject).getTextSize());
 			} else {
 				fd.clearText();
 			}
 			break;
-		case DIALOG_ID_SAVE_NAME_CONFIRM:
+        case DIALOG_ID_CREATE_INFO_LOCATION:
+            FontDialog fd2 = (FontDialog) dialog;
+            if (this.mEditedTextObject != null) {
+                fd2.populateFields(this.mEditedTextObject.getText(), 0);
+            } else {
+                fd2.clearText();
+            }
+		    break;
+        case DIALOG_ID_SAVE_NAME_CONFIRM:
 			AlertDialog ad = (AlertDialog) dialog;
 			ad.setMessage("There is already a map named \""
 					+ this.mAttemptedMapName + "\".  Save over it?");

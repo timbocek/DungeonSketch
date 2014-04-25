@@ -19,6 +19,7 @@ import com.tbocek.android.combatmap.model.primitives.BoundingRectangle;
 import com.tbocek.android.combatmap.model.primitives.Circle;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.FreehandLine;
+import com.tbocek.android.combatmap.model.primitives.Information;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Rectangle;
 import com.tbocek.android.combatmap.model.primitives.Shape;
@@ -205,6 +206,17 @@ public final class LineCollection implements UndoRedoTarget {
         return t;
     }
 
+
+
+    public Shape createInfo(String text, PointF newObjectLocationWorldSpace) {
+        Information m = new Information(newObjectLocationWorldSpace, text);
+        Command c = new Command(this);
+        c.addCreatedShape(m);
+        this.mCommandHistory.execute(c);
+        return m;
+    }
+
+
     /**
      * Deletes the given shape.
      * 
@@ -301,24 +313,42 @@ public final class LineCollection implements UndoRedoTarget {
 
     /**
      * Modifies the given text object's contents and font.
-     * 
-     * @param editedTextObject
+     *  @param editedTextObject
      *            Text object to modify.
      * @param text
      *            The new text.
      * @param size
      *            The new font size.
      * @param transformer
-     *            World to screen space transformer.
      */
-    public void editText(Text editedTextObject, String text, float size,
-            CoordinateTransformer transformer) {
+    public void editText(Information editedTextObject, String text, float size,
+                         CoordinateTransformer transformer) {
         Text newText =
                 new Text(text, size, editedTextObject.getColor(),
                         editedTextObject.getWidth(),
                         editedTextObject.getLocation(), transformer);
         Command c = new Command(this);
         c.addCreatedShape(newText);
+        c.addDeletedShape(editedTextObject);
+        this.mCommandHistory.execute(c);
+    }
+
+    /**
+     * Modifies the given text object's contents and font.
+     *  @param editedTextObject
+     *            Text object to modify.
+     * @param text
+     *            The new text.
+     * @param size
+     *            The new font size.
+     * @param transformer
+     */
+    public void editInfo(Information editedTextObject, String text, float size,
+                         CoordinateTransformer transformer) {
+        Information newInfo =
+                new Information(editedTextObject.getLocation(), text);
+        Command c = new Command(this);
+        c.addCreatedShape(newInfo);
         c.addDeletedShape(editedTextObject);
         this.mCommandHistory.execute(c);
     }

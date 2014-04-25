@@ -47,13 +47,14 @@ public class Information extends Shape {
     protected String mText;
 
     public Information() {
-       this(new PointF(0,0));
+       this(new PointF(0,0), "");
     }
 
-    public Information(PointF location) {
+    public Information(PointF location, String text) {
         this.getBoundingRectangle().updateBounds(location);
         this.getBoundingRectangle().updateBounds(new PointF(
                 location.x + 1, location.y + 1));
+        this.mText = text;
     }
 
     /**
