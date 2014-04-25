@@ -36,6 +36,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -186,6 +187,7 @@ public final class CombatMap extends ActionBarActivity {
 
 		@Override
 		public void onChooseCircleTool() {
+            mSelectedToolTextView.setText("Draw Circle");
 			CombatMap.this.mCombatView.setDrawMode();
 			CombatMap.this.mCombatView
 					.setNewLineStyle(CombatView.NewLineStyle.CIRCLE);
@@ -198,11 +200,13 @@ public final class CombatMap extends ActionBarActivity {
 
 		@Override
 		public void onChooseEraser() {
-			CombatMap.this.mCombatView.setEraseMode();
+			mSelectedToolTextView.setText("Eraser");
+            CombatMap.this.mCombatView.setEraseMode();
 		}
 
 		@Override
 		public void onChooseFreeHandTool() {
+            mSelectedToolTextView.setText("Draw Freehand Line");
 			CombatMap.this.mCombatView.setDrawMode();
 			CombatMap.this.mCombatView
 					.setNewLineStyle(CombatView.NewLineStyle.FREEHAND);
@@ -210,16 +214,19 @@ public final class CombatMap extends ActionBarActivity {
 		
 		@Override
 		public void onChooseImageTool() {
-			CombatMap.this.mCombatView.setBackgroundImageMode();
+			mSelectedToolTextView.setText("Add Background Image");
+            CombatMap.this.mCombatView.setBackgroundImageMode();
 		}
 
 		@Override
 		public void onChooseMaskEraser() {
+            mSelectedToolTextView.setText("Eraser");
 			CombatMap.this.mCombatView.setFogOfWarEraseMode();
 		}
 
 		@Override
 		public void onChooseMaskTool() {
+            mSelectedToolTextView.setText("Draw Mask");
 			CombatMap.this.mCombatView.setFogOfWarDrawMode();
 			CombatMap.this.mCombatView
 					.setNewLineStyle(CombatView.NewLineStyle.FREEHAND);
@@ -227,11 +234,13 @@ public final class CombatMap extends ActionBarActivity {
 
 		@Override
 		public void onChoosePanTool() {
+            mSelectedToolTextView.setText("Zoom and Pan");
 			CombatMap.this.mCombatView.setZoomPanMode();
 		}
 
 		@Override
 		public void onChooseRectangleTool() {
+            mSelectedToolTextView.setText("Draw Rectangle");
 			CombatMap.this.mCombatView.setDrawMode();
 			CombatMap.this.mCombatView
 					.setNewLineStyle(CombatView.NewLineStyle.RECTANGLE);
@@ -239,6 +248,7 @@ public final class CombatMap extends ActionBarActivity {
 
 		@Override
 		public void onChooseStraightLineTool() {
+            mSelectedToolTextView.setText("Draw Straight Line");
 			CombatMap.this.mCombatView.setDrawMode();
 			CombatMap.this.mCombatView
 					.setNewLineStyle(CombatView.NewLineStyle.STRAIGHT);
@@ -251,12 +261,14 @@ public final class CombatMap extends ActionBarActivity {
 
 		@Override
 		public void onChooseTextTool() {
+            mSelectedToolTextView.setText("Add Text To Map");
 			CombatMap.this.mCombatView.setTextMode();
 
 		}
 
         @Override
         public void onChooseInfoTool() {
+            mSelectedToolTextView.setText("Add Information Point");
             CombatMap.this.mCombatView.setInfoMode();
         }
 
@@ -432,6 +444,8 @@ public final class CombatMap extends ActionBarActivity {
 
 	private Button mDeployTokensButton;
     private TokenImageManager.Loader mLoader;
+
+    private TextView mSelectedToolTextView;
 
     /**
 	 * Given a combat mode, returns the snap to grid preference name associated
@@ -617,6 +631,7 @@ public final class CombatMap extends ActionBarActivity {
 				.findViewById(R.id.popupControlAreaFrame);
 		this.mInnerPopupFrame = (FrameLayout) this
 				.findViewById(R.id.popupControlAreaInnerFrame);
+        this.mSelectedToolTextView = (TextView) this.findViewById(R.id.selectedToolText);
 		
 		this.mTagNavigator = new TagNavigator(this);
 		this.mTagNavigator.setLayoutParams(new FrameLayout.LayoutParams(
@@ -1065,6 +1080,7 @@ public final class CombatMap extends ActionBarActivity {
 			this.setTagSelectorVisibility(false);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.GONE);
+            this.mSelectedToolTextView.setVisibility(View.VISIBLE);
 			this.mCombatView.setEditingLayerMask(this.mDrawOptionsView.isMaskToolSelected());
 			return;
 		case MODE_DRAW_ANNOTATIONS:
@@ -1084,6 +1100,7 @@ public final class CombatMap extends ActionBarActivity {
 			this.setTagSelectorVisibility(false);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.GONE);
+            this.mSelectedToolTextView.setVisibility(View.VISIBLE);
 			this.mCombatView.setEditingLayerMask(false);
 			return;
 		case MODE_DRAW_GM_NOTES:
@@ -1101,6 +1118,7 @@ public final class CombatMap extends ActionBarActivity {
 			this.setTagSelectorVisibility(false);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.GONE);
+            this.mSelectedToolTextView.setVisibility(View.VISIBLE);
 			this.mCombatView.setEditingLayerMask(this.mDrawOptionsView.isMaskToolSelected());
 			return;
 		case MODE_TOKENS:
@@ -1118,6 +1136,7 @@ public final class CombatMap extends ActionBarActivity {
 			this.setModePreference(manipulationMode);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.VISIBLE);
+            this.mSelectedToolTextView.setVisibility(View.GONE);
 			this.mCombatView.setEditingLayerMask(false);
 			return;
 		default:

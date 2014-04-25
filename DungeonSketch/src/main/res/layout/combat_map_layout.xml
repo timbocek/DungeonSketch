@@ -51,6 +51,13 @@
         android:src="@drawable/vertical_contract">
     </ImageButton>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottomControlAreaExpandButton"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/selectedToolText"/>
+
     <HorizontalScrollView
         android:id="@+id/legacyActionBar"
         android:layout_width="fill_parent"
