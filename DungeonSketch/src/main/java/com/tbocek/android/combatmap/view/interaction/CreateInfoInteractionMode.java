@@ -28,20 +28,6 @@ public class CreateInfoInteractionMode extends BaseDrawInteractionMode  {
         Text.shouldDrawBoundingBoxes(false);
     }
 
-    @Override
-    public void onLongPress(final MotionEvent e) {
-        // TODO(deupe)
-        PointF p =
-                this.getView()
-                        .getWorldSpaceTransformer()
-                        .screenSpaceToWorldSpace(new PointF(e.getX(), e.getY()));
-
-        Shape t = findShape(p);
-        if (t != null) {
-            this.getView().requestEditInfoObject((Information) t);
-        }
-    }
-
     // Drag to move text.
     @Override
     public boolean onScroll(final MotionEvent arg0, final MotionEvent arg1,

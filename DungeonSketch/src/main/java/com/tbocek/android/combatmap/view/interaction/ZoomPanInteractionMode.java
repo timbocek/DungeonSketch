@@ -3,6 +3,9 @@ package com.tbocek.android.combatmap.view.interaction;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.tbocek.android.combatmap.model.primitives.Information;
+import com.tbocek.android.combatmap.model.primitives.PointF;
+import com.tbocek.android.combatmap.model.primitives.Shape;
 import com.tbocek.android.combatmap.view.CombatView;
 
 /**
@@ -35,5 +38,25 @@ public class ZoomPanInteractionMode extends BaseDrawInteractionMode {
     		this.getView().scroll(-distanceX, -distanceY);
     	}
         return true;
+    }
+
+
+    @Override
+    /**
+     * Long-pressing information points should open them regardless of the interaction mode used.
+     */
+    public void onLongPress(final MotionEvent e) {
+        // TODO(deupe)
+        PointF p =
+                this.getView()
+                        .getWorldSpaceTransformer()
+                        .screenSpaceToWorldSpace(new PointF(e.getX(), e.getY()));
+
+        Shape t = this.getView().getActiveLines().findShape(p, Information.class);
+        if (t != null) {
+            this.getView().requestEditInfoObject((Information) t);
+        } else {
+            super.onLongPress(e);
+        }
     }
 }

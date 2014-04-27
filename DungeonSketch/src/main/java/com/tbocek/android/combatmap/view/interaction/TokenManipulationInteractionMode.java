@@ -306,6 +306,8 @@ public final class TokenManipulationInteractionMode extends
             		getView().getContext()));
             this.getView().refreshMap(redrawRect.toRectF(),
 	                  this.getView().getGridSpaceTransformer());
+        } else {
+            super.onLongPress(e);
         }
     }
     

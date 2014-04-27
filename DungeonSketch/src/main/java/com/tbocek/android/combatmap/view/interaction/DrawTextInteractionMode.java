@@ -35,6 +35,8 @@ public class DrawTextInteractionMode extends CreateInfoInteractionMode {
         Shape t = findShape(p);
         if (t != null) {
             this.getView().requestEditTextObject((Text) t);
+        } else {
+            super.onLongPress(e);
         }
     }
 
