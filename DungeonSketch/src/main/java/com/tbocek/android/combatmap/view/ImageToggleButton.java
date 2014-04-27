@@ -34,6 +34,8 @@ public final class ImageToggleButton extends ImageButton {
 
     private static Paint sBorderPaint;
 
+    private boolean mMaintainAspectRatio;
+
     /**
      * Creates a new ImageToggleButton in the given context.
      * 
@@ -80,6 +82,16 @@ public final class ImageToggleButton extends ImageButton {
         }
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (!mMaintainAspectRatio) super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+        int newSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+        super.onMeasure(newSpec, newSpec);
+
+    }
+
     /**
      * Sets the toggled state.
      * 
@@ -89,5 +101,9 @@ public final class ImageToggleButton extends ImageButton {
     public void setToggled(final boolean toggled) {
         this.mToggled = toggled;
         this.invalidate();
+    }
+
+    public void setMaintainAspectRatio(boolean maintainAspectRatio) {
+        mMaintainAspectRatio = maintainAspectRatio;
     }
 }

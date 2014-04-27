@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -162,6 +163,16 @@ public final class DrawOptionsView extends LinearLayout {
         }
     }
 
+    private ImageToggleButton createAndAddButton() {
+        ImageToggleButton b = new ImageToggleButton(this.getContext());
+        mLayout.addView(b);
+        b.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+        b.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        b.setMaintainAspectRatio(true);
+
+        return b;
+    }
+
     /**
      * Adds a button that selects the given color as the current color.
      * 
@@ -169,20 +180,14 @@ public final class DrawOptionsView extends LinearLayout {
      *            The color that this button will select.
      */
     private void addColorButton(final int color) {
-        ImageToggleButton b = new ImageToggleButton(this.getContext());
+        ImageToggleButton b = createAndAddButton();
         b.setOnClickListener(new ColorListener(color));
-        b.setLayoutParams(new LinearLayout.LayoutParams(
-                (int) (COLOR_BUTTON_SIZE * this.getResources()
-                        .getDisplayMetrics().density),
-                (int) (COLOR_BUTTON_SIZE * this.getResources()
-                        .getDisplayMetrics().density)));
         Drawable pencil =
                 this.getContext().getResources()
                         .getDrawable(R.drawable.pencilbw);
         b.setImageDrawable(pencil);
         b.setColorFilter(new PorterDuffColorFilter(color,
                 PorterDuff.Mode.LIGHTEN));
-        this.mLayout.addView(b);
         this.mColorGroup.add(b);
     }
 
@@ -196,10 +201,9 @@ public final class DrawOptionsView extends LinearLayout {
      *            ID of the image to draw on this button.
      */
     private void addStrokeWidthButton(final float f, final int resourceId) {
-        ImageToggleButton b = new ImageToggleButton(this.getContext());
+        ImageToggleButton b = createAndAddButton();
         b.setImageResource(resourceId);
         b.setOnClickListener(new StrokeWidthListener(f));
-        this.mLayout.addView(b);
         this.mLineWidthGroup.add(b);
     }
 
@@ -233,8 +237,7 @@ public final class DrawOptionsView extends LinearLayout {
      * Creates a button to switch to draw circle mode and adds it to the view.
      */
     protected void createAndAddCircleButton() {
-        final ImageToggleButton button =
-                new ImageToggleButton(this.getContext());
+        final ImageToggleButton button = createAndAddButton();
         button.setImageResource(R.drawable.circle);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,7 +254,6 @@ public final class DrawOptionsView extends LinearLayout {
                 DrawOptionsView.this.mColorGroup.maybeSelectDefault();
             }
         });
-        this.mLayout.addView(button);
         this.mToolsGroup.add(button);
     }
 
@@ -259,8 +261,7 @@ public final class DrawOptionsView extends LinearLayout {
      * Creates the eraser button and adds it to the view.
      */
     protected void createAndAddEraserButton() {
-        final ImageToggleButton eraserButton =
-                new ImageToggleButton(this.getContext());
+        final ImageToggleButton eraserButton = createAndAddButton();
         eraserButton.setImageResource(R.drawable.eraser);
         eraserButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -281,7 +282,6 @@ public final class DrawOptionsView extends LinearLayout {
 
             }
         });
-        this.mLayout.addView(eraserButton);
         this.mToolsGroup.add(eraserButton);
         this.mToolsInMaskGroup.add(eraserButton);
     }
@@ -290,10 +290,9 @@ public final class DrawOptionsView extends LinearLayout {
 	 *
 	 */
     protected void createAndAddFillButton() {
-        ImageToggleButton b = new ImageToggleButton(this.getContext());
+        ImageToggleButton b = createAndAddButton();
         b.setImageResource(R.drawable.freehand_shape);
         b.setOnClickListener(new StrokeWidthListener(Float.POSITIVE_INFINITY));
-        this.mLayout.addView(b);
         this.mLineWidthGroup.add(b);
         this.mLineWidthRegionGroup.add(b);
     }
@@ -303,7 +302,7 @@ public final class DrawOptionsView extends LinearLayout {
      */
     protected void createAndAddFreehandLineButton() {
         final ImageToggleButton button =
-                new ImageToggleButton(this.getContext());
+                createAndAddButton();
         button.setImageResource(R.drawable.line_freehand);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,7 +324,6 @@ public final class DrawOptionsView extends LinearLayout {
                 button.setToggled(true);
             }
         });
-        this.mLayout.addView(button);
         this.mToolsGroup.add(button);
         this.mToolsInMaskGroup.add(button);
     }
@@ -337,7 +335,7 @@ public final class DrawOptionsView extends LinearLayout {
      */
     private ImageToggleButton createAndAddMaskButton() {
         final ImageToggleButton maskButton =
-                new ImageToggleButton(this.getContext());
+                createAndAddButton();
         maskButton.setImageResource(R.drawable.mask);
         maskButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -366,7 +364,6 @@ public final class DrawOptionsView extends LinearLayout {
                 }
             }
         });
-        this.mLayout.addView(maskButton);
         return maskButton;
     }
 
@@ -374,8 +371,11 @@ public final class DrawOptionsView extends LinearLayout {
      * Creates the pan button, adds it to the view, and sets it as the default.
      */
     protected void createAndAddPanButton() {
-        final ImageToggleButton panButton =
-                new ImageToggleButton(this.getContext());
+        final ImageToggleButton panButton = new ImageToggleButton(this.getContext());
+        this.addView(panButton);
+        panButton.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+        panButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        panButton.setMaintainAspectRatio(true);
         panButton.setImageResource(R.drawable.transform_move);
         panButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -389,7 +389,6 @@ public final class DrawOptionsView extends LinearLayout {
                 panButton.setToggled(true);
             }
         });
-        this.addView(panButton);
         this.mToolsGroup.add(panButton);
         this.mToolsInMaskGroup.add(panButton);
     }
@@ -400,7 +399,7 @@ public final class DrawOptionsView extends LinearLayout {
      */
     protected void createAndAddRectangleButton() {
         final ImageToggleButton button =
-                new ImageToggleButton(this.getContext());
+                createAndAddButton();
         button.setImageResource(R.drawable.rectangle);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -417,7 +416,6 @@ public final class DrawOptionsView extends LinearLayout {
                 DrawOptionsView.this.mColorGroup.maybeSelectDefault();
             }
         });
-        this.mLayout.addView(button);
         this.mToolsGroup.add(button);
     }
 
@@ -437,7 +435,7 @@ public final class DrawOptionsView extends LinearLayout {
      */
     protected void createAndAddStraightLineButton() {
         final ImageToggleButton button =
-                new ImageToggleButton(this.getContext());
+                createAndAddButton();
         button.setImageResource(R.drawable.line_straight);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -456,7 +454,6 @@ public final class DrawOptionsView extends LinearLayout {
                 button.setToggled(true);
             }
         });
-        this.mLayout.addView(button);
         this.mToolsGroup.add(button);
     }
 
@@ -465,7 +462,7 @@ public final class DrawOptionsView extends LinearLayout {
      */
     protected void createAndAddTextButton() {
         final ImageToggleButton button =
-                new ImageToggleButton(this.getContext());
+                createAndAddButton();
 
         button.setImageResource(R.drawable.draw_text);
         button.setOnClickListener(new View.OnClickListener() {
@@ -483,7 +480,6 @@ public final class DrawOptionsView extends LinearLayout {
                 DrawOptionsView.this.mColorGroup.maybeSelectDefault();
             }
         });
-        this.mLayout.addView(button);
         this.mToolsGroup.add(button);
     }
 
@@ -492,7 +488,7 @@ public final class DrawOptionsView extends LinearLayout {
      */
     protected void createAndAddInfoButton() {
         final ImageToggleButton button =
-                new ImageToggleButton(this.getContext());
+                createAndAddButton();
 
         button.setImageResource(R.drawable.info);
         button.setOnClickListener(new View.OnClickListener() {
@@ -508,10 +504,6 @@ public final class DrawOptionsView extends LinearLayout {
                 button.setToggled(true);
             }
         });
-        this.mLayout.addView(button);
-        button.getLayoutParams().width = (int) Util.convertDpToPixel(80, getContext());
-        button.getLayoutParams().height = (int) Util.convertDpToPixel(80, getContext());
-        button.setScaleType(ImageView.ScaleType.FIT_XY);
         this.mToolsGroup.add(button);
         mInfoButton = button;
     }
@@ -521,7 +513,7 @@ public final class DrawOptionsView extends LinearLayout {
      */
     protected void createAndAddMoveTokenButton() {
         final ImageToggleButton button =
-                new ImageToggleButton(this.getContext());
+                createAndAddButton();
 
         button.setImageResource(R.drawable.move_token);
         button.setOnClickListener(new View.OnClickListener() {
@@ -539,7 +531,6 @@ public final class DrawOptionsView extends LinearLayout {
                 DrawOptionsView.this.mColorGroup.maybeSelectDefault();
             }
         });
-        this.mLayout.addView(button);
         this.mToolsGroup.add(button);
     }
     
