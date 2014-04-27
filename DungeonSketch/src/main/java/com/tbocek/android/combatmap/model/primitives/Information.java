@@ -70,10 +70,11 @@ public class Information extends Shape {
      */
     public Information(Information copyFrom) {
         this.mText = copyFrom.mText;
-        this.getBoundingRectangle().clear();
-        this.getBoundingRectangle().updateBounds(
-                copyFrom.getBoundingRectangle());
         this.mLocation = new PointF(copyFrom.mLocation.x, copyFrom.mLocation.y);
+        this.getBoundingRectangle().updateBounds(new PointF(
+                mLocation.x - .5f, mLocation.y - .5f));
+        this.getBoundingRectangle().updateBounds(new PointF(
+                mLocation.x + .5f, mLocation.y + .5f));
     }
 
 
