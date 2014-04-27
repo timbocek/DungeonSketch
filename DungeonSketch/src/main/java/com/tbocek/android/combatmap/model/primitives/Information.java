@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
@@ -54,10 +55,9 @@ public class Information extends Shape {
 
     public Information(PointF location, String text) {
         super();
+        this.getBoundingRectangle().updateBounds(location);
         this.getBoundingRectangle().updateBounds(new PointF(
-                location.x - .5f, location.y - .5f));
-        this.getBoundingRectangle().updateBounds(new PointF(
-                location.x + .5f, location.y + .5f));
+                location.x + 1, location.y + 1));
         this.mText = text;
         this.mLocation = location;
     }
@@ -72,9 +72,9 @@ public class Information extends Shape {
         this.mText = copyFrom.mText;
         this.mLocation = new PointF(copyFrom.mLocation.x, copyFrom.mLocation.y);
         this.getBoundingRectangle().updateBounds(new PointF(
-                mLocation.x - .5f, mLocation.y - .5f));
+                mLocation.x, mLocation.y));
         this.getBoundingRectangle().updateBounds(new PointF(
-                mLocation.x + .5f, mLocation.y + .5f));
+                mLocation.x + 1, mLocation.y + 1));
     }
 
 
@@ -175,9 +175,7 @@ public class Information extends Shape {
     @Override
     public void draw(Canvas c) {
         if (sInfoBitmap != null) {
-            Rect r = new Rect((int)this.getBoundingRectangle().getXMin(), (int)this.getBoundingRectangle().getYMin(),
-                    (int)this.getBoundingRectangle().getXMax(), (int)this.getBoundingRectangle().getYMax());
-            c.drawBitmap(sInfoBitmap, new Rect(0,0,sInfoBitmap.getWidth(), sInfoBitmap.getHeight()), r , null);
+            c.drawBitmap(sInfoBitmap, new Rect(0,0,sInfoBitmap.getWidth(), sInfoBitmap.getHeight()), this.getBoundingRectangle().toRectF(), null);
         }
     }
 }
