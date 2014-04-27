@@ -335,15 +335,13 @@ public final class LineCollection implements UndoRedoTarget {
 
     /**
      * Modifies the given text object's contents and font.
-     *  @param editedTextObject
+     * @param editedTextObject
      *            Text object to modify.
      * @param text
      *            The new text.
-     * @param size
-     *            The new font size.
      * @param transformer
      */
-    public void editInfo(Information editedTextObject, String text, float size,
+    public void editInfo(Information editedTextObject, String text,
                          CoordinateTransformer transformer) {
         Information newInfo =
                 new Information(editedTextObject.getLocation(), text);

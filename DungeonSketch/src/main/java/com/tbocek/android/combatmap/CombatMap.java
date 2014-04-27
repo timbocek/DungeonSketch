@@ -775,23 +775,21 @@ public final class CombatMap extends ActionBarActivity {
 					});
             case DIALOG_ID_CREATE_INFO_LOCATION:
 
-                return new FontDialog(this,
-                        new FontDialog.OnTextConfirmedListener() {
+                return new InfoPointDialog(this,
+                        new InfoPointDialog.OnTextConfirmedListener() {
                             @Override
-                            public void onTextConfirmed(final String text,
-                                                        final float size) {
+                            public void onTextConfirmed(final String text) {
                                 if (CombatMap.this.mEditedTextObject == null) {
                                     CombatMap.this.mCombatView
                                             .createNewInfo(
                                                     CombatMap.this.mNewObjectLocationWorldSpace,
-                                                    text, size);
+                                                    text);
                                 } else {
                                     CombatMap.this.mCombatView
                                             .getActiveLines()
                                             .editInfo(
                                                     CombatMap.this.mEditedTextObject,
                                                     text,
-                                                    size,
                                                     CombatMap.this.mCombatView
                                                             .getWorldSpaceTransformer()
                                             );
@@ -966,9 +964,9 @@ public final class CombatMap extends ActionBarActivity {
 			}
 			break;
         case DIALOG_ID_CREATE_INFO_LOCATION:
-            FontDialog fd2 = (FontDialog) dialog;
+          InfoPointDialog fd2 = (InfoPointDialog) dialog;
             if (this.mEditedTextObject != null) {
-                fd2.populateFields(this.mEditedTextObject.getText(), 0);
+                fd2.populateFields(this.mEditedTextObject.getText());
             } else {
                 fd2.clearText();
             }

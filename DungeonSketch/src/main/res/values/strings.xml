@@ -141,5 +141,7 @@ Why not press "back" and create one?</string>
     <string name="system_tag">System tag</string>
     <string name="background_color">Background Color</string>
     <string name="foreground_color">Foreground Color</string>
+    <string name="info_point">Information Point</string>
+    <string name="info_point_hint">Enter a room description, monster stats, epic loot, etc.</string>
 
 </resources>
