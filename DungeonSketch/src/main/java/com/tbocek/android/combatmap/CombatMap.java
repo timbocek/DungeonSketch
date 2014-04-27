@@ -28,6 +28,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -95,6 +96,7 @@ public final class CombatMap extends ActionBarActivity {
      * Dialog ID to use when creating or editing an information location.
      */
     private static final int DIALOG_ID_CREATE_INFO_LOCATION = 5;
+    private static final String TAG = "CombatMap";
 
     /**
 	 * The current map.
@@ -1266,7 +1268,7 @@ public final class CombatMap extends ActionBarActivity {
                 savePrefChanges(editor);
 
 				// Log the error in a toast
-				e.printStackTrace();
+				Log.e(TAG, "Could not load map data", e);
 				Toast toast = Toast.makeText(this.mContext,
 						"Could not save file.  Reason: " + e.toString(),
 						Toast.LENGTH_LONG);
