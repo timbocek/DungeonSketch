@@ -506,6 +506,7 @@ public final class DataManager {
 
     static boolean canUseForInBitmap(
             Bitmap candidate, BitmapFactory.Options targetOptions) {
+        if (targetOptions.inSampleSize == 0) targetOptions.inSampleSize = 1;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // From Android 4.4 (KitKat) onward we can re-use if the byte size of
