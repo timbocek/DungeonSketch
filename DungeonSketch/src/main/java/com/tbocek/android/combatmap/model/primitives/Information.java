@@ -28,7 +28,7 @@ import java.util.List;
  * descriptions, monster stats, etc.
  * Created by Tim on 4/22/2014.
  */
-public class Information extends Shape {
+public class Information extends Text {
 
     private static Bitmap sInfoBitmap;
     public static void loadInfoBitmap(Context c) {
@@ -36,31 +36,21 @@ public class Information extends Shape {
     }
 
     public static final String SHAPE_TYPE = "inf";
-    /**
-     * Whether this text object has a pending erase operation.
-     */
-    protected boolean mErased;
-    /**
-     * Location of the lower left hand corner of the text.
-     */
-    protected PointF mLocation;
-    /**
-     * Contents of the text field.
-     */
-    protected String mText;
+
 
     public Information() {
        this(new PointF(0,0), "");
     }
 
     public Information(PointF location, String text) {
-        super();
-        this.getBoundingRectangle().updateBounds(location);
-        this.getBoundingRectangle().updateBounds(new PointF(
-                location.x + 1, location.y + 1));
         this.mText = text;
         this.mLocation = location;
+        this.setBoundingRectangle(
+          new PointF(mLocation.x, mLocation.y),
+          new PointF(mLocation.x + 1, mLocation.y + 1));
     }
+
+
 
     /**
      * Copy constructor.
@@ -71,10 +61,9 @@ public class Information extends Shape {
     public Information(Information copyFrom) {
         this.mText = copyFrom.mText;
         this.mLocation = new PointF(copyFrom.mLocation.x, copyFrom.mLocation.y);
-        this.getBoundingRectangle().updateBounds(new PointF(
-                mLocation.x, mLocation.y));
-        this.getBoundingRectangle().updateBounds(new PointF(
-                mLocation.x + 1, mLocation.y + 1));
+        this.setBoundingRectangle(
+                new PointF(mLocation.x, mLocation.y),
+                new PointF(mLocation.x + 1, mLocation.y + 1));
     }
 
 
@@ -101,60 +90,6 @@ public class Information extends Shape {
     }
 
     @Override
-    public void addPoint(PointF p) {
-        throw new RuntimeException("Adding point to text not supported.");
-    }
-
-    @Override
-    public boolean contains(PointF p) {
-        return this.getBoundingRectangle().contains(p);
-    }
-
-    @Override
-    protected Path createPath() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void erase(PointF center, float radius) {
-        if (this.getBoundingRectangle().intersectsWithCircle(center, radius)) {
-            this.mErased = true;
-        }
-    }
-
-    /**
-     * @return The location of the lower left hand corner of the text.
-     */
-    public PointF getLocation() {
-        return this.mLocation;
-    }
-
-
-    @Override
-    public boolean needsOptimization() {
-        // TODO Auto-generated method stub
-        return this.mErased;
-    }
-
-    @Override
-    public List<Shape> removeErasedPoints() {
-        List<Shape> ret = new ArrayList<Shape>();
-        if (!this.mErased) {
-            ret.add(this);
-        } else {
-            this.mErased = false;
-        }
-        return ret;
-    }
-
-    @Override
-    public boolean shouldDrawBelowGrid() {
-        return false; // Text should never draw below the grid.
-    }
-
-
-    @Override
     protected Shape getMovedShape(float deltaX, float deltaY) {
         Information t = new Information(this);
 
@@ -163,13 +98,6 @@ public class Information extends Shape {
         t.getBoundingRectangle().move(deltaX, deltaY);
 
         return t;
-    }
-
-    /**
-     * @return The contents of the text object.
-     */
-    public String getText() {
-        return this.mText;
     }
 
     @Override

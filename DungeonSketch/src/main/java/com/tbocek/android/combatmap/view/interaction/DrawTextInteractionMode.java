@@ -2,10 +2,9 @@ package com.tbocek.android.combatmap.view.interaction;
 
 import android.view.MotionEvent;
 
-import com.tbocek.android.combatmap.model.primitives.Information;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Shape;
-import com.tbocek.android.combatmap.model.primitives.Text;
+import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 import com.tbocek.android.combatmap.view.CombatView;
 
 /**
@@ -34,7 +33,7 @@ public class DrawTextInteractionMode extends CreateInfoInteractionMode {
 
         Shape t = findShape(p);
         if (t != null) {
-            this.getView().requestEditTextObject((Text) t);
+            this.getView().requestEditTextObject((OnScreenText) t);
         } else {
             super.onLongPress(e);
         }
@@ -52,6 +51,6 @@ public class DrawTextInteractionMode extends CreateInfoInteractionMode {
     }
 
     protected Shape findShape(PointF location) {
-        return this.getView().getActiveLines().findShape(location, Text.class);
+        return this.getView().getActiveLines().findShape(location, OnScreenText.class);
     }
 }

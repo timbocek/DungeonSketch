@@ -3,7 +3,6 @@ package com.tbocek.android.combatmap.view;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Queue;
 import java.util.Set;
 
 import android.annotation.SuppressLint;
@@ -31,7 +30,6 @@ import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.DeveloperMode;
 import com.tbocek.android.combatmap.ScrollBuffer;
 import com.tbocek.android.combatmap.ScrollBuffer.DrawRequest;
-import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.TokenImageManager;
 import com.tbocek.android.combatmap.model.LineCollection;
 import com.tbocek.android.combatmap.model.MapData;
@@ -46,7 +44,7 @@ import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.Information;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Shape;
-import com.tbocek.android.combatmap.model.primitives.Text;
+import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 import com.tbocek.android.combatmap.view.interaction.BackgroundImageInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CombatViewInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CreateInfoInteractionMode;
@@ -767,7 +765,7 @@ public final class CombatView extends SurfaceView {
      * @param t
      *            The text object to edit.
      */
-    public void requestEditTextObject(Text t) {
+    public void requestEditTextObject(OnScreenText t) {
         this.mActivityRequestListener.requestEditTextObject(t);
     }
 
@@ -1122,7 +1120,7 @@ public final class CombatView extends SurfaceView {
          * @param t
          *            The text object to edit.
          */
-        void requestEditTextObject(Text t);
+        void requestEditTextObject(OnScreenText t);
 
         /**
          * Called when a new text object is created.

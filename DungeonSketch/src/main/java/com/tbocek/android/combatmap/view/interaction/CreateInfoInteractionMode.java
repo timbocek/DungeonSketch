@@ -5,7 +5,7 @@ import android.view.MotionEvent;
 import com.tbocek.android.combatmap.model.primitives.Information;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Shape;
-import com.tbocek.android.combatmap.model.primitives.Text;
+import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 import com.tbocek.android.combatmap.view.CombatView;
 
 /**
@@ -25,7 +25,7 @@ public class CreateInfoInteractionMode extends BaseDrawInteractionMode  {
 
     @Override
     public void onEndMode() {
-        Text.shouldDrawBoundingBoxes(false);
+        OnScreenText.shouldDrawBoundingBoxes(false);
     }
 
     // Drag to move text.
@@ -53,7 +53,7 @@ public class CreateInfoInteractionMode extends BaseDrawInteractionMode  {
 
     @Override
     public void onStartMode() {
-        Text.shouldDrawBoundingBoxes(true);
+        OnScreenText.shouldDrawBoundingBoxes(true);
     }
 
     @Override

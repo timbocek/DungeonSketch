@@ -72,12 +72,10 @@ public abstract class Shape {
 
     /**
      * Deserializes and returns a shape.
-     * 
-     * @param s
-     *            The stream to read from.
+     *
+     * @param s The stream to read from.
      * @return The created shape.
-     * @throws IOException
-     *             On deserialization error.
+     * @throws IOException On deserialization error.
      */
     public static Shape deserialize(MapDataDeserializer s) throws IOException {
         String shapeType = s.readString();
@@ -95,8 +93,8 @@ public abstract class Shape {
             shape = new StraightLine(color, width);
         } else if (shapeType.equals(Circle.SHAPE_TYPE)) {
             shape = new Circle(color, width);
-        } else if (shapeType.equals(Text.SHAPE_TYPE)) {
-            shape = new Text(color, width);
+        } else if (shapeType.equals(OnScreenText.SHAPE_TYPE)) {
+            shape = new OnScreenText(color, width);
         } else if (shapeType.equals(Rectangle.SHAPE_TYPE)) {
             shape = new Rectangle(color, width);
         } else if (shapeType.equals(Information.SHAPE_TYPE)) {
@@ -114,17 +112,15 @@ public abstract class Shape {
      * Adds a point to this shape. This is used when dragging, so depending on
      * implementation, this may either add a point or may modify the
      * size/position of the shape.
-     * 
-     * @param p
-     *            The point to add.
+     *
+     * @param p The point to add.
      */
     public abstract void addPoint(final PointF p);
 
     /**
      * Changes the given canvas's transformation to apply this draw offset.
-     * 
-     * @param c
-     *            The canvas to modify.
+     *
+     * @param c The canvas to modify.
      */
     public void applyDrawOffsetToCanvas(Canvas c) {
         if (this.hasOffset()) {
@@ -143,9 +139,8 @@ public abstract class Shape {
 
     /**
      * Clips out the region defined by this path on the fog of war.
-     * 
-     * @param c
-     *            Canvas to draw on.
+     *
+     * @param c Canvas to draw on.
      */
     public void clipFogOfWar(final Canvas c) {
         this.ensurePathCreated();
@@ -159,7 +154,7 @@ public abstract class Shape {
      * the offset applied. The offset is cleared from this shape. Calling code
      * should set up the proper undo/redo operation to actually implement the
      * move.
-     * 
+     *
      * @return Moved copy of the shape.
      */
     public Shape commitDrawOffset() {
@@ -176,25 +171,23 @@ public abstract class Shape {
 
     /**
      * Checks whether this shape contains the given point.
-     * 
-     * @param p
-     *            The point to check.
+     *
+     * @param p The point to check.
      * @return True if that point falls within this shape.
      */
     public abstract boolean contains(PointF p);
 
     /**
      * Creates the Android graphics Path object used to draw this shape.
-     * 
+     *
      * @return The created path.
      */
     protected abstract Path createPath();
 
     /**
      * Draws the line on the given canvas.
-     * 
-     * @param c
-     *            Canvas to draw on.
+     *
+     * @param c Canvas to draw on.
      */
     public void draw(final Canvas c) {
         this.ensurePaintCreated();
@@ -206,9 +199,8 @@ public abstract class Shape {
 
     /**
      * Draws this path specifically as a fog of war region.
-     * 
-     * @param c
-     *            Canvas to draw on.
+     *
+     * @param c Canvas to draw on.
      */
     public void drawFogOfWar(final Canvas c) {
         // Ensure the static fog of war pen is created.
@@ -254,17 +246,15 @@ public abstract class Shape {
 
     /**
      * Erases the portion of this shape that falls within the given circle.
-     * 
-     * @param center
-     *            Center of the circle.
-     * @param radius
-     *            Radius of the circle.
+     *
+     * @param center Center of the circle.
+     * @param radius Radius of the circle.
      */
     public abstract void erase(final PointF center, final float radius);
 
     /**
      * Gets the smallest rectangle needed to fully enclose the line.
-     * 
+     *
      * @return The bounding rectangle.
      */
     public BoundingRectangle getBoundingRectangle() {
@@ -279,13 +269,10 @@ public abstract class Shape {
     }
 
     /**
-     * 
-     * @param deltaX
-     *            Amount to move by in x dimension.
-     * @param deltaY
-     *            Amount to move by in Y dimension.
+     * @param deltaX Amount to move by in x dimension.
+     * @param deltaY Amount to move by in Y dimension.
      * @return A *copy* of this shape that is moved by the given offset in world
-     *         space.
+     * space.
      */
     protected Shape getMovedShape(float deltaX, float deltaY) {
         // TODO: Implement this for each subclass, and make this abstract.
@@ -316,7 +303,6 @@ public abstract class Shape {
     }
 
     /**
-     * 
      * @return Whether this shape has a temporary pending move operation.
      */
     public boolean hasOffset() {
@@ -334,7 +320,7 @@ public abstract class Shape {
      * Whether the shape is in a valid state. Subclasses should override this
      * with their own checks. If returns false, the shape may be: - Removed from
      * the line collection at any time. - Stopped from serializing.
-     * 
+     *
      * @return True if the shape is in a valid state, False otherwise.
      */
     public boolean isValid() {
@@ -348,17 +334,16 @@ public abstract class Shape {
 
     /**
      * Optimizes this shape by removing erased points.
-     * 
+     *
      * @return A list of shapes that this shape optimizes to, since removing
-     *         erased points may create disjoint line segments.
+     * erased points may create disjoint line segments.
      */
     public abstract List<Shape> removeErasedPoints();
 
     /**
      * Changes the given canvas's transformation to remove this draw offset.
-     * 
-     * @param c
-     *            The canvas to modify.
+     *
+     * @param c The canvas to modify.
      */
     public void revertDrawOffsetFromCanvas(Canvas c) {
         if (this.hasOffset()) {
@@ -368,23 +353,18 @@ public abstract class Shape {
 
     /**
      * Serializes this shape to the given stream. Must call serializeBase()
-     * 
-     * @param s
-     *            The stream to serialize to.
-     * @throws IOException
-     *             On serialization error.
+     *
+     * @param s The stream to serialize to.
+     * @throws IOException On serialization error.
      */
     public abstract void serialize(MapDataSerializer s) throws IOException;
 
     /**
      * Serializes shared attributes from the Shape base class.
-     * 
-     * @param s
-     *            The shape to serialize.
-     * @param shapeType
-     *            Tag indicating the type of shape being serialized.
-     * @throws IOException
-     *             On serialization error.
+     *
+     * @param s         The shape to serialize.
+     * @param shapeType Tag indicating the type of shape being serialized.
+     * @throws IOException On serialization error.
      */
     protected void serializeBase(MapDataSerializer s, String shapeType)
             throws IOException {
@@ -398,9 +378,8 @@ public abstract class Shape {
 
     /**
      * Sets the current shape's color.
-     * 
-     * @param color
-     *            The new color.
+     *
+     * @param color The new color.
      */
     public void setColor(int color) {
         this.mColor = color;
@@ -413,11 +392,9 @@ public abstract class Shape {
      * data and returns a copy of the shape that is permanently modified with
      * the new offset. We do not directly modify this shape so that we can
      * support undo/redo.
-     * 
-     * @param deltaX
-     *            Amount to move the shape in X dimension.
-     * @param deltaY
-     *            Amount to move the shape in Y dimension.
+     *
+     * @param deltaX Amount to move the shape in X dimension.
+     * @param deltaY Amount to move the shape in Y dimension.
      */
     public void setDrawOffset(float deltaX, float deltaY) {
         this.mDrawOffsetDeltaX = deltaX;
@@ -426,9 +403,8 @@ public abstract class Shape {
 
     /**
      * Sets the width of the current line.
-     * 
-     * @param width
-     *            The line width.
+     *
+     * @param width The line width.
      */
     public void setWidth(float width) {
         this.mWidth = width;
@@ -437,22 +413,21 @@ public abstract class Shape {
     /**
      * Template method that loads shape-specific data from the deserialization
      * stream.
-     * 
-     * @param s
-     *            Stream to read from.
-     * @throws IOException
-     *             On deserialization error.
+     *
+     * @param s Stream to read from.
+     * @throws IOException On deserialization error.
      */
     protected abstract void shapeSpecificDeserialize(MapDataDeserializer s)
             throws IOException;
 
     /**
-     * @return True if this should be drawn below the grid based on its size,
-     *         false otherwise.
      * @return
      */
     public boolean shouldDrawBelowGrid() {
         return this.getWidth() > 1.0f;
     }
 
+    public void setBoundingRectangle(PointF p1, PointF p2) {
+        this.mBoundingRectangle = new BoundingRectangle(p1, p2);
+    }
 }

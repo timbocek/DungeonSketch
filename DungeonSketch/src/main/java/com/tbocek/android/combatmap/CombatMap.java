@@ -36,7 +36,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -50,6 +49,7 @@ import com.tbocek.android.combatmap.model.primitives.BackgroundImage;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.Information;
 import com.tbocek.android.combatmap.model.primitives.PointF;
+import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 import com.tbocek.android.combatmap.model.primitives.Text;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.tokenmanager.TokenManager;
@@ -58,7 +58,6 @@ import com.tbocek.android.combatmap.view.DrawOptionsView;
 import com.tbocek.android.combatmap.view.TagNavigator;
 import com.tbocek.android.combatmap.view.TokenSelectorView;
 import com.tbocek.dungeonsketch.R;
-import com.tbocek.dungeonsketch.BuildConfig;
 
 import static android.support.v7.view.ActionMode.*;
 import static com.tbocek.android.combatmap.view.DrawOptionsView.OnChangeDrawToolListener;
@@ -157,7 +156,7 @@ public final class CombatMap extends ActionBarActivity {
 	 * The text object that the edit dialog is currently editing, or null if a
 	 * new text object is being created.
 	 */
-	private Information mEditedTextObject;
+	private Text mEditedTextObject;
 
 	/**
 	 * Whether the control tray on the bottom of the screen is expanded.
@@ -287,7 +286,7 @@ public final class CombatMap extends ActionBarActivity {
 	private CombatView.ActivityRequestListener mOnNewTextEntryListener = new CombatView.ActivityRequestListener() {
 
 		@Override
-		public void requestEditTextObject(Text t) {
+		public void requestEditTextObject(OnScreenText t) {
 			CombatMap.this.mEditedTextObject = t;
 			CombatMap.this.showDialog(DIALOG_ID_DRAW_TEXT);
 		}
@@ -766,7 +765,7 @@ public final class CombatMap extends ActionBarActivity {
 								CombatMap.this.mCombatView
 										.getActiveLines()
 										.editText(
-												CombatMap.this.mEditedTextObject,
+                                                (OnScreenText) CombatMap.this.mEditedTextObject,
 												text,
 												size,
 												CombatMap.this.mCombatView
@@ -790,7 +789,7 @@ public final class CombatMap extends ActionBarActivity {
                                     CombatMap.this.mCombatView
                                             .getActiveLines()
                                             .editInfo(
-                                                    CombatMap.this.mEditedTextObject,
+                                                    (Information) CombatMap.this.mEditedTextObject,
                                                     text,
                                                     CombatMap.this.mCombatView
                                                             .getWorldSpaceTransformer()
@@ -960,7 +959,7 @@ public final class CombatMap extends ActionBarActivity {
 			if (this.mEditedTextObject != null) {
 
 				fd.populateFields(this.mEditedTextObject.getText(),
-                        ((Text)this.mEditedTextObject).getTextSize());
+                        ((OnScreenText)this.mEditedTextObject).getTextSize());
 			} else {
 				fd.clearText();
 			}

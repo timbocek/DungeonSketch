@@ -24,8 +24,7 @@ import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Rectangle;
 import com.tbocek.android.combatmap.model.primitives.Shape;
 import com.tbocek.android.combatmap.model.primitives.StraightLine;
-import com.tbocek.android.combatmap.model.primitives.Text;
-import com.tbocek.android.combatmap.model.primitives.Util;
+import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 
 /**
  * Provides operations over an aggregate collection of lines. Invariant: Lines
@@ -199,7 +198,7 @@ public final class LineCollection implements UndoRedoTarget {
     public Shape
     createText(String text, float size, int color, float strokeWidth,
             PointF location, CoordinateTransformer transform) {
-        Text t = new Text(text, size, color, strokeWidth, location, transform);
+        OnScreenText t = new OnScreenText(text, size, color, strokeWidth, location, transform);
         Command c = new Command(this);
         c.addCreatedShape(t);
         this.mCommandHistory.execute(c);
@@ -321,10 +320,10 @@ public final class LineCollection implements UndoRedoTarget {
      *            The new font size.
      * @param transformer
      */
-    public void editText(Information editedTextObject, String text, float size,
+    public void editText(OnScreenText editedTextObject, String text, float size,
                          CoordinateTransformer transformer) {
-        Text newText =
-                new Text(text, size, editedTextObject.getColor(),
+        OnScreenText newText =
+                new OnScreenText(text, size, editedTextObject.getColor(),
                         editedTextObject.getWidth(),
                         editedTextObject.getLocation(), transformer);
         Command c = new Command(this);
