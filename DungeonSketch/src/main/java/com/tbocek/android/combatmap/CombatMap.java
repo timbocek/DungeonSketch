@@ -1,10 +1,5 @@
 package com.tbocek.android.combatmap;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,8 +24,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.MediaRouteActionProvider;
-import android.support.v7.media.MediaRouteSelector;
-import android.support.v7.media.MediaRouter;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.Menu;
@@ -44,9 +37,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.google.android.gms.cast.CastDevice;
-import com.google.android.gms.cast.CastMediaControlIntent;
 import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
+import com.tbocek.android.combatmap.cast.CastManager;
 import com.tbocek.android.combatmap.model.Grid;
 import com.tbocek.android.combatmap.model.MapData;
 import com.tbocek.android.combatmap.model.MapDrawer.FogOfWarMode;
@@ -54,8 +46,8 @@ import com.tbocek.android.combatmap.model.MultiSelectManager;
 import com.tbocek.android.combatmap.model.primitives.BackgroundImage;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.Information;
-import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.OnScreenText;
+import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Text;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.tokenmanager.TokenManager;
@@ -65,7 +57,12 @@ import com.tbocek.android.combatmap.view.TagNavigator;
 import com.tbocek.android.combatmap.view.TokenSelectorView;
 import com.tbocek.dungeonsketch.R;
 
-import static android.support.v7.view.ActionMode.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static android.support.v7.view.ActionMode.Callback;
 import static com.tbocek.android.combatmap.view.DrawOptionsView.OnChangeDrawToolListener;
 
 /**
@@ -453,9 +450,8 @@ public final class CombatMap extends ActionBarActivity {
     private TokenImageManager.Loader mLoader;
 
     private TextView mSelectedToolTextView;
-    private MediaRouter mMediaRouter;
-    private MediaRouteSelector mMediaRouteSelector;
-    private CastDevice mSelectedDevice;
+
+    private CastManager mCastManager;
 
     /**
 	 * Given a combat mode, returns the snap to grid preference name associated
@@ -571,10 +567,8 @@ public final class CombatMap extends ActionBarActivity {
 
 		PreferenceManager.setDefaultValues(this, R.layout.settings, false);
 
-        mMediaRouter = MediaRouter.getInstance(getApplicationContext());
-        mMediaRouteSelector = new MediaRouteSelector.Builder()
-                .addControlCategory(CastMediaControlIntent.categoryForCast("YOUR_APPLICATION_ID"))
-                .build();
+        mCastManager = new CastManager(this);
+        mCastManager.onCreate();
 
 		initializeUi();
 	}
@@ -870,7 +864,7 @@ public final class CombatMap extends ActionBarActivity {
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
         MediaRouteActionProvider mediaRouteActionProvider =
                 (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
-        mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
+        mediaRouteActionProvider.setRouteSelector(mCastManager.getMediaRouteSelector());
 		return true;
 	}
 
@@ -940,7 +934,7 @@ public final class CombatMap extends ActionBarActivity {
 	@Override
 	public void onPause() {
         if (isFinishing()) {
-            mMediaRouter.removeCallback(mMediaRouterCallback);
+            mCastManager.detachCallbacks();
         }
 		Editor editor = this.mSharedPreferences.edit();
         savePrefChanges(editor);
@@ -1021,9 +1015,7 @@ public final class CombatMap extends ActionBarActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-
-        mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
-                MediaRouter.CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
+        mCastManager.attachCallbacks();
 
 		this.loadOrCreateMap();
 
@@ -1688,20 +1680,4 @@ public final class CombatMap extends ActionBarActivity {
 			}
 		});
 	}
-
-    private class MyMediaRouterCallback extends MediaRouter.Callback {
-
-        @Override
-        public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
-            mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
-            String routeId = info.getId();
-        }
-
-        @Override
-        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
-            mSelectedDevice = null;
-        }
-    }
-    MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
-
 }
