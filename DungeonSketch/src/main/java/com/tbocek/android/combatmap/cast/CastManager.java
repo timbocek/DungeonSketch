@@ -23,7 +23,9 @@ public class CastManager {
     public void onCreate() {
         mMediaRouter = android.support.v7.media.MediaRouter.getInstance(mContext);
         mMediaRouteSelector = new MediaRouteSelector.Builder()
-                .addControlCategory(CastMediaControlIntent.categoryForCast("YOUR_APPLICATION_ID"))
+                .addControlCategory(CastMediaControlIntent.categoryForCast(
+                        CastMediaControlIntent.DEFAULT_MEDIA_RECEIVER_APPLICATION_ID
+                ))
                 .build();
     }
 
@@ -46,6 +48,8 @@ public class CastManager {
         public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
             mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
             String routeId = info.getId();
+
+
         }
 
         @Override
