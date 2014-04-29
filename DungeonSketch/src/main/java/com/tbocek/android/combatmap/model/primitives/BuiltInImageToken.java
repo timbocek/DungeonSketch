@@ -1,15 +1,14 @@
 package com.tbocek.android.combatmap.model.primitives;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+
+import com.tbocek.android.combatmap.DungeonSketchApp;
+
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
-
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
-
-import com.tbocek.android.combatmap.DungeonSketchApp;
 
 /**
  * Creates a token for one of the built-in images.
@@ -65,12 +64,6 @@ public final class BuiltInImageToken extends DrawableToken {
 
     @Override
     public Bitmap loadBitmap(Bitmap existingBuffer) {
-        // Not possible to load these drawables into an exisitng buffer, so just discard the
-        // existing buffer.
-        if (existingBuffer != null) {
-            Log.i("TokenImageManager", "Recycling image");
-            existingBuffer.recycle();
-        }
         int id =
                 DungeonSketchApp.getContext().getResources().getIdentifier(
                         this.mResourceName, "drawable",
@@ -78,7 +71,11 @@ public final class BuiltInImageToken extends DrawableToken {
         if (id == 0) {
             return null;
         }
-        return ((BitmapDrawable)DungeonSketchApp.getContext().getResources().getDrawable(id)).getBitmap();
+        try {
+            return dataManager.loadTokenImage(id, existingBuffer);
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     @Override
