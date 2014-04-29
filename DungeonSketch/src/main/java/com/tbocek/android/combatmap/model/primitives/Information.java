@@ -30,6 +30,15 @@ import java.util.List;
  */
 public class Information extends Text {
 
+    /**
+     * The size of an info point in world space.  Done so that we can adjust this size to make
+     * this appear a constant size in screen space.
+     */
+    private static float sSizeWorldSpace = 1.0f;
+    public static void setSizeWorldSpace(float size) {
+        sSizeWorldSpace = size;
+    }
+
     private static Bitmap sInfoBitmap;
     public static void loadInfoBitmap(Context c) {
         sInfoBitmap = BitmapFactory.decodeResource(c.getResources(), R.drawable.info);
@@ -105,5 +114,13 @@ public class Information extends Text {
         if (sInfoBitmap != null) {
             c.drawBitmap(sInfoBitmap, new Rect(0,0,sInfoBitmap.getWidth(), sInfoBitmap.getHeight()), this.getBoundingRectangle().toRectF(), null);
         }
+    }
+
+    @Override
+    public BoundingRectangle getBoundingRectangle() {
+        if (this.mLocation == null) return new BoundingRectangle();
+        return new BoundingRectangle(
+                this.mLocation,
+                new PointF(this.mLocation.x + sSizeWorldSpace, this.mLocation.y + sSizeWorldSpace));
     }
 }

@@ -45,6 +45,7 @@ import com.tbocek.android.combatmap.model.primitives.Information;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Shape;
 import com.tbocek.android.combatmap.model.primitives.OnScreenText;
+import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.interaction.BackgroundImageInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CombatViewInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CreateInfoInteractionMode;
@@ -720,6 +721,12 @@ public final class CombatView extends SurfaceView {
         if (!this.mSurfaceReady) {
             return;
         }
+
+        // Make sure that any scale changes are reflected in the way that scale-independent sprites
+        // (such as info points) are drawn.
+        float infoWidthScreenSpace = Util.convertDpToPixel(24, this.getContext());
+        Information.setSizeWorldSpace(
+                getData().getWorldSpaceTransformer().screenSpaceToWorldSpace(infoWidthScreenSpace));
 
         SurfaceHolder holder = this.getHolder();
         Canvas canvas = holder.lockCanvas(invalidBounds);
