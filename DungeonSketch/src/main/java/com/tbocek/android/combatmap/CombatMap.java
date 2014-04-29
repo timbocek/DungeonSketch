@@ -25,8 +25,12 @@ import android.os.Debug;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.MediaRouteActionProvider;
+import android.support.v7.media.MediaRouteSelector;
+import android.support.v7.media.MediaRouter;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.Menu;
@@ -40,6 +44,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.cast.CastDevice;
+import com.google.android.gms.cast.CastMediaControlIntent;
 import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
 import com.tbocek.android.combatmap.model.Grid;
 import com.tbocek.android.combatmap.model.MapData;
@@ -447,6 +453,9 @@ public final class CombatMap extends ActionBarActivity {
     private TokenImageManager.Loader mLoader;
 
     private TextView mSelectedToolTextView;
+    private MediaRouter mMediaRouter;
+    private MediaRouteSelector mMediaRouteSelector;
+    private CastDevice mSelectedDevice;
 
     /**
 	 * Given a combat mode, returns the snap to grid preference name associated
@@ -561,6 +570,11 @@ public final class CombatMap extends ActionBarActivity {
 				.getApplicationContext()));
 
 		PreferenceManager.setDefaultValues(this, R.layout.settings, false);
+
+        mMediaRouter = MediaRouter.getInstance(getApplicationContext());
+        mMediaRouteSelector = new MediaRouteSelector.Builder()
+                .addControlCategory(CastMediaControlIntent.categoryForCast("YOUR_APPLICATION_ID"))
+                .build();
 
 		initializeUi();
 	}
@@ -852,6 +866,11 @@ public final class CombatMap extends ActionBarActivity {
 		this.mUndoMenuItem = menu.findItem(R.id.menu_undo);
 		this.mRedoMenuItem = menu.findItem(R.id.menu_redo);
 		this.setUndoRedoEnabled();
+
+        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+        MediaRouteActionProvider mediaRouteActionProvider =
+                (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
+        mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
 		return true;
 	}
 
@@ -920,7 +939,9 @@ public final class CombatMap extends ActionBarActivity {
 
 	@Override
 	public void onPause() {
-		super.onPause();
+        if (isFinishing()) {
+            mMediaRouter.removeCallback(mMediaRouterCallback);
+        }
 		Editor editor = this.mSharedPreferences.edit();
         savePrefChanges(editor);
 		String filename = this.mSharedPreferences.getString("filename", null);
@@ -931,6 +952,7 @@ public final class CombatMap extends ActionBarActivity {
 		this.mCombatView.getMultiSelect().selectNone();
 
 		new MapSaver(filename, this.getApplicationContext()).run();
+        super.onPause();
 	}
 
     @Override
@@ -999,6 +1021,10 @@ public final class CombatMap extends ActionBarActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
+
+        mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
+                MediaRouter.CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
+
 		this.loadOrCreateMap();
 
 		this.reloadPreferences();
@@ -1662,5 +1688,20 @@ public final class CombatMap extends ActionBarActivity {
 			}
 		});
 	}
+
+    private class MyMediaRouterCallback extends MediaRouter.Callback {
+
+        @Override
+        public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
+            mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
+            String routeId = info.getId();
+        }
+
+        @Override
+        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
+            mSelectedDevice = null;
+        }
+    }
+    MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
 
 }
