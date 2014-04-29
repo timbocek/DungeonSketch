@@ -30,13 +30,23 @@ import java.util.List;
  */
 public class Information extends Text {
 
-    private static Bitmap sInfoBitmap;
+    public static final int ICON_INFO = 0;
+    public static final int ICON_MONSTER = 1;
+    public static final int ICON_TREASURE = 2;
+    public static final int NUM_ICONS = 3;
+
+    private static Bitmap[] sIconBitmaps;
     public static void loadInfoBitmap(Context c) {
-        sInfoBitmap = BitmapFactory.decodeResource(c.getResources(), R.drawable.info);
+        sIconBitmaps = new Bitmap[NUM_ICONS];
+        sIconBitmaps[ICON_INFO] = BitmapFactory.decodeResource(c.getResources(), R.drawable.info);
+    }
+    public static final Bitmap[] getIconBitmaps() {
+        return sIconBitmaps;
     }
 
     public static final String SHAPE_TYPE = "inf";
 
+    private int mIcon = ICON_INFO;
 
     public Information() {
        this(new PointF(0,0), "");
@@ -75,6 +85,7 @@ public class Information extends Text {
         s.serializeString(this.mText);
         s.serializeFloat(this.mLocation.x);
         s.serializeFloat(this.mLocation.y);
+        s.serializeInt(this.mIcon);
         s.endObject();
     }
 
@@ -86,6 +97,7 @@ public class Information extends Text {
         this.mLocation = new PointF();
         this.mLocation.x = s.readFloat();
         this.mLocation.y = s.readFloat();
+        this.mIcon = s.readInt();
         s.expectObjectEnd();
     }
 
@@ -102,8 +114,17 @@ public class Information extends Text {
 
     @Override
     public void draw(Canvas c) {
-        if (sInfoBitmap != null) {
-            c.drawBitmap(sInfoBitmap, new Rect(0,0,sInfoBitmap.getWidth(), sInfoBitmap.getHeight()), this.getBoundingRectangle().toRectF(), null);
+        if (sIconBitmaps != null) {
+            Bitmap icon = sIconBitmaps[mIcon];
+            c.drawBitmap(icon, new Rect(0,0,icon.getWidth(), icon.getHeight()), this.getBoundingRectangle().toRectF(), null);
         }
+    }
+
+    public int getIcon() {
+        return mIcon;
+    }
+
+    public void setIcon(int icon) {
+        mIcon = icon;
     }
 }
