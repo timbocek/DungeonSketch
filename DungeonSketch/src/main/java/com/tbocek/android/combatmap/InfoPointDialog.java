@@ -92,6 +92,7 @@ public class InfoPointDialog extends Dialog {
      */
     public void clearText() {
         this.mNameText.setText("");
+        this.mIconRadioGroup.check(R.id.radio_info);
     }
 
     /**
