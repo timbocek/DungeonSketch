@@ -1,11 +1,19 @@
 package com.tbocek.android.combatmap.cast;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
+import android.util.Log;
 
+import com.google.android.gms.cast.ApplicationMetadata;
+import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 /**
  * Created by tbocek on 4/29/14.
@@ -16,6 +24,8 @@ public class CastManager {
     private MediaRouteSelector mMediaRouteSelector;
     private CastDevice mSelectedDevice;
     private Context mContext;
+    private GoogleApiClient mApiClient;
+    private boolean mWaitingForReconnect;
 
     public CastManager(Context context) {
         mContext = context.getApplicationContext();
@@ -116,7 +126,7 @@ public class CastManager {
         }
     };
 
-    mCastClientListener = new Cast.Listener() {
+    Cast.Listener mCastClientListener = new Cast.Listener() {
         @Override
         public void onApplicationStatusChanged() {
             if (mApiClient != null) {
@@ -139,6 +149,10 @@ public class CastManager {
     };
 
     private void teardown() {
+
+    }
+
+    private void reconnectChannels() {
 
     }
 }
