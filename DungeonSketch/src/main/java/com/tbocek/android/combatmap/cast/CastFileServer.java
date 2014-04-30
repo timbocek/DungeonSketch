@@ -15,7 +15,7 @@ import fi.iki.elonen.NanoHTTPD;
  * Created by tbocek on 4/29/14.
  */
 public class CastFileServer extends NanoHTTPD {
-    private static final String JPEG_MIME_TYPE = "image/jpeg";
+    public static final String JPEG_MIME_TYPE = "image/jpeg";
     private static final int JPEG_COMPRESSION = 60;
     private Context mContext;
 
@@ -45,5 +45,9 @@ public class CastFileServer extends NanoHTTPD {
                           Map<String, String> files) {
         return new Response(
                 Response.Status.OK, JPEG_MIME_TYPE, new ByteArrayInputStream(mImageJpg));
+    }
+
+    public String getImageAddress() {
+        return "";
     }
 }

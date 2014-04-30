@@ -11,6 +11,10 @@ import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
+import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaMetadata;
+import com.google.android.gms.cast.MediaStatus;
+import com.google.android.gms.cast.RemoteMediaPlayer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -57,6 +61,26 @@ public class CastManager {
                         CastMediaControlIntent.DEFAULT_MEDIA_RECEIVER_APPLICATION_ID
                 ))
                 .build();
+
+
+        mRemoteMediaPlayer.setOnStatusUpdatedListener(
+                new RemoteMediaPlayer.OnStatusUpdatedListener() {
+                    @Override
+                    public void onStatusUpdated() {
+                        MediaStatus mediaStatus = mRemoteMediaPlayer.getMediaStatus();
+                        boolean isPlaying = mediaStatus.getPlayerState() ==
+                                MediaStatus.PLAYER_STATE_PLAYING;
+                    }
+                });
+
+        mRemoteMediaPlayer.setOnMetadataUpdatedListener(
+                new RemoteMediaPlayer.OnMetadataUpdatedListener() {
+                    @Override
+                    public void onMetadataUpdated() {
+                        MediaInfo mediaInfo = mRemoteMediaPlayer.getMediaInfo();
+                        MediaMetadata metadata = mediaInfo.getMetadata();
+                    }
+                });
     }
 
     public void detachCallbacks() {
@@ -186,6 +210,26 @@ public class CastManager {
     public void updateImage(Bitmap image) throws IOException {
         mCastServer.saveImage(image);
         // TODO: Tell the remote viewer to grab the new image.
+        if (isCasting()) {
+            MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_PHOTO);
+            metadata.putString(MediaMetadata.KEY_TITLE, "Dungeon Sketch");
+            MediaInfo info = new MediaInfo.Builder(mCastServer.getImageAddress())
+                    .setContentType(CastFileServer.JPEG_MIME_TYPE)
+                    .setStreamType(MediaInfo.STREAM_TYPE_NONE)
+                    .setMetadata(metadata)
+                    .build();
+
+            mRemoteMediaPlayer.load(mApiClient, info, true)
+                    .setResultCallback(new ResultCallback<RemoteMediaPlayer.MediaChannelResult>() {
+                        @Override
+                        public void onResult(RemoteMediaPlayer.MediaChannelResult result) {
+                            if (result.getStatus().isSuccess()) {
+                                Log.d(TAG, "Media loaded successfully");
+                            }
+                        }
+                    });
+        }
+
     }
 
     public boolean isCasting() {
@@ -216,7 +260,7 @@ public class CastManager {
 
     private class MessageReceivedCallback implements Cast.MessageReceivedCallback {
         public String getNamespace() {
-            return "urn:x-cast:com.example.custom";
+            return "urn:x-cast:com.google.cast.media";
         }
 
         @Override
@@ -226,4 +270,6 @@ public class CastManager {
         }
     };
     private MessageReceivedCallback mMessageCallback = new MessageReceivedCallback();
+
+    RemoteMediaPlayer mRemoteMediaPlayer = new RemoteMediaPlayer();
 }
