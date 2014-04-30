@@ -68,6 +68,7 @@ import com.tbocek.android.combatmap.view.interaction.ZoomPanInteractionMode;
  */
 public final class CombatView extends SurfaceView {
     private static final String TAG = "CombatView";
+    private static final float INFO_POINT_SIZE_DP = 32;
 
     /**
 	 * A simple 3-state machine to make sure that full-screen draws performed during
@@ -724,7 +725,7 @@ public final class CombatView extends SurfaceView {
 
         // Make sure that any scale changes are reflected in the way that scale-independent sprites
         // (such as info points) are drawn.
-        float infoWidthScreenSpace = Util.convertDpToPixel(32, this.getContext());
+        float infoWidthScreenSpace = Util.convertDpToPixel(INFO_POINT_SIZE_DP, this.getContext());
         Information.setSizeWorldSpace(
                 getData().getWorldSpaceTransformer().screenSpaceToWorldSpace(infoWidthScreenSpace));
 
