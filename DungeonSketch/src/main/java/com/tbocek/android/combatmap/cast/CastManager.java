@@ -19,6 +19,14 @@ import com.google.android.gms.common.api.Status;
  * Created by tbocek on 4/29/14.
  */
 public class CastManager {
+    private static CastManager sInstance;
+    public static CastManager getInstance(Context c) {
+        if (sInstance == null) {
+            sInstance = new CastManager(c);
+        }
+        return sInstance;
+    }
+
     private static final String TAG = "CastManager";
     private MediaRouter mMediaRouter;
     private MediaRouteSelector mMediaRouteSelector;
@@ -27,11 +35,14 @@ public class CastManager {
     private GoogleApiClient mApiClient;
     private boolean mWaitingForReconnect;
 
-    public CastManager(Context context) {
+    private CastFileServer mCastServer;
+
+    private CastManager(Context context) {
         mContext = context.getApplicationContext();
     }
 
     public void onCreate() {
+        mCastServer = new CastFileServer(mContext);
         mMediaRouter = android.support.v7.media.MediaRouter.getInstance(mContext);
         mMediaRouteSelector = new MediaRouteSelector.Builder()
                 .addControlCategory(CastMediaControlIntent.categoryForCast(
@@ -63,7 +74,7 @@ public class CastManager {
             Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions
                     .builder(mSelectedDevice, mCastClientListener);
 
-            mApiClient = new GoogleApiClient.Builder(this)
+            mApiClient = new GoogleApiClient.Builder(mContext)
                     .addApi(Cast.API, apiOptionsBuilder.build())
                     .addConnectionCallbacks(mConnectionCallbacks)
                     .addOnConnectionFailedListener(mConnectionFailedListener)
