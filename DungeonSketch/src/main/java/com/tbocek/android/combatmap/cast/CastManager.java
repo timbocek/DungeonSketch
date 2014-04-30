@@ -40,6 +40,7 @@ public class CastManager {
     private Context mContext;
     private GoogleApiClient mApiClient;
     private boolean mWaitingForReconnect;
+    private boolean mApplicationStarted;
     private Bitmap mCastBuffer;
 
     private CastFileServer mCastServer;
@@ -106,20 +107,24 @@ public class CastManager {
                 reconnectChannels();
             } else {
                 try {
-                    Cast.CastApi.launchApplication(mApiClient, "YOUR_APPLICATION_ID", false)
+                    Cast.CastApi.launchApplication(mApiClient, CastMediaControlIntent.DEFAULT_MEDIA_RECEIVER_APPLICATION_ID, false)
                             .setResultCallback(
                                     new ResultCallback<Cast.ApplicationConnectionResult>() {
                                         @Override
                                         public void onResult(Cast.ApplicationConnectionResult result) {
-                                            Status status = result.getStatus();
-                                            if (status.isSuccess()) {
-                                                ApplicationMetadata applicationMetadata =
-                                                        result.getApplicationMetadata();
-                                                String sessionId = result.getSessionId();
-                                                String applicationStatus = result.getApplicationStatus();
-                                                boolean wasLaunched = result.getWasLaunched();
-                                            } else {
-                                                teardown();
+                                            ApplicationMetadata applicationMetadata =
+                                                    result.getApplicationMetadata();
+                                            String sessionId = result.getSessionId();
+                                            String applicationStatus = result.getApplicationStatus();
+                                            boolean wasLaunched = result.getWasLaunched();
+
+                                            mApplicationStarted = true;
+                                            try {
+                                                Cast.CastApi.setMessageReceivedCallbacks(mApiClient,
+                                                        mMessageCallback.getNamespace(),
+                                                        mMessageCallback);
+                                            } catch (IOException e) {
+                                                Log.e(TAG, "Exception while creating channel", e);
                                             }
                                         }
                                     });
@@ -136,6 +141,25 @@ public class CastManager {
         }
     };
 
+    private void sendMessage(String message) {
+        if (mApiClient != null && mMessageCallback != null) {
+            try {
+                Cast.CastApi.sendMessage(mApiClient, mMessageCallback.getNamespace(), message)
+                        .setResultCallback(
+                                new ResultCallback<Status>() {
+                                    @Override
+                                    public void onResult(Status result) {
+                                        if (!result.isSuccess()) {
+                                            Log.e(TAG, "Sending message failed");
+                                        }
+                                    }
+                                });
+            } catch (Exception e) {
+                Log.e(TAG, "Exception while sending message", e);
+            }
+        }
+    }
+
     private GoogleApiClient.OnConnectionFailedListener mConnectionFailedListener = new
     GoogleApiClient.OnConnectionFailedListener() {
         @Override
@@ -143,6 +167,30 @@ public class CastManager {
             teardown();
         }
     };
+
+    private void teardown() {
+
+    }
+
+    private void reconnectChannels() {
+
+    }
+
+    public Bitmap getCastBuffer() {
+        if (mCastBuffer == null) {
+            mCastBuffer = Bitmap.createBitmap(EXPORT_WIDTH, EXPORT_HEIGHT, Bitmap.Config.ARGB_8888);
+        }
+        return mCastBuffer;
+    }
+
+    public void updateImage(Bitmap image) throws IOException {
+        mCastServer.saveImage(image);
+        // TODO: Tell the remote viewer to grab the new image.
+    }
+
+    public boolean isCasting() {
+        return false;
+    }
 
     Cast.Listener mCastClientListener = new Cast.Listener() {
         @Override
@@ -166,27 +214,16 @@ public class CastManager {
         }
     };
 
-    private void teardown() {
-
-    }
-
-    private void reconnectChannels() {
-
-    }
-
-    public boolean isCasting() {
-        return false;
-    }
-
-    public Bitmap getCastBuffer() {
-        if (mCastBuffer == null) {
-            mCastBuffer = Bitmap.createBitmap(EXPORT_WIDTH, EXPORT_HEIGHT, Bitmap.Config.ARGB_8888);
+    private class MessageReceivedCallback implements Cast.MessageReceivedCallback {
+        public String getNamespace() {
+            return "urn:x-cast:com.example.custom";
         }
-        return mCastBuffer;
-    }
 
-    public void updateImage(Bitmap image) throws IOException {
-        mCastServer.saveImage(image);
-        // TODO: Tell the remote viewer to grab the new image.
-    }
+        @Override
+        public void onMessageReceived(CastDevice castDevice, String namespace,
+                                      String message) {
+            Log.d(TAG, "onMessageReceived: " + message);
+        }
+    };
+    private MessageReceivedCallback mMessageCallback = new MessageReceivedCallback();
 }
