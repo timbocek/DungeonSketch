@@ -1,10 +1,6 @@
 package com.tbocek.android.combatmap.view;
 
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -42,9 +38,9 @@ import com.tbocek.android.combatmap.model.primitives.BackgroundImage;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.Information;
+import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Shape;
-import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.interaction.BackgroundImageInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CombatViewInteractionMode;
@@ -58,6 +54,10 @@ import com.tbocek.android.combatmap.view.interaction.MaskEraseInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.MeasuringTapeInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.TokenManipulationInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.ZoomPanInteractionMode;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This view is the main canvas on which the map and combat tokens are drawn and

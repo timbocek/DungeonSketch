@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -41,6 +42,7 @@ import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
 import com.tbocek.android.combatmap.cast.CastManager;
 import com.tbocek.android.combatmap.model.Grid;
 import com.tbocek.android.combatmap.model.MapData;
+import com.tbocek.android.combatmap.model.MapDrawer;
 import com.tbocek.android.combatmap.model.MapDrawer.FogOfWarMode;
 import com.tbocek.android.combatmap.model.MultiSelectManager;
 import com.tbocek.android.combatmap.model.primitives.BackgroundImage;
@@ -567,7 +569,7 @@ public final class CombatMap extends ActionBarActivity {
 
 		PreferenceManager.setDefaultValues(this, R.layout.settings, false);
 
-        mCastManager = new CastManager(this);
+        mCastManager = CastManager.getInstance(this);
         mCastManager.onCreate();
 
 		initializeUi();
@@ -719,6 +721,11 @@ public final class CombatMap extends ActionBarActivity {
 						// status as
 						// well.
 						CombatMap.this.setUndoRedoEnabled();
+
+                        // When the map is refreshed, if we are connected to Chromecast export the
+                        // token layer (and *only* the token layer) to Chromecast.
+                        // TODO: Do this less often!!!
+                        CombatMap.this.exportToChromecast();
 					}
 				});
 
@@ -730,7 +737,30 @@ public final class CombatMap extends ActionBarActivity {
 
 	}
 
-	@Override
+    private void exportToChromecast() {
+        if (mCastManager.isCasting()) {
+            // Create a 1080p 16x9 bitmap
+            Bitmap b = mCastManager.getCastBuffer();
+            Canvas canvas = new Canvas(b);
+
+            new MapDrawer()
+                    .drawGridLines(true)
+                    .drawGmNotes(false)
+                    .drawTokens(true)
+                    .areTokensManipulable(true)
+                    .drawAnnotations(true)
+                    .backgroundFogOfWar(FogOfWarMode.CLIP)
+                    .draw(canvas, this.mData, canvas.getClipBounds());
+
+            try {
+                mCastManager.updateImage(b);
+            } catch (IOException e) {
+                Log.w(TAG, "Error updating Chromecast image", e);
+            }
+        }
+    }
+
+    @Override
 	public Dialog onCreateDialog(final int id) {
 		switch (id) {
 		case DIALOG_ID_SAVE:

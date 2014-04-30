@@ -1,6 +1,7 @@
 package com.tbocek.android.combatmap.cast;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
@@ -15,6 +16,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import java.io.IOException;
+
 /**
  * Created by tbocek on 4/29/14.
  */
@@ -28,12 +31,16 @@ public class CastManager {
     }
 
     private static final String TAG = "CastManager";
+    private static final int EXPORT_WIDTH = 1920;
+    private static final int EXPORT_HEIGHT = 1080;
+
     private MediaRouter mMediaRouter;
     private MediaRouteSelector mMediaRouteSelector;
     private CastDevice mSelectedDevice;
     private Context mContext;
     private GoogleApiClient mApiClient;
     private boolean mWaitingForReconnect;
+    private Bitmap mCastBuffer;
 
     private CastFileServer mCastServer;
 
@@ -165,5 +172,21 @@ public class CastManager {
 
     private void reconnectChannels() {
 
+    }
+
+    public boolean isCasting() {
+        return false;
+    }
+
+    public Bitmap getCastBuffer() {
+        if (mCastBuffer == null) {
+            mCastBuffer = Bitmap.createBitmap(EXPORT_WIDTH, EXPORT_HEIGHT, Bitmap.Config.ARGB_8888);
+        }
+        return mCastBuffer;
+    }
+
+    public void updateImage(Bitmap image) throws IOException {
+        mCastServer.saveImage(image);
+        // TODO: Tell the remote viewer to grab the new image.
     }
 }
