@@ -1,18 +1,5 @@
 package com.tbocek.android.combatmap;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.io.FileUtils;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -23,6 +10,18 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.tbocek.android.combatmap.model.MapData;
+
+import org.apache.commons.io.FileUtils;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * This class manages saved map and token data and provides an interface to
@@ -302,18 +301,60 @@ public final class DataManager {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public Bitmap loadTokenImage(final String filename, Bitmap existingBuffer) throws IOException {
         BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(
+                this.getTokenImageFile(filename).getAbsolutePath(), options);
+        options.inJustDecodeBounds = false;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             options.inMutable = true; // Make bitmaps mutable so they are reusable.
         }
         if (existingBuffer != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && existingBuffer.isMutable()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && existingBuffer.isMutable() && canUseForInBitmap(existingBuffer, options)) {
                 options.inBitmap = existingBuffer;
             } else {
                 existingBuffer.recycle();
             }
         }
-        Bitmap b = BitmapFactory.decodeFile(
-                this.getTokenImageFile(filename).getAbsolutePath(), options);
+        Bitmap b;
+        try {
+            b = BitmapFactory.decodeFile(
+                    this.getTokenImageFile(filename).getAbsolutePath(), options);
+        } catch (IllegalArgumentException e) {
+            options.inBitmap = null;
+            existingBuffer.recycle();
+            b = BitmapFactory.decodeFile(
+                    this.getTokenImageFile(filename).getAbsolutePath(), options);
+        }
+        return b;
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public Bitmap loadTokenImage(final int resource_id, Bitmap existingBuffer) throws IOException {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(this.mContext.getResources(), resource_id, options);
+        options.inJustDecodeBounds = false;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            options.inMutable = true; // Make bitmaps mutable so they are reusable.
+        }
+
+        if (existingBuffer != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && existingBuffer.isMutable() && canUseForInBitmap(existingBuffer, options)) {
+                options.inBitmap = existingBuffer;
+            } else {
+                existingBuffer.recycle();
+            }
+        }
+        Bitmap b;
+        try {
+            b = BitmapFactory.decodeResource(this.mContext.getResources(), resource_id, options);
+        } catch (IllegalArgumentException e) {
+            options.inBitmap = null;
+            existingBuffer.recycle();
+            b = BitmapFactory.decodeResource(this.mContext.getResources(), resource_id, options);
+        }
         return b;
     }
 
@@ -476,5 +517,41 @@ public final class DataManager {
         Bitmap b = BitmapFactory.decodeStream(s);
         s.close();
         return b;
+    }
+
+    static boolean canUseForInBitmap(
+            Bitmap candidate, BitmapFactory.Options targetOptions) {
+        if (targetOptions.inSampleSize == 0) targetOptions.inSampleSize = 1;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // From Android 4.4 (KitKat) onward we can re-use if the byte size of
+            // the new bitmap is smaller than the reusable bitmap candidate
+            // allocation byte count.
+            int width = targetOptions.outWidth / targetOptions.inSampleSize;
+            int height = targetOptions.outHeight / targetOptions.inSampleSize;
+            int byteCount = width * height * getBytesPerPixel(candidate.getConfig());
+            return byteCount <= candidate.getAllocationByteCount();
+        }
+
+        // On earlier versions, the dimensions must match exactly and the inSampleSize must be 1
+        return candidate.getWidth() == targetOptions.outWidth
+                && candidate.getHeight() == targetOptions.outHeight
+                && targetOptions.inSampleSize == 1;
+    }
+
+    /**
+     * A helper function to return the byte usage per pixel of a bitmap based on its configuration.
+     */
+    static int getBytesPerPixel(Bitmap.Config config) {
+        if (config == Bitmap.Config.ARGB_8888) {
+            return 4;
+        } else if (config == Bitmap.Config.RGB_565) {
+            return 2;
+        } else if (config == Bitmap.Config.ARGB_4444) {
+            return 2;
+        } else if (config == Bitmap.Config.ALPHA_8) {
+            return 1;
+        }
+        return 1;
     }
 }

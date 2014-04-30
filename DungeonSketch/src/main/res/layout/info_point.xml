@@ -20,5 +20,43 @@
         android:layout_below="@+id/entered_text"
         android:layout_alignRight="@+id/entered_text"
         android:text="@string/save" />
+    <RadioGroup
+        android:id="@+id/info_point_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/entered_text"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/radio_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:paddingRight="12dp"
+            android:src="@drawable/info"/>
+        <RadioButton
+            android:id="@+id/radio_combat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:paddingRight="12dp"
+            android:src="@drawable/icon_combat"/>
+        <RadioButton
+            android:id="@+id/radio_treasure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:paddingRight="12dp"
+            android:src="@drawable/icon_treasure"/>
+     </RadioGroup>
 
 </RelativeLayout>

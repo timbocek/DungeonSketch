@@ -207,8 +207,9 @@ public final class LineCollection implements UndoRedoTarget {
 
 
 
-    public Shape createInfo(String text, PointF newObjectLocationWorldSpace) {
+    public Shape createInfo(String text, PointF newObjectLocationWorldSpace, int iconId) {
         Information m = new Information(newObjectLocationWorldSpace, text);
+        m.setIcon(iconId);
         Command c = new Command(this);
         c.addCreatedShape(m);
         this.mCommandHistory.execute(c);
@@ -341,9 +342,10 @@ public final class LineCollection implements UndoRedoTarget {
      * @param transformer
      */
     public void editInfo(Information editedTextObject, String text,
-                         CoordinateTransformer transformer) {
+                         CoordinateTransformer transformer, int iconId) {
         Information newInfo =
                 new Information(editedTextObject.getLocation(), text);
+        newInfo.setIcon(iconId);
         Command c = new Command(this);
         c.addCreatedShape(newInfo);
         c.addDeletedShape(editedTextObject);

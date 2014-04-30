@@ -45,6 +45,7 @@ import com.tbocek.android.combatmap.model.primitives.Information;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Shape;
 import com.tbocek.android.combatmap.model.primitives.OnScreenText;
+import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.interaction.BackgroundImageInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CombatViewInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CreateInfoInteractionMode;
@@ -67,6 +68,7 @@ import com.tbocek.android.combatmap.view.interaction.ZoomPanInteractionMode;
  */
 public final class CombatView extends SurfaceView {
     private static final String TAG = "CombatView";
+    private static final float INFO_POINT_SIZE_DP = 32;
 
     /**
 	 * A simple 3-state machine to make sure that full-screen draws performed during
@@ -403,8 +405,8 @@ public final class CombatView extends SurfaceView {
         this.refreshMap();
     }
 
-    public void createNewInfo(PointF newObjectLocationWorldSpace, String text) {
-        this.mActiveLines.createInfo(text, newObjectLocationWorldSpace);
+    public void createNewInfo(PointF newObjectLocationWorldSpace, String text, int iconId) {
+        this.mActiveLines.createInfo(text, newObjectLocationWorldSpace, iconId);
         this.refreshMap();
     }
 
@@ -720,6 +722,12 @@ public final class CombatView extends SurfaceView {
         if (!this.mSurfaceReady) {
             return;
         }
+
+        // Make sure that any scale changes are reflected in the way that scale-independent sprites
+        // (such as info points) are drawn.
+        float infoWidthScreenSpace = Util.convertDpToPixel(INFO_POINT_SIZE_DP, this.getContext());
+        Information.setSizeWorldSpace(
+                getData().getWorldSpaceTransformer().screenSpaceToWorldSpace(infoWidthScreenSpace));
 
         SurfaceHolder holder = this.getHolder();
         Canvas canvas = holder.lockCanvas(invalidBounds);

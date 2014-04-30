@@ -30,13 +30,35 @@ import java.util.List;
  */
 public class Information extends Text {
 
+    public static final int ICON_INFO = 0;
+    public static final int ICON_MONSTER = 1;
+    public static final int ICON_TREASURE = 2;
+    public static final int NUM_ICONS = 3;
+
+    private static Bitmap[] sIconBitmaps;
+    /**
+     * The size of an info point in world space.  Done so that we can adjust this size to make
+     * this appear a constant size in screen space.
+     */
+    private static float sSizeWorldSpace = 1.0f;
+    public static void setSizeWorldSpace(float size) {
+        sSizeWorldSpace = size;
+    }
+
     private static Bitmap sInfoBitmap;
     public static void loadInfoBitmap(Context c) {
-        sInfoBitmap = BitmapFactory.decodeResource(c.getResources(), R.drawable.info);
+        sIconBitmaps = new Bitmap[NUM_ICONS];
+        sIconBitmaps[ICON_INFO] = BitmapFactory.decodeResource(c.getResources(), R.drawable.info);
+        sIconBitmaps[ICON_MONSTER] = BitmapFactory.decodeResource(c.getResources(), R.drawable.icon_combat);
+        sIconBitmaps[ICON_TREASURE] = BitmapFactory.decodeResource(c.getResources(), R.drawable.icon_treasure);
+    }
+    public static final Bitmap[] getIconBitmaps() {
+        return sIconBitmaps;
     }
 
     public static final String SHAPE_TYPE = "inf";
 
+    private int mIcon = ICON_INFO;
 
     public Information() {
        this(new PointF(0,0), "");
@@ -61,6 +83,7 @@ public class Information extends Text {
     public Information(Information copyFrom) {
         this.mText = copyFrom.mText;
         this.mLocation = new PointF(copyFrom.mLocation.x, copyFrom.mLocation.y);
+        this.mIcon = copyFrom.mIcon;
         this.setBoundingRectangle(
                 new PointF(mLocation.x, mLocation.y),
                 new PointF(mLocation.x + 1, mLocation.y + 1));
@@ -75,6 +98,7 @@ public class Information extends Text {
         s.serializeString(this.mText);
         s.serializeFloat(this.mLocation.x);
         s.serializeFloat(this.mLocation.y);
+        s.serializeInt(this.mIcon);
         s.endObject();
     }
 
@@ -86,6 +110,7 @@ public class Information extends Text {
         this.mLocation = new PointF();
         this.mLocation.x = s.readFloat();
         this.mLocation.y = s.readFloat();
+        this.mIcon = s.readInt();
         s.expectObjectEnd();
     }
 
@@ -102,8 +127,24 @@ public class Information extends Text {
 
     @Override
     public void draw(Canvas c) {
-        if (sInfoBitmap != null) {
-            c.drawBitmap(sInfoBitmap, new Rect(0,0,sInfoBitmap.getWidth(), sInfoBitmap.getHeight()), this.getBoundingRectangle().toRectF(), null);
+        if (sIconBitmaps != null) {
+            Bitmap icon = sIconBitmaps[mIcon];
+            c.drawBitmap(icon, new Rect(0,0,icon.getWidth(), icon.getHeight()), this.getBoundingRectangle().toRectF(), null);
         }
+    }
+
+    public int getIcon() {
+        return mIcon;
+    }
+
+    public void setIcon(int icon) {
+        mIcon = icon;
+    }
+    @Override
+    public BoundingRectangle getBoundingRectangle() {
+        if (this.mLocation == null) return new BoundingRectangle();
+        return new BoundingRectangle(
+                this.mLocation,
+                new PointF(this.mLocation.x + sSizeWorldSpace, this.mLocation.y + sSizeWorldSpace));
     }
 }
