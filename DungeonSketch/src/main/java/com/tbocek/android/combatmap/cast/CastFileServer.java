@@ -2,6 +2,9 @@ package com.tbocek.android.combatmap.cast;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.text.format.Formatter;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -48,6 +51,10 @@ public class CastFileServer extends NanoHTTPD {
     }
 
     public String getImageAddress() {
-        return "";
+        WifiManager wifiMgr = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
+        int ip = wifiInfo.getIpAddress();
+        String ipAddress = Formatter.formatIpAddress(ip);
+        return "http://" + ipAddress + ":" + Integer.toString(getListeningPort());
     }
 }

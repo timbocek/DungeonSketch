@@ -112,6 +112,11 @@ public class CastManager {
                     .addOnConnectionFailedListener(mConnectionFailedListener)
                     .build();
             mApiClient.connect();
+            try {
+                mCastServer.start();
+            } catch (IOException e) {
+                Log.w(TAG, "Failed to start cast server", e);
+            }
 
         }
 
@@ -193,7 +198,7 @@ public class CastManager {
     };
 
     private void teardown() {
-
+        mCastServer.stop();
     }
 
     private void reconnectChannels() {

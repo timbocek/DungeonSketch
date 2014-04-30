@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="C:\Users\Tim\AndroidStudioProjects\DungeonSketch" />
-            <option value="C:\Users\Tim\AndroidStudioProjects\DungeonSketch\DungeonSketch" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/DungeonSketch" />
           </set>
         </option>
       </GradleProjectSettings>
