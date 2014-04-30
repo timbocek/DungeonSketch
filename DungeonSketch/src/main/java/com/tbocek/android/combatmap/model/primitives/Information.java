@@ -49,6 +49,8 @@ public class Information extends Text {
     public static void loadInfoBitmap(Context c) {
         sIconBitmaps = new Bitmap[NUM_ICONS];
         sIconBitmaps[ICON_INFO] = BitmapFactory.decodeResource(c.getResources(), R.drawable.info);
+        sIconBitmaps[ICON_MONSTER] = BitmapFactory.decodeResource(c.getResources(), R.drawable.icon_combat);
+        sIconBitmaps[ICON_TREASURE] = BitmapFactory.decodeResource(c.getResources(), R.drawable.icon_treasure);
     }
     public static final Bitmap[] getIconBitmaps() {
         return sIconBitmaps;
