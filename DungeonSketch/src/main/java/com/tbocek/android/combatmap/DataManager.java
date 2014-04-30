@@ -316,8 +316,16 @@ public final class DataManager {
                 existingBuffer.recycle();
             }
         }
-        Bitmap b = BitmapFactory.decodeFile(
-                this.getTokenImageFile(filename).getAbsolutePath(), options);
+        Bitmap b;
+        try {
+            b = BitmapFactory.decodeFile(
+                    this.getTokenImageFile(filename).getAbsolutePath(), options);
+        } catch (IllegalArgumentException e) {
+            options.inBitmap = null;
+            existingBuffer.recycle();
+            b = BitmapFactory.decodeFile(
+                    this.getTokenImageFile(filename).getAbsolutePath(), options);
+        }
         return b;
     }
 
@@ -339,7 +347,14 @@ public final class DataManager {
                 existingBuffer.recycle();
             }
         }
-        Bitmap b = BitmapFactory.decodeResource(this.mContext.getResources(), resource_id, options);
+        Bitmap b;
+        try {
+            b = BitmapFactory.decodeResource(this.mContext.getResources(), resource_id, options);
+        } catch (IllegalArgumentException e) {
+            options.inBitmap = null;
+            existingBuffer.recycle();
+            b = BitmapFactory.decodeResource(this.mContext.getResources(), resource_id, options);
+        }
         return b;
     }
 
