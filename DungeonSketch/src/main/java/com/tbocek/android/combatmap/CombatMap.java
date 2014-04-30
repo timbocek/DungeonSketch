@@ -527,7 +527,7 @@ public final class CombatMap extends ActionBarActivity {
 
 		this.mCombatView.setShouldSnapToGrid(shouldSnap);
 		this.mCombatView.setTokensSnapToIntersections(this.mSharedPreferences
-				.getBoolean("tokenssnaptogridlines", false));
+                .getBoolean("tokenssnaptogridlines", false));
 
 		if (this.mSnapToGridMenuItem != null) {
 			this.mSnapToGridMenuItem.setChecked(shouldSnap);
@@ -779,12 +779,12 @@ public final class CombatMap extends ActionBarActivity {
                 return new InfoPointDialog(this,
                         new InfoPointDialog.OnTextConfirmedListener() {
                             @Override
-                            public void onTextConfirmed(final String text) {
+                            public void onTextConfirmed(final String text, int iconId) {
                                 if (CombatMap.this.mEditedTextObject == null) {
                                     CombatMap.this.mCombatView
                                             .createNewInfo(
                                                     CombatMap.this.mNewObjectLocationWorldSpace,
-                                                    text);
+                                                    text, iconId);
                                 } else {
                                     CombatMap.this.mCombatView
                                             .getActiveLines()
@@ -792,7 +792,8 @@ public final class CombatMap extends ActionBarActivity {
                                                     (Information) CombatMap.this.mEditedTextObject,
                                                     text,
                                                     CombatMap.this.mCombatView
-                                                            .getWorldSpaceTransformer()
+                                                            .getWorldSpaceTransformer(),
+                                                    iconId
                                             );
                                     CombatMap.this.mCombatView.refreshMap();
                                 }
@@ -967,7 +968,7 @@ public final class CombatMap extends ActionBarActivity {
         case DIALOG_ID_CREATE_INFO_LOCATION:
           InfoPointDialog fd2 = (InfoPointDialog) dialog;
             if (this.mEditedTextObject != null) {
-                fd2.populateFields(this.mEditedTextObject.getText());
+                fd2.populateFields(this.mEditedTextObject.getText(), ((Information)this.mEditedTextObject).getIcon());
             } else {
                 fd2.clearText();
             }

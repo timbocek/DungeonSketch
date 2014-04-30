@@ -28,6 +28,7 @@
         android:layout_alignParentLeft="true"
         android:orientation="horizontal">
         <RadioButton
+            android:id="@+id/radio_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <ImageView
@@ -37,6 +38,7 @@
             android:paddingRight="12dp"
             android:src="@drawable/info"/>
         <RadioButton
+            android:id="@+id/radio_combat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <ImageView
@@ -46,6 +48,7 @@
             android:paddingRight="12dp"
             android:src="@drawable/icon_combat"/>
         <RadioButton
+            android:id="@+id/radio_treasure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <ImageView

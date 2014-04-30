@@ -4,9 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.tbocek.android.combatmap.model.primitives.Information;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.dungeonsketch.R;
 
@@ -17,6 +19,11 @@ import com.tbocek.dungeonsketch.R;
  *
  */
 public class InfoPointDialog extends Dialog {
+    private int[] mIconIdToRadio = new int[] {
+        R.id.radio_info,
+        R.id.radio_combat,
+        R.id.radio_treasure
+    };
 
     /**
      * Button that the user clicks to confirm the text entered.
@@ -33,6 +40,8 @@ public class InfoPointDialog extends Dialog {
      */
     private TextView mNameText;
 
+    private RadioGroup mIconRadioGroup;
+
     /**
      * Constructor.
      *
@@ -45,6 +54,12 @@ public class InfoPointDialog extends Dialog {
     public InfoPointDialog(final Context context,
                       final OnTextConfirmedListener listener) {
         super(context);
+        mIconIdToRadio = new int[] {
+                R.id.radio_info,
+                R.id.radio_combat,
+                R.id.radio_treasure
+        };
+
         this.setContentView(R.layout.info_point);
         this.setTitle(context.getString(R.string.info_point));
         this.mListener = listener;
@@ -53,13 +68,21 @@ public class InfoPointDialog extends Dialog {
         this.mNameText = (TextView) this.findViewById(R.id.entered_text);
         this.mNameText.requestFocus();
         this.mNameText.setText("");
+        this.mIconRadioGroup = (RadioGroup) this.findViewById(R.id.info_point_type);
         this.mConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                int iconId = 0;
+                for (int i = 0; i < mIconIdToRadio.length; ++i) {
+                    if (mIconIdToRadio[i] == mIconRadioGroup.getCheckedRadioButtonId()) {
+                        iconId = i;
+                        break;
+                    }
+                }
                 String name =
                         (String) InfoPointDialog.this.mNameText.getText().toString();
                 InfoPointDialog.this.dismiss();
-                InfoPointDialog.this.mListener.onTextConfirmed(name);
+                InfoPointDialog.this.mListener.onTextConfirmed(name, iconId);
             }
         });
     }
@@ -77,8 +100,11 @@ public class InfoPointDialog extends Dialog {
      *
      * @param text
      *            The current text of the object being edited.W
+     * @param icon
      */
-    public void populateFields(String text) {
+    public void populateFields(String text, int icon) {
+
+        this.mIconRadioGroup.check(mIconIdToRadio[icon]);
         this.mNameText.setText(text);
     }
 
@@ -92,10 +118,11 @@ public class InfoPointDialog extends Dialog {
     public interface OnTextConfirmedListener {
         /**
          * Called when the user confirms the text entered.
-         *  @param text
+         * @param text
          *            The text entered by the user.
+         * @param iconId
          *
          */
-        void onTextConfirmed(String text);
+        void onTextConfirmed(String text, int iconId);
     }
 }

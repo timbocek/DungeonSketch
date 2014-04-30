@@ -83,6 +83,7 @@ public class Information extends Text {
     public Information(Information copyFrom) {
         this.mText = copyFrom.mText;
         this.mLocation = new PointF(copyFrom.mLocation.x, copyFrom.mLocation.y);
+        this.mIcon = copyFrom.mIcon;
         this.setBoundingRectangle(
                 new PointF(mLocation.x, mLocation.y),
                 new PointF(mLocation.x + 1, mLocation.y + 1));

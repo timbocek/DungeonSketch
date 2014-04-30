@@ -404,8 +404,8 @@ public final class CombatView extends SurfaceView {
         this.refreshMap();
     }
 
-    public void createNewInfo(PointF newObjectLocationWorldSpace, String text) {
-        this.mActiveLines.createInfo(text, newObjectLocationWorldSpace);
+    public void createNewInfo(PointF newObjectLocationWorldSpace, String text, int iconId) {
+        this.mActiveLines.createInfo(text, newObjectLocationWorldSpace, iconId);
         this.refreshMap();
     }
 
