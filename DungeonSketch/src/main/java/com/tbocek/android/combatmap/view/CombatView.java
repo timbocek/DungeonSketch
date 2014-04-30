@@ -724,7 +724,7 @@ public final class CombatView extends SurfaceView {
 
         // Make sure that any scale changes are reflected in the way that scale-independent sprites
         // (such as info points) are drawn.
-        float infoWidthScreenSpace = Util.convertDpToPixel(24, this.getContext());
+        float infoWidthScreenSpace = Util.convertDpToPixel(32, this.getContext());
         Information.setSizeWorldSpace(
                 getData().getWorldSpaceTransformer().screenSpaceToWorldSpace(infoWidthScreenSpace));
 
