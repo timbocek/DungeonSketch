@@ -18,10 +18,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
-import java.util.Stack;
-import java.util.concurrent.SynchronousQueue;
 
 /**
  * Manages a set of token images.  Anything needing a token image can request a bitmap.
@@ -143,9 +140,11 @@ public class TokenImageManager {
         public void discardOrCancelTokenLoad(String tokenId) {
             TokenImageManager mgr = TokenImageManager.getInstance();
             if (this.mCallbacks.containsKey(tokenId)) {
+                Log.d(TAG, "Cancelling token load: " + tokenId);
                 cancelTokenLoad(tokenId);
             } else {
                 mgr.releaseTokenImage(tokenId);
+                Log.d(TAG, "Releasing token image: " + tokenId);
             }
         }
     }
@@ -165,6 +164,9 @@ public class TokenImageManager {
             mReferenceCount--;
             if (mReferenceCount == 0) {
                 mRecycledImages.addLast(this);
+                Log.d(TAG, "Image added to garbage heap.  Size=" + mRecycledImages.size());
+            } else {
+                Log.d(TAG, "Image still has " + mReferenceCount + " users.");
             }
         }
     }
@@ -267,7 +269,7 @@ public class TokenImageManager {
         if (mRecycledImages.isEmpty()) {
             // Pool empty, allocate some more.
             int poolIncrease = (int)(mCurrentImages.size() * POOL_EXPANSION_RATIO) + 1;
-            Log.i(TAG, "Increasing image pool size by " + poolIncrease);
+            Log.w(TAG, "Increasing image pool size by " + poolIncrease);
             initializePool(poolIncrease);
             return mRecycledImages.removeFirst();
         } else {
@@ -278,6 +280,8 @@ public class TokenImageManager {
             }
             newImageWrapper.mToken = null;
             newImageWrapper.mReferenceCount++;
+
+            Log.d(TAG, "Token garbage heap size=" + mRecycledImages.size());
             return newImageWrapper;
         }
     }

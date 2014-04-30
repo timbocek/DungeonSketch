@@ -1,14 +1,14 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import com.tbocek.android.combatmap.DataManager;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A token type that is loaded from an external file and displays the image.
@@ -18,25 +18,11 @@ import com.tbocek.android.combatmap.DataManager;
  */
 public final class CustomBitmapToken extends DrawableToken {
 
-    /**
-     * The data manager that is used to load custom images.
-     */
-    private static transient DataManager dataManager = null;
 
     /**
      * The filename to load.
      */
     private String mFilename = null;
-
-    /**
-     * Sets the data manager that will be used to load images.
-     * 
-     * @param manager
-     *            The data manager.
-     */
-    public static void registerDataManager(final DataManager manager) {
-        CustomBitmapToken.dataManager = manager;
-    }
 
     /**
      * Constructor.

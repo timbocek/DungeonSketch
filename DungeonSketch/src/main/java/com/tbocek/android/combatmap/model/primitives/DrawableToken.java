@@ -1,8 +1,5 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,8 +11,12 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import com.tbocek.android.combatmap.DataManager;
 import com.tbocek.android.combatmap.DeveloperMode;
 import com.tbocek.android.combatmap.TokenImageManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Base class for tokens that display some sort of drawable. Provides standard
@@ -26,6 +27,20 @@ import com.tbocek.android.combatmap.TokenImageManager;
  * 
  */
 public abstract class DrawableToken extends BaseToken {
+
+    /**
+     * The data manager that is used to load custom images.
+     */
+    protected static transient DataManager dataManager = null;
+    /**
+     * Sets the data manager that will be used to load images.
+     *
+     * @param manager
+     *            The data manager.
+     */
+    public static void registerDataManager(final DataManager manager) {
+        CustomBitmapToken.dataManager = manager;
+    }
 
     /**
      * Color transformation matrix used to place a red tint on bloodied tokens.

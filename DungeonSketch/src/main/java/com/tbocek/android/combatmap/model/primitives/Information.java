@@ -36,6 +36,16 @@ public class Information extends Text {
     public static final int NUM_ICONS = 3;
 
     private static Bitmap[] sIconBitmaps;
+    /**
+     * The size of an info point in world space.  Done so that we can adjust this size to make
+     * this appear a constant size in screen space.
+     */
+    private static float sSizeWorldSpace = 1.0f;
+    public static void setSizeWorldSpace(float size) {
+        sSizeWorldSpace = size;
+    }
+
+    private static Bitmap sInfoBitmap;
     public static void loadInfoBitmap(Context c) {
         sIconBitmaps = new Bitmap[NUM_ICONS];
         sIconBitmaps[ICON_INFO] = BitmapFactory.decodeResource(c.getResources(), R.drawable.info);
@@ -126,5 +136,12 @@ public class Information extends Text {
 
     public void setIcon(int icon) {
         mIcon = icon;
+    }
+    @Override
+    public BoundingRectangle getBoundingRectangle() {
+        if (this.mLocation == null) return new BoundingRectangle();
+        return new BoundingRectangle(
+                this.mLocation,
+                new PointF(this.mLocation.x + sSizeWorldSpace, this.mLocation.y + sSizeWorldSpace));
     }
 }

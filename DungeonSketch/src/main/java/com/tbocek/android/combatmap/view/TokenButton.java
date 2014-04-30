@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
-import com.tbocek.android.combatmap.model.primitives.Util;
 
 /**
  * Represents a button that contains a prototype for a token. Draws the button
@@ -133,7 +132,13 @@ public class TokenButton extends ImageView {
      * @return The token ID.
      */
     public final String getTokenId() {
-        return this.mPrototype.getTokenId();
+
+        if (this.mPrototype != null) {
+            return this.mPrototype.getTokenId();
+        }
+        else {
+            return null;
+        }
     }
 
     /**
