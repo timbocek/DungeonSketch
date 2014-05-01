@@ -465,17 +465,17 @@ public final class LineCollection implements UndoRedoTarget {
      */
     public void optimize() {
         Command c = new Command(this);
-        for (int i = 0; i < this.mLines.size(); ++i) {
-            if (!this.mLines.get(i).isValid()) {
-                c.addDeletedShape(this.mLines.get(i));
-            } else if (this.mLines.get(i).needsOptimization()) {
+        for (Shape shape : this.mLines) {
+            if (!shape.isValid()) {
+                c.addDeletedShape(shape);
+            } else if (shape.needsOptimization()) {
                 List<Shape> optimizedLines =
-                        this.mLines.get(i).removeErasedPoints();
-                c.addDeletedShape(this.mLines.get(i));
+                        shape.removeErasedPoints();
+                c.addDeletedShape(shape);
                 c.addCreatedShapes(optimizedLines);
-            } else if (this.mLines.get(i).hasOffset()) {
-                c.addDeletedShape(this.mLines.get(i));
-                c.addCreatedShape(this.mLines.get(i).commitDrawOffset());
+            } else if (shape.hasOffset()) {
+                c.addDeletedShape(shape);
+                c.addCreatedShape(shape.commitDrawOffset());
             }
         }
         this.mCommandHistory.execute(c);
