@@ -446,9 +446,7 @@ public final class CombatMap extends ActionBarActivity {
 	 */
 	private MenuItem mUndoMenuItem;
 
-	private FrameLayout mInnerPopupFrame;
-
-	private Button mDeployTokensButton;
+    private Button mDeployTokensButton;
     private TokenImageManager.Loader mLoader;
 
     private TextView mSelectedToolTextView;
@@ -567,7 +565,7 @@ public final class CombatMap extends ActionBarActivity {
 		BackgroundImage.registerDataManager(new DataManager(this
 				.getApplicationContext()));
 
-		PreferenceManager.setDefaultValues(this, R.layout.settings, false);
+		PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
         mCastManager = CastManager.getInstance(this);
         mCastManager.onCreate();
@@ -640,8 +638,8 @@ public final class CombatMap extends ActionBarActivity {
 				.findViewById(R.id.bottomControlAreaFrame);
 		this.mPopupFrame = this
 				.findViewById(R.id.popupControlAreaFrame);
-		this.mInnerPopupFrame = (FrameLayout) this
-				.findViewById(R.id.popupControlAreaInnerFrame);
+        FrameLayout innerPopupFrame = (FrameLayout) this
+                .findViewById(R.id.popupControlAreaInnerFrame);
         this.mSelectedToolTextView = (TextView) this.findViewById(R.id.selectedToolText);
 		
 		this.mTagNavigator = new TagNavigator(this);
@@ -651,7 +649,7 @@ public final class CombatMap extends ActionBarActivity {
 		this.mTagNavigator.setTagSelectedListener(this.mTagSelectedListener);
 
 		//this.mPopupFrame.addView(this.mTokenCategorySelector);
-		this.mInnerPopupFrame.addView(this.mTagNavigator);
+		innerPopupFrame.addView(this.mTagNavigator);
 		
 		mainContentFrame.addView(this.mCombatView);
 		this.mBottomControlFrame.addView(this.mTokenSelector);
