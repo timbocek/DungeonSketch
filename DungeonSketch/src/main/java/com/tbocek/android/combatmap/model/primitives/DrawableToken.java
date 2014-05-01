@@ -63,7 +63,7 @@ public abstract class DrawableToken extends BaseToken {
      * Map between token ID and the the drawable that has been loaded for that
      * token ID, if it exists. Drawables already in this map will be reused.
      */
-    private static Map<String, Drawable> drawableCache =
+    private static final Map<String, Drawable> drawableCache =
             new HashMap<String, Drawable>();
 
     /**
