@@ -16,10 +16,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <meta-data
-        android:name="com.google.android.gms.version"
-        android:value="@integer/google_play_services_version" />
-
 
     <application
         android:hardwareAccelerated="true"
@@ -70,6 +66,8 @@
             android:label="New Tag"
             android:theme="@android:style/Theme.Holo.Dialog">
         </activity>
+
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
     </application>
 
 
