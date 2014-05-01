@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="all">
+        <ignore regexp=".*/java/net/margaritov/preference/colorpicker/.*" />
+        <ignore regexp="build/.*" />
+    </issue>
+</lint>

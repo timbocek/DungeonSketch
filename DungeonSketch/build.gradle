@@ -27,11 +27,6 @@ android {
             packageName 'com.tbocek.dungeonsketchbeta'
         }
     }
-    lintOptions {
-        abortOnError false
-        absolutePaths false
-        lintConfig file("DungeonSketch/lint.xml")
-    }
 }
 
 dependencies {

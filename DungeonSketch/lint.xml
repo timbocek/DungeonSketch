@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lint>
-    <issue id="all">
-        <ignore path="DungeonSketch/src/main/java/net/margaritov/preference/colorpicker/**" />
-        <ignore path="DungeonSketch/build/**" />
-    </issue>
-</lint>
