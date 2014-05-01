@@ -1,10 +1,5 @@
 package com.tbocek.android.combatmap;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -48,8 +43,8 @@ import com.tbocek.android.combatmap.model.MultiSelectManager;
 import com.tbocek.android.combatmap.model.primitives.BackgroundImage;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.Information;
-import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.OnScreenText;
+import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Text;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.tokenmanager.TokenManager;
@@ -59,7 +54,12 @@ import com.tbocek.android.combatmap.view.TagNavigator;
 import com.tbocek.android.combatmap.view.TokenSelectorView;
 import com.tbocek.dungeonsketch.R;
 
-import static android.support.v7.view.ActionMode.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static android.support.v7.view.ActionMode.Callback;
 import static com.tbocek.android.combatmap.view.DrawOptionsView.OnChangeDrawToolListener;
 
 /**
@@ -560,7 +560,7 @@ public final class CombatMap extends ActionBarActivity {
 		BackgroundImage.registerDataManager(new DataManager(this
 				.getApplicationContext()));
 
-		PreferenceManager.setDefaultValues(this, R.layout.settings, false);
+		PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
 		initializeUi();
 	}
