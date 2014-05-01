@@ -1,12 +1,5 @@
 package com.tbocek.android.combatmap.model;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -20,11 +13,18 @@ import com.tbocek.android.combatmap.model.primitives.Circle;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.FreehandLine;
 import com.tbocek.android.combatmap.model.primitives.Information;
+import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Rectangle;
 import com.tbocek.android.combatmap.model.primitives.Shape;
 import com.tbocek.android.combatmap.model.primitives.StraightLine;
-import com.tbocek.android.combatmap.model.primitives.OnScreenText;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Provides operations over an aggregate collection of lines. Invariant: Lines
@@ -361,8 +361,8 @@ public final class LineCollection implements UndoRedoTarget {
      *            Radius around the point to erase, in world space.
      */						
     public void erase(final PointF location, final float radius) {
-        for (int i = 0; i < this.mLines.size(); ++i) {
-            this.mLines.get(i).erase(location, radius);
+        for (Shape mLine : this.mLines) {
+            mLine.erase(location, radius);
         }
     }
 

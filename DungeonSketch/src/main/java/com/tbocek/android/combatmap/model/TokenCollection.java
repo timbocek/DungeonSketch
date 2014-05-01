@@ -1,10 +1,5 @@
 package com.tbocek.android.combatmap.model;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import android.graphics.Canvas;
 
 import com.google.common.collect.Lists;
@@ -16,6 +11,11 @@ import com.tbocek.android.combatmap.model.primitives.BoundingRectangle;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Util;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Encapsulates a set of tokens that have been placed on the grid.
@@ -167,8 +167,8 @@ public final class TokenCollection implements UndoRedoTarget {
     public void drawAllTokens(final Canvas canvas,
             final CoordinateTransformer transformer, boolean isDark,
             boolean isManipulatable) {
-        for (int i = 0; i < this.mTokens.size(); ++i) {
-            this.mTokens.get(i).drawInPosition(canvas, transformer, isDark,
+        for (BaseToken token : this.mTokens) {
+            token.drawInPosition(canvas, transformer, isDark,
                     isManipulatable);
         }
     }
@@ -198,14 +198,13 @@ public final class TokenCollection implements UndoRedoTarget {
      */
     public BaseToken getTokenUnderPoint(final PointF p,
             final CoordinateTransformer transformer) {
-        for (int i = 0; i < this.mTokens.size(); ++i) {
+        for (BaseToken token : this.mTokens) {
             float distance =
                     Util.distance(p, transformer
-                            .worldSpaceToScreenSpace(this.mTokens.get(i)
+                            .worldSpaceToScreenSpace(token
                                     .getLocation()));
-            if (distance < transformer.worldSpaceToScreenSpace(this.mTokens
-                    .get(i).getSize() / 2)) {
-                return this.mTokens.get(i);
+            if (distance < transformer.worldSpaceToScreenSpace(token.getSize() / 2)) {
+                return token;
             }
         }
         return null;
