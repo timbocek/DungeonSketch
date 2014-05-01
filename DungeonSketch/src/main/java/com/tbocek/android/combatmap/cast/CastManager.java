@@ -155,6 +155,7 @@ public class CastManager {
                                                 Cast.CastApi.setMessageReceivedCallbacks(mApiClient,
                                                         mRemoteMediaPlayer.getNamespace(),
                                                         mRemoteMediaPlayer);
+                                                sendImageSource();
                                                 mCasting = true;
                                             } catch (IOException e) {
                                                 Log.e(TAG, "Exception while creating channel", e);
@@ -220,28 +221,30 @@ public class CastManager {
     public void updateImage(Bitmap image) throws IOException {
         mCastServer.saveImage(image);
         // TODO: Tell the remote viewer to grab the new image.
-        if (isCasting() && !mRequestSent) {
-            mRequestSent = true;
-            MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_PHOTO);
-            metadata.putString(MediaMetadata.KEY_TITLE, "Dungeon Sketch");
-            MediaInfo info = new MediaInfo.Builder(mCastServer.getImageAddress())
-                    .setContentType(CastFileServer.JPEG_MIME_TYPE)
-                    .setStreamType(MediaInfo.STREAM_TYPE_NONE)
-                    .setMetadata(metadata)
-                    .build();
-
-            mRemoteMediaPlayer.load(mApiClient, info, true)
-                    .setResultCallback(new ResultCallback<RemoteMediaPlayer.MediaChannelResult>() {
-                        @Override
-                        public void onResult(RemoteMediaPlayer.MediaChannelResult result) {
-                            if (result.getStatus().isSuccess()) {
-                                Log.d(TAG, "Media loaded successfully");
-                                mRequestSent = false;
-                            }
-                        }
-                    });
+        if (isCasting()) {
+            sendImageSource();
         }
 
+    }
+
+    private void sendImageSource() {
+        MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_PHOTO);
+        metadata.putString(MediaMetadata.KEY_TITLE, "Dungeon Sketch");
+        MediaInfo info = new MediaInfo.Builder(mCastServer.getImageAddress())
+                .setContentType(CastFileServer.JPEG_MIME_TYPE)
+                .setStreamType(MediaInfo.STREAM_TYPE_NONE)
+                .setMetadata(metadata)
+                .build();
+
+        mRemoteMediaPlayer.load(mApiClient, info, true)
+                .setResultCallback(new ResultCallback<RemoteMediaPlayer.MediaChannelResult>() {
+                    @Override
+                    public void onResult(RemoteMediaPlayer.MediaChannelResult result) {
+                        if (result.getStatus().isSuccess()) {
+                            Log.d(TAG, "Media loaded successfully");
+                        }
+                    }
+                });
     }
 
     public boolean isCasting() {
