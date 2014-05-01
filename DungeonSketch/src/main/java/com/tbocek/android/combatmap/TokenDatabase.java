@@ -1089,6 +1089,7 @@ public final class TokenDatabase {
         	
             // Possibly limit the number of built-in tokens loaded, for debug
             // purposes.
+            //noinspection PointlessArithmeticExpression
             if (mCurrentSortOrder > DeveloperMode.MAX_BUILTIN_TOKENS) {
                 return;
             }
