@@ -39,7 +39,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="209dp"
-            android:text="Activate Tag" />
+            android:text="@string/activate_tag" />
 
     </RelativeLayout>
     

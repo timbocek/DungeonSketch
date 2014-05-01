@@ -45,26 +45,26 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Snap to Grid"
+        android:title="@string/snap_to_grid"
 	    android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 	    <CheckBoxPreference
 	        android:key="snapdrawing"
 	        android:defaultValue="true"
-	        android:title="Snap drawing to grid"
+	        android:title="@string/snap_drawing_to_grid"
 	        android:layout_width="fill_parent"
         	android:layout_height="wrap_content"/>
 	      
 	    <CheckBoxPreference
 	        android:key="snaptokens"
 	        android:defaultValue="true"
-	        android:title="Snap tokens to grid" 
+	        android:title="@string/snap_tokens_to_grid"
 	        android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>
 	    
 	    <CheckBoxPreference
 	        android:key="tokenssnaptogridlines"
-	        android:title="Snap tokens to grid lines"
+	        android:title="@string/snap_tokens_to_grid_lines"
 	        android:defaultValue="false" 
 	        android:summary="Tokens snap to intersections of grid lines instead of the spaces between grid lines."
 	        android:layout_width="fill_parent"
@@ -73,7 +73,7 @@
 
 
 	<PreferenceCategory
-	    android:title="App Info"
+	    android:title="@string/app_info"
 	    android:layout_width="fill_parent"
         android:layout_height="wrap_content">    
 	    <Preference
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"/>
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Data"
+        android:title="@string/data"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <Preference
