@@ -36,6 +36,7 @@
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
             android:paddingRight="12dp"
+            android:contentDescription="@string/info_icon"
             android:src="@drawable/info"/>
         <RadioButton
             android:id="@+id/radio_combat"
@@ -46,6 +47,7 @@
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
             android:paddingRight="12dp"
+            android:contentDescription="@string/monster_icon"
             android:src="@drawable/icon_combat"/>
         <RadioButton
             android:id="@+id/radio_treasure"
@@ -56,6 +58,7 @@
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
             android:paddingRight="12dp"
+            android:contentDescription="@string/loot_icon"
             android:src="@drawable/icon_treasure"/>
      </RadioGroup>
 
