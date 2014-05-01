@@ -27,6 +27,7 @@ import java.io.IOException;
  */
 public class CastManager {
     private static CastManager sInstance;
+
     public static CastManager getInstance(Context c) {
         if (sInstance == null) {
             sInstance = new CastManager(c);
@@ -46,6 +47,7 @@ public class CastManager {
     private boolean mWaitingForReconnect;
     private boolean mApplicationStarted;
     private Bitmap mCastBuffer;
+    private boolean  mRequestSent;
 
     private CastFileServer mCastServer;
 
@@ -127,6 +129,7 @@ public class CastManager {
         }
     };
 
+    private boolean mCasting;
     private GoogleApiClient.ConnectionCallbacks mConnectionCallbacks = new
             GoogleApiClient.ConnectionCallbacks() {
         @Override
@@ -150,8 +153,9 @@ public class CastManager {
                                             mApplicationStarted = true;
                                             try {
                                                 Cast.CastApi.setMessageReceivedCallbacks(mApiClient,
-                                                        mMessageCallback.getNamespace(),
-                                                        mMessageCallback);
+                                                        mRemoteMediaPlayer.getNamespace(),
+                                                        mRemoteMediaPlayer);
+                                                mCasting = true;
                                             } catch (IOException e) {
                                                 Log.e(TAG, "Exception while creating channel", e);
                                             }
@@ -171,9 +175,9 @@ public class CastManager {
     };
 
     private void sendMessage(String message) {
-        if (mApiClient != null && mMessageCallback != null) {
+        if (mApiClient != null && mRemoteMediaPlayer != null) {
             try {
-                Cast.CastApi.sendMessage(mApiClient, mMessageCallback.getNamespace(), message)
+                Cast.CastApi.sendMessage(mApiClient, mRemoteMediaPlayer.getNamespace(), message)
                         .setResultCallback(
                                 new ResultCallback<Status>() {
                                     @Override
@@ -199,6 +203,7 @@ public class CastManager {
 
     private void teardown() {
         mCastServer.stop();
+        mCasting = false;
     }
 
     private void reconnectChannels() {
@@ -215,7 +220,8 @@ public class CastManager {
     public void updateImage(Bitmap image) throws IOException {
         mCastServer.saveImage(image);
         // TODO: Tell the remote viewer to grab the new image.
-        if (isCasting()) {
+        if (isCasting() && !mRequestSent) {
+            mRequestSent = true;
             MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_PHOTO);
             metadata.putString(MediaMetadata.KEY_TITLE, "Dungeon Sketch");
             MediaInfo info = new MediaInfo.Builder(mCastServer.getImageAddress())
@@ -230,6 +236,7 @@ public class CastManager {
                         public void onResult(RemoteMediaPlayer.MediaChannelResult result) {
                             if (result.getStatus().isSuccess()) {
                                 Log.d(TAG, "Media loaded successfully");
+                                mRequestSent = false;
                             }
                         }
                     });
@@ -238,7 +245,7 @@ public class CastManager {
     }
 
     public boolean isCasting() {
-        return false;
+        return mCasting;
     }
 
     Cast.Listener mCastClientListener = new Cast.Listener() {
@@ -274,7 +281,6 @@ public class CastManager {
             Log.d(TAG, "onMessageReceived: " + message);
         }
     };
-    private MessageReceivedCallback mMessageCallback = new MessageReceivedCallback();
 
     RemoteMediaPlayer mRemoteMediaPlayer = new RemoteMediaPlayer();
 }
