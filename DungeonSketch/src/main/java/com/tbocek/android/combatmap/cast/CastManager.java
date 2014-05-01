@@ -221,27 +221,31 @@ public class CastManager {
         mCastServer.saveImage(image);
         // TODO: Tell the remote viewer to grab the new image.
         if (isCasting() && !mRequestSent) {
-            mRequestSent = true;
-            MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_PHOTO);
-            metadata.putString(MediaMetadata.KEY_TITLE, "Dungeon Sketch");
-            MediaInfo info = new MediaInfo.Builder(mCastServer.getImageAddress())
-                    .setContentType(CastFileServer.JPEG_MIME_TYPE)
-                    .setStreamType(MediaInfo.STREAM_TYPE_NONE)
-                    .setMetadata(metadata)
-                    .build();
-
-            mRemoteMediaPlayer.load(mApiClient, info, true)
-                    .setResultCallback(new ResultCallback<RemoteMediaPlayer.MediaChannelResult>() {
-                        @Override
-                        public void onResult(RemoteMediaPlayer.MediaChannelResult result) {
-                            if (result.getStatus().isSuccess()) {
-                                Log.d(TAG, "Media loaded successfully");
-                                mRequestSent = false;
-                            }
-                        }
-                    });
+            updateRemoteImage();
         }
 
+    }
+
+    private void updateRemoteImage() {
+        mRequestSent = true;
+        MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_PHOTO);
+        metadata.putString(MediaMetadata.KEY_TITLE, "Dungeon Sketch");
+        MediaInfo info = new MediaInfo.Builder(mCastServer.getImageAddress())
+                .setContentType(CastFileServer.JPEG_MIME_TYPE)
+                .setStreamType(MediaInfo.STREAM_TYPE_NONE)
+                .setMetadata(metadata)
+                .build();
+
+        mRemoteMediaPlayer.load(mApiClient, info, true)
+                .setResultCallback(new ResultCallback<RemoteMediaPlayer.MediaChannelResult>() {
+                    @Override
+                    public void onResult(RemoteMediaPlayer.MediaChannelResult result) {
+                        if (result.getStatus().isSuccess()) {
+                            Log.d(TAG, "Media loaded successfully");
+                            mRequestSent = false;
+                        }
+                    }
+                });
     }
 
     public boolean isCasting() {
