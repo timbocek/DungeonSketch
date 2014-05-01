@@ -69,7 +69,7 @@ Why not press "back" and create one?</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Press on Color to apply</string>
-    <string name="grid_appearence">Grid Appearence</string>
+    <string name="grid_appearence">Grid Appearance</string>
     <string name="add_to_tag">Add to tag</string>
     <string name="delete_tag">Delete Tag</string>
     <string name="help">Help</string>

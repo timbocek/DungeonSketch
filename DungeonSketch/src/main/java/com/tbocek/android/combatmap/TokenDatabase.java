@@ -1,5 +1,26 @@
 package com.tbocek.android.combatmap;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.tbocek.android.combatmap.model.primitives.BaseToken;
+import com.tbocek.android.combatmap.model.primitives.BuiltInImageToken;
+import com.tbocek.android.combatmap.model.primitives.CustomBitmapToken;
+import com.tbocek.android.combatmap.model.primitives.LetterToken;
+import com.tbocek.android.combatmap.model.primitives.PlaceholderToken;
+import com.tbocek.android.combatmap.model.primitives.SolidColorToken;
+import com.tbocek.android.combatmap.model.primitives.Util;
+import com.tbocek.dungeonsketch.R;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,13 +34,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Stack;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,34 +46,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
-
-import android.content.Context;
-import android.util.Log;
-
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
-import com.tbocek.android.combatmap.model.primitives.BaseToken;
-import com.tbocek.android.combatmap.model.primitives.BuiltInImageToken;
-import com.tbocek.android.combatmap.model.primitives.CustomBitmapToken;
-import com.tbocek.android.combatmap.model.primitives.LetterToken;
-import com.tbocek.android.combatmap.model.primitives.PlaceholderToken;
-import com.tbocek.android.combatmap.model.primitives.SolidColorToken;
-import com.tbocek.android.combatmap.model.primitives.Util;
-import com.tbocek.dungeonsketch.R;
-import com.tbocek.dungeonsketch.BuildConfig;
 
 /**
  * Provides a lightweight database storing a list of tokens and allowing them to
@@ -1094,6 +1089,7 @@ public final class TokenDatabase {
         	
             // Possibly limit the number of built-in tokens loaded, for debug
             // purposes.
+            //noinspection PointlessArithmeticExpression
             if (mCurrentSortOrder > DeveloperMode.MAX_BUILTIN_TOKENS) {
                 return;
             }
@@ -1115,9 +1111,7 @@ public final class TokenDatabase {
                 String tagList = atts.getValue("tags");
                 Set<String> defaultTags = Sets.newHashSet();
                 if (tagList != null) {
-                    for (String s : tagList.split(",")) {
-                        defaultTags.add(s);
-                    }
+                    Collections.addAll(defaultTags, tagList.split(","));
                 }
                 defaultTags.add("artist:" + currentArtist);
                 TokenDatabase.this.addBuiltin(atts.getValue("res"), id,
