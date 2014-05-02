@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,8 +21,10 @@ import android.os.Debug;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.MediaRouteActionProvider;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.Menu;
@@ -36,8 +39,10 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
+import com.tbocek.android.combatmap.cast.CastManager;
 import com.tbocek.android.combatmap.model.Grid;
 import com.tbocek.android.combatmap.model.MapData;
+import com.tbocek.android.combatmap.model.MapDrawer;
 import com.tbocek.android.combatmap.model.MapDrawer.FogOfWarMode;
 import com.tbocek.android.combatmap.model.MultiSelectManager;
 import com.tbocek.android.combatmap.model.primitives.BackgroundImage;
@@ -446,6 +451,8 @@ public final class CombatMap extends ActionBarActivity {
 
     private TextView mSelectedToolTextView;
 
+    private CastManager mCastManager;
+
     /**
 	 * Given a combat mode, returns the snap to grid preference name associated
 	 * with that combat mode.
@@ -559,6 +566,9 @@ public final class CombatMap extends ActionBarActivity {
 				.getApplicationContext()));
 
 		PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+
+        mCastManager = CastManager.getInstance(this);
+        mCastManager.onCreate();
 
 		initializeUi();
 	}
@@ -709,6 +719,11 @@ public final class CombatMap extends ActionBarActivity {
 						// status as
 						// well.
 						CombatMap.this.setUndoRedoEnabled();
+
+                        // When the map is refreshed, if we are connected to Chromecast export the
+                        // token layer (and *only* the token layer) to Chromecast.
+                        // TODO: Do this less often!!!
+                        CombatMap.this.exportToChromecast();
 					}
 				});
 
@@ -720,7 +735,30 @@ public final class CombatMap extends ActionBarActivity {
 
 	}
 
-	@Override
+    private void exportToChromecast() {
+        if (mCastManager.isCasting()) {
+            // Create a 1080p 16x9 bitmap
+            Bitmap b = mCastManager.getCastBuffer();
+            Canvas canvas = new Canvas(b);
+
+            new MapDrawer()
+                    .drawGridLines(true)
+                    .drawGmNotes(false)
+                    .drawTokens(true)
+                    .areTokensManipulable(true)
+                    .drawAnnotations(true)
+                    .backgroundFogOfWar(FogOfWarMode.CLIP)
+                    .draw(canvas, this.mData, canvas.getClipBounds());
+
+            try {
+                mCastManager.updateImage(b);
+            } catch (IOException e) {
+                Log.w(TAG, "Error updating Chromecast image", e);
+            }
+        }
+    }
+
+    @Override
 	public Dialog onCreateDialog(final int id) {
 		switch (id) {
 		case DIALOG_ID_SAVE:
@@ -851,6 +889,11 @@ public final class CombatMap extends ActionBarActivity {
 		this.mUndoMenuItem = menu.findItem(R.id.menu_undo);
 		this.mRedoMenuItem = menu.findItem(R.id.menu_redo);
 		this.setUndoRedoEnabled();
+
+        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+        MediaRouteActionProvider mediaRouteActionProvider =
+                (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
+        mediaRouteActionProvider.setRouteSelector(mCastManager.getMediaRouteSelector());
 		return true;
 	}
 
@@ -919,7 +962,9 @@ public final class CombatMap extends ActionBarActivity {
 
 	@Override
 	public void onPause() {
-		super.onPause();
+        if (isFinishing()) {
+            mCastManager.detachCallbacks();
+        }
 		Editor editor = this.mSharedPreferences.edit();
         savePrefChanges(editor);
 		String filename = this.mSharedPreferences.getString("filename", null);
@@ -930,6 +975,7 @@ public final class CombatMap extends ActionBarActivity {
 		this.mCombatView.getMultiSelect().selectNone();
 
 		new MapSaver(filename, this.getApplicationContext()).run();
+        super.onPause();
 	}
 
     @Override
@@ -998,6 +1044,8 @@ public final class CombatMap extends ActionBarActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
+        mCastManager.attachCallbacks();
+
 		this.loadOrCreateMap();
 
 		this.reloadPreferences();
@@ -1661,5 +1709,4 @@ public final class CombatMap extends ActionBarActivity {
 			}
 		});
 	}
-
 }

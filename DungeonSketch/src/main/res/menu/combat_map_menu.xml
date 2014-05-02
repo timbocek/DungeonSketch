@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:abc="http://schemas.android.com/apk/res-auto">
+      xmlns:abc="http://schemas.android.com/apk/res-auto"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/media_route_menu_item"
+        android:title="@string/media_route_menu_title"
+        app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
+        app:showAsAction="always"/>
     <item android:id="@+id/menu_undo" android:icon="@drawable/undo" abc:showAsAction="ifRoom" android:title="@string/undo"/>
     <item android:id="@+id/menu_redo" android:icon="@drawable/redo" abc:showAsAction="ifRoom" android:title="@string/redo"/>
     <item
