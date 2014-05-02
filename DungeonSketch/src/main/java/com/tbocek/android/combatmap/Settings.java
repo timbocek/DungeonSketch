@@ -33,7 +33,7 @@ public final class Settings extends PreferenceActivity {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.addPreferencesFromResource(R.layout.settings);
+        this.addPreferencesFromResource(R.xml.settings);
 
         // Hook up the about preference
         Preference dialogPref = this.findPreference("about");

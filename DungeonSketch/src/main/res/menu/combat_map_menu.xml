@@ -39,12 +39,12 @@
 	   android:checkable = "true"/>
 	<item
 	    android:id="@+id/menu_export"
-	    android:title="Export Image">
+	    android:title="@string/export_image">
 	    
 	</item>
 	<item
 	    android:id="@+id/menu_grid_properties"
-	    android:title="Grid Properties">
+	    android:title="@string/grid_properties">
 	</item>
 	<item
 	    android:id="@+id/menu_token_database"

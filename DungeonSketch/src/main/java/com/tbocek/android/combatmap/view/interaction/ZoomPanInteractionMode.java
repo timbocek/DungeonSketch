@@ -1,6 +1,5 @@
 package com.tbocek.android.combatmap.view.interaction;
 
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.tbocek.android.combatmap.model.primitives.Information;

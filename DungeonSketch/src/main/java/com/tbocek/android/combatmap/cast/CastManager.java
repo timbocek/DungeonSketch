@@ -221,13 +221,23 @@ public class CastManager {
     public void updateImage(Bitmap image) throws IOException {
         mCastServer.saveImage(image);
         // TODO: Tell the remote viewer to grab the new image.
+<<<<<<< HEAD
         if (isCasting()) {
             sendImageSource();
+=======
+        if (isCasting() && !mRequestSent) {
+            updateRemoteImage();
+>>>>>>> 87b88b7a6db1c57223a5ca72711d5793a8e1a71d
         }
 
     }
 
+<<<<<<< HEAD
     private void sendImageSource() {
+=======
+    private void updateRemoteImage() {
+        mRequestSent = true;
+>>>>>>> 87b88b7a6db1c57223a5ca72711d5793a8e1a71d
         MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_PHOTO);
         metadata.putString(MediaMetadata.KEY_TITLE, "Dungeon Sketch");
         MediaInfo info = new MediaInfo.Builder(mCastServer.getImageAddress())
@@ -242,6 +252,10 @@ public class CastManager {
                     public void onResult(RemoteMediaPlayer.MediaChannelResult result) {
                         if (result.getStatus().isSuccess()) {
                             Log.d(TAG, "Media loaded successfully");
+<<<<<<< HEAD
+=======
+                            mRequestSent = false;
+>>>>>>> 87b88b7a6db1c57223a5ca72711d5793a8e1a71d
                         }
                     }
                 });

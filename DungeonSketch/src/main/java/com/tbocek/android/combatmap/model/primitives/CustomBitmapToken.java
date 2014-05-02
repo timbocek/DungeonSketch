@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import com.tbocek.android.combatmap.DataManager;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;

@@ -437,7 +437,7 @@ public final class CombatView extends SurfaceView {
         
 	    if (DeveloperMode.shouldDisplayFramerate()) {
 	    	long time = System.currentTimeMillis();
-	    	if (time - mLastFramerateComputeTime >= this.FRAMERATE_INTVL) {
+	    	if (time - mLastFramerateComputeTime >= CombatView.FRAMERATE_INTVL) {
 	    		mFramerate = ((float)mFrameCount) / (((float)(time - mLastFramerateComputeTime))/1000);
 	    		mFrameCount = 0;
 	    		mLastFramerateComputeTime = time;

@@ -2,7 +2,6 @@ package com.tbocek.android.combatmap.view.interaction;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;

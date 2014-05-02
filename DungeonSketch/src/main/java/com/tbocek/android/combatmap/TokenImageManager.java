@@ -12,6 +12,7 @@ import android.util.Log;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
+import com.tbocek.dungeonsketch.BuildConfig;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -273,8 +274,10 @@ public class TokenImageManager {
             initializePool(poolIncrease);
             return mRecycledImages.removeFirst();
         } else {
-            assert newImageWrapper.mReferenceCount == 0;
-
+            if (BuildConfig.DEBUG && newImageWrapper.mReferenceCount == 0) {
+                throw new RuntimeException("Selected image has nonzero ref count");
+            }
+            
             if (newImageWrapper.mToken != null && mCurrentImages.containsKey(newImageWrapper.mToken.getTokenId())) {
                 mCurrentImages.remove(newImageWrapper.mToken.getTokenId());
             }

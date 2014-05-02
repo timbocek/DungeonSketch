@@ -48,6 +48,7 @@
         android:layout_height="20dp"
         android:layout_above="@+id/bottomControlAreaFrame"
         android:layout_centerHorizontal="true"
+        android:contentDescription="@string/expand_collapse_bottom_frame"
         android:src="@drawable/vertical_contract">
     </ImageButton>
 
