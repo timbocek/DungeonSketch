@@ -155,7 +155,7 @@ public class CastManager {
                                                 Cast.CastApi.setMessageReceivedCallbacks(mApiClient,
                                                         mRemoteMediaPlayer.getNamespace(),
                                                         mRemoteMediaPlayer);
-                                                sendImageSource();
+                                                updateRemoteImage();
                                                 mCasting = true;
                                             } catch (IOException e) {
                                                 Log.e(TAG, "Exception while creating channel", e);
