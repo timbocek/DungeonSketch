@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.view.MotionEvent;
 
-import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Util;

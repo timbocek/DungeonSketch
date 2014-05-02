@@ -47,6 +47,6 @@
         android:layout_alignBottom="@+id/radioGroup1"
         android:layout_alignParentRight="true"
         android:tag="new_tag_create"
-        android:text="Create Tag" />
+        android:text="@string/create_tag" />
 
 </RelativeLayout>

@@ -9,7 +9,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.Region;
 
 public class ScrollBuffer {
 	private static int MIN_DRAW_DIP = 3;

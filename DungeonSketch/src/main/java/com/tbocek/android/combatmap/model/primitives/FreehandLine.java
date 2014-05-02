@@ -1,13 +1,13 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.graphics.Path;
 
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Encapsulates a single vector-drawn line.
@@ -136,7 +136,7 @@ public final class FreehandLine extends Shape {
             } else {
                 path.moveTo(p1.x, p1.y);
             }
-            penDown = this.mShouldDraw.get(i).booleanValue();
+            penDown = this.mShouldDraw.get(i);
         }
 
         if (this.mPartiallyErasedLineSegments == null) {
@@ -224,7 +224,7 @@ public final class FreehandLine extends Shape {
         optimizedLines.add(l);
         for (int i = 0; i < this.mPoints.size(); ++i) {
             l.addPoint(this.mPoints.get(i));
-            if (!this.mShouldDraw.get(i).booleanValue()) {
+            if (!this.mShouldDraw.get(i)) {
                 // Do not add a line with only one point in it, those are
                 // useless
                 if (l.mPoints.size() <= 1) {
