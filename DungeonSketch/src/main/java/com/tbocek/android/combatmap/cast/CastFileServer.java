@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.text.format.Formatter;
+import android.util.Log;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -18,7 +20,8 @@ import fi.iki.elonen.NanoHTTPD;
  * Created by tbocek on 4/29/14.
  */
 public class CastFileServer extends NanoHTTPD {
-    private boolean mFrameNeeded;
+    private final static String TAG = "CastFileServer";
+
     public static final String JPEG_MIME_TYPE = "image/jpeg";
     private static final int JPEG_COMPRESSION = 60;
     private Context mContext;
@@ -27,6 +30,21 @@ public class CastFileServer extends NanoHTTPD {
     // memory?
     private byte[] mImageJpg;
 
+    public interface Listener {
+        void onNewImageAvailable();
+        void onImageFetched();
+    }
+
+    private Listener mNullListener = new Listener() {
+        @Override
+        public void onNewImageAvailable() { }
+
+        @Override
+        public void onImageFetched() { }
+    };
+
+    Listener mListener = mNullListener;
+
     public CastFileServer(Context context) {
         // TODO: Allow port selection in advanced options.
         super(8000);
@@ -34,13 +52,7 @@ public class CastFileServer extends NanoHTTPD {
     }
 
     public void saveImage(Bitmap bitmap) throws IOException {
-        mFrameNeeded = false;
-        ByteArrayOutputStream s = new ByteArrayOutputStream();
-        BufferedOutputStream buf = new BufferedOutputStream(s);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, JPEG_COMPRESSION, buf);
-        mImageJpg = s.toByteArray();
-        buf.close();
-        s.close();
+        new SaveBitmapTask().execute(bitmap);
     }
 
     @Override
@@ -49,9 +61,12 @@ public class CastFileServer extends NanoHTTPD {
                           Map<String, String> parameters,
                           Map<String, String> files) {
 
-        mFrameNeeded = true;
-        return new Response(
-                Response.Status.OK, JPEG_MIME_TYPE, new ByteArrayInputStream(mImageJpg));
+        mListener.onImageFetched();
+        synchronized(this) {
+            return new Response(
+                    Response.Status.OK, JPEG_MIME_TYPE,
+                    new ByteArrayInputStream(mImageJpg.clone()));
+        }
     }
 
     public String getImageAddress() {
@@ -62,7 +77,29 @@ public class CastFileServer extends NanoHTTPD {
         return "http://" + ipAddress + ":" + Integer.toString(getListeningPort());
     }
 
-    public boolean needsNewFrame() {
-        return mFrameNeeded;
+    public void setListener(Listener listener) {
+        mListener = listener;
+    }
+
+    private class SaveBitmapTask extends AsyncTask<Bitmap, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Bitmap... bitmaps) {
+            ByteArrayOutputStream s = new ByteArrayOutputStream();
+            BufferedOutputStream buf = new BufferedOutputStream(s);
+            bitmaps[0].compress(Bitmap.CompressFormat.JPEG, JPEG_COMPRESSION, buf);
+            synchronized(CastFileServer.this) {
+                mImageJpg = s.toByteArray();
+            }
+            try {
+                buf.close();
+                s.close();
+            } catch (IOException e) {
+                Log.w(TAG, "Error closing bitmap writer", e);
+            }
+
+            mListener.onNewImageAvailable();
+            return null;
+        }
     }
 }

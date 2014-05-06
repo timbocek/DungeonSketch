@@ -53,6 +53,7 @@ public class CastManager {
 
     private CastManager(Context context) {
         mContext = context.getApplicationContext();
+        mCastServer.setListener(mCastFileServerListener);
     }
 
     public void onCreate() {
@@ -240,9 +241,6 @@ public class CastManager {
                 .setResultCallback(new ResultCallback<RemoteMediaPlayer.MediaChannelResult>() {
                     @Override
                     public void onResult(RemoteMediaPlayer.MediaChannelResult result) {
-                        if (result.getStatus().isSuccess()) {
-                            Log.d(TAG, "Media loaded successfully");
-                        }
                         mRequestSent = false;
                     }
                 });
@@ -284,6 +282,18 @@ public class CastManager {
                                       String message) {
             Log.d(TAG, "onMessageReceived: " + message);
         }
+    };
+
+    private CastFileServer.Listener mCastFileServerListener = new CastFileServer.Listener() {
+        @Override
+        public void onNewImageAvailable() {
+            if (isCasting() && !mRequestSent) {
+                CastManager.this.updateRemoteImage();
+            }
+        }
+
+        @Override
+        public void onImageFetched() { }
     };
 
     RemoteMediaPlayer mRemoteMediaPlayer = new RemoteMediaPlayer();
