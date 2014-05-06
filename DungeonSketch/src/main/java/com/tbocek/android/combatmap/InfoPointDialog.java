@@ -5,11 +5,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.tbocek.android.combatmap.model.primitives.Information;
-import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.dungeonsketch.R;
 
 /**
@@ -79,8 +76,7 @@ public class InfoPointDialog extends Dialog {
                         break;
                     }
                 }
-                String name =
-                        (String) InfoPointDialog.this.mNameText.getText().toString();
+                String name = InfoPointDialog.this.mNameText.getText().toString();
                 InfoPointDialog.this.dismiss();
                 InfoPointDialog.this.mListener.onTextConfirmed(name, iconId);
             }

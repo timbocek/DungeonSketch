@@ -67,8 +67,7 @@ public class FontDialog extends Dialog {
         this.mConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                String name =
-                        (String) FontDialog.this.mNameText.getText().toString();
+                String name = FontDialog.this.mNameText.getText().toString();
                 float size =
                         Float.parseFloat(FontDialog.this.mFontSize
                                 .getSelectedItem().toString());
