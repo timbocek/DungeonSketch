@@ -14,25 +14,31 @@
             android:layout_height="wrap_content"
             android:text="@string/grid_type"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp" />
 
             <com.tbocek.android.combatmap.view.ImageToggleButton
                 android:id="@+id/button_toggle_rect_grid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginRight = "12dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/grid_rect" />
 
             <com.tbocek.android.combatmap.view.ImageToggleButton
                 android:id="@+id/button_toggle_hex_grid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/grid_hex" />
     </TableRow>
 
     <TableRow
         android:id="@+id/tableRow1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
 
         <TextView
             android:id="@+id/textView2"
@@ -40,18 +46,22 @@
             android:layout_height="wrap_content"
             android:text="@string/grid_appearence"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"/>
 
             <ImageButton
                 android:id="@+id/button_background_color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginRight = "12dp"
                 android:contentDescription="@string/background_color"/>
 
             <ImageButton
                 android:id="@+id/button_foreground_color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginRight = "12dp"
                 android:contentDescription="@string/foreground_color"/>
 
     </TableRow>
@@ -68,6 +78,18 @@
             android:text="@string/theme_presets"
             android:layout_column="1"
             android:layout_span="2"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+        <Button
+            android:id="@+id/button_resize_grid"
+            android:text="@string/resize_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_span="3"/>
     </TableRow>
 
 </TableLayout>
