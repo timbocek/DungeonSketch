@@ -1003,7 +1003,7 @@ public final class TokenDatabase {
     		} else if (localName.equalsIgnoreCase("tag")) {
     			String tagName = atts.getValue("name");
     			String active = atts.getValue("active");
-    			boolean isActive = active != null ? Boolean.parseBoolean(active) : true;
+    			boolean isActive = active == null || Boolean.parseBoolean(active);
     			Log.d(TAG, "START TAG: " + tagName);
     			currentTagTreeNode = currentTagTreeNode.getNamedChild(tagName, true);
     			currentTagTreeNode.setIsActive(isActive);
@@ -1011,7 +1011,7 @@ public final class TokenDatabase {
     			String tagName = atts.getValue("name");
     			int maxSize = Integer.parseInt(atts.getValue("maxSize"));
     			String active = atts.getValue("active");
-    			boolean isActive = active != null ? Boolean.parseBoolean(active) : true;
+    			boolean isActive = active == null || Boolean.parseBoolean(active);
     			Log.d(TAG, "START TAG: " + tagName);
     			currentTagTreeNode = currentTagTreeNode.createLimitedChild(tagName, maxSize);
     			currentTagTreeNode.setIsActive(isActive);
