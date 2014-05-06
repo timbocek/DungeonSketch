@@ -31,9 +31,6 @@
 		</menu>
 	</item>
 	<item
-		android:id="@+id/menu_resize_grid"
-		android:title="@string/resize_grid"/>
-	<item
 	   android:id="@+id/menu_snap_to_grid"
 	   android:title="@string/snap_to_grid"
 	   android:checkable = "true"/>
