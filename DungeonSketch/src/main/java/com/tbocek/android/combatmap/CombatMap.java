@@ -1,5 +1,6 @@
 package com.tbocek.android.combatmap;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -74,6 +75,7 @@ import static com.tbocek.android.combatmap.view.DrawOptionsView.OnChangeDrawTool
  * 
  * @author Tim Bocek
  */
+@SuppressLint("CommitPrefEdits")  // These are committed in an extracted method that trips up lint.
 public final class CombatMap extends ActionBarActivity {
 
     /**

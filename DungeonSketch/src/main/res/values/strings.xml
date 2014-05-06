@@ -66,9 +66,6 @@ Why not press "back" and create one?</string>
         There may be spoilers if you continue!</string>
     <string name="gm_screen_mistchief_managed">I solemnly swear that I am up to no good!</string>
     <string name="gm_screen_cancel">Cancel</string>
-    <!-- Color Picker -->
-    <string name="dialog_color_picker">Color Picker</string>
-    <string name="press_color_to_apply">Press on Color to apply</string>
     <string name="grid_appearence">Grid Appearance</string>
     <string name="add_to_tag">Add to tag</string>
     <string name="delete_tag">Delete Tag</string>

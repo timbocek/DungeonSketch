@@ -1,1 +1,1 @@
-include ':DungeonSketch'
+include ':DungeonSketch', ':lib'
