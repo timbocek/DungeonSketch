@@ -53,11 +53,11 @@ public class CastManager {
 
     private CastManager(Context context) {
         mContext = context.getApplicationContext();
-        mCastServer.setListener(mCastFileServerListener);
     }
 
     public void onCreate() {
         mCastServer = new CastFileServer(mContext);
+        mCastServer.setListener(mCastFileServerListener);
         mMediaRouter = android.support.v7.media.MediaRouter.getInstance(mContext);
         mMediaRouteSelector = new MediaRouteSelector.Builder()
                 .addControlCategory(CastMediaControlIntent.categoryForCast(
