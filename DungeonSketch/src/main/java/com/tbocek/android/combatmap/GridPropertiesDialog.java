@@ -1,6 +1,5 @@
 package com.tbocek.android.combatmap;
 
-import net.margaritov.preference.colorpicker.ColorPickerDialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -23,6 +22,8 @@ import com.tbocek.android.combatmap.model.RectangularGridStrategy;
 import com.tbocek.android.combatmap.view.ImageToggleButton;
 import com.tbocek.android.combatmap.view.ToggleButtonGroup;
 import com.tbocek.dungeonsketch.R;
+
+import net.margaritov.preference.colorpicker.ColorPickerDialog;
 
 /**
  * A dialog that allows the user to edit the grid geometry and color.
@@ -86,6 +87,11 @@ public class GridPropertiesDialog extends Dialog {
      * Button used to open the grid theme preset menu.
      */
     private Button mThemePresetButton;
+
+    /**
+     * Button used to begin resizing the grid.
+     */
+    private Button mResizeGridButton;
 
     /**
      * Constructor.
@@ -152,6 +158,17 @@ public class GridPropertiesDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 GridPropertiesDialog.this.presetButtonClick();
+            }
+        });
+
+        this.mResizeGridButton = (Button) this.findViewById(R.id.button_resize_grid);
+        this.mResizeGridButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GridPropertiesDialog.this.dismiss();
+                if (mPropertyListener != null) {
+                    mPropertyListener.onResizeGridRequested();
+                }
             }
         });
 
@@ -422,6 +439,11 @@ public class GridPropertiesDialog extends Dialog {
          * Called when a property of the grid has been changed.
          */
         void onPropertiesChanged();
+
+        /**
+         * Called when the resize operation has been requested.
+         */
+        void onResizeGridRequested();
     }
 
 }

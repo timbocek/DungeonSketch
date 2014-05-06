@@ -866,12 +866,17 @@ public final class CombatMap extends ActionBarActivity {
 		case DIALOG_ID_GRID_PROPERTIES:
 			GridPropertiesDialog gpd = new GridPropertiesDialog(this);
 			gpd.setOnPropertiesChangedListener(new GridPropertiesDialog.PropertiesChangedListener() {
-
 				@Override
 				public void onPropertiesChanged() {
 					CombatMap.this.mCombatView.refreshMap();
 				}
-			});
+
+                @Override
+                public void onResizeGridRequested() {
+                    mCombatView.setResizeGridMode();
+                    mBottomControlFrame.removeAllViews();
+                }
+            });
 			return gpd;
 		case DIALOG_ID_EXPORT:
 			return new ExportImageDialog(this);
@@ -919,10 +924,6 @@ public final class CombatMap extends ActionBarActivity {
 			return true;
 		} else if (itemId == R.id.menu_settings) {
 			this.startActivity(new Intent(this, Settings.class));
-			return true;
-		} else if (itemId == R.id.menu_resize_grid) {
-			this.mCombatView.setResizeGridMode();
-			this.mBottomControlFrame.removeAllViews();
 			return true;
 		} else if (itemId == R.id.menu_snap_to_grid) {
 			this.mSnapToGridMenuItem.setChecked(!this.mSnapToGridMenuItem
