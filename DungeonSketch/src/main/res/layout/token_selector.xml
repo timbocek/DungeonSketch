@@ -21,6 +21,6 @@
             android:layout_height="match_parent"
             android:src="@drawable/filter"
             android:contentDescription="@string/filter_tokens"
-            android:text="...">       
+            android:text="@string/ellipsis">
         </Button>
 </LinearLayout>
