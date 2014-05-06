@@ -274,6 +274,7 @@ public class TokenImageManager {
             initializePool(poolIncrease);
             return mRecycledImages.removeFirst();
         } else {
+            //noinspection PointlessBooleanExpression
             if (BuildConfig.DEBUG && newImageWrapper.mReferenceCount != 0) {
                 throw new RuntimeException("Selected image has nonzero ref count");
             }
