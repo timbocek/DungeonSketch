@@ -756,6 +756,7 @@ public final class CombatMap extends ActionBarActivity {
                     .areTokensManipulable(true)
                     .drawAnnotations(true)
                     .backgroundFogOfWar(FogOfWarMode.CLIP)
+                    .useCustomWorldSpaceTransformer(mData.getChromecastWorldSpaceTransformer())
                     .draw(canvas, this.mData, canvas.getClipBounds());
 
             try {

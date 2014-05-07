@@ -16,6 +16,7 @@ public class MapDrawer {
     private boolean mDrawGridLines;
     private boolean mDrawTokens;
     private FogOfWarMode mGmNoteFogOfWar;
+    private CoordinateTransformer mTransformer;
 
     private boolean mApplyMaskToTokens;
 
@@ -30,29 +31,33 @@ public class MapDrawer {
     }
 
     public void draw(Canvas canvas, MapData m, Rect bounds) {
-    	PointF wsOrigin = m.getWorldSpaceTransformer().screenSpaceToWorldSpace(bounds.left, bounds.top);
-    	float wsWidth = m.getWorldSpaceTransformer().screenSpaceToWorldSpace(bounds.width());
-    	float wsHeight = m.getWorldSpaceTransformer().screenSpaceToWorldSpace(bounds.height());
+        if (mTransformer == null) {
+            mTransformer = m.getWorldSpaceTransformer();
+        }
+
+    	PointF wsOrigin = mTransformer.screenSpaceToWorldSpace(bounds.left, bounds.top);
+    	float wsWidth = mTransformer.screenSpaceToWorldSpace(bounds.width());
+    	float wsHeight = mTransformer.screenSpaceToWorldSpace(bounds.height());
     	RectF worldSpaceBounds = new RectF(wsOrigin.x, wsOrigin.y, wsOrigin.x + wsWidth, wsOrigin.y + wsHeight);
         
     	m.getGrid().drawBackground(canvas);
 
         canvas.save();
-        m.getWorldSpaceTransformer().setMatrix(canvas);
+        mTransformer.setMatrix(canvas);
         if (this.mBackgroundFogOfWar == FogOfWarMode.CLIP
                 && !m.getBackgroundFogOfWar().isEmpty()) {
             m.getBackgroundFogOfWar().clipFogOfWar(canvas, worldSpaceBounds);
         }
         m.getBackgroundLines().drawAllLinesBelowGrid(canvas, worldSpaceBounds);
-        m.getBackgroundImages().draw(canvas, m.getWorldSpaceTransformer(), worldSpaceBounds);
+        m.getBackgroundImages().draw(canvas, mTransformer, worldSpaceBounds);
         canvas.restore();
 
         if (this.mDrawGridLines) {
-            m.getGrid().draw(canvas, m.getWorldSpaceTransformer());
+            m.getGrid().draw(canvas, mTransformer);
         }
 
         canvas.save();
-        m.getWorldSpaceTransformer().setMatrix(canvas);
+        mTransformer.setMatrix(canvas);
         if (this.mBackgroundFogOfWar == FogOfWarMode.CLIP
                 && !m.getBackgroundFogOfWar().isEmpty()) {
             m.getBackgroundFogOfWar().clipFogOfWar(canvas, worldSpaceBounds);
@@ -64,7 +69,7 @@ public class MapDrawer {
         canvas.restore();
 
         canvas.save();
-        m.getWorldSpaceTransformer().setMatrix(canvas);
+        mTransformer.setMatrix(canvas);
 
         if (this.mDrawGmNotes) {
             canvas.save();
@@ -89,13 +94,12 @@ public class MapDrawer {
         if (this.mBackgroundFogOfWar == FogOfWarMode.CLIP
                 && !m.getBackgroundFogOfWar().isEmpty()
                 && this.mApplyMaskToTokens) {
-            m.getWorldSpaceTransformer().setMatrix(canvas);
+            mTransformer.setMatrix(canvas);
             m.getBackgroundFogOfWar().clipFogOfWar(canvas, worldSpaceBounds);
-            m.getWorldSpaceTransformer().setInverseMatrix(canvas);
+            mTransformer.setInverseMatrix(canvas);
         }
         CoordinateTransformer gridSpace =
-                m.getGrid().gridSpaceToScreenSpaceTransformer(
-                        m.getWorldSpaceTransformer());
+                m.getGrid().gridSpaceToScreenSpaceTransformer(mTransformer);
         if (this.mDrawTokens) {
             m.getTokens().drawAllTokens(canvas, gridSpace,
                     m.getGrid().isDark(), this.mAreTokensManipulable);
@@ -130,6 +134,18 @@ public class MapDrawer {
 
     public MapDrawer applyMaskToTokens(boolean applyMaskToTokens) {
         mApplyMaskToTokens = applyMaskToTokens;
+        return this;
+    }
+
+    /**
+     * Sets the coordinate transformer to use instead of the default coordinate transformer that
+     * is present in the map data.
+     *
+     * @param transformer The transformer to use for world space.
+     * @return this instance for chaining calls.
+     */
+    public MapDrawer useCustomWorldSpaceTransformer(CoordinateTransformer transformer) {
+        mTransformer = transformer;
         return this;
     }
 

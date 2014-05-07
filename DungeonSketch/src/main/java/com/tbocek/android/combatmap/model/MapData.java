@@ -458,4 +458,10 @@ public final class MapData {
     public void stopCastingView() {
         mCastTransformer = null;
     }
+
+    /**
+     * @return The coordinate transformer that defines the currently saved Chromecast view, or null
+     *     if the cast image is supposed to follow the on-device view.
+     */
+    public CoordinateTransformer getChromecastWorldSpaceTransformer() { return mCastTransformer; }
 }
