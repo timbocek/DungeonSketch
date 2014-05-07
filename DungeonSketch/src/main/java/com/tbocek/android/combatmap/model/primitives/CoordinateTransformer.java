@@ -1,13 +1,13 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.io.IOException;
-
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
+
+import java.io.IOException;
 
 /**
  * Defines a transformation from one 2D coordinate system to another coordinate
@@ -68,6 +68,15 @@ public final class CoordinateTransformer {
         this.mOriginX = originX;
         this.mOriginY = originY;
         this.mZoomLevel = zoomLevel;
+    }
+
+    /**
+     * Copy Constructor
+     */
+    public CoordinateTransformer(CoordinateTransformer other) {
+        this.mOriginX = other.mOriginX;
+        this.mOriginY = other.mOriginY;
+        this.mZoomLevel = other.mZoomLevel;
     }
 
     /**

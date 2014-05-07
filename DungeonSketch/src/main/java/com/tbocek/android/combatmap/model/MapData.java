@@ -1,15 +1,5 @@
 package com.tbocek.android.combatmap.model;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.util.HashSet;
-import java.util.Set;
-
 import android.graphics.PointF;
 import android.graphics.RectF;
 
@@ -19,6 +9,16 @@ import com.tbocek.android.combatmap.model.io.MapDataSerializer;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.BoundingRectangle;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This is a data class that collects everything that makes up the current map
@@ -438,5 +438,24 @@ public final class MapData {
             }
         }
         return tokens;
+    }
+
+    CoordinateTransformer mSavedTransformer = null;
+    CoordinateTransformer mCastTransformer = null;
+
+    public void saveView() {
+        mSavedTransformer = new CoordinateTransformer(mTransformer);
+    }
+
+    public void restoreView() {
+        mTransformer = new CoordinateTransformer(mSavedTransformer);
+    }
+
+    public void castView() {
+        mCastTransformer = new CoordinateTransformer(mTransformer);
+    }
+
+    public void stopCastingView() {
+        mCastTransformer = null;
     }
 }

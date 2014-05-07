@@ -408,6 +408,12 @@ public final class CombatMap extends ActionBarActivity {
 	 */
 	private MenuItem mSnapToGridMenuItem;
 
+    private MenuItem mRestoreViewMenuItem;
+
+    private MenuItem mCastViewMenuItem;
+
+    private MenuItem mStopCastingViewMenuItem;
+
 	/**
 	 * Object to manage which mode is changed to when a new tab is selected.
 	 */
@@ -891,6 +897,9 @@ public final class CombatMap extends ActionBarActivity {
 		inflater.inflate(R.menu.combat_map_menu, menu);
 
 		this.mSnapToGridMenuItem = menu.findItem(R.id.menu_snap_to_grid);
+        this.mRestoreViewMenuItem = menu.findItem(R.id.menu_restore_view);
+        this.mCastViewMenuItem = menu.findItem(R.id.menu_cast_view);
+        this.mStopCastingViewMenuItem = menu.findItem(R.id.menu_stop_casting_view);
 		this.loadModeSpecificSnapPreference();
 
 		this.mUndoMenuItem = menu.findItem(R.id.menu_undo);
@@ -958,7 +967,27 @@ public final class CombatMap extends ActionBarActivity {
 			Debug.startMethodTracing("tokenmanager");
 			this.startActivity(new Intent(CombatMap.this, TokenManager.class));
 			return true;
-		} else {
+		} else if (itemId == R.id.menu_save_view) {
+            mData.saveView();
+            mRestoreViewMenuItem.setVisible(true);
+            return true;
+        } else if (itemId == R.id.menu_restore_view) {
+            mData.restoreView();
+            mCombatView.refreshMap();
+            return true;
+        } else if (itemId == R.id.menu_cast_view) {
+            mData.castView();
+            mCombatView.refreshMap();
+            mCastViewMenuItem.setVisible(false);
+            mStopCastingViewMenuItem.setVisible(true);
+            return true;
+        } else if (itemId == R.id.menu_stop_casting_view) {
+            mData.stopCastingView();
+            mCombatView.refreshMap();
+            mCastViewMenuItem.setVisible(true);
+            mStopCastingViewMenuItem.setVisible(false);
+            return true;
+        } else {
 			return false;
 		}
 	}
