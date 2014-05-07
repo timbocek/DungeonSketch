@@ -1,8 +1,5 @@
 package com.tbocek.android.combatmap;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;

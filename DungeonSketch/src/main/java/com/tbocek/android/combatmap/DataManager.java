@@ -142,8 +142,7 @@ public final class DataManager {
         File imageDir =
                 Environment.getExternalStoragePublicDirectory(
                         Environment.DIRECTORY_PICTURES);
-        File dir = new File(imageDir, "DungeonSketch");
-        return dir;
+        return new File(imageDir, "DungeonSketch");
     }
 
 

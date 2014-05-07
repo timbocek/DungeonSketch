@@ -1,7 +1,5 @@
 package com.tbocek.android.combatmap.view.interaction;
 
-import android.content.res.Resources;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 

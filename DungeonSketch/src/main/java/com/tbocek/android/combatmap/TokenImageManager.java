@@ -176,7 +176,7 @@ public class TokenImageManager {
         public abstract void imageLoaded(String tokenId);
 
         public void loadCancelled(String tokenId) { }
-    };
+    }
 
     public static abstract class MultiLoadCallback extends Callback {
         Collection<String> mTokens;
@@ -264,6 +264,7 @@ public class TokenImageManager {
 
         // Remove images from the pool until we find one that is *actually* unsused
         // or the pool is empty.
+        //noinspection StatementWithEmptyBody
         while (!mRecycledImages.isEmpty() &&
                 (newImageWrapper = mRecycledImages.remove()).mReferenceCount != 0 ) {}
 

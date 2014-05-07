@@ -1,25 +1,23 @@
 package com.tbocek.android.combatmap;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-import com.tbocek.android.combatmap.model.primitives.BaseToken;
-import com.tbocek.android.combatmap.view.TokenDeploymentLineItem;
-import com.tbocek.dungeonsketch.R;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.common.collect.Lists;
+import com.tbocek.android.combatmap.model.primitives.BaseToken;
+import com.tbocek.android.combatmap.view.TokenDeploymentLineItem;
+import com.tbocek.dungeonsketch.R;
+
+import java.util.List;
+
 public class TokenDeploymentDialog extends Dialog {
 	
 	private LinearLayout mLineItemLayout;
-	
-	private Button mDeployButton;
-	
-	private boolean mSuccessful = false;
+
+    private boolean mSuccessful = false;
 	
 	private List<TokenDeploymentLineItem> mLineItems = Lists.newArrayList();
 	
@@ -44,16 +42,16 @@ public class TokenDeploymentDialog extends Dialog {
 		this.setContentView(R.layout.token_deployment_dialog);
 		
 		mLineItemLayout = (LinearLayout) this.findViewById(R.id.token_deployment_dialog_line_items);
-		mDeployButton = (Button) this.findViewById(R.id.token_deployment_dialog_deploy);
-		
-		mDeployButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				mSuccessful = true;
-				TokenDeploymentDialog.this.dismiss();
-			}
-		});
+
+        Button deployButton = (Button) this.findViewById(R.id.token_deployment_dialog_deploy);
+		deployButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mSuccessful = true;
+                TokenDeploymentDialog.this.dismiss();
+            }
+        });
 	}
 	
 	public void setTag(TokenDatabase database, String tag) {

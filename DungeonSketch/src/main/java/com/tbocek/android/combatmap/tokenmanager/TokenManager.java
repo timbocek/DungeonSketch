@@ -1,10 +1,5 @@
 package com.tbocek.android.combatmap.tokenmanager;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,14 +21,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,16 +34,20 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.DeveloperMode;
 import com.tbocek.android.combatmap.Help;
-import com.tbocek.android.combatmap.TokenImageManager;
-import com.tbocek.android.combatmap.view.TokenListAdapter;
-import com.tbocek.dungeonsketch.R;
 import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
+import com.tbocek.android.combatmap.TokenImageManager;
 import com.tbocek.android.combatmap.model.MultiSelectManager;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
-import com.tbocek.android.combatmap.view.GridLayout;
 import com.tbocek.android.combatmap.view.TagNavigator;
 import com.tbocek.android.combatmap.view.TokenButton;
+import com.tbocek.android.combatmap.view.TokenListAdapter;
+import com.tbocek.dungeonsketch.R;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  * This activity lets the user view their library of tokens and manage which
@@ -82,8 +79,6 @@ public final class TokenManager extends ActionBarActivity {
      * opened on.
      */
     private String mContextMenuTag;
-
-    private MenuItem mDeleteTagMenuItem;
 
     private MultiSelectManager mMultiSelectManager;
 
@@ -420,7 +415,6 @@ public final class TokenManager extends ActionBarActivity {
     public boolean onCreateOptionsMenu(final Menu menu) {
         MenuInflater inflater = this.getMenuInflater();
         inflater.inflate(R.menu.token_manager_menu, menu);
-        this.mDeleteTagMenuItem = menu.findItem(R.id.token_manager_delete_tag);
         this.mTagActiveMenuItem = menu.findItem(R.id.token_manager_is_active);
         return true;
     }
@@ -602,8 +596,6 @@ public final class TokenManager extends ActionBarActivity {
 				});
                 selectTagDlg.show();
                 return true;
-            } else {
-            	
             }
             return false;
         }

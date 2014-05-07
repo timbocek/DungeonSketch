@@ -299,7 +299,7 @@ public class CastManager {
                                       String message) {
             Log.d(TAG, "onMessageReceived: " + message);
         }
-    };
+    }
 
     private CastFileServer.Listener mCastFileServerListener = new CastFileServer.Listener() {
         @Override

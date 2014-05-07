@@ -160,11 +160,6 @@ public final class CombatView extends SurfaceView {
     private ActivityRequestListener mActivityRequestListener;
 
     /**
-     * Drag and drop listener that allows the user to drop tokens onto the grid.
-     */
-    private View.OnDragListener mOnDrag;
-
-    /**
      * Listener to publish refresh requests to.
      */
     private OnRefreshListener mOnRefreshListener;
@@ -202,6 +197,7 @@ public final class CombatView extends SurfaceView {
     /**
      * Callback for the Android graphics surface management system.
      */
+    @SuppressWarnings("FieldCanBeLocal")
     private SurfaceHolder.Callback mSurfaceHolderCallback =
             new SurfaceHolder.Callback() {
         @Override
@@ -299,7 +295,7 @@ public final class CombatView extends SurfaceView {
         this.setTokenManipulationMode();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            this.mOnDrag = new View.OnDragListener() {
+            OnDragListener onDrag = new OnDragListener() {
                 @Override
                 public boolean onDrag(final View view, final DragEvent event) {
                     Log.d("DRAG", Integer.toString(event.getAction()));
@@ -307,16 +303,17 @@ public final class CombatView extends SurfaceView {
                         BaseToken toAdd = (BaseToken) event.getLocalState();
                         PointF location =
                                 CombatView.this.getGridSpaceTransformer()
-                                .screenSpaceToWorldSpace(
-                                        new PointF(event.getX(), event
-                                                .getY()));
+                                        .screenSpaceToWorldSpace(
+                                                new PointF(event.getX(), event
+                                                        .getY())
+                                        );
                         if (CombatView.this.mSnapToGrid) {
                             location =
                                     CombatView.this
-                                    .getData()
-                                    .getGrid()
-                                    .getNearestSnapPoint(location,
-                                            toAdd.getSize());
+                                            .getData()
+                                            .getGrid()
+                                            .getNearestSnapPoint(location,
+                                                    toAdd.getSize());
                         }
                         toAdd.setLocation(location);
                         CombatView.this.getData().getTokens().addToken(toAdd);
@@ -328,7 +325,7 @@ public final class CombatView extends SurfaceView {
                     return false;
                 }
             };
-            this.setOnDragListener(this.mOnDrag);
+            this.setOnDragListener(onDrag);
         }
 
         this.getHolder().addCallback(this.mSurfaceHolderCallback);
@@ -446,7 +443,7 @@ public final class CombatView extends SurfaceView {
 	    }
 	    
 	    if (DeveloperMode.DEVELOPER_MODE) {
-	    	//canvas.drawRect(dirty, this.mDrawRectDebugPaint);
+	    	canvas.drawRect(dirty, this.mDrawRectDebugPaint);
 	    }
     }
     

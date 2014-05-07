@@ -1,9 +1,5 @@
 package com.tbocek.android.combatmap;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +19,10 @@ import android.widget.Toast;
 import com.tbocek.android.combatmap.model.MapData;
 import com.tbocek.android.combatmap.view.SaveFileButton;
 import com.tbocek.dungeonsketch.R;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This activity allows the user to select a new file to load.
@@ -76,11 +76,6 @@ public final class Load extends Activity {
      * Data manager to facilitate save file enumeration and loading.
      */
     private DataManager mDataMgr;
-
-    /**
-     * List of save files available.
-     */
-    private List<String> mSavedFiles;
 
     /**
      * Lays out the given save file buttons in a grid.
@@ -233,11 +228,11 @@ public final class Load extends Activity {
      * files.
      */
     private void setup() {
-        this.mSavedFiles = this.mDataMgr.savedFiles();
+        List<String> savedFiles = this.mDataMgr.savedFiles();
 
-        if (this.mSavedFiles.size() > 0) {
+        if (savedFiles.size() > 0) {
             List<View> fileViews = new ArrayList<View>();
-            for (String saveFile : this.mSavedFiles) {
+            for (String saveFile : savedFiles) {
                 SaveFileButton b = this.createSaveFileButton(saveFile);
                 fileViews.add(b);
             }

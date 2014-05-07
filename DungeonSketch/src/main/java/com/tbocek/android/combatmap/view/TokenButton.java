@@ -53,6 +53,7 @@ public class TokenButton extends ImageView {
      * A gesture listener used to start a drag and drop when a long press
      * occurs.
      */
+    @SuppressWarnings("FieldCanBeLocal")
     private SimpleOnGestureListener mGestureListener =
             new SimpleOnGestureListener() {
                 @Override

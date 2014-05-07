@@ -758,7 +758,7 @@ public final class CombatMap extends ActionBarActivity {
                     .drawAnnotations(true)
                     .backgroundFogOfWar(FogOfWarMode.CLIP)
                     .useCustomWorldSpaceTransformer(mData.getChromecastWorldSpaceTransformer())
-                    .draw(canvas, this.mData, canvas.getClipBounds());
+                    .draw(canvas, mData, canvas.getClipBounds());
 
             try {
                 mCastManager.updateImage(b);
@@ -1333,7 +1333,7 @@ public final class CombatMap extends ActionBarActivity {
 				DataManager dm = new DataManager(this.mContext);
 				dm.saveMapName(this.mFilename);
 				// Only save preview if not saving to temp file.
-				if (this.mFilename != DataManager.TEMP_MAP_NAME) {
+				if (!this.mFilename.equals(DataManager.TEMP_MAP_NAME)) {
 					Bitmap preview = CombatMap.this.mCombatView.getPreview();
 					if (preview != null) {
 						dm.savePreviewImage(this.mFilename, preview);
@@ -1711,7 +1711,6 @@ public final class CombatMap extends ActionBarActivity {
 						.checkpointImageBefore(selectedImage);
 				selectedImage.setShouldMaintainAspectRatio(item.isChecked());
 				mData.getBackgroundImages().checkpointImageAfter();
-			} else {
 			}
 			return true;
 		}

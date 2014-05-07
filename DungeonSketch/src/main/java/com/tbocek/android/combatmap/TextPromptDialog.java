@@ -20,11 +20,6 @@ import com.tbocek.dungeonsketch.R;
 public class TextPromptDialog extends Dialog {
 
     /**
-     * Button that the user clicks to confirm the text entered.
-     */
-    private Button mConfirmButton;
-
-    /**
      * Listener that is called when the user clicks the confirm button.
      */
     private OnTextConfirmedListener mListener;
@@ -55,13 +50,13 @@ public class TextPromptDialog extends Dialog {
         this.setTitle(title);
         this.mListener = listener;
 
-        this.mConfirmButton = (Button) this.findViewById(R.id.button_save);
-        this.mConfirmButton.setText(confirmText);
         this.mNameText = (TextView) this.findViewById(R.id.save_file_name);
         this.mNameText.requestFocus();
         this.mNameText.setText("");
 
-        this.mConfirmButton.setOnClickListener(new View.OnClickListener() {
+        Button confirmButton = (Button) this.findViewById(R.id.button_save);
+        confirmButton.setText(confirmText);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 String name =

@@ -84,16 +84,6 @@ public class GridPropertiesDialog extends Dialog {
     private ImageToggleButton mRectGridButton;
 
     /**
-     * Button used to open the grid theme preset menu.
-     */
-    private Button mThemePresetButton;
-
-    /**
-     * Button used to begin resizing the grid.
-     */
-    private Button mResizeGridButton;
-
-    /**
      * Constructor.
      * 
      * @param context
@@ -151,18 +141,17 @@ public class GridPropertiesDialog extends Dialog {
         });
         this.mPresetAdapter =
                 new GridPropertiesDialog.MapThemeArrayAdapter(this.getContext());
-        this.mThemePresetButton =
-                (Button) this.findViewById(R.id.button_theme_presets);
 
-        this.mThemePresetButton.setOnClickListener(new View.OnClickListener() {
+        Button themePresetButton = (Button) this.findViewById(R.id.button_theme_presets);
+        themePresetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GridPropertiesDialog.this.presetButtonClick();
             }
         });
 
-        this.mResizeGridButton = (Button) this.findViewById(R.id.button_resize_grid);
-        this.mResizeGridButton.setOnClickListener(new View.OnClickListener() {
+        Button resizeGridButton = (Button) this.findViewById(R.id.button_resize_grid);
+        resizeGridButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 GridPropertiesDialog.this.dismiss();

@@ -1,7 +1,5 @@
 package com.tbocek.android.combatmap.tokenmanager;
 
-import java.util.Collection;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
@@ -10,8 +8,10 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.tbocek.dungeonsketch.R;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
+import com.tbocek.dungeonsketch.R;
+
+import java.util.Collection;
 
 /**
  * This view defines a region that tokens can be dragged onto to delete them or
@@ -26,12 +26,6 @@ public final class TokenDeleteButton extends ImageView {
      * The token that was last dropped onto the button.
      */
     private Collection<BaseToken> mManagedTokens;
-
-    /**
-     * On drag listener that manages changing the color of the button and
-     * opening the context menu.
-     */
-    private OnDragListener mOnDragToTrashCanListener;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private class DragListener implements OnDragListener {
@@ -57,7 +51,7 @@ public final class TokenDeleteButton extends ImageView {
             }
             return true;
         }
-    };
+    }
 
     /**
      * Constructor.
@@ -70,8 +64,7 @@ public final class TokenDeleteButton extends ImageView {
         this.setImageResource(R.drawable.trashcan);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            this.mOnDragToTrashCanListener = new DragListener();
-            this.setOnDragListener(this.mOnDragToTrashCanListener);
+            this.setOnDragListener(new DragListener());
         }
     }
 

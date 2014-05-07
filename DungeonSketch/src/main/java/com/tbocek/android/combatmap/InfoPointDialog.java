@@ -23,11 +23,6 @@ public class InfoPointDialog extends Dialog {
     };
 
     /**
-     * Button that the user clicks to confirm the text entered.
-     */
-    private Button mConfirmButton;
-
-    /**
      * Listener that is called when the user clicks the confirm button.
      */
     private OnTextConfirmedListener mListener;
@@ -61,12 +56,13 @@ public class InfoPointDialog extends Dialog {
         this.setTitle(context.getString(R.string.info_point));
         this.mListener = listener;
 
-        this.mConfirmButton = (Button) this.findViewById(R.id.button_save);
         this.mNameText = (TextView) this.findViewById(R.id.entered_text);
         this.mNameText.requestFocus();
         this.mNameText.setText("");
         this.mIconRadioGroup = (RadioGroup) this.findViewById(R.id.info_point_type);
-        this.mConfirmButton.setOnClickListener(new View.OnClickListener() {
+
+        Button confirmButton = (Button) this.findViewById(R.id.button_save);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 int iconId = 0;

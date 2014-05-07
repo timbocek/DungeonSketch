@@ -4,20 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
 import com.tbocek.dungeonsketch.R;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This primitive allows the GM to place more informative text on the map.  Unlike the "text"
@@ -52,7 +45,7 @@ public class Information extends Text {
         sIconBitmaps[ICON_MONSTER] = BitmapFactory.decodeResource(c.getResources(), R.drawable.icon_combat);
         sIconBitmaps[ICON_TREASURE] = BitmapFactory.decodeResource(c.getResources(), R.drawable.icon_treasure);
     }
-    public static final Bitmap[] getIconBitmaps() {
+    public static Bitmap[] getIconBitmaps() {
         return sIconBitmaps;
     }
 

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 public class Help {
-    private static String HELP_URL =
+    private static final String HELP_URL =
             "https://sites.google.com/site/dungeonsketchhelp/help";
 
     public static void openHelp(Context c) {

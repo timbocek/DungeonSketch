@@ -64,13 +64,6 @@ public final class DrawOptionsView extends LinearLayout {
     private ToggleButtonGroup mColorGroup = new ToggleButtonGroup();
 
     /**
-     * View that contains controls that should be scrolled (this is not all
-     * controls because we want the pan control to "stick" and be always
-     * visible).
-     */
-    private HorizontalScrollView mInnerView;
-
-    /**
      * The layout that will hold drawing buttons.
      */
     private LinearLayout mLayout;
@@ -127,9 +120,10 @@ public final class DrawOptionsView extends LinearLayout {
         this.createAndAddPanButton();
 
         this.mLayout = new LinearLayout(context);
-        this.mInnerView = new HorizontalScrollView(context);
-        this.mInnerView.addView(this.mLayout);
-        this.addView(this.mInnerView);
+
+        HorizontalScrollView innerView = new HorizontalScrollView(context);
+        innerView.addView(this.mLayout);
+        this.addView(innerView);
 
         this.createAndAddSeperator();
         this.mMaskButton = this.createAndAddMaskButton();

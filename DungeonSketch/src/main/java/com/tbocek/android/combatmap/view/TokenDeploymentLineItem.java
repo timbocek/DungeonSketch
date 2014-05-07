@@ -1,9 +1,5 @@
 package com.tbocek.android.combatmap.view;
 
-import com.tbocek.dungeonsketch.R;
-import com.tbocek.android.combatmap.model.primitives.BaseToken;
-import com.tbocek.android.combatmap.model.primitives.Util;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.tbocek.android.combatmap.model.primitives.BaseToken;
+import com.tbocek.android.combatmap.model.primitives.Util;
+import com.tbocek.dungeonsketch.R;
+
 public class TokenDeploymentLineItem extends LinearLayout {
 
 	private Button mDecreaseButton;
-	private Button mIncreaseButton;
-	private TextView mAmountTextView;
+    private TextView mAmountTextView;
 	private ImageView mTokenImageView;
 
 	private int mNumberToDeploy;
@@ -31,7 +30,6 @@ public class TokenDeploymentLineItem extends LinearLayout {
 		LayoutInflater.from(context).inflate(R.layout.token_deployment_line_item, this);
 	
 		mDecreaseButton = (Button) this.findViewById(R.id.token_deployment_button_decrease);
-		mIncreaseButton = (Button) this.findViewById(R.id.token_deployment_button_increase);
 		mAmountTextView = (TextView) this.findViewById(R.id.token_deployment_number);
 		mTokenImageView = (ImageView) this.findViewById(R.id.token_deployment_image);
 		
@@ -42,14 +40,15 @@ public class TokenDeploymentLineItem extends LinearLayout {
 				onDecrementButtonClick();
 			}
 		});
-		
-		mIncreaseButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				onIncrementButtonClick();
-			}
-		});
+
+        Button increaseButton = (Button) this.findViewById(R.id.token_deployment_button_increase);
+		increaseButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                onIncrementButtonClick();
+            }
+        });
 	}
 	
 	private void onIncrementButtonClick() {

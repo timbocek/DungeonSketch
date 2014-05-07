@@ -1,37 +1,30 @@
 package com.tbocek.android.combatmap.view;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import com.google.common.collect.Lists;
-import com.tbocek.dungeonsketch.R;
-import com.tbocek.android.combatmap.TokenDatabase;
-import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
-import com.tbocek.android.combatmap.model.primitives.BaseToken;
-import com.tbocek.android.combatmap.model.primitives.Util;
-import com.tbocek.android.combatmap.view.interaction.CombatViewInteractionMode;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.google.common.collect.Lists;
+import com.tbocek.android.combatmap.TokenDatabase;
+import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
+import com.tbocek.android.combatmap.model.primitives.BaseToken;
+import com.tbocek.dungeonsketch.R;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class TagNavigator extends ScrollView {
 	
@@ -438,7 +431,7 @@ public class TagNavigator extends ScrollView {
 	public boolean setTagPath(String path) {
 		TokenDatabase.TagTreeNode node = null;
 		try {
-			if (path == TokenDatabase.ALL) {
+			if (path.equals(TokenDatabase.ALL)) {
 				node = this.mTokenDatabase.getRootNode();
 			} else {
 				node = this.mTokenDatabase.getRootNode().getNamedChild(path, false);

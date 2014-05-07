@@ -26,20 +26,20 @@ package com.tbocek.android.combatmap.view;
  * THE SOFTWARE.
  *
  */
-        import java.util.LinkedList;
-        import java.util.Queue;
-
         import android.content.Context;
-        import android.database.DataSetObserver;
-        import android.graphics.Rect;
-        import android.util.AttributeSet;
-        import android.view.GestureDetector;
-        import android.view.GestureDetector.OnGestureListener;
-        import android.view.MotionEvent;
-        import android.view.View;
-        import android.widget.AdapterView;
-        import android.widget.ListAdapter;
-        import android.widget.Scroller;
+import android.database.DataSetObserver;
+import android.graphics.Rect;
+import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListAdapter;
+import android.widget.Scroller;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class HorizontalListView extends AdapterView<ListAdapter> {
 
@@ -173,8 +173,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         }
 
         if(mScroller.computeScrollOffset()){
-            int scrollx = mScroller.getCurrX();
-            mNextX = scrollx;
+            mNextX = mScroller.getCurrX();
         }
 
         if(mNextX <= 0){

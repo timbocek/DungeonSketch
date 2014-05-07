@@ -1,17 +1,17 @@
 package com.tbocek.android.combatmap;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-import com.tbocek.android.combatmap.model.primitives.Util;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import com.google.common.collect.Lists;
+import com.tbocek.android.combatmap.model.primitives.Util;
+
+import java.util.List;
+
 public class ScrollBuffer {
-	private static int MIN_DRAW_DIP = 3;
+	private static final int MIN_DRAW_DIP = 3;
 	
 	public class DrawRequest {
 		public Canvas canvas;
@@ -22,8 +22,7 @@ public class ScrollBuffer {
 	}
 	private Bitmap primary;
 	private Bitmap secondary;
-	private Context mContext;
-	private int mMinDraw;
+    private int mMinDraw;
 	
 	private float deltaXAccumulator = 0;
 	private float deltaYAccumulator = 0;
@@ -39,7 +38,6 @@ public class ScrollBuffer {
 		primary = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 		secondary = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 		invalidated = true;
-		mContext = context;
 		mMinDraw = (int) (Util.convertDpToPixel(MIN_DRAW_DIP, context));
 	}
 	

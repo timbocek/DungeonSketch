@@ -49,7 +49,7 @@ public class CombatViewInteractionMode extends SimpleOnScaleGestureListener
         private Runnable mLongPressRunnable = new Runnable() {
         	@Override
         	public void run() {
-        		if (mPossibleLongPress == true) {
+        		if (mPossibleLongPress) {
         			mPossibleLongPress = false;
         			mDefiniteLongPress = true;
         			CombatViewInteractionMode.this.onLongPress(mOriginalDownEvent);
