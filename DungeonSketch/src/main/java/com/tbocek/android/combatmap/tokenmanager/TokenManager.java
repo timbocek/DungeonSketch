@@ -382,7 +382,7 @@ public final class TokenManager extends ActionBarActivity {
         if (v == this.mTrashButton) {
             Collection<BaseToken> tokens = this.mTrashButton.getManagedTokens();
             if (tokens.size() > 0) {
-                String deleteText = "";
+                String deleteText;
                 if (tokens.size() == 1) {
                     deleteText = this.getString(R.string.delete_token);
                 } else {

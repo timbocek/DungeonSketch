@@ -226,10 +226,9 @@ public class GridPropertiesDialog extends Dialog {
         Bitmap bm = Bitmap.createBitmap(d, d, Config.ARGB_8888);
         int w = bm.getWidth();
         int h = bm.getHeight();
-        int c = color;
         for (int i = 0; i < w; i++) {
             for (int j = i; j < h; j++) {
-                c =
+                int c =
                         (i <= 1 || j <= 1 || i >= w - 2 || j >= h - 2)
                                 ? Color.GRAY
                                 : color;

@@ -63,7 +63,6 @@ public final class RectangularGridStrategy extends GridDrawStrategy {
 
         boolean shouldDrawMinorLines = squareSize >= MINOR_GRID_LINE_SIZE_LIMIT;
         boolean shouldDrawMajorLines = squareSize >= MAJOR_GRID_LINE_SIZE_LIMIT;
-        boolean shouldDrawCurrentLine = true;
 
         PointF origin = transformer.getOrigin();
 
@@ -75,7 +74,8 @@ public final class RectangularGridStrategy extends GridDrawStrategy {
         int thickLineStartY =
                 (int) ((origin.y % (squareSize * MAJOR_GRID_LINE_FREQUENCY)) / squareSize);
 
-        Paint currentPaint = thinPaint;
+        Paint currentPaint;
+        boolean shouldDrawCurrentLine;
         for (int i = 0; i <= numSquaresHorizontal; ++i) {
             if ((i - thickLineStartX) % MAJOR_GRID_LINE_FREQUENCY == 0) {
                 currentPaint = (shouldDrawMinorLines

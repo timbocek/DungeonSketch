@@ -415,7 +415,6 @@ public final class CombatView extends SurfaceView {
      *            The canvas to draw on.
      */
     private void drawOnCanvas(final Canvas canvas, final Rect dirty) {
-    	long startTime = System.currentTimeMillis();
         new MapDrawer()
         .drawGridLines(true)
         .drawGmNotes(this.mShouldDrawGmNotes)
@@ -900,9 +899,7 @@ public final class CombatView extends SurfaceView {
         this.mScaleDetector = new ScaleGestureDetector(this.getContext(), mode);
         this.mInteractionMode = mode;
 
-        if (this.mInteractionMode != null) {
-            this.mInteractionMode.onStartMode();
-        }
+        this.mInteractionMode.onStartMode();
 
         this.refreshMap();
     }

@@ -1,7 +1,5 @@
 package com.tbocek.android.combatmap.tokenmanager;
 
-import java.util.Collection;
-
 import android.annotation.TargetApi;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -9,6 +7,8 @@ import android.os.Build;
 import android.view.View;
 
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
+
+import java.util.Collection;
 
 /**
  * This drag shadow draws the given collection of tokens as a stack. It is used
@@ -61,7 +61,7 @@ public final class TokenStackDragShadow extends View.DragShadowBuilder {
 
         // If one token, display it alone. If two or three tokens, offset by
         // half a radius. Otherwise, crowd tokens until they fit.
-        int tokenOffset = 0;
+        int tokenOffset;
         if (displayedTokens < MAX_DISPLAYED_TOKENS - 1) {
             tokenOffset = tokenDiameter / 2;
         } else {

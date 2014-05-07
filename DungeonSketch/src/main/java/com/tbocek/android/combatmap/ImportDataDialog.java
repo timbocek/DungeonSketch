@@ -1,19 +1,5 @@
 package com.tbocek.android.combatmap;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.commons.io.DirectoryWalker;
-import org.apache.commons.io.FileUtils;
-
-import roboguice.activity.RoboActivity;
-import roboguice.inject.InjectView;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +10,21 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 
 import com.tbocek.dungeonsketch.R;
+
+import org.apache.commons.io.DirectoryWalker;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectView;
 
 /**
  * Dialog that allows importing data from other installed instances of Dungeon
@@ -55,9 +56,7 @@ public class ImportDataDialog extends RoboActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.import_data);
 
-        boolean hasOption = false;
-        hasOption = addImportOption(importAlpha, "com.tbocek.dungeonsketchalpha")
-        		|| hasOption;
+        boolean hasOption = addImportOption(importAlpha, "com.tbocek.dungeonsketchalpha");
         hasOption = addImportOption(importBeta, "com.tbocek.dungeonsketchbeta")
                 || hasOption;
         hasOption = addImportOption(importCurrent, "com.tbocek.dungeonsketch")

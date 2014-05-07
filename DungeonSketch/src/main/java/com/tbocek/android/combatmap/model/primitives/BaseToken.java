@@ -1,9 +1,5 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Set;
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,6 +8,10 @@ import android.graphics.Paint.Style;
 import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * Base class for token representing entities in combat.
@@ -519,12 +519,6 @@ public abstract class BaseToken {
      */
     public final boolean isSelected() {
         return this.mSelected;
-    }
-
-    /**
-     * Takes any action needed to load the token.
-     */
-    public void load() {
     }
 
     /**

@@ -9,10 +9,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import com.tbocek.android.combatmap.DataManager;
-import com.tbocek.android.combatmap.DeveloperMode;
 import com.tbocek.android.combatmap.TokenImageManager;
 
 import java.util.HashMap;
@@ -194,22 +192,6 @@ public abstract class DrawableToken extends BaseToken {
 
     // TODO: make use of cached buffers.
     public abstract Bitmap loadBitmap(Bitmap image);
-
-    @Override
-    public final void load() {
-        if (this.mDrawable == null) {
-            this.mDrawable = this.createDrawable();
-        }
-
-        if (this.mDrawable != null) {
-            synchronized (drawableCache) {
-                drawableCache.put(this.getTokenId(), this.mDrawable);
-            }
-        } else if (DeveloperMode.DEVELOPER_MODE) {
-            Log.d(DrawableToken.class.getName(),
-                    "Drawable object failed to load for " + this.getTokenId());
-        }
-    }
 
     @Override
     public final boolean needsLoad() {

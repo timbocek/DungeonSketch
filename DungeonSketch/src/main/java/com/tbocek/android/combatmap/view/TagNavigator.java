@@ -396,7 +396,7 @@ public class TagNavigator extends ScrollView {
 	}
 
 	public boolean isViewAChild(View v) {
-		return (v == this.mCurrentTag) || this.mTagItems.contains(v);
+		return (v == this.mCurrentTag) || this.mTagItems.contains((TagTreeLineItem)v);
 	}
 
 	public void selectRoot() {
@@ -429,7 +429,7 @@ public class TagNavigator extends ScrollView {
 	}
 	
 	public boolean setTagPath(String path) {
-		TokenDatabase.TagTreeNode node = null;
+		TokenDatabase.TagTreeNode node;
 		try {
 			if (path.equals(TokenDatabase.ALL)) {
 				node = this.mTokenDatabase.getRootNode();
