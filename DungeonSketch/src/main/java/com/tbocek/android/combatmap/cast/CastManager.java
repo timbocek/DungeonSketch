@@ -26,6 +26,22 @@ import java.io.IOException;
  * Created by tbocek on 4/29/14.
  */
 public class CastManager {
+    public interface Callback {
+        void onApplicationStarted();
+        void onApplicationStopped();
+    }
+
+    private class NullCallback implements Callback {
+
+        @Override
+        public void onApplicationStarted() { }
+
+        @Override
+        public void onApplicationStopped() { }
+    }
+
+    private Callback mCallback = new NullCallback();
+
     private static CastManager sInstance;
 
     public static CastManager getInstance(Context c) {
@@ -152,6 +168,7 @@ public class CastManager {
                                             boolean wasLaunched = result.getWasLaunched();
 
                                             mApplicationStarted = true;
+                                            mCallback.onApplicationStarted();
                                             try {
                                                 Cast.CastApi.setMessageReceivedCallbacks(mApiClient,
                                                         mRemoteMediaPlayer.getNamespace(),
@@ -297,4 +314,8 @@ public class CastManager {
     };
 
     RemoteMediaPlayer mRemoteMediaPlayer = new RemoteMediaPlayer();
+
+    public void setCallback(Callback callback) {
+        mCallback = callback;
+    }
 }

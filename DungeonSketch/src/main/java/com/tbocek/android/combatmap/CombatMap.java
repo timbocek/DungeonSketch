@@ -576,6 +576,7 @@ public final class CombatMap extends ActionBarActivity {
 		PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
         mCastManager = CastManager.getInstance(this);
+        mCastManager.setCallback(mCastCallback);
         mCastManager.onCreate();
 
 		initializeUi();
@@ -1742,4 +1743,19 @@ public final class CombatMap extends ActionBarActivity {
 			}
 		});
 	}
+
+    private CastManager.Callback mCastCallback = new CastManager.Callback() {
+
+        @Override
+        public void onApplicationStarted() {
+            mCastViewMenuItem.setVisible(true);
+        }
+
+        @Override
+        public void onApplicationStopped() {
+            mCastViewMenuItem.setVisible(false);
+            mStopCastingViewMenuItem.setVisible(false);
+
+        }
+    };
 }
