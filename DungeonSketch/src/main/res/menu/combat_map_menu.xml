@@ -9,6 +9,19 @@
         app:showAsAction="always"/>
     <item android:id="@+id/menu_undo" android:icon="@drawable/undo" abc:showAsAction="ifRoom" android:title="@string/undo"/>
     <item android:id="@+id/menu_redo" android:icon="@drawable/redo" abc:showAsAction="ifRoom" android:title="@string/redo"/>
+    <item android:title="@string/view" abc:showAsAction="ifRoom|withText">
+        <menu>
+            <item android:id="@+id/menu_save_view"
+                  android:title="@string/save_view"/>
+            <item android:id="@+id/menu_restore_view"
+                  android:title="@string/restore_view"/>
+            <item android:id="@+id/menu_cast_view"
+                  android:title="@string/cast_view"
+                  android:visible="false"/>
+            <item android:id="@+id/menu_stop_casting_view"
+                  android:title="@string/stop_casting_view"/>
+        </menu>
+    </item>
     <item
         android:id="@+id/menu_save"
         android:title="@string/save"
