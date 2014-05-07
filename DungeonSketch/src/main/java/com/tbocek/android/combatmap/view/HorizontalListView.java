@@ -154,7 +154,13 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
                 MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.AT_MOST));
     }
 
+    private Runnable mRequestLayoutRunnable = new Runnable() {
 
+        @Override
+        public void run() {
+            requestLayout();
+        }
+    };
 
     @Override
     protected synchronized void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -194,12 +200,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         mCurrentX = mNextX;
 
         if(!mScroller.isFinished()){
-            post(new Runnable(){
-                @Override
-                public void run() {
-                    requestLayout();
-                }
-            });
+            post(mRequestLayoutRunnable);
 
         }
     }
