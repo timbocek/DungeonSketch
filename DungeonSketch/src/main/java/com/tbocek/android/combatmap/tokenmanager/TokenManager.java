@@ -137,9 +137,7 @@ public final class TokenManager extends ActionBarActivity {
 
 	private FrameLayout drawerList;
 
-	private ActionBarDrawerToggle actionBarDrawerToggle;
-	
-	private Button enableTagButton;
+    private Button enableTagButton;
 	
 	private TextView disabledTagExplanation;
 
@@ -256,8 +254,9 @@ public final class TokenManager extends ActionBarActivity {
                     .findViewById(R.id.token_manager_taglist_frame);
         } else {
             drawer = (DrawerLayout) findViewById(R.id.drawer_layout);     
-            drawerList = (FrameLayout) findViewById(R.id.left_drawer);        
-            actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, R.drawable.ic_drawer, R.string.drawer_open , R.string.drawer_close) {
+            drawerList = (FrameLayout) findViewById(R.id.left_drawer);
+            ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                    this, drawer, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
                 @Override
                 public void onDrawerOpened(View drawerView) {
                     // TODO Auto-generated method stub

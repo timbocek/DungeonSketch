@@ -69,6 +69,7 @@ public final class TokenCreatorView extends View {
     /**
      * Gesture listener that moves the candidate circle when the user scrolls.
      */
+    @SuppressWarnings("FieldCanBeLocal")
     private SimpleOnGestureListener mOnGesture = new SimpleOnGestureListener() {
         @Override
         public boolean onScroll(final MotionEvent e1, final MotionEvent e2,
@@ -84,6 +85,7 @@ public final class TokenCreatorView extends View {
      * Gesture listener that resizes the candidate circle when the user pinch
      * zooms.
      */
+    @SuppressWarnings("FieldCanBeLocal")
     private SimpleOnScaleGestureListener mOnScaleGesture =
             new SimpleOnScaleGestureListener() {
                 @Override

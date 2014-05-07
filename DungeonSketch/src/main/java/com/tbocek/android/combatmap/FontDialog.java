@@ -22,11 +22,6 @@ import com.tbocek.dungeonsketch.R;
 public class FontDialog extends Dialog {
 
     /**
-     * Button that the user clicks to confirm the text entered.
-     */
-    private Button mConfirmButton;
-
-    /**
      * Spinner for font size selection.
      */
     private Spinner mFontSize;
@@ -57,14 +52,14 @@ public class FontDialog extends Dialog {
         this.setTitle(context.getString(R.string.draw_text));
         this.mListener = listener;
 
-        this.mConfirmButton = (Button) this.findViewById(R.id.button_save);
         this.mNameText = (TextView) this.findViewById(R.id.entered_text);
         this.mNameText.requestFocus();
         this.mNameText.setText("");
 
         this.mFontSize = (Spinner) this.findViewById(R.id.spinner_font_size);
 
-        this.mConfirmButton.setOnClickListener(new View.OnClickListener() {
+        Button confirmButton = (Button) this.findViewById(R.id.button_save);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 String name = FontDialog.this.mNameText.getText().toString();
