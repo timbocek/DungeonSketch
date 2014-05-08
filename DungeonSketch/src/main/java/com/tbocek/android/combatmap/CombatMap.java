@@ -460,6 +460,7 @@ public final class CombatMap extends ActionBarActivity {
     private TextView mSelectedToolTextView;
 
     private CastManager mCastManager;
+    private int mOldBottomControlFrameHeight;
 
     /**
 	 * Given a combat mode, returns the snap to grid preference name associated
@@ -670,10 +671,13 @@ public final class CombatMap extends ActionBarActivity {
 			public void onClick(final View arg0) {
 				CombatMap.this.mIsControlTrayExpanded = !CombatMap.this.mIsControlTrayExpanded;
 				if (CombatMap.this.mIsControlTrayExpanded) {
-					CombatMap.this.mBottomControlFrame.getLayoutParams().height = (int) Util.convertDpToPixel(80, CombatMap.this);
+					CombatMap.this.mBottomControlFrame.getLayoutParams().height =
+                            mOldBottomControlFrameHeight;
 					collapseButton
 							.setImageResource(R.drawable.vertical_contract);
 				} else {
+                    mOldBottomControlFrameHeight =
+                            CombatMap.this.mBottomControlFrame.getLayoutParams().height;
 					CombatMap.this.mBottomControlFrame.getLayoutParams().height = 0;
 					collapseButton.setImageResource(R.drawable.vertical_expand);
 				}
