@@ -735,7 +735,7 @@ public final class CombatView extends SurfaceView {
         }
 
         if (this.mOnRefreshListener != null) {
-            this.mOnRefreshListener.onRefresh();
+            this.mOnRefreshListener.onRefresh(this.mInteractionMode.getNumberOfFingers() == 0);
         }
         
         // If we called this, then a non-scroll operation triggered a map refresh.
@@ -1159,7 +1159,7 @@ public final class CombatView extends SurfaceView {
         /**
          * Called when this combat view is refreshed.
          */
-        void onRefresh();
+        void onRefresh(boolean interactionDone);
     }
 
     /**

@@ -723,7 +723,7 @@ public final class CombatMap extends ActionBarActivity {
 		this.mCombatView
 				.setOnRefreshListener(new CombatView.OnRefreshListener() {
 					@Override
-					public void onRefresh() {
+					public void onRefresh(boolean interactionDone) {
 						// When the map is refreshed, update the undo/redo
 						// status as
 						// well.
@@ -731,10 +731,11 @@ public final class CombatMap extends ActionBarActivity {
 
                         // When the map is refreshed, if we are connected to Chromecast export the
                         // token layer (and *only* the token layer) to Chromecast.
-                        // TODO: Do this less often!!!
-                        CombatMap.this.exportToChromecast();
+                        if (interactionDone) {
+                            CombatMap.this.exportToChromecast();
+                        }
 					}
-				});
+                });
 
 		this.mCombatView.getMultiSelect().setSelectionChangedListener(
 				new SelectionChangedListener());
