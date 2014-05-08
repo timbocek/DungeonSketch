@@ -1,8 +1,7 @@
 package com.tbocek.android.combatmap.view;
 
-import java.util.List;
-
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,11 +12,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.tbocek.android.combatmap.TokenImageManager;
 import com.tbocek.android.combatmap.TokenDatabase;
+import com.tbocek.android.combatmap.TokenImageManager;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
-import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.dungeonsketch.R;
+
+import java.util.List;
 
 /**
  * Provides a horizontally scrolling list of tokens, allowing the user to pick
@@ -27,8 +27,8 @@ import com.tbocek.dungeonsketch.R;
  * 
  */
 public final class TokenSelectorView extends LinearLayout {
-    private static final int TOKEN_HEIGHT = 48;
     private final HorizontalListView mTokenLayout;
+    private final int mTokenButtonDim;
     private Button mGroupSelector;
 
 
@@ -74,8 +74,8 @@ public final class TokenSelectorView extends LinearLayout {
             TokenButton b = new TokenButton(getContext(), null);
 
             b.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
-            b.setMinimumWidth((int) Util.convertDpToPixel(80, TokenSelectorView.this.getContext()));
-            b.setMinimumHeight((int) Util.convertDpToPixel(80, TokenSelectorView.this.getContext()));
+            b.setMinimumWidth(mTokenButtonDim);
+            b.setMinimumHeight(mTokenButtonDim);
             b.allowDrag(false); // Will be handling dragging in the horizontal scroll view.
 
             return b;
@@ -126,6 +126,9 @@ public final class TokenSelectorView extends LinearLayout {
                 return false;
             }
         });
+
+        Resources res = getResources();
+        mTokenButtonDim = res.getDimensionPixelSize(R.dimen.control_area_size);
 
     }
 
