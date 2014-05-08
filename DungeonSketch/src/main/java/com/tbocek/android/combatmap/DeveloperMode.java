@@ -65,4 +65,8 @@ public final class DeveloperMode {
      */
     private DeveloperMode() {
     }
+
+    public static boolean shouldDisplayDrawRects() {
+        return false;
+    }
 }

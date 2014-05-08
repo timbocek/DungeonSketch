@@ -441,7 +441,7 @@ public final class CombatView extends SurfaceView {
 	        mFrameCount++;
 	    }
 	    
-	    if (DeveloperMode.DEVELOPER_MODE) {
+	    if (DeveloperMode.shouldDisplayDrawRects()) {
 	    	canvas.drawRect(dirty, this.mDrawRectDebugPaint);
 	    }
     }
