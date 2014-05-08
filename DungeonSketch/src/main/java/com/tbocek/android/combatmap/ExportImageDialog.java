@@ -1,13 +1,12 @@
 package com.tbocek.android.combatmap;
 
-import java.io.IOException;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -16,12 +15,15 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tbocek.android.combatmap.model.MapData;
 import com.tbocek.android.combatmap.model.MapDrawer;
 import com.tbocek.android.combatmap.model.MapDrawer.FogOfWarMode;
 import com.tbocek.dungeonsketch.R;
+
+import java.io.IOException;
 
 /**
  * Provides a dialog for the user to export an image.
@@ -31,6 +33,8 @@ import com.tbocek.dungeonsketch.R;
  */
 public class ExportImageDialog extends Dialog {
 
+    private static final int WHOLE_IMAGE_MARGIN_PX = 30;
+
     CheckBox mCheckAnnotations;
     CheckBox mCheckFogOfWar;
     CheckBox mCheckGmNotes;
@@ -39,6 +43,7 @@ public class ExportImageDialog extends Dialog {
     private MapData mData;
     EditText mEditExportName;
     Button mExportButton;
+    private TextView mExportSizeText;
     private int mExportHeight;
 
     private int mExportWidth;
@@ -74,6 +79,9 @@ public class ExportImageDialog extends Dialog {
                 (EditText) this.findViewById(R.id.edit_export_name);
         this.mExportButton = (Button) this.findViewById(R.id.button_export);
 
+        this.mExportSizeText =
+                (TextView) this.findViewById(R.id.text_export_size);
+
         this.associateControl(this.mRadioExportFullMap, "export_full_map", true);
         this.associateControl(this.mRadioExportCurrentView,
                 "export_current_view", false);
@@ -83,6 +91,15 @@ public class ExportImageDialog extends Dialog {
         this.associateControl(this.mCheckAnnotations, "export_annotations",
                 false);
         this.associateControl(this.mCheckFogOfWar, "export_fog_of_war", false);
+
+        this.mRadioExportFullMap.setOnCheckedChangeListener(
+                new RadioButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                        updateExportSizeText(checked);
+                    }
+                }
+        );
 
         this.mExportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,12 +112,23 @@ public class ExportImageDialog extends Dialog {
                             Toast.makeText(
                                     ExportImageDialog.this.getContext(),
                                     "Could not export.  Reason: "
-                                            + e.toString(), Toast.LENGTH_LONG);
+                                            + e.toString(), Toast.LENGTH_LONG
+                            );
                     toast.show();
                 }
                 ExportImageDialog.this.dismiss();
             }
         });
+    }
+
+    private void updateExportSizeText(boolean wholeMap) {
+        findViewById(R.id.text_export_size_advisory).setVisibility(
+                wholeMap ? View.VISIBLE : View.GONE);
+
+        Point exportSize = getExportedImageSize(wholeMap);
+        mExportSizeText.setText(
+                "Exported image will be " + Integer.toString(exportSize.x) +
+                        " x " + Integer.toString(exportSize.y));
     }
 
     /**
@@ -121,22 +149,25 @@ public class ExportImageDialog extends Dialog {
         b.setOnCheckedChangeListener(new SetBooleanPreferenceHandler(pref));
     }
 
+    private Point getExportedImageSize(boolean wholeMap) {
+        if (wholeMap) {
+            RectF wholeMapRect = this.mData.getScreenSpaceBoundingRect(WHOLE_IMAGE_MARGIN_PX);
+            return new Point((int)wholeMapRect.width(), (int)wholeMapRect.height());
+        } else {
+            return new Point(this.mExportWidth, this.mExportHeight);
+        }
+    }
+
     /**
      * Exports the image using the settings set up in this activity.
      * @throws IOException if the export failed.
      */
     private void export() throws IOException {
-        int width;
-        int height;
+        Point exportSize = getExportedImageSize(mRadioExportFullMap.isChecked());
+        int width = exportSize.x;
+        int height = exportSize.y;
+        RectF wholeMapRect = this.mData.getScreenSpaceBoundingRect(WHOLE_IMAGE_MARGIN_PX);
 
-        RectF wholeMapRect = this.mData.getScreenSpaceBoundingRect(30);
-        if (this.mRadioExportCurrentView.isChecked()) {
-            width = this.mExportWidth;
-            height = this.mExportHeight;
-        } else {
-            width = (int) wholeMapRect.width();
-            height = (int) wholeMapRect.height();
-        }
         Bitmap bitmap =
                 Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -172,6 +203,8 @@ public class ExportImageDialog extends Dialog {
         this.mData = mapData;
         this.mExportWidth = width;
         this.mExportHeight = height;
+
+        updateExportSizeText(mRadioExportFullMap.isChecked());
     }
 
     private class SetBooleanPreferenceHandler implements

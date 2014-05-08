@@ -12,7 +12,8 @@
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/radio_group_export_size">
         <RadioButton
             android:id="@+id/radio_export_full_map"
             android:text="@string/entire_map"
@@ -24,6 +25,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>        
     </RadioGroup>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_export_size"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_export_size_advisory"
+        android:text="Zooming the map will control the exported resolution."/>
     <CheckBox
         android:id="@+id/checkbox_export_grid_lines"
         android:text="@string/include_grid_lines"
