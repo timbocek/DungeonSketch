@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="control_area_size">48dp</dimen>
+    <dimen name="trash_can_top">8dp</dimen>
+    <dimen name="trash_can_left">8dp</dimen>
+    <dimen name="trash_can_width">48dp</dimen>
+    <dimen name="trash_can_height">48dp</dimen>
 </resources>

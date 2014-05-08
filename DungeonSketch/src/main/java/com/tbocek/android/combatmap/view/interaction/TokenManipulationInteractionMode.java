@@ -1,10 +1,8 @@
 package com.tbocek.android.combatmap.view.interaction;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -14,13 +12,16 @@ import android.view.MotionEvent;
 
 import com.google.common.collect.Lists;
 import com.tbocek.android.combatmap.DeveloperMode;
-import com.tbocek.dungeonsketch.R;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.BoundingRectangle;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.CombatView;
+import com.tbocek.dungeonsketch.R;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * An interaction mode that allows the user to drag tokens around the canvas.
@@ -39,10 +40,7 @@ public final class TokenManipulationInteractionMode extends
     /**
      * Rectangle in which to draw the trash can.
      */
-    // CHECKSTYLE:OFF
-    private static final Rect TRASH_CAN_RECT = new Rect(16, 16, 96 + 16,
-            96 + 16);
-    // CHECKSTYLE:ON
+    private Rect mTrashCanRect;
 
     /**
      * Length of the trash can fade in, in ms.
@@ -138,6 +136,16 @@ public final class TokenManipulationInteractionMode extends
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public TokenManipulationInteractionMode(final CombatView view) {
         super(view);
+
+        // Get the size of the trash can
+        Resources res = view.getResources();
+        int trashX = res.getDimensionPixelSize(R.dimen.trash_can_left);
+        int trashY = res.getDimensionPixelSize(R.dimen.trash_can_top);
+        int trashWidth = res.getDimensionPixelSize(R.dimen.trash_can_width);
+        int trashHeight = res.getDimensionPixelSize(R.dimen.trash_can_height);
+
+        mTrashCanRect = new Rect(trashX, trashY, trashX + trashWidth, trashY + trashHeight);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             mTrashCanFadeListener =  new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -146,7 +154,7 @@ public final class TokenManipulationInteractionMode extends
                             (Integer) animation.getAnimatedValue();
                     // TODO: See if it is better to lump this in with the token move refresh.
                     TokenManipulationInteractionMode.this.getView()
-                            .refreshMap(TRASH_CAN_RECT);
+                            .refreshMap(mTrashCanRect);
                 }
             };
         }
@@ -203,11 +211,11 @@ public final class TokenManipulationInteractionMode extends
             }
 
             this.mCachedDark = this.getData().getGrid().isDark();
-            this.mTrashDrawable.setBounds(TRASH_CAN_RECT);
+            this.mTrashDrawable.setBounds(mTrashCanRect);
             this.mTrashHoverDrawable =
                     this.getView().getResources()
                             .getDrawable(R.drawable.trashcan_hover_over);
-            this.mTrashHoverDrawable.setBounds(TRASH_CAN_RECT);
+            this.mTrashHoverDrawable.setBounds(mTrashCanRect);
         }
     }
 
@@ -391,7 +399,7 @@ public final class TokenManipulationInteractionMode extends
                 redrawRect.updateBounds(t.getBoundingRectangle());
             }
             this.mAboutToTrash =
-                    TRASH_CAN_RECT.contains((int) e2.getX(), (int) e2.getY());
+                    mTrashCanRect.contains((int) e2.getX(), (int) e2.getY());
             
             // If tokens have been highlighted with a selection, we need a few more
             // pixels around the refresh area because the select indicator draws around the
