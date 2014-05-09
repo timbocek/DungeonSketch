@@ -1,9 +1,5 @@
 package com.tbocek.android.combatmap.view;
 
-import com.tbocek.dungeonsketch.R;
-import com.tbocek.android.combatmap.TokenDatabase;
-import com.tbocek.android.combatmap.model.primitives.Util;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,6 +10,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.tbocek.android.combatmap.TokenDatabase;
+import com.tbocek.android.combatmap.model.primitives.Util;
+import com.tbocek.dungeonsketch.R;
 
 
 public class TagTreeLineItem extends LinearLayout {
@@ -26,7 +26,7 @@ public class TagTreeLineItem extends LinearLayout {
 	ImageView mIsSystem;
 	
 	TokenDatabase.TagTreeNode mTag;
-	
+
 	public TagTreeLineItem(Context context) {
 		super(context);
 		LayoutInflater.from(context).inflate(R.layout.tag_widget_layout, this);
@@ -36,10 +36,11 @@ public class TagTreeLineItem extends LinearLayout {
 		mIsSystem = (ImageView) this.findViewById(R.id.tag_widget_system);
 	}
 	
-	public void setTagNode(TokenDatabase.TagTreeNode tag) {
+	public void setTagNode(TokenDatabase.TagTreeNode tag, boolean markSystemTags) {
 		mName.setText(tag.getName());
 		mHasChildren.setVisibility(tag.hasChildren() ? View.VISIBLE : View.GONE);
-		mIsSystem.setVisibility(tag.isSystemTag() ? View.VISIBLE : View.INVISIBLE);
+		mIsSystem.setVisibility(markSystemTags && tag.isSystemTag() ?
+                View.VISIBLE : View.INVISIBLE);
 		if (tag.isActive()) {
 			mName.setPaintFlags(mName.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
 		} else {

@@ -59,12 +59,17 @@ public class TagNavigator extends ScrollView {
 	/**
 	 * Whether the tag navigator should show tags that were marked as inactive.
 	 */
-	private boolean showInactiveTags = true;
+	private boolean mShowInactiveTags = true;
 
 	/**
 	 * Whether the tag navigator should show tags that were marked as "system".
 	 */
-	private boolean showSystemTags = true;
+	private boolean mShowSystemTags = true;
+
+    /**
+     * Whether the tag navigator should indicate visually that a tag is a system tag.
+     */
+    private boolean mMarkSystemTags = true;
 	
 	private List<TagTreeLineItem> mTagItems = Lists.newArrayList();
 	
@@ -150,19 +155,23 @@ public class TagNavigator extends ScrollView {
 	}
 	
 	public void setShowInactiveTags(boolean show) {
-		this.showInactiveTags = show;
+		this.mShowInactiveTags = show;
 	}
 
 	public void setShowSystemTags(boolean show) {
-		this.showSystemTags  = show;
+		this.mShowSystemTags = show;
 	}
-	
-	private boolean shouldShowTag(TagTreeNode node) {
-		return (node.isActive() || showInactiveTags) && (!node.isSystemTag() || showSystemTags);
+
+    public void setMarkSystemTags(boolean markSystemTags) {
+        mMarkSystemTags = markSystemTags;
+    }
+
+    private boolean shouldShowTag(TagTreeNode node) {
+		return (node.isActive() || mShowInactiveTags) && (!node.isSystemTag() || mShowSystemTags);
 	}
 	
 	private boolean hasTagRestrictions() {
-		return !this.showInactiveTags || !this.showSystemTags;
+		return !this.mShowInactiveTags || !this.mShowSystemTags;
 	}
 	
 	private void loadTokenData(TagTreeNode node) {
@@ -223,7 +232,7 @@ public class TagNavigator extends ScrollView {
 			TagTreeLineItem tv = mTagItems.get(i);
 			if (i < tagNames.size()) {
 				TagTreeNode child = node.getNamedChild(tagNames.get(i), false);
-				tv.setTagNode(child);
+				tv.setTagNode(child, mMarkSystemTags);
 				tv.setVisibility(View.VISIBLE);
 			} else {
 				tv.setVisibility(View.GONE);
@@ -413,7 +422,7 @@ public class TagNavigator extends ScrollView {
 		for (TagTreeLineItem tv: mTagItems) {
 			if (tv.getTagNode() == this.getCurrentTagNode()) {
 				// Force reload of tag properties.
-				tv.setTagNode(this.getCurrentTagNode());
+				tv.setTagNode(this.getCurrentTagNode(), mMarkSystemTags);
 			}
 				
 		}

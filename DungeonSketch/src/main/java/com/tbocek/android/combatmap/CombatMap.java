@@ -1512,6 +1512,7 @@ public final class CombatMap extends ActionBarActivity {
             mCombatView.alertTokensChanged();
 			
 			CombatMap.this.mTagNavigator.setShowInactiveTags(false);
+            CombatMap.this.mTagNavigator.setMarkSystemTags(false);
 			CombatMap.this.mTagNavigator.setTokenDatabase(CombatMap.this.mTokenDatabase);
 			CombatMap.this.mTagNavigator.setTagPath(mData.getLastTag());
 
