@@ -13,6 +13,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.DragEvent;
@@ -69,6 +70,7 @@ public final class TokenManager extends ActionBarActivity {
      */
     private static final int TOKEN_BUTTON_SIZE = 150;
     private static final int EDITED_TAG_NAME = 0;
+    private static final String TAG = "TokenManager";
 
     /**
      * The list of token buttons that are managed by this activity.
@@ -83,6 +85,8 @@ public final class TokenManager extends ActionBarActivity {
 
     private MultiSelectManager mMultiSelectManager;
 
+    private MenuItem mRenameTagMenuItem;
+
     /**
      * The action mode that was started to manage the selection.
      */
@@ -92,8 +96,15 @@ public final class TokenManager extends ActionBarActivity {
     		new TagNavigator.TagSelectedListener() {
 				@Override
 				public void onTagSelected(TagTreeNode selectedTag) {
+                    if (selectedTag == null)
+                        selectedTag = mTokenDatabase.getRootNode();
 					TokenManager.this.setScrollViewTag(selectedTag.getPath());
 					TokenManager.this.getSupportActionBar().setTitle(selectedTag.getName());
+
+                    if (mRenameTagMenuItem != null) {
+                        mRenameTagMenuItem.setVisible(!selectedTag.isSystemTag());
+                    }
+
 				}
 
 				@Override
@@ -416,6 +427,7 @@ public final class TokenManager extends ActionBarActivity {
         MenuInflater inflater = this.getMenuInflater();
         inflater.inflate(R.menu.token_manager_menu, menu);
         this.mTagActiveMenuItem = menu.findItem(R.id.token_manager_is_active);
+        this.mRenameTagMenuItem = menu.findItem(R.id.token_manager_rename_tag);
         return true;
     }
 
@@ -499,6 +511,7 @@ public final class TokenManager extends ActionBarActivity {
         if (requestCode == EDITED_TAG_NAME) {
             if (resultCode == RESULT_OK) {
                 String newPath = data.getStringExtra(EditTagDialog.NEW_TAG_PATH);
+                Log.d(TAG, "New Tag Path=" + newPath);
                 this.mTagNavigator.selectTag(
                         mTokenDatabase.getRootNode().getNamedChild(newPath, false), true);
             }
