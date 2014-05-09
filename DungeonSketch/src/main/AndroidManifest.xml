@@ -62,6 +62,11 @@
             android:label="New Tag"
             android:theme="@android:style/Theme.Holo.Dialog">
         </activity>
+        <activity
+            android:name="com.tbocek.android.combatmap.tokenmanager.EditTagDialog"
+            android:label="Edit Tag"
+            android:theme="@android:style/Theme.Holo.Dialog">
+        </activity>
 
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
     </application>

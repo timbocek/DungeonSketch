@@ -270,7 +270,7 @@ public class TagNavigator extends ScrollView {
 				: TagTreeLineItem.COLOR_DEFAULT);
 	}
 	
-	private void selectTag(TagTreeNode node, boolean updateColors) {
+	public void selectTag(TagTreeNode node, boolean updateColors) {
 		if (mTagSelectedListener != null) {
 			mTagSelectedListener.onTagSelected(node);
 		}

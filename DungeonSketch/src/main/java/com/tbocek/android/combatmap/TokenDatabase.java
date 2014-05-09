@@ -1135,4 +1135,16 @@ public final class TokenDatabase {
 	public void setTokenTagCount(String tokenId, String tag, int count) {
 		this.getRootNode().getNamedChild(tag, false).setTokenCount(tokenId, count);
 	}
+
+    /**
+     * Changess the name of the given tag.
+     * @param tagPath The full path to the tag to rename.
+     * @param newName The new name of the last tag on the path.
+     * @return The modified path of the tag.
+     */
+    public String renameTag(String tagPath, String newName) {
+        TagTreeNode n = this.getRootNode().getNamedChild(tagPath, false);
+        n.name = newName;
+        return n.getPath();
+    }
 }

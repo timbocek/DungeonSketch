@@ -68,6 +68,7 @@ public final class TokenManager extends ActionBarActivity {
      * The width and height of each token button.
      */
     private static final int TOKEN_BUTTON_SIZE = 150;
+    private static final int EDITED_TAG_NAME = 0;
 
     /**
      * The list of token buttons that are managed by this activity.
@@ -436,33 +437,41 @@ public final class TokenManager extends ActionBarActivity {
         } else if (itemId == R.id.token_manager_delete_tag) {
             // Confirm the tag deletion.
             new AlertDialog.Builder(this)
-            .setMessage(
-                    "Really delete the " + this.getActiveTag()
-                    + " tag?  This won't delete any tokens.")
+                    .setMessage(
+                            "Really delete the " + this.getActiveTag()
+                                    + " tag?  This won't delete any tokens."
+                    )
                     .setCancelable(false)
                     .setPositiveButton("Yes",
                             new DialogInterface.OnClickListener() {
 
-                        @Override
-                        public void onClick(DialogInterface dialog,
-                                int which) {
-                            TagTreeNode parent = TokenManager.this.mTokenDatabase.deleteTag(
-                                    TokenManager.this.getActiveTagPath());
-                            String path = parent.getPath();
-                            TokenManager.this.updateTagList();
-                            mTagNavigator.setTagPath(path);
-                        }
-                    })
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    TagTreeNode parent = TokenManager.this.mTokenDatabase.deleteTag(
+                                            TokenManager.this.getActiveTagPath());
+                                    String path = parent.getPath();
+                                    TokenManager.this.updateTagList();
+                                    mTagNavigator.setTagPath(path);
+                                }
+                            }
+                    )
                     .setNegativeButton("No",
                             new DialogInterface.OnClickListener() {
 
-                        @Override
-                        public void onClick(DialogInterface dialog,
-                                int which) {
-                            dialog.cancel();
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.cancel();
 
-                        }
-                    }).create().show();
+                                }
+                            }
+                    ).create().show();
+            return true;
+        } else if(itemId == R.id.token_manager_rename_tag) {
+            Intent i = new Intent(this, EditTagDialog.class);
+            i.putExtra(EditTagDialog.SELECTED_TAG_PATH, this.getActiveTagPath());
+            this.startActivityForResult(i, EDITED_TAG_NAME);
             return true;
         } else if (itemId == R.id.token_manager_help) {
             Help.openHelp(this);
@@ -482,6 +491,17 @@ public final class TokenManager extends ActionBarActivity {
         	return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDITED_TAG_NAME) {
+            if (resultCode == RESULT_OK) {
+                String newPath = data.getStringExtra(EditTagDialog.NEW_TAG_PATH);
+                this.mTagNavigator.selectTag(
+                        mTokenDatabase.getRootNode().getNamedChild(newPath, false), true);
+            }
         }
     }
 
