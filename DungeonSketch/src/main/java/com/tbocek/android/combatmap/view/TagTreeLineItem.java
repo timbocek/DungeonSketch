@@ -70,6 +70,7 @@ public class TagTreeLineItem extends LinearLayout {
      * Refreshes the text of this tag tree line item from the stored tag.
      */
     public void updateText() {
-        this.mName.setText(mTag.getName());
+        if (mTag != null)
+            this.mName.setText(mTag.getName());
     }
 }
