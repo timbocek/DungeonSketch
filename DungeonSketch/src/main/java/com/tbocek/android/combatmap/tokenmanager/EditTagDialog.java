@@ -52,6 +52,7 @@ public class EditTagDialog extends RoboActivity {
                 finish();
             }
         });
+        create.setText(R.string.rename_tag);
     }
 }
 
