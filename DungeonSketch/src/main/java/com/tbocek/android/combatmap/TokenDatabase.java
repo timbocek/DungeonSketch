@@ -117,6 +117,20 @@ public final class TokenDatabase {
 				return childTags.get(tag);
 			}
 		}
+
+        /**
+         * Renames this tag.
+         * @param name The new name of the tag.
+         * @return True on success, false if the tag could not be renamed.
+         */
+        public boolean rename(String name) {
+            if (this.isSystemTag() || this.getParent() == null) return false;
+
+            this.getParent().childTags.remove(this.name);
+            this.name = name;
+            this.getParent().childTags.put(this.name, this);
+            return true;
+        }
 		
 		public Collection<String> getImmediateTokens() {
 			return this.isActive ? tokenCounts.keySet() : new ArrayList<String>();
@@ -1144,7 +1158,7 @@ public final class TokenDatabase {
      */
     public String renameTag(String tagPath, String newName) {
         TagTreeNode n = this.getRootNode().getNamedChild(tagPath, false);
-        n.name = newName;
+        n.rename(newName);
         return n.getPath();
     }
 }

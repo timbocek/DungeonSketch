@@ -65,4 +65,12 @@ public class TagTreeLineItem extends LinearLayout {
 	public void setTextSize(int size) {
 		mName.setTextSize(size);
 	}
+
+    /**
+     * Refreshes the text of this tag tree line item from the stored tag.
+     */
+    public void updateText() {
+        if (mTag != null)
+            this.mName.setText(mTag.getName());
+    }
 }

@@ -260,7 +260,8 @@ public class TagNavigator extends ScrollView {
 	
 	public void resetTextViewColors() {
 		for (TagTreeLineItem v: this.mTagItems) {
-			v.setTextColor(v.getTagNode() == mCurrentTagTreeNode 
+			v.updateText();
+            v.setTextColor(v.getTagNode() == mCurrentTagTreeNode
 			               ? TagTreeLineItem.COLOR_SELECTED 
 						   : TagTreeLineItem.COLOR_DEFAULT);
 		}

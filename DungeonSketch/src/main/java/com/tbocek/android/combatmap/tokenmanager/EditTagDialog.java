@@ -36,7 +36,7 @@ public class EditTagDialog extends RoboActivity {
         mDatabase = TokenDatabase.getInstance(this);
         String tagPath = this.getIntent().getStringExtra(SELECTED_TAG_PATH);
 
-        mSelectedTag = mDatabase.getRootNode();
+        mSelectedTag = mDatabase.getRootNode().getNamedChild(tagPath, false);
         underTopLevel.setVisibility(View.INVISIBLE);
         underSelected.setVisibility(View.INVISIBLE);
         underTopLevel.setChecked(true);
@@ -52,6 +52,7 @@ public class EditTagDialog extends RoboActivity {
                 finish();
             }
         });
+        create.setText(R.string.rename_tag);
     }
 }
 
