@@ -21,9 +21,11 @@ import android.widget.Toast;
 import com.tbocek.android.combatmap.model.MapData;
 import com.tbocek.android.combatmap.model.MapDrawer;
 import com.tbocek.android.combatmap.model.MapDrawer.FogOfWarMode;
+import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.dungeonsketch.R;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Provides a dialog for the user to export an image.
@@ -35,6 +37,9 @@ public class ExportImageDialog extends Dialog {
 
     private static final int WHOLE_IMAGE_MARGIN_PX = 30;
 
+    private static final int MAX_IMAGE_WIDTH = 2048;
+    private static final int MAX_IMAGE_HEIGHT = 2048;
+
     CheckBox mCheckAnnotations;
     CheckBox mCheckFogOfWar;
     CheckBox mCheckGmNotes;
@@ -45,6 +50,8 @@ public class ExportImageDialog extends Dialog {
     Button mExportButton;
     private TextView mExportSizeText;
     private int mExportHeight;
+    private TextView mExportRowsText;
+    private TextView mExportColsText;
 
     private int mExportWidth;
     RadioButton mRadioExportCurrentView;
@@ -81,6 +88,11 @@ public class ExportImageDialog extends Dialog {
 
         this.mExportSizeText =
                 (TextView) this.findViewById(R.id.text_export_size);
+
+        this.mExportRowsText =
+                (TextView) this.findViewById(R.id.text_export_rows_advisory);
+        this.mExportColsText =
+                (TextView) this.findViewById(R.id.text_export_cols_advisory);
 
         this.associateControl(this.mRadioExportFullMap, "export_full_map", true);
         this.associateControl(this.mRadioExportCurrentView,
@@ -129,6 +141,25 @@ public class ExportImageDialog extends Dialog {
         mExportSizeText.setText(
                 "Exported image will be " + Integer.toString(exportSize.x) +
                         " x " + Integer.toString(exportSize.y));
+
+        Point numExportedImages = getNumExportImages();
+
+        if (numExportedImages.x > 1) {
+            mExportRowsText.setVisibility(View.VISIBLE);
+            mExportRowsText.setText(
+                    "Image will be split into " + Integer.toString(numExportedImages.x) + " rows");
+        } else {
+            mExportRowsText.setVisibility(View.GONE);
+        }
+
+        if (numExportedImages.y > 1) {
+            mExportColsText.setVisibility(View.VISIBLE);
+            mExportColsText.setText(
+                    "Image will be split into " + Integer.toString(numExportedImages.y) +
+                            " columns");
+        } else {
+            mExportColsText.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -168,29 +199,46 @@ public class ExportImageDialog extends Dialog {
         int height = exportSize.y;
         RectF wholeMapRect = this.mData.getScreenSpaceBoundingRect(WHOLE_IMAGE_MARGIN_PX);
 
-        Bitmap bitmap =
-                Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-
         if (!this.mRadioExportCurrentView.isChecked()) {
             this.mData.getWorldSpaceTransformer().moveOrigin(
                     -wholeMapRect.left, -wholeMapRect.top);
         }
 
-        new MapDrawer()
-                .drawGridLines(this.mCheckGridLines.isChecked())
-                .drawGmNotes(this.mCheckGmNotes.isChecked())
-                .drawTokens(this.mCheckTokens.isChecked())
-                .areTokensManipulable(true)
-                .drawAnnotations(this.mCheckAnnotations.isChecked())
-                .gmNotesFogOfWar(FogOfWarMode.NOTHING)
-                .backgroundFogOfWar(
-                        this.mCheckFogOfWar.isChecked() ? FogOfWarMode.CLIP
-                                : FogOfWarMode.NOTHING)
-                .draw(canvas, this.mData, canvas.getClipBounds());
+        Point numExportedImages = this.getNumExportImages();
 
-        new DataManager(this.getContext()).exportImage(this.mEditExportName
-                .getText().toString(), bitmap, Bitmap.CompressFormat.PNG);
+        List<CoordinateTransformer> transformers = mData.getWorldSpaceTransformer().splitMap(
+                width, height, numExportedImages.x, numExportedImages.y);
+
+        Bitmap bitmap =
+                Bitmap.createBitmap(width / numExportedImages.x, height / numExportedImages.y,
+                        Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+
+        int i = 1;
+        for (CoordinateTransformer transformer : transformers) {
+            new MapDrawer()
+                    .drawGridLines(this.mCheckGridLines.isChecked())
+                    .drawGmNotes(this.mCheckGmNotes.isChecked())
+                    .drawTokens(this.mCheckTokens.isChecked())
+                    .areTokensManipulable(true)
+                    .drawAnnotations(this.mCheckAnnotations.isChecked())
+                    .gmNotesFogOfWar(FogOfWarMode.NOTHING)
+                    .backgroundFogOfWar(
+                            this.mCheckFogOfWar.isChecked() ? FogOfWarMode.CLIP
+                                    : FogOfWarMode.NOTHING
+                    )
+                    .useCustomWorldSpaceTransformer(transformer)
+                    .draw(canvas, this.mData, canvas.getClipBounds());
+
+            String exportName = this.mEditExportName.getText().toString();
+            if (transformers.size() > 1) {
+                exportName += "_" + Integer.toString(i);
+            }
+
+            new DataManager(this.getContext()).exportImage(
+                    exportName, bitmap, Bitmap.CompressFormat.PNG);
+            i++;
+        }
 
         if (!this.mRadioExportCurrentView.isChecked()) {
             this.mData.getWorldSpaceTransformer().moveOrigin(wholeMapRect.left,
@@ -226,5 +274,24 @@ public class ExportImageDialog extends Dialog {
             editor.putBoolean(this.mPreference, isChecked);
             editor.commit();
         }
+    }
+
+    private Point getNumExportImages() {
+        Point exportSize = getExportedImageSize(mRadioExportFullMap.isChecked());
+
+        return new Point(
+                this.roundUp(((float) exportSize.x) / MAX_IMAGE_WIDTH),
+                this.roundUp(((float) exportSize.y) / MAX_IMAGE_HEIGHT));
+    }
+
+    /**
+     * Rounds up to the nearest integer.
+     * @param x Value to round.
+     * @return The smallest integer greater than X.
+     */
+    private int roundUp(float x) {
+        // Math.ceil returns a float; add 0.5 before truncating to an int in case the float is
+        // equal to something like 1.999999999999998
+        return (int)(Math.ceil(x) + 0.5);
     }
 }

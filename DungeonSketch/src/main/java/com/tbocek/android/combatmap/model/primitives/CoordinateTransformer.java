@@ -4,10 +4,12 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import com.google.common.collect.Lists;
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Defines a transformation from one 2D coordinate system to another coordinate
@@ -289,5 +291,32 @@ public final class CoordinateTransformer {
                 invariant.y - (invariant.y - lastOriginY) * this.mZoomLevel
                         / lastZoomLevel;
 
+    }
+
+    /**
+     * Creates a list of coordinate transformers that splits the map into a grid of sub-maps.
+     * @param width The width of the map in world space.
+     * @param height The height of the map in world space.
+     * @param numHorizontal The number of horizontal submaps.
+     * @param numVertical The number of vertical submaps.
+     * @return The list of coordinate transformers.
+     */
+    public List<CoordinateTransformer> splitMap(
+            float width, float height, int numHorizontal, int numVertical) {
+        List<CoordinateTransformer> transformers = Lists.newArrayList();
+
+        float submapWidth = width / numHorizontal;
+        float submapHeight = height / numVertical;
+
+        for (int i = 0; i < numHorizontal; ++i) {
+            for (int j = 0; j < numVertical; ++j) {
+                transformers.add(new CoordinateTransformer(
+                        this.mOriginX + submapWidth * i,
+                        this.mOriginY + submapHeight * j,
+                        this.mZoomLevel));
+            }
+        }
+
+        return transformers;
     }
 }
