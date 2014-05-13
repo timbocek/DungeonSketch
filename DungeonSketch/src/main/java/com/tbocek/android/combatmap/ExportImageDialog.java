@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -39,6 +40,7 @@ public class ExportImageDialog extends Dialog {
 
     private static final int MAX_IMAGE_WIDTH = 2048;
     private static final int MAX_IMAGE_HEIGHT = 2048;
+    private static final String TAG = "ExportImageDialog";
 
     CheckBox mCheckAnnotations;
     CheckBox mCheckFogOfWar;
@@ -216,6 +218,8 @@ public class ExportImageDialog extends Dialog {
 
         int i = 1;
         for (CoordinateTransformer transformer : transformers) {
+            Log.d(TAG, "Writing image with origin = " + Float.toString(transformer.getOrigin().x) +
+                       ", " + Float.toString(transformer.getOrigin().y));
             new MapDrawer()
                     .drawGridLines(this.mCheckGridLines.isChecked())
                     .drawGmNotes(this.mCheckGmNotes.isChecked())

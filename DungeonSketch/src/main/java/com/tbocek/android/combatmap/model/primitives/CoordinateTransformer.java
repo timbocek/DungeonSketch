@@ -311,8 +311,8 @@ public final class CoordinateTransformer {
         for (int i = 0; i < numHorizontal; ++i) {
             for (int j = 0; j < numVertical; ++j) {
                 transformers.add(new CoordinateTransformer(
-                        this.mOriginX + submapWidth * i,
-                        this.mOriginY + submapHeight * j,
+                        this.mOriginX - submapWidth * i,
+                        this.mOriginY - submapHeight * j,
                         this.mZoomLevel));
             }
         }
