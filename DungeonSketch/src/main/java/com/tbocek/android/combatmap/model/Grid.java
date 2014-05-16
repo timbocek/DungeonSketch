@@ -33,6 +33,20 @@ public class Grid {
             new CoordinateTransformer(0, 0, 1);
 
     /**
+     * Default constructor
+     */
+    public Grid() {}
+
+    /**
+     * Copy constructor.
+     * @param copyFrom Grid to copy from.
+     */
+    public Grid(Grid copyFrom) {
+        mColorScheme = copyFrom.mColorScheme;
+        mDrawStrategy = copyFrom.mDrawStrategy;
+    }
+
+    /**
      * Factory method that creates a grid with the given parameters.
      * 
      * @param gridStyle

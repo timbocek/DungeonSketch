@@ -402,6 +402,10 @@ public final class TokenDatabase {
 		}
 	}
 
+    protected class RecentlyTrashedTagTreeNode {
+
+    }
+
     /**
      * Always-present member at the top of the tag list that selects all tokens.
      */

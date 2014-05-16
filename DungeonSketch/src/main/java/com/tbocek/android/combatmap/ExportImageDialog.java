@@ -8,7 +8,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -34,6 +36,7 @@ import java.io.IOException;
 public class ExportImageDialog extends Dialog {
 
     private static final int WHOLE_IMAGE_MARGIN_PX = 30;
+    private static final String TAG = "ExportImageDialog";
 
     CheckBox mCheckAnnotations;
     CheckBox mCheckFogOfWar;
@@ -150,8 +153,12 @@ public class ExportImageDialog extends Dialog {
     }
 
     private Point getExportedImageSize(boolean wholeMap) {
+        return getExportedImageSize(wholeMap, this.mData);
+    }
+
+    private Point getExportedImageSize(boolean wholeMap, MapData data) {
         if (wholeMap) {
-            RectF wholeMapRect = this.mData.getScreenSpaceBoundingRect(WHOLE_IMAGE_MARGIN_PX);
+            RectF wholeMapRect = data.getScreenSpaceBoundingRect(WHOLE_IMAGE_MARGIN_PX);
             return new Point((int)wholeMapRect.width(), (int)wholeMapRect.height());
         } else {
             return new Point(this.mExportWidth, this.mExportHeight);
@@ -163,39 +170,65 @@ public class ExportImageDialog extends Dialog {
      * @throws IOException if the export failed.
      */
     private void export() throws IOException {
-        Point exportSize = getExportedImageSize(mRadioExportFullMap.isChecked());
-        int width = exportSize.x;
-        int height = exportSize.y;
-        RectF wholeMapRect = this.mData.getScreenSpaceBoundingRect(WHOLE_IMAGE_MARGIN_PX);
 
-        Bitmap bitmap =
-                Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
+        final boolean exportCurrentView = mRadioExportCurrentView.isChecked();
+        final boolean gridLines = mCheckGridLines.isChecked();
+        final boolean gmNotes = mCheckGmNotes.isChecked();
+        final boolean tokens = mCheckTokens.isChecked();
+        final boolean annotations = mCheckAnnotations.isChecked();
+        final boolean fogOfWar = mCheckFogOfWar.isChecked();
+        final Context context = getContext().getApplicationContext();
+        final String exportName = this.mEditExportName.getText().toString();
+        final MapData data = MapData.getCopy();
 
-        if (!this.mRadioExportCurrentView.isChecked()) {
-            this.mData.getWorldSpaceTransformer().moveOrigin(
-                    -wholeMapRect.left, -wholeMapRect.top);
-        }
+        Toast.makeText(context, "Exporting image", Toast.LENGTH_LONG).show();
+        AsyncTask<Void, Void, Boolean> exportImageTask = new AsyncTask<Void, Void, Boolean>() {
 
-        new MapDrawer()
-                .drawGridLines(this.mCheckGridLines.isChecked())
-                .drawGmNotes(this.mCheckGmNotes.isChecked())
-                .drawTokens(this.mCheckTokens.isChecked())
-                .areTokensManipulable(true)
-                .drawAnnotations(this.mCheckAnnotations.isChecked())
-                .gmNotesFogOfWar(FogOfWarMode.NOTHING)
-                .backgroundFogOfWar(
-                        this.mCheckFogOfWar.isChecked() ? FogOfWarMode.CLIP
-                                : FogOfWarMode.NOTHING)
-                .draw(canvas, this.mData, canvas.getClipBounds());
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                Point exportSize = getExportedImageSize(mRadioExportFullMap.isChecked(), data);
+                int width = exportSize.x;
+                int height = exportSize.y;
+                RectF wholeMapRect = data.getScreenSpaceBoundingRect(WHOLE_IMAGE_MARGIN_PX);
 
-        new DataManager(this.getContext()).exportImage(this.mEditExportName
-                .getText().toString(), bitmap, Bitmap.CompressFormat.PNG);
+                Bitmap bitmap =
+                        Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
 
-        if (!this.mRadioExportCurrentView.isChecked()) {
-            this.mData.getWorldSpaceTransformer().moveOrigin(wholeMapRect.left,
-                    wholeMapRect.top);
-        }
+                if (exportCurrentView) {
+                    data.getWorldSpaceTransformer().moveOrigin(
+                            -wholeMapRect.left, -wholeMapRect.top);
+                }
+
+                new MapDrawer()
+                        .drawGridLines(gridLines)
+                        .drawGmNotes(gmNotes)
+                        .drawTokens(tokens)
+                        .areTokensManipulable(true)
+                        .drawAnnotations(annotations)
+                        .gmNotesFogOfWar(FogOfWarMode.NOTHING)
+                        .backgroundFogOfWar(
+                                fogOfWar ? FogOfWarMode.CLIP : FogOfWarMode.NOTHING)
+                        .draw(canvas, data, canvas.getClipBounds());
+
+                try {
+                    new DataManager(context).exportImage(
+                            exportName, bitmap, Bitmap.CompressFormat.PNG);
+                    return true;
+                } catch (IOException e) {
+                    Log.e(TAG, "Export image failed", e);
+                    return false;
+                }
+            }
+
+            protected void onPostExecute(Boolean result) {
+                Toast.makeText(
+                        context,
+                        result.booleanValue() ? "Export image successful" : "Export image failed",
+                        Toast.LENGTH_LONG).show();
+            }
+        };
+        exportImageTask.execute();
     }
 
     public void prepare(String name, MapData mapData, int width, int height) {
@@ -225,6 +258,19 @@ public class ExportImageDialog extends Dialog {
             Editor editor = sharedPreferences.edit();
             editor.putBoolean(this.mPreference, isChecked);
             editor.commit();
+        }
+    }
+
+    private static class ToastRunnable implements Runnable {
+        private String mMessage;
+
+        public ToastRunnable(String message) {
+            mMessage = message;
+        }
+
+        @Override
+        public void run() {
+
         }
     }
 }

@@ -52,6 +52,16 @@ public final class TokenCollection implements UndoRedoTarget {
     }
 
     /**
+     * Copy Constructor
+     * @param copyFrom TokenCollection to copy from.
+     */
+    public TokenCollection(TokenCollection copyFrom) {
+        for (BaseToken t: mTokens) {
+            mTokens.add(t.clone());
+        }
+    }
+
+    /**
      * Adds a token to the collection.
      * 
      * @param t

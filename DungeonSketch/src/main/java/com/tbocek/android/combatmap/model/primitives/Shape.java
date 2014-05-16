@@ -18,7 +18,7 @@ import com.tbocek.android.combatmap.model.io.MapDataSerializer;
  * @author Tim
  * 
  */
-public abstract class Shape {
+public abstract class Shape implements Cloneable {
 
     /**
      * Value in [0, 255] to use for the alpha channel when drawing shapes as fog
@@ -429,5 +429,14 @@ public abstract class Shape {
 
     public void setBoundingRectangle(PointF p1, PointF p2) {
         this.mBoundingRectangle = new BoundingRectangle(p1, p2);
+    }
+
+
+    /**
+     * @return A copy of this token.
+     */
+    @Override
+    public Shape clone() throws CloneNotSupportedException{
+        return (Shape) super.clone();
     }
 }

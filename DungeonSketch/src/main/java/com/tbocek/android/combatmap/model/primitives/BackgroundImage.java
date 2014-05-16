@@ -18,6 +18,20 @@ public class BackgroundImage implements Cloneable{
      */
     private static transient DataManager dataManager = null;
 
+    /**
+     * Copy Constructor
+     * @param copyFrom BackgroundImage to copy from
+     */
+    public BackgroundImage(BackgroundImage copyFrom) {
+        this.mPath = copyFrom.mPath;
+        this.mDrawable = copyFrom.mDrawable;
+        this.mOriginWorldSpace = copyFrom.mOriginWorldSpace;
+        this.mWidthWorldSpace = copyFrom.mWidthWorldSpace;
+        this.mHeightWorldSpace = copyFrom.mHeightWorldSpace;
+        this.mKeepAspectRatio = copyFrom.mKeepAspectRatio;
+        this.mOriginalAspectRatio = copyFrom.mOriginalAspectRatio;
+    }
+
     public static void registerDataManager(DataManager dataManager) {
         BackgroundImage.dataManager = dataManager;
     }

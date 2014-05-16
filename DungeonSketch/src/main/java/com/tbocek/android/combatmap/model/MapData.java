@@ -187,6 +187,16 @@ public final class MapData {
         return instance;
     }
 
+
+    /**
+     * Return a *copy* of the singleton map data instance.  This should be treated as immutable,
+     * as changes will not be reflected in the singleton instance.
+     * @return A copy of the map data.
+     */
+    public static MapData getCopy() {
+        return new MapData(instance);
+    }
+
     /**
      * @return True if an instance of MapData has already been created.
      */
@@ -254,6 +264,26 @@ public final class MapData {
      */
     private MapData() {
 
+    }
+
+    /**
+     * Copy constructor
+     */
+    private MapData(MapData copyFrom) {
+        this.mAnnotationLines = new LineCollection(copyFrom.mAnnotationLines);
+        this.mBackgroundLines = new LineCollection(copyFrom.mBackgroundLines);
+        this.mGmNoteLines = new LineCollection(copyFrom.mGmNoteLines);
+        this.mBackgroundFogOfWar = new LineCollection(copyFrom.mBackgroundFogOfWar);
+        this.mGmNotesFogOfWar = new LineCollection(copyFrom.mGmNotesFogOfWar);
+        this.mAnntationCommandHistory = null;
+        this.mBackgroundCommandHistory = null;
+        this.mGmNotesCommandHistory = null;
+        this.mTokenCollectionCommandHistory = null;
+
+        this.mTokens = new TokenCollection(copyFrom.mTokens);
+        this.mTransformer = new CoordinateTransformer(copyFrom.mTransformer);
+        this.mBackgroundImages = new BackgroundImageCollection(copyFrom.mBackgroundImages);
+        this.mGrid = new Grid(copyFrom.mGrid);
     }
 
     /**

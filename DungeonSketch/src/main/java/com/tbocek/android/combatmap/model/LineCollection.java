@@ -4,8 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region.Op;
+import android.util.Log;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
 import com.tbocek.android.combatmap.model.primitives.BoundingRectangle;
@@ -25,6 +27,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 /**
  * Provides operations over an aggregate collection of lines. Invariant: Lines
@@ -35,6 +38,7 @@ import java.util.ListIterator;
  */
 public final class LineCollection implements UndoRedoTarget {
 
+    private static final String TAG = "LineCollection";
     /**
      * Undo/Redo History.
      */
@@ -64,6 +68,32 @@ public final class LineCollection implements UndoRedoTarget {
      */
     public LineCollection(CommandHistory history) {
         this.mCommandHistory = history;
+    }
+
+    /**
+     * Copy constructor
+     * @param copyFrom LineCollection to copy from.
+     */
+    public LineCollection(LineCollection copyFrom) {
+        mCommandHistory = new CommandHistory(); // Create dummy command history
+
+        Set<Shape> aboveGridLineSet = Sets.newHashSet(copyFrom.mAboveGridLines);
+        Set<Shape> belowGridLineSet = Sets.newHashSet(copyFrom.mBelowGridLines);
+
+        for (Shape s: copyFrom.mLines) {
+            try {
+                Shape copy = (Shape) s.clone();
+                mLines.add(copy);
+                if (aboveGridLineSet.contains(s)) {
+                    mAboveGridLines.add(copy);
+                }
+                if (belowGridLineSet.contains(s)) {
+                    mBelowGridLines.add(copy);
+                }
+            } catch (CloneNotSupportedException e) {
+                Log.e(TAG, "Cloning shape failed", e);
+            }
+        }
     }
 
     @Override

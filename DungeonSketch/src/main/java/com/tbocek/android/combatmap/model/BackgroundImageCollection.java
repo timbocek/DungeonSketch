@@ -43,6 +43,12 @@ public class BackgroundImageCollection {
         this.mCommandHistory = commandHistory;
     }
 
+    public BackgroundImageCollection(BackgroundImageCollection copyFrom) {
+       for (BackgroundImage i : copyFrom.mImages) {
+           mImages.add(new BackgroundImage(i));
+       }
+    }
+
     /**
      * Adds a new background image.
      * @param path Path to the image to add.

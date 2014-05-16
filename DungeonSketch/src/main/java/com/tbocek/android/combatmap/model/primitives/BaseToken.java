@@ -19,7 +19,7 @@ import java.util.Set;
  * @author Tim Bocek
  * 
  */
-public abstract class BaseToken {
+public abstract class BaseToken implements Cloneable {
 
     /**
      * OPTIMIZATION: Shared, preallocated StringBuffer used to concatenate
