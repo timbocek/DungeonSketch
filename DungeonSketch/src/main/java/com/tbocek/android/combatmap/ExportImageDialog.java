@@ -38,7 +38,6 @@ import java.util.List;
 public class ExportImageDialog extends Dialog {
 
     private static final int WHOLE_IMAGE_MARGIN_PX = 30;
-    private static final String TAG = "ExportImageDialog";
 
     private static final int MAX_IMAGE_WIDTH = 2048;
     private static final int MAX_IMAGE_HEIGHT = 2048;
@@ -233,21 +232,25 @@ public class ExportImageDialog extends Dialog {
                             .drawAnnotations(annotations)
                             .gmNotesFogOfWar(FogOfWarMode.NOTHING)
                             .backgroundFogOfWar(
-                                    fogOfWar ? FogOfWarMode.CLIP
-                                            : FogOfWarMode.NOTHING
-                            )
+                                    fogOfWar ? FogOfWarMode.CLIP : FogOfWarMode.NOTHING)
                             .useCustomWorldSpaceTransformer(transformer)
                             .draw(canvas, data, canvas.getClipBounds());
 
-                    String exportName = this.mEditExportName.getText().toString();
+                    String thisExportName = exportName;
                     if (transformers.size() > 1) {
-                        exportName += "_" + Integer.toString(i);
+                        thisExportName += "_" + Integer.toString(i);
                     }
 
-                    new DataManager(this.getContext()).exportImage(
-                            exportName, bitmap, Bitmap.CompressFormat.PNG);
+                    try {
+                        new DataManager(context).exportImage(
+                                thisExportName, bitmap, Bitmap.CompressFormat.PNG);
+                    } catch (IOException e) {
+                        Log.d(TAG, "Export image failed", e);
+                        return false;
+                    }
                     i++;
                 }
+                return true;
             }
 
             protected void onPostExecute(Boolean result) {
