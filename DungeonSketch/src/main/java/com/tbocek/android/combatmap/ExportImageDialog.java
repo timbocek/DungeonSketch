@@ -23,9 +23,11 @@ import android.widget.Toast;
 import com.tbocek.android.combatmap.model.MapData;
 import com.tbocek.android.combatmap.model.MapDrawer;
 import com.tbocek.android.combatmap.model.MapDrawer.FogOfWarMode;
+import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.dungeonsketch.R;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Provides a dialog for the user to export an image.
@@ -38,6 +40,10 @@ public class ExportImageDialog extends Dialog {
     private static final int WHOLE_IMAGE_MARGIN_PX = 30;
     private static final String TAG = "ExportImageDialog";
 
+    private static final int MAX_IMAGE_WIDTH = 2048;
+    private static final int MAX_IMAGE_HEIGHT = 2048;
+    private static final String TAG = "ExportImageDialog";
+
     CheckBox mCheckAnnotations;
     CheckBox mCheckFogOfWar;
     CheckBox mCheckGmNotes;
@@ -48,6 +54,8 @@ public class ExportImageDialog extends Dialog {
     Button mExportButton;
     private TextView mExportSizeText;
     private int mExportHeight;
+    private TextView mExportRowsText;
+    private TextView mExportColsText;
 
     private int mExportWidth;
     RadioButton mRadioExportCurrentView;
@@ -84,6 +92,11 @@ public class ExportImageDialog extends Dialog {
 
         this.mExportSizeText =
                 (TextView) this.findViewById(R.id.text_export_size);
+
+        this.mExportRowsText =
+                (TextView) this.findViewById(R.id.text_export_rows_advisory);
+        this.mExportColsText =
+                (TextView) this.findViewById(R.id.text_export_cols_advisory);
 
         this.associateControl(this.mRadioExportFullMap, "export_full_map", true);
         this.associateControl(this.mRadioExportCurrentView,
@@ -170,6 +183,10 @@ public class ExportImageDialog extends Dialog {
      * @throws IOException if the export failed.
      */
     private void export() throws IOException {
+        Point exportSize = getExportedImageSize(mRadioExportFullMap.isChecked());
+        int width = exportSize.x;
+        int height = exportSize.y;
+        RectF wholeMapRect = this.mData.getScreenSpaceBoundingRect(WHOLE_IMAGE_MARGIN_PX);
 
         final boolean exportCurrentView = mRadioExportCurrentView.isChecked();
         final boolean gridLines = mCheckGridLines.isChecked();
@@ -180,6 +197,7 @@ public class ExportImageDialog extends Dialog {
         final Context context = getContext().getApplicationContext();
         final String exportName = this.mEditExportName.getText().toString();
         final MapData data = MapData.getCopy();
+        final Point numExportedImages = this.getNumExportImages();
 
         Toast.makeText(context, "Exporting image", Toast.LENGTH_LONG).show();
         AsyncTask<Void, Void, Boolean> exportImageTask = new AsyncTask<Void, Void, Boolean>() {
@@ -194,30 +212,41 @@ public class ExportImageDialog extends Dialog {
                 Bitmap bitmap =
                         Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(bitmap);
+                List<CoordinateTransformer> transformers = data.getWorldSpaceTransformer().splitMap(
+                        width, height, numExportedImages.x, numExportedImages.y);
+
 
                 if (exportCurrentView) {
                     data.getWorldSpaceTransformer().moveOrigin(
                             -wholeMapRect.left, -wholeMapRect.top);
                 }
 
-                new MapDrawer()
-                        .drawGridLines(gridLines)
-                        .drawGmNotes(gmNotes)
-                        .drawTokens(tokens)
-                        .areTokensManipulable(true)
-                        .drawAnnotations(annotations)
-                        .gmNotesFogOfWar(FogOfWarMode.NOTHING)
-                        .backgroundFogOfWar(
-                                fogOfWar ? FogOfWarMode.CLIP : FogOfWarMode.NOTHING)
-                        .draw(canvas, data, canvas.getClipBounds());
+                int i = 1;
+                for (CoordinateTransformer transformer : transformers) {
+                    Log.d(TAG, "Writing image with origin = " + Float.toString(transformer.getOrigin().x) +
+                            ", " + Float.toString(transformer.getOrigin().y));
+                    new MapDrawer()
+                            .drawGridLines(gridLines)
+                            .drawGmNotes(gmNotes)
+                            .drawTokens(tokens)
+                            .areTokensManipulable(true)
+                            .drawAnnotations(annotations)
+                            .gmNotesFogOfWar(FogOfWarMode.NOTHING)
+                            .backgroundFogOfWar(
+                                    fogOfWar ? FogOfWarMode.CLIP
+                                            : FogOfWarMode.NOTHING
+                            )
+                            .useCustomWorldSpaceTransformer(transformer)
+                            .draw(canvas, data, canvas.getClipBounds());
 
-                try {
-                    new DataManager(context).exportImage(
+                    String exportName = this.mEditExportName.getText().toString();
+                    if (transformers.size() > 1) {
+                        exportName += "_" + Integer.toString(i);
+                    }
+
+                    new DataManager(this.getContext()).exportImage(
                             exportName, bitmap, Bitmap.CompressFormat.PNG);
-                    return true;
-                } catch (IOException e) {
-                    Log.e(TAG, "Export image failed", e);
-                    return false;
+                    i++;
                 }
             }
 
@@ -272,5 +301,24 @@ public class ExportImageDialog extends Dialog {
         public void run() {
 
         }
+    }
+
+    private Point getNumExportImages() {
+        Point exportSize = getExportedImageSize(mRadioExportFullMap.isChecked());
+
+        return new Point(
+                this.roundUp(((float) exportSize.x) / MAX_IMAGE_WIDTH),
+                this.roundUp(((float) exportSize.y) / MAX_IMAGE_HEIGHT));
+    }
+
+    /**
+     * Rounds up to the nearest integer.
+     * @param x Value to round.
+     * @return The smallest integer greater than X.
+     */
+    private int roundUp(float x) {
+        // Math.ceil returns a float; add 0.5 before truncating to an int in case the float is
+        // equal to something like 1.999999999999998
+        return (int)(Math.ceil(x) + 0.5);
     }
 }
