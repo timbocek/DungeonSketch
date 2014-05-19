@@ -99,10 +99,10 @@ public class BackgroundImageInteractionMode extends BaseDrawInteractionMode {
      * Helper function to draw a segment of the selection border. Accounts for
      * the presence of a circle handle and doesn't overlap it.
      * 
-     * @param c
-     * @param p1
-     * @param p2
-     * @param p
+     * @param c Canvas to draw on.
+     * @param p1 First point of the line segment.
+     * @param p2 Second point on the line segment.
+     * @param p Paint object to draw with.
      */
     private void drawBorderSegment(Canvas c, PointF p1, PointF p2, Paint p) {
         float horizontalClip =
@@ -376,8 +376,8 @@ public class BackgroundImageInteractionMode extends BaseDrawInteractionMode {
          * the image rather than an edge, the upper left point is returned since
          * that is what will snap to the grid.
          * 
-         * @param p
-         * @return
+         * @param p Point that was clicked on.
+         * @return Adjusted point corresponding to the correct handle, if a handle was clicked.
          */
         public PointF getClickedHandleCenter(PointF p) {
             int r = BackgroundImageInteractionMode.this.handleCircleRadiusPx();
