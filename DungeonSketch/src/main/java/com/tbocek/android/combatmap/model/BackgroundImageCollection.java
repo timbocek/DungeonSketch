@@ -3,8 +3,10 @@ package com.tbocek.android.combatmap.model;
 import java.io.IOException;
 import java.util.List;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.os.AsyncTask;
 
 import com.google.common.collect.Lists;
 import com.tbocek.android.combatmap.model.CommandHistory.Command;
@@ -54,17 +56,16 @@ public class BackgroundImageCollection {
      * @param path Path to the image to add.
      * @param initialLocation Location of the background image.
      */
-    public void addImage(String path, PointF initialLocation) {
+    public BackgroundImage addImage(String path, PointF initialLocation) {
         // TODO: Enable undo/redo.
         BackgroundImage image = new BackgroundImage(path, initialLocation);
         Command c = new NewImageCommand(image);
         this.mCommandHistory.execute(c);
+        return image;
     }
 
+
     /**
-     * Draws the image on the given canvas.
-     * 
-     * 
      * Because of the way image drawing works, we need to be able to make the
      * assumption that the canvas is *untransformed*. But, we still want to
      * respect the fog of war. So, we let the calling code assume that the
@@ -311,4 +312,41 @@ public class BackgroundImageCollection {
         return this.mImages.contains(selectedImage);
     }
 
+    /**
+     * Loads all background images in a new thread.  Executes onLoadSuccess when all background
+     * images have been loaded.
+     * @param context Context to load images in.
+     * @param onLoadSuccess Callback that will be executed on the UI thread once all images load.
+     */
+    private void loadImages(final Context context, final List<BackgroundImage> images,
+                            final Runnable onLoadSuccess) {
+
+        final List<BackgroundImage> image = mImages;
+        AsyncTask<Void, Void, Void> loadImagesTask = new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                for (BackgroundImage i: mImages) {
+                    i.loadDrawable();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                onLoadSuccess.run();
+            }
+        };
+        loadImagesTask.execute();
+    }
+
+    public void loadImages(final Context context, final Runnable onLoadSuccess) {
+        loadImages(context, this.mImages, onLoadSuccess);
+    }
+
+    public void loadImage(final Context context, final BackgroundImage image,
+                          final Runnable onLoadSuccess) {
+        List<BackgroundImage> stupidList = Lists.newArrayList(image);
+        loadImages(context, stupidList, onLoadSuccess);
+    }
 }

@@ -242,6 +242,7 @@ public class ExportImageDialog extends Dialog {
                     }
 
                     try {
+                        Log.d(TAG, "Exporting to " + thisExportName);
                         new DataManager(context).exportImage(
                                 thisExportName, bitmap, Bitmap.CompressFormat.PNG);
                     } catch (IOException e) {

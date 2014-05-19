@@ -509,8 +509,14 @@ public final class CombatMap extends ActionBarActivity {
 				DataManager dm = new DataManager(this.getApplicationContext());
 				try {
 					String newFileName = dm.copyToMapDataFiles(selectedImage);
-					mData.getBackgroundImages().addImage(newFileName,
+					BackgroundImage image = mData.getBackgroundImages().addImage(newFileName,
 							this.mNewObjectLocationWorldSpace);
+                    mData.getBackgroundImages().loadImage(this, image, new Runnable() {
+                        @Override
+                        public void run() {
+                            mCombatView.refreshMap();
+                        }
+                    });
 					this.mCombatView.refreshMap();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -558,6 +564,12 @@ public final class CombatMap extends ActionBarActivity {
 		} else {
 			this.loadMap(DataManager.TEMP_MAP_NAME);
 		}
+        mData.getBackgroundImages().loadImages(this, new Runnable() {
+            @Override
+            public void run() {
+                mCombatView.refreshMap();
+            }
+        });
 		this.setUndoRedoEnabled();
 
 	}

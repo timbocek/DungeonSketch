@@ -80,7 +80,7 @@ public class BackgroundImage implements Cloneable{
         loadDrawable();
     }
 
-    private void loadDrawable() {
+    public void loadDrawable() {
         // Don't go any further if we've already tried and failed.
         if (mTriedToLoadDrawable) {
             return;
@@ -122,11 +122,7 @@ public class BackgroundImage implements Cloneable{
      */
     public void draw(Canvas c, CoordinateTransformer transformer) {
         if (this.mDrawable == null) {
-            // TODO: GET THIS OFF THE UI THREAD!!!!
-            loadDrawable();
-            if (this.mDrawable == null) {
-                return;
-            }
+            return;
         }
 
         // Convert bounding rectangle bounds to screen space.
