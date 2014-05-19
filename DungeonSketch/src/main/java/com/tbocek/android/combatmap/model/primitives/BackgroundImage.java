@@ -75,9 +75,6 @@ public class BackgroundImage implements Cloneable{
     public BackgroundImage(String path, PointF originWorldSpace) {
         this.mPath = path;
         this.mOriginWorldSpace = originWorldSpace;
-
-        // TODO: BAD!!! VERY BAD!!! GET THIS OFF THE UI THREAD!!!!
-        loadDrawable();
     }
 
     public void loadDrawable() {
