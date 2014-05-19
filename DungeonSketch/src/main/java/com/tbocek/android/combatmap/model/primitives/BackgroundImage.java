@@ -91,7 +91,7 @@ public class BackgroundImage implements Cloneable{
         Bitmap b;
         try {
             b = dataManager.loadMapDataImage(this.mPath);
-            this.mDrawable = new BitmapDrawable(b);
+            this.mDrawable = new BitmapDrawable(dataManager.getContext().getResources(), b);
             // If no width and height yet, set height = 1, width according to
             // aspect ratio of the original image.
             if (this.mWidthWorldSpace < Util.FP_COMPARE_ERROR

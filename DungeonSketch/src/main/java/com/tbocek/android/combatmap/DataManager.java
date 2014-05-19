@@ -553,4 +553,8 @@ public final class DataManager {
         }
         return 1;
     }
+
+    public Context getContext() {
+        return mContext;
+    }
 }
