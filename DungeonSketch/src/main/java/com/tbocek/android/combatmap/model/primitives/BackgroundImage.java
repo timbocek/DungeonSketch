@@ -133,10 +133,10 @@ public class BackgroundImage implements Cloneable{
                 transformer.worldSpaceToScreenSpace(new PointF(
                         this.mOriginWorldSpace.x + this.mWidthWorldSpace,
                         this.mOriginWorldSpace.y + this.mHeightWorldSpace));
-        int left = (int) upperLeft.x;
-        int right = (int) lowerRight.x;
-        int top = (int) upperLeft.y;
-        int bottom = (int) lowerRight.y;
+        int left = (int) Math.min(upperLeft.x, lowerRight.x);
+        int right = (int) Math.max(upperLeft.x, lowerRight.x);
+        int top = (int) Math.min(upperLeft.y, lowerRight.y);
+        int bottom = (int) Math.max(upperLeft.y, lowerRight.y);
 
         this.mDrawable.setBounds(left, top, right, bottom);
 
