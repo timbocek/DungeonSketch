@@ -39,7 +39,7 @@ public class BackgroundImage implements Cloneable{
     /**
      * Path that this image should load from.
      */
-    private String mPath;
+    private final String mPath;
 
     /**
      * Drawable containing the background image.
@@ -179,20 +179,12 @@ public class BackgroundImage implements Cloneable{
         this.mHeightWorldSpace -= delta;
     }
 
-    public void setLocation(PointF location) {
-        this.mOriginWorldSpace = location;
-    }
-
     public boolean shouldMaintainAspectRatio() {
         return this.mKeepAspectRatio;
     }
 
     public void setShouldMaintainAspectRatio(boolean keepAspectRatio) {
         this.mKeepAspectRatio = keepAspectRatio;
-    }
-
-    public float getAspectRatio() {
-        return this.mWidthWorldSpace / this.mHeightWorldSpace;
     }
 
     /**
