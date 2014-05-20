@@ -53,8 +53,6 @@ public class ExportImageDialog extends Dialog {
     Button mExportButton;
     private TextView mExportSizeText;
     private int mExportHeight;
-    private TextView mExportRowsText;
-    private TextView mExportColsText;
 
     private int mExportWidth;
     RadioButton mRadioExportCurrentView;
@@ -91,11 +89,6 @@ public class ExportImageDialog extends Dialog {
 
         this.mExportSizeText =
                 (TextView) this.findViewById(R.id.text_export_size);
-
-        this.mExportRowsText =
-                (TextView) this.findViewById(R.id.text_export_rows_advisory);
-        this.mExportColsText =
-                (TextView) this.findViewById(R.id.text_export_cols_advisory);
 
         this.associateControl(this.mRadioExportFullMap, "export_full_map", true);
         this.associateControl(this.mRadioExportCurrentView,
@@ -182,11 +175,6 @@ public class ExportImageDialog extends Dialog {
      * @throws IOException if the export failed.
      */
     private void export() throws IOException {
-        Point exportSize = getExportedImageSize(mRadioExportFullMap.isChecked());
-        int width = exportSize.x;
-        int height = exportSize.y;
-        RectF wholeMapRect = this.mData.getScreenSpaceBoundingRect(WHOLE_IMAGE_MARGIN_PX);
-
         final boolean exportCurrentView = mRadioExportCurrentView.isChecked();
         final boolean gridLines = mCheckGridLines.isChecked();
         final boolean gmNotes = mCheckGmNotes.isChecked();
@@ -198,7 +186,9 @@ public class ExportImageDialog extends Dialog {
         final MapData data = MapData.getCopy();
         final Point numExportedImages = this.getNumExportImages();
 
-        Toast.makeText(context, "Exporting image", Toast.LENGTH_LONG).show();
+        if (context != null) {
+            Toast.makeText(context, "Exporting image", Toast.LENGTH_LONG).show();
+        }
         AsyncTask<Void, Void, Boolean> exportImageTask = new AsyncTask<Void, Void, Boolean>() {
 
             @Override
@@ -255,10 +245,12 @@ public class ExportImageDialog extends Dialog {
             }
 
             protected void onPostExecute(Boolean result) {
-                Toast.makeText(
-                        context,
-                        result.booleanValue() ? "Export image successful" : "Export image failed",
-                        Toast.LENGTH_LONG).show();
+                if (context != null) {
+                    Toast.makeText(
+                            context,
+                            result ? "Export image successful" : "Export image failed",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         };
         exportImageTask.execute();
@@ -291,19 +283,6 @@ public class ExportImageDialog extends Dialog {
             Editor editor = sharedPreferences.edit();
             editor.putBoolean(this.mPreference, isChecked);
             editor.commit();
-        }
-    }
-
-    private static class ToastRunnable implements Runnable {
-        private String mMessage;
-
-        public ToastRunnable(String message) {
-            mMessage = message;
-        }
-
-        @Override
-        public void run() {
-
         }
     }
 

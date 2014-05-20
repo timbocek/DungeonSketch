@@ -82,13 +82,13 @@ public class TagNavigator extends ScrollView {
 	private int mTextSize;
 	private boolean mAllowContextMenu;
 
-
-
-	public TagNavigator(Context context, AttributeSet attrs, int defStyle) {
+	@SuppressWarnings("UnusedDeclaration")
+    public TagNavigator(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		constructorImpl(context);
 	}
-	
+
+    @SuppressWarnings("UnusedDeclaration")
 	public TagNavigator(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		constructorImpl(context);
@@ -344,7 +344,8 @@ public class TagNavigator extends ScrollView {
             	}
             	
             	try {
-            		((TextView)v).setTextColor(TagTreeLineItem.COLOR_DRAG_TARGET);
+                    TextView tv = (TextView) v;
+            		tv.setTextColor(TagTreeLineItem.COLOR_DRAG_TARGET);
             	} catch (Exception e) {
             		// Ignore - bad cast expected here
             	}
@@ -406,7 +407,7 @@ public class TagNavigator extends ScrollView {
 	}
 
 	public boolean isViewAChild(View v) {
-		return (v == this.mCurrentTag) || this.mTagItems.contains((TagTreeLineItem)v);
+		return (v == this.mCurrentTag) || this.mTagItems.contains(v);
 	}
 
 	public void selectRoot() {

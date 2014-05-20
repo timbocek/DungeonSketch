@@ -65,6 +65,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import static android.support.v7.view.ActionMode.Callback;
 import static com.tbocek.android.combatmap.view.DrawOptionsView.OnChangeDrawToolListener;
 
@@ -486,10 +488,12 @@ public final class CombatMap extends ActionBarActivity {
 			new DataManager(this.getApplicationContext()).loadMapName(name);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Toast toast = Toast.makeText(this.getApplicationContext(),
-					"Could not load file.  Reason: " + e.toString(),
-					Toast.LENGTH_LONG);
-			toast.show();
+            if (this.getApplicationContext() != null) {
+                Toast toast = Toast.makeText(this.getApplicationContext(),
+                        "Could not load file.  Reason: " + e.toString(),
+                        Toast.LENGTH_LONG);
+                toast.show();
+            }
 
 			MapData.clear();
 			this.setFilenamePreference(null);
@@ -579,6 +583,8 @@ public final class CombatMap extends ActionBarActivity {
 		DeveloperMode.strictMode();
 		// android.os.Debug.startMethodTracing("main_activity_load");
 		super.onCreate(savedInstanceState);
+
+        if (this.getApplicationContext() == null) return;
 
 		this.mSharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(this.getApplicationContext());
@@ -854,8 +860,6 @@ public final class CombatMap extends ActionBarActivity {
                                             .editInfo(
                                                     (Information) CombatMap.this.mEditedTextObject,
                                                     text,
-                                                    CombatMap.this.mCombatView
-                                                            .getWorldSpaceTransformer(),
                                                     iconId
                                             );
                                     CombatMap.this.mCombatView.refreshMap();
@@ -1038,7 +1042,7 @@ public final class CombatMap extends ActionBarActivity {
     }
 
 	@Override
-	protected void onPrepareDialog(final int id, final Dialog dialog) {
+	protected void onPrepareDialog(final int id, @Nonnull final Dialog dialog) {
 		switch (id) {
 		case DIALOG_ID_SAVE:
 			// Attempt to load map data. If we can't load map data, create a
@@ -1393,7 +1397,7 @@ public final class CombatMap extends ActionBarActivity {
 		public void selectionChanged() {
 			Collection<BaseToken> selected = CombatMap.this.mCombatView
 					.getMultiSelect().getSelectedTokens();
-			BaseToken[] selectedArr = selected.toArray(new BaseToken[0]);
+			BaseToken[] selectedArr = selected.toArray(new BaseToken[selected.size()]);
 			int numTokens = selected.size();
 			if (CombatMap.this.mActionMode != null && selected.size() > 0) {
 				Menu m = CombatMap.this.mActionMode.getMenu();

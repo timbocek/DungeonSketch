@@ -2,7 +2,6 @@ package com.tbocek.android.combatmap.model;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Region.Op;
 import android.util.Log;
 
@@ -82,7 +81,7 @@ public final class LineCollection implements UndoRedoTarget {
 
         for (Shape s: copyFrom.mLines) {
             try {
-                Shape copy = (Shape) s.clone();
+                Shape copy = s.clone();
                 mLines.add(copy);
                 if (aboveGridLineSet.contains(s)) {
                     mAboveGridLines.add(copy);
@@ -115,12 +114,10 @@ public final class LineCollection implements UndoRedoTarget {
 
     /**
      * Draws all lines on the given canvas.
-     * 
-     * @param canvas The canvas to draw on.
-     * @param worldSpaceBounds The area in world space that needs to be redrawn (used for clip
-     *     detection).
+     *  @param canvas The canvas to draw on.
+     *
      */
-    public void clipFogOfWar(final Canvas canvas, RectF worldSpaceBounds) {
+    public void clipFogOfWar(final Canvas canvas) {
         Rect r = canvas.getClipBounds();
 
         // Remove the current clip.
@@ -285,13 +282,11 @@ public final class LineCollection implements UndoRedoTarget {
 
     /**
      * Draws all lines on the given canvas.
-     * 
-     * @param canvas
+     *  @param canvas
      *            The canvas to draw on.
-     * @param worldSpaceBounds The area in world space that needs to be redrawn (used for clip
-     *     detection).
+     *
      */
-    public void drawAllLines(final Canvas canvas, RectF worldSpaceBounds) {
+    public void drawAllLines(final Canvas canvas) {
         for (Shape shape: mLines) {
             shape.applyDrawOffsetToCanvas(canvas);
             shape.draw(canvas);
@@ -301,13 +296,11 @@ public final class LineCollection implements UndoRedoTarget {
 
     /**
      * Draws all lines on the given canvas that should be drawn above the grid.
-     * 
-     * @param canvas
+     *  @param canvas
      *            The canvas to draw on.
-     * @param worldSpaceBounds The area in world space that needs to be redrawn (used for clip
-     *     detection).
+     *
      */
-    public void drawAllLinesAboveGrid(final Canvas canvas, RectF worldSpaceBounds) {
+    public void drawAllLinesAboveGrid(final Canvas canvas) {
         for (Shape shape: mAboveGridLines) {
             shape.applyDrawOffsetToCanvas(canvas);
             shape.draw(canvas);
@@ -317,13 +310,11 @@ public final class LineCollection implements UndoRedoTarget {
 
     /**
      * Draws all lines on the given canvas that should be drawn below the grid.
-     * 
-     * @param canvas
+     *  @param canvas
      *            The canvas to draw on.
-     * @param worldSpaceBounds The area in world space that needs to be redrawn (used for clip
-     *     detection).
+     *
      */
-    public void drawAllLinesBelowGrid(final Canvas canvas, RectF worldSpaceBounds) {
+    public void drawAllLinesBelowGrid(final Canvas canvas) {
         for (Shape shape: mBelowGridLines) {
             shape.applyDrawOffsetToCanvas(canvas);
             shape.draw(canvas);
@@ -333,13 +324,11 @@ public final class LineCollection implements UndoRedoTarget {
 
     /**
      * Draws all lines on the given canvas.
-     * 
-     * @param canvas
+     *  @param canvas
      *            The canvas to draw on.
-     * @param worldSpaceBounds The area in world space that needs to be redrawn (used for clip
-     *     detection).
+     *
      */
-    public void drawFogOfWar(final Canvas canvas, RectF worldSpaceBounds) {
+    public void drawFogOfWar(final Canvas canvas) {
         for (Shape shape: mLines) {
         	shape.drawFogOfWar(canvas);
         }
@@ -369,11 +358,9 @@ public final class LineCollection implements UndoRedoTarget {
      * Modifies the given text object's contents and font.
      * @param editedTextObject Text object to modify.
      * @param text The new text.
-     * @param transformer The world space transformer to use (needed because this draw operation
-     *     needs to work in screen space).
+     * @param iconId The new icon to use in this info point.
      */
-    public void editInfo(Information editedTextObject, String text,
-                         CoordinateTransformer transformer, int iconId) {
+    public void editInfo(Information editedTextObject, String text, int iconId) {
         Information newInfo =
                 new Information(editedTextObject.getLocation(), text);
         newInfo.setIcon(iconId);

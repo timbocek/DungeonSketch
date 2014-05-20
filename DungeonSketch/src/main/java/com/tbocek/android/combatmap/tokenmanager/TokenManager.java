@@ -58,17 +58,6 @@ import java.util.Set;
  * 
  */
 public final class TokenManager extends ActionBarActivity {
-
-    /**
-     * The minimum number of tokens to display in the grid across the smallest
-     * screen dimension.
-     */
-    private static final int MINIMUM_TOKENS_SHOWN = 3;
-
-    /**
-     * The width and height of each token button.
-     */
-    private static final int TOKEN_BUTTON_SIZE = 150;
     private static final int EDITED_TAG_NAME = 0;
     private static final String TAG = "TokenManager";
 
@@ -139,13 +128,9 @@ public final class TokenManager extends ActionBarActivity {
      */
     private TokenDeleteButton mTrashButton;
 
-    private String tagFromActionBar = null;
-
 	private MenuItem mTagActiveMenuItem;
 
 	private DrawerLayout drawer;
-
-	private Adapter adapter;
 
 	private FrameLayout drawerList;
 
@@ -169,13 +154,16 @@ public final class TokenManager extends ActionBarActivity {
             try {
                 token.maybeDeletePermanently();
             } catch (IOException e) {
-                Toast toast =
-                        Toast.makeText(
-                                this.getApplicationContext(),
-                                "Did not delete the token, probably because "
-                                        + "the external storage isn't writable."
-                                        + e.toString(), Toast.LENGTH_LONG);
-                toast.show();
+                if (this.getApplicationContext() != null) {
+                    Toast toast =
+                            Toast.makeText(
+                                    this.getApplicationContext(),
+                                    "Did not delete the token, probably because "
+                                            + "the external storage isn't writable."
+                                            + e.toString(), Toast.LENGTH_LONG
+                            );
+                    toast.show();
+                }
             }
         }
         this.setScrollViewTag(this.mTagNavigator.getCurrentTag());
@@ -358,7 +346,7 @@ public final class TokenManager extends ActionBarActivity {
                 public boolean onDrag(View v, DragEvent event) {
                     if (event.getAction() == DragEvent.ACTION_DROP) {
                         TagTreeNode tag = mTagNavigator.getCurrentTagNode();
-                        Collection<BaseToken> tokens =
+                        @SuppressWarnings("unchecked") Collection<BaseToken> tokens =
                                 (Collection<BaseToken>) event.getLocalState();
 
                         // TODO: De-dupe this with the drag handler above.
