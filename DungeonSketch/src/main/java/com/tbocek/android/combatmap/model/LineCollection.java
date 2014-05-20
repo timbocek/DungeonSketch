@@ -116,9 +116,9 @@ public final class LineCollection implements UndoRedoTarget {
     /**
      * Draws all lines on the given canvas.
      * 
-     * @param canvas
-     *            The canvas to draw on.
-     * @param worldSpaceBounds 
+     * @param canvas The canvas to draw on.
+     * @param worldSpaceBounds The area in world space that needs to be redrawn (used for clip
+     *     detection).
      */
     public void clipFogOfWar(final Canvas canvas, RectF worldSpaceBounds) {
         Rect r = canvas.getClipBounds();
@@ -288,7 +288,8 @@ public final class LineCollection implements UndoRedoTarget {
      * 
      * @param canvas
      *            The canvas to draw on.
-     * @param worldSpaceBounds 
+     * @param worldSpaceBounds The area in world space that needs to be redrawn (used for clip
+     *     detection).
      */
     public void drawAllLines(final Canvas canvas, RectF worldSpaceBounds) {
         for (Shape shape: mLines) {
@@ -303,7 +304,8 @@ public final class LineCollection implements UndoRedoTarget {
      * 
      * @param canvas
      *            The canvas to draw on.
-     * @param worldSpaceBounds 
+     * @param worldSpaceBounds The area in world space that needs to be redrawn (used for clip
+     *     detection).
      */
     public void drawAllLinesAboveGrid(final Canvas canvas, RectF worldSpaceBounds) {
         for (Shape shape: mAboveGridLines) {
@@ -318,7 +320,8 @@ public final class LineCollection implements UndoRedoTarget {
      * 
      * @param canvas
      *            The canvas to draw on.
-     * @param worldSpaceBounds 
+     * @param worldSpaceBounds The area in world space that needs to be redrawn (used for clip
+     *     detection).
      */
     public void drawAllLinesBelowGrid(final Canvas canvas, RectF worldSpaceBounds) {
         for (Shape shape: mBelowGridLines) {
@@ -333,7 +336,8 @@ public final class LineCollection implements UndoRedoTarget {
      * 
      * @param canvas
      *            The canvas to draw on.
-     * @param worldSpaceBounds 
+     * @param worldSpaceBounds The area in world space that needs to be redrawn (used for clip
+     *     detection).
      */
     public void drawFogOfWar(final Canvas canvas, RectF worldSpaceBounds) {
         for (Shape shape: mLines) {
@@ -343,13 +347,11 @@ public final class LineCollection implements UndoRedoTarget {
 
     /**
      * Modifies the given text object's contents and font.
-     *  @param editedTextObject
-     *            Text object to modify.
-     * @param text
-     *            The new text.
-     * @param size
-     *            The new font size.
-     * @param transformer
+     * @param editedTextObject Text object to modify.
+     * @param text The new text.
+     * @param size The new font size.
+     * @param transformer The world space transformer to use (needed because this draw operation
+     *     needs to work in screen space).
      */
     public void editText(OnScreenText editedTextObject, String text, float size,
                          CoordinateTransformer transformer) {
@@ -365,11 +367,10 @@ public final class LineCollection implements UndoRedoTarget {
 
     /**
      * Modifies the given text object's contents and font.
-     * @param editedTextObject
-     *            Text object to modify.
-     * @param text
-     *            The new text.
-     * @param transformer
+     * @param editedTextObject Text object to modify.
+     * @param text The new text.
+     * @param transformer The world space transformer to use (needed because this draw operation
+     *     needs to work in screen space).
      */
     public void editInfo(Information editedTextObject, String text,
                          CoordinateTransformer transformer, int iconId) {

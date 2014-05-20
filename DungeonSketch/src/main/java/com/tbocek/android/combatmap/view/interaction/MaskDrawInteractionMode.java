@@ -15,9 +15,7 @@ public final class MaskDrawInteractionMode extends FingerDrawInteractionMode {
     /**
      * Constructor.
      * 
-     * @param view
-     *            The view that this interaction mode modifies.
-     * @param visibleByDefault
+     * @param view The view that this interaction mode modifies.
      */
     public MaskDrawInteractionMode(CombatView view) {
         super(view);

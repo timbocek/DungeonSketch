@@ -450,8 +450,7 @@ public final class MapData {
     }
 
     /**
-     * Gets the set of tokens currently visible on the screen.
-     * @return
+     * @return The set of tokens currently visible on the screen.
      */
     public Set<String> getVisibleTokenIds(int screenWidth, int screenHeight) {
         CoordinateTransformer trans = getGrid().gridSpaceToScreenSpaceTransformer(getWorldSpaceTransformer());

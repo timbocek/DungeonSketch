@@ -1,8 +1,5 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.io.IOException;
-import java.util.List;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +8,9 @@ import android.graphics.Region.Op;
 
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Abstract base class representing a shape.
@@ -421,7 +421,8 @@ public abstract class Shape implements Cloneable {
             throws IOException;
 
     /**
-     * @return
+     * @return Whether this shape should be drawn below or above the grid.  By default, thin lines
+     *     draw above, thick lines and filled shapes draw below.
      */
     public boolean shouldDrawBelowGrid() {
         return this.getWidth() > 1.0f;

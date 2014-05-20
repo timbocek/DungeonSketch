@@ -136,7 +136,7 @@ public class TokenImageManager {
         /**
          * If the given token is queued for load, cancels the load.  Otherwise, assumes that
          * the token is already loaded and discards it.
-         * @param tokenId
+         * @param tokenId ID of the token to discard or dequeue.
          */
         public void discardOrCancelTokenLoad(String tokenId) {
             TokenImageManager mgr = TokenImageManager.getInstance();

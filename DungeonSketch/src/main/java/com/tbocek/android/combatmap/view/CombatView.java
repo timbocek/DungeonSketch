@@ -448,7 +448,7 @@ public final class CombatView extends SurfaceView {
     
     /**
      * Draws any overlay/UI elements that are not part of the map.
-     * @param canvas
+     * @param canvas Canvas to draw elements on.
      */
     private void drawOverlays(Canvas canvas) {
         if (this.mEditingMask) {
@@ -1142,7 +1142,7 @@ public final class CombatView extends SurfaceView {
 
         /**
          * Called when a new information location is requested.
-         * @param locationWorldSpace
+         * @param locationWorldSpace Location in world space to place the new info point at.
          */
         void requestNewInfoEntry(PointF locationWorldSpace);
 

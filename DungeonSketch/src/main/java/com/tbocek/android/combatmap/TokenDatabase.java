@@ -142,7 +142,7 @@ public final class TokenDatabase {
 		 * another non-system tag.
 		 * Tokens from system tags will only appear if they have not been explicitly
 		 * disabled.
-		 * @return
+		 * @return A set of all TokenIDs in this subtree of tags.
 		 */
 		public Set<String> getAllTokens() {
 			if (!this.isActive) {

@@ -1,13 +1,13 @@
 package com.tbocek.android.combatmap.model;
 
-import java.io.IOException;
-
 import android.graphics.Canvas;
 
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.PointF;
+
+import java.io.IOException;
 
 /**
  * Abstract class for the grid lines that are drawn on the main combat canvas.
@@ -140,7 +140,6 @@ public class Grid {
 
     /**
      * @return The color to use when drawing the background.
-     * @return
      */
     protected final int getBackgroundColor() {
         return this.mColorScheme.getBackgroundColor();

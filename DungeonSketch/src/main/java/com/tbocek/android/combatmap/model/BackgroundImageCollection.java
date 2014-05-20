@@ -1,8 +1,5 @@
 package com.tbocek.android.combatmap.model;
 
-import java.io.IOException;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.RectF;
@@ -15,6 +12,9 @@ import com.tbocek.android.combatmap.model.io.MapDataSerializer;
 import com.tbocek.android.combatmap.model.primitives.BackgroundImage;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.PointF;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * This class manages a collection of background images (e.g. predrawn maps that
@@ -72,7 +72,8 @@ public class BackgroundImageCollection {
      * canvas is transformed, and undo the transformation here.
      * @param canvas The canvas to draw on.
      * @param transformer Transformation from screen space to world space.
-     * @param worldSpaceBounds 
+     * @param worldSpaceBounds The area in world space that needs to be redrawn (used for clip
+     *     detection).
      */
     public void draw(Canvas canvas, CoordinateTransformer transformer, RectF worldSpaceBounds) {
         canvas.save();

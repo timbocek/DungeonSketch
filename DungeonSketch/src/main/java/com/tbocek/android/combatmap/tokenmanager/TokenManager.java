@@ -182,12 +182,15 @@ public final class TokenManager extends ActionBarActivity {
     }
 
     /**
-     * @return
+     * @return The name of the tag currently selected in the tag navigator.
      */
     private String getActiveTag() {
     	return this.mTagNavigator.getCurrentTag();
     }
-    
+
+    /**
+     * @return The full path of the tag currently selected in the token manager.
+     */
     private String getActiveTagPath() {
         return this.mTagNavigator.getCurrentTagPath();
     }

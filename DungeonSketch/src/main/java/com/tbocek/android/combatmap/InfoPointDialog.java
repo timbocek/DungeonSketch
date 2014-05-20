@@ -93,7 +93,7 @@ public class InfoPointDialog extends Dialog {
      *
      * @param text
      *            The current text of the object being edited.W
-     * @param icon
+     * @param icon The icon currently used for this info point.
      */
     public void populateFields(String text, int icon) {
 
@@ -111,9 +111,8 @@ public class InfoPointDialog extends Dialog {
     public interface OnTextConfirmedListener {
         /**
          * Called when the user confirms the text entered.
-         * @param text
-         *            The text entered by the user.
-         * @param iconId
+         * @param text The text entered by the user.
+         * @param iconId The new icon selected for this info point.
          *
          */
         void onTextConfirmed(String text, int iconId);
