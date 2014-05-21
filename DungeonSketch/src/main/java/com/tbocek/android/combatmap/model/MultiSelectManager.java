@@ -2,7 +2,6 @@ package com.tbocek.android.combatmap.model;
 
 import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
-import com.tbocek.android.combatmap.model.primitives.BoundingRectangle;
 
 import java.util.Collection;
 import java.util.Set;
@@ -132,13 +131,5 @@ public final class MultiSelectManager {
 
 	public boolean isActive() {
 		return this.getSelectedTokens().size() != 0;
-	}
-
-	public BoundingRectangle getSelectionBoundingRect() {
-		BoundingRectangle rect = new BoundingRectangle();
-		for (BaseToken t: this.mSelection){
-			rect.updateBounds(t.getBoundingRectangle());
-		}
-		return rect;
 	}
 }

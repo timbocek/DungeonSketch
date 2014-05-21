@@ -106,13 +106,6 @@ public final class MapData {
      * The grid to draw.
      */
     private Grid mGrid = new Grid();
-
-    /**
-     * Whether map attributes such as color scheme and grid type should be
-     * updated in response to loading preferences. Set to true if this map is
-     * newly loaded.
-     */
-    private boolean mMapAttributesLocked;
     
     private String mLastTag = TokenDatabase.ALL;
 

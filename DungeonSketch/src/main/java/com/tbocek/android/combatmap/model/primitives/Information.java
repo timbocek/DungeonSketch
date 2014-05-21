@@ -38,7 +38,6 @@ public class Information extends Text {
         sSizeWorldSpace = size;
     }
 
-    private static Bitmap sInfoBitmap;
     public static void loadInfoBitmap(Context c) {
         sIconBitmaps = new Bitmap[NUM_ICONS];
         sIconBitmaps[ICON_INFO] = BitmapFactory.decodeResource(c.getResources(), R.drawable.info);
