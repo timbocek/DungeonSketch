@@ -112,7 +112,7 @@ public final class CombatView extends SurfaceView {
     /**
      * Whether tokens should be drawn as manipulable.
      */
-    private boolean mAreTokensManipulatable = true;
+    private boolean mAreTokensManipulable = true;
 
     /**
      * The current map.
@@ -423,7 +423,7 @@ public final class CombatView extends SurfaceView {
         .drawGridLines(true)
         .drawGmNotes(this.mShouldDrawGmNotes)
         .drawTokens(true)
-        .areTokensManipulable(this.mAreTokensManipulatable)
+        .areTokensManipulable(this.mAreTokensManipulable)
         .drawAnnotations(this.mShouldDrawAnnotations)
         .gmNotesFogOfWar(
                 this.mActiveLines == this.getData().getGmNoteLines()
@@ -791,7 +791,7 @@ public final class CombatView extends SurfaceView {
      *            Value to set.
      */
     public void setAreTokensManipulable(boolean manipulable) {
-        this.mAreTokensManipulatable = manipulable;
+        this.mAreTokensManipulable = manipulable;
     }
 
     /**
@@ -1084,11 +1084,6 @@ public final class CombatView extends SurfaceView {
          * Draw straight lines.
          */
         STRAIGHT,
-
-        /**
-         * Draw text.
-         */
-        TEXT
     }
 
     /**
@@ -1213,7 +1208,7 @@ public final class CombatView extends SurfaceView {
 	}
 	
 	@Override
-	protected void onSizeChanged (int w, int h, int oldw, int oldh) {
+	protected void onSizeChanged (int w, int h, int oldW, int oldH) {
 		mScrollBuffer.allocateBitmaps(w, h, this.getContext());
 	}
 	
