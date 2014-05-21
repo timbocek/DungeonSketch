@@ -43,7 +43,6 @@ import java.util.Queue;
 
 public class HorizontalListView extends AdapterView<ListAdapter> {
 
-    public boolean mAlwaysOverrideTouch = true;
     protected ListAdapter mAdapter;
     private int mLeftViewIndex = -1;
     private int mRightViewIndex = 0;
@@ -283,11 +282,6 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
                 left += childWidth + child.getPaddingRight();
             }
         }
-    }
-
-    public synchronized void scrollTo(int x) {
-        mScroller.startScroll(mNextX, 0, x - mNextX, 0);
-        requestLayout();
     }
 
     @Override

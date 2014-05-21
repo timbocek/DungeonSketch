@@ -1,12 +1,11 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.io.IOException;
-import java.util.Collection;
-
 import android.graphics.RectF;
 
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
+
+import java.io.IOException;
 
 /**
  * Represents a recangle that bounds a number of drawable Dungeon Sketch
@@ -212,18 +211,6 @@ public final class BoundingRectangle {
         this.mXMax = Math.max(this.mXMax, other.mXMax);
         this.mYMin = Math.min(this.mYMin, other.mYMin);
         this.mYMax = Math.max(this.mYMax, other.mYMax);
-    }
-
-    /**
-     * Updates the bounds for an entire collection of points.
-     * 
-     * @param points
-     *            The points to update with.
-     */
-    public void updateBounds(final Collection<PointF> points) {
-        for (PointF p : points) {
-            this.updateBounds(p);
-        }
     }
 
     /**

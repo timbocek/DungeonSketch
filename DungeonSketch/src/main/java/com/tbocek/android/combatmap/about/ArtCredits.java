@@ -41,6 +41,7 @@ import javax.xml.parsers.SAXParserFactory;
  * 
  */
 public class ArtCredits extends Activity {
+    @SuppressWarnings("UnusedDeclaration")
     private static final String TAG="ArtCredits";
 
     /**

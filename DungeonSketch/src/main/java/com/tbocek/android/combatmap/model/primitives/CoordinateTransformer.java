@@ -198,31 +198,6 @@ public final class CoordinateTransformer {
     }
 
     /**
-     * Sets the origin to the given point in world space.
-     * 
-     * @param x
-     *            The new origin in world space, x coordinate.
-     * @param y
-     *            The new origin in world space, y coordinate.
-     */
-    public void setOriginInWorldSpace(final float x, final float y) {
-        this.mOriginX = x * this.mZoomLevel;
-        this.mOriginY = y * this.mZoomLevel;
-    }
-
-    /**
-     * Sets the zoom level (mapping between lengths in wold to lengths in screen
-     * space).
-     * 
-     * @param zoomLevel
-     *            The new zoom level.
-     */
-    public void setZoom(final float zoomLevel) {
-        this.mZoomLevel = zoomLevel;
-
-    }
-
-    /**
      * Converts the given distance in world space to screen space.
      * 
      * @param d

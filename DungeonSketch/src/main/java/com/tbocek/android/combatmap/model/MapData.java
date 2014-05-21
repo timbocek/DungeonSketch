@@ -287,14 +287,6 @@ public final class MapData {
     }
 
     /**
-     * 
-     * @return Whether map attributes are locked.
-     */
-    public boolean areMapAttributesLocked() {
-        return this.mMapAttributesLocked;
-    }
-
-    /**
      * @return the annotationLines
      */
     public LineCollection getAnnotationLines() {
@@ -390,15 +382,6 @@ public final class MapData {
      */
     public CoordinateTransformer getWorldSpaceTransformer() {
         return this.mTransformer;
-    }
-
-    /**
-     * @return Whether anything has been placed on the map.
-     */
-    public boolean hasData() {
-        return !this.mBackgroundLines.isEmpty()
-                || !this.mAnnotationLines.isEmpty()
-                || !this.getTokens().isEmpty();
     }
 
     /**

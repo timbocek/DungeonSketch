@@ -133,7 +133,7 @@ public final class MultiSelectManager {
 	public boolean isActive() {
 		return this.getSelectedTokens().size() != 0;
 	}
-	
+
 	public BoundingRectangle getSelectionBoundingRect() {
 		BoundingRectangle rect = new BoundingRectangle();
 		for (BaseToken t: this.mSelection){

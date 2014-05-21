@@ -71,30 +71,6 @@ public class Grid {
     }
 
     /**
-     * Factory method that creates a grid with the given parameters.
-     * 
-     * @param gridStyle
-     *            The style of the grid, either "hex" or "rectangular".
-     * @param colorScheme
-     *            The color scheme of the grid. Valid color schemes are defined
-     *            in GridColorScheme.
-     * @param transformer
-     *            A grid space to world space transformation to use in this
-     *            grid.
-     * @return The created grid.
-     */
-    public static Grid createGrid(final String gridStyle,
-            final String colorScheme, final CoordinateTransformer transformer) {
-        Grid g = new Grid();
-        g.setDrawStrategy(gridStyle.equals(new HexGridStrategy()
-                .getTypeString()) ? new HexGridStrategy()
-                : new RectangularGridStrategy());
-        g.mColorScheme = GridColorScheme.fromNamedScheme(colorScheme);
-        g.mGridToWorldTransformer = transformer;
-        return g;
-    }
-
-    /**
      * Loads and returns a Grid object from the given deserialization stream.
      * 
      * @param s
@@ -151,13 +127,6 @@ public class Grid {
 
     public GridDrawStrategy getDrawStrategy() {
         return this.mDrawStrategy;
-    }
-
-    /**
-     * @return The color to use when drawing grid lines.
-     */
-    protected final int getLineColor() {
-        return this.mColorScheme.getLineColor();
     }
 
     /**

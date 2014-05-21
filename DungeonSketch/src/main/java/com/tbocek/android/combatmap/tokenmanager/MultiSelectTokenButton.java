@@ -82,13 +82,6 @@ public final class MultiSelectTokenButton extends TokenButton {
     }
 
     /**
-     * Reloads whether this token is selected from the token database.
-     */
-    public void refreshSelectedState() {
-        this.mSelected = this.getPrototype().isSelected();
-    }
-
-    /**
      * Sets whether the button is selected. This maintains consistent state, so
      * if a token is selected using this method it will be added to the
      * collection of selected tokens.

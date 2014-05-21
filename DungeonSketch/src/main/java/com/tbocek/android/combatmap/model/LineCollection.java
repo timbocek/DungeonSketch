@@ -106,13 +106,6 @@ public final class LineCollection implements UndoRedoTarget {
     }
 
     /**
-     * Removes all lines.
-     */
-    public void clear() {
-        this.mLines.clear();
-    }
-
-    /**
      * Draws all lines on the given canvas.
      *  @param canvas The canvas to draw on.
      *

@@ -102,13 +102,6 @@ public class MapDataDeserializer {
     }
 
     /**
-     * @return The current amount of array nesting.
-     */
-    public int getArrayLevel() {
-        return this.mArrayLevel;
-    }
-
-    /**
      * @return The array level at which the next token will be read.
      * @throws IOException
      */

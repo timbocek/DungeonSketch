@@ -1,7 +1,5 @@
 package com.tbocek.android.combatmap.model;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.Stack;
 
 /**
@@ -60,24 +58,6 @@ public class CommandHistory {
             this.mUndo.add(command);
             this.mRedo.clear();
         }
-    }
-
-    /**
-     * Deserializes the object. This uses the standard deserialization but must
-     * also create transient objects that manage undo and redo.
-     * 
-     * @param inputStream
-     *            Stream to deserialize from.
-     * @throws IOException
-     *             On read error.
-     * @throws ClassNotFoundException
-     *             On deserialization error.
-     */
-    private void readObject(final ObjectInputStream inputStream)
-            throws IOException, ClassNotFoundException {
-        inputStream.defaultReadObject();
-        this.mUndo = new Stack<Command>();
-        this.mRedo = new Stack<Command>();
     }
 
     /**

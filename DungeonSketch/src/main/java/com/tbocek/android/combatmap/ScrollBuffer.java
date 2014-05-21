@@ -100,13 +100,8 @@ public class ScrollBuffer {
 			return 0;
 		}
 	}
-	
-	public Canvas startScrolling() {
-		invalidated = false;
-		return new Canvas(primary);
-	}
-	
-	private void swapBuffers() {
+
+    private void swapBuffers() {
 		Bitmap tmp = primary;
 		primary = secondary;
 		secondary = tmp;

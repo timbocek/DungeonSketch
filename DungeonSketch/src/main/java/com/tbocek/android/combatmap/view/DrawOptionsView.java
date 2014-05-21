@@ -22,11 +22,6 @@ import com.tbocek.dungeonsketch.R;
 public final class DrawOptionsView extends LinearLayout {
 
     /**
-     * The width on each side of the buttons used to pick a new color.
-     */
-    private static final int COLOR_BUTTON_SIZE = 48;
-
-    /**
      * Stroke width to use for the ink tube tool.
      */
     private static final float INKTUBE_STROKE_WIDTH = 2.0f;

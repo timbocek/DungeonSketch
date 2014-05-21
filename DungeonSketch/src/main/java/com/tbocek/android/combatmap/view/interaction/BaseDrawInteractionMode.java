@@ -16,11 +16,6 @@ import com.tbocek.android.combatmap.view.CombatView;
 public class BaseDrawInteractionMode extends CombatViewInteractionMode {
 
     /**
-     * The point in world space that was long-pressed to open the menu.
-     */
-    private PointF mLongPressPoint;
-
-    /**
      * Constructor.
      * 
      * @param view
@@ -52,5 +47,4 @@ public class BaseDrawInteractionMode extends CombatViewInteractionMode {
         }
         return p;
     }
-
 }

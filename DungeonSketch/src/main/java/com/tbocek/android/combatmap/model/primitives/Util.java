@@ -33,11 +33,6 @@ public final class Util {
     public static final int FULL_OPACITY = 255;
 
     /**
-     * Constant for half opacity alpha value.
-     */
-    public static final int HALF_OPACITY = 128;
-
-    /**
      * Hue is represented on a 360 degree circle.
      */
     private static final int HUE_DEGREES = 360;
@@ -70,19 +65,6 @@ public final class Util {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         return dp * (metrics.densityDpi / 160f);
-    }
-
-    /**
-     * This method converts device specific pixels to density independent pixels.
-     * 
-     * @param px A value in px (pixels) unit. Which we need to convert into db
-     * @param context Context to get resources and device specific display metrics
-     * @return A float value to represent dp equivalent to px value
-     */
-    public static float convertPixelsToDp(float px, Context context){
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        return px / (metrics.densityDpi / 160f);
     }
     
     /**

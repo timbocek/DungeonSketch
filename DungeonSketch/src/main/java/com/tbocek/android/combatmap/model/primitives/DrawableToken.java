@@ -13,9 +13,6 @@ import android.graphics.drawable.Drawable;
 import com.tbocek.android.combatmap.DataManager;
 import com.tbocek.android.combatmap.TokenImageManager;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Base class for tokens that display some sort of drawable. Provides standard
  * drawing methods and a caching scheme. Subclasses need mainly to specify how
@@ -56,13 +53,6 @@ public abstract class DrawableToken extends BaseToken {
      */
     private static final ColorMatrixColorFilter BLOODIED_FILTER =
             new ColorMatrixColorFilter(new ColorMatrix(BLOODIED_COLOR_MATRIX));
-
-    /**
-     * Map between token ID and the the drawable that has been loaded for that
-     * token ID, if it exists. Drawables already in this map will be reused.
-     */
-    private static final Map<String, Drawable> drawableCache =
-            new HashMap<String, Drawable>();
 
     /**
      * Alpha value that will draw at full opacity.
