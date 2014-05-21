@@ -197,7 +197,7 @@ public abstract class BaseToken implements Cloneable {
      * @return A copy of this token.
      */
     @Override
-    public abstract BaseToken clone();
+    public abstract BaseToken clone() throws CloneNotSupportedException;
 
     /**
      * Copy attributes from this token to the given token.

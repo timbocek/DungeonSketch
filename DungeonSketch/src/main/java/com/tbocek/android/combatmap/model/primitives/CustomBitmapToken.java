@@ -55,7 +55,7 @@ public final class CustomBitmapToken extends DrawableToken {
         Bitmap b;
         try {
             b = dataManager.loadTokenImage(this.mFilename);
-            return new BitmapDrawable(b);
+            return new BitmapDrawable(dataManager.getContext().getResources(), b);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

@@ -120,6 +120,7 @@ public class ArtCredits extends Activity {
                 if (Build.VERSION.SDK_INT >= 16) {
                     frame.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 } else {
+                    //noinspection deprecation
                     frame.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
             }

@@ -1,8 +1,5 @@
 package com.tbocek.android.combatmap.tokenmanager;
 
-import java.io.IOException;
-import java.util.Date;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,11 +16,14 @@ import android.widget.Toast;
 import com.tbocek.android.combatmap.CombatMap;
 import com.tbocek.android.combatmap.DataManager;
 import com.tbocek.android.combatmap.DeveloperMode;
-import com.tbocek.dungeonsketch.R;
 import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.CustomBitmapToken;
 import com.tbocek.android.combatmap.model.primitives.Util;
+import com.tbocek.dungeonsketch.R;
+
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * This activity allows the user to create a new token by importing an image and
@@ -74,7 +74,8 @@ public final class TokenCreator extends ActionBarActivity {
                             Util.loadImageWithMaxBounds(selectedImage,
                                     MAX_IMAGE_DIMENSION, MAX_IMAGE_DIMENSION,
                                     this.getContentResolver());
-                    this.mTokenCreatorView.setImage(new BitmapDrawable(bitmap));
+                    this.mTokenCreatorView.setImage(
+                            new BitmapDrawable(this.getResources(), bitmap));
 
                     Toast t =
                             Toast.makeText(this.getApplicationContext(),
