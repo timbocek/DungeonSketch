@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Abstract class representing a Shape that stores text at a certain location.
  * Created by Tim on 4/27/2014.
  */
 public abstract class Text extends Shape {

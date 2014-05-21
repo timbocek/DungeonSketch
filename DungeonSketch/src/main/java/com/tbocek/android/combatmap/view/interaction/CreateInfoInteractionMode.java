@@ -9,6 +9,7 @@ import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 import com.tbocek.android.combatmap.view.CombatView;
 
 /**
+ * Provides an interaction mode to create and interact with info points.
  * Created by Tim on 4/25/2014.
  */
 public class CreateInfoInteractionMode extends BaseDrawInteractionMode  {

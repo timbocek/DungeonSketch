@@ -23,6 +23,7 @@ import com.google.android.gms.common.api.Status;
 import java.io.IOException;
 
 /**
+ * Encapsulates most of the code needed to communicate with the Chromecast.
  * Created by tbocek on 4/29/14.
  */
 public class CastManager {

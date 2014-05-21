@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.widget.ScrollView;
 
 /**
+ * Extends ScrollView to report when the view has been scrolled.
  * Created by Tim on 4/20/2014.
  */
 public class ListeningScrollView extends ScrollView {
@@ -15,19 +16,17 @@ public class ListeningScrollView extends ScrollView {
 
     private OnScrollChangedListener mOnScrollChangedListener;
 
+    @SuppressWarnings("UnusedDeclaration")
     public ListeningScrollView(Context context) {
         super(context);
     }
+    @SuppressWarnings("UnusedDeclaration")
     public ListeningScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     public void setOnScrollChangedListener(OnScrollChangedListener onScrollChangedListener) {
         mOnScrollChangedListener = onScrollChangedListener;
-    }
-
-    public OnScrollChangedListener getOnScrollChangedListener() {
-        return mOnScrollChangedListener;
     }
 
     @Override
