@@ -629,7 +629,7 @@ public final class CombatMap extends ActionBarActivity {
 		}
 		this.registerForContextMenu(this.mCombatView);
 		this.mCombatView.setNewTextEntryListener(this.mOnNewTextEntryListener);
-		this.mCombatView.setImageSeletionListener(this.mOnImageSelectListener);
+		this.mCombatView.setImageSelectionListener(this.mOnImageSelectListener);
 
 		this.mTokenSelector = new TokenSelectorView(
 				this.getApplicationContext());
@@ -1167,7 +1167,7 @@ public final class CombatMap extends ActionBarActivity {
 		switch (manipulationMode) {
 		case MODE_DRAW_BACKGROUND:
 			this.mCombatView.getMultiSelect().selectNone();
-			this.mCombatView.setAreTokensManipulatable(false);
+			this.mCombatView.setAreTokensManipulable(false);
 			this.mCombatView.useBackgroundLayer();
 			this.mCombatView.setFogOfWarMode(FogOfWarMode.DRAW);
 			this.mBottomControlFrame.removeAllViews();
@@ -1186,7 +1186,7 @@ public final class CombatMap extends ActionBarActivity {
 			return;
 		case MODE_DRAW_ANNOTATIONS:
 			this.mCombatView.getMultiSelect().selectNone();
-			this.mCombatView.setAreTokensManipulatable(false);
+			this.mCombatView.setAreTokensManipulable(false);
 			this.mCombatView.useAnnotationLayer();
 			this.mCombatView.setFogOfWarMode(this.mSharedPreferences
 					.getBoolean("fogofwar", true) ? FogOfWarMode.CLIP
@@ -1206,7 +1206,7 @@ public final class CombatMap extends ActionBarActivity {
 			return;
 		case MODE_DRAW_GM_NOTES:
 			this.mCombatView.getMultiSelect().selectNone();
-			this.mCombatView.setAreTokensManipulatable(false);
+			this.mCombatView.setAreTokensManipulable(false);
 			this.mCombatView.useGmNotesLayer();
 			this.mCombatView.setFogOfWarMode(FogOfWarMode.NOTHING);
 			this.mBottomControlFrame.removeAllViews();
@@ -1224,7 +1224,7 @@ public final class CombatMap extends ActionBarActivity {
 			return;
 		case MODE_TOKENS:
 			this.mCombatView.useBackgroundLayer();
-			this.mCombatView.setAreTokensManipulatable(true);
+			this.mCombatView.setAreTokensManipulable(true);
 			this.mCombatView.setTokenManipulationMode();
 			this.mCombatView.setFogOfWarMode(this.mSharedPreferences
 					.getBoolean("fogofwar", true) ? FogOfWarMode.CLIP

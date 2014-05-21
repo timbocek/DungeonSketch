@@ -59,6 +59,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 /**
  * This view is the main canvas on which the map and combat tokens are drawn and
  * manipulated.
@@ -67,7 +69,9 @@ import java.util.Set;
  * 
  */
 public final class CombatView extends SurfaceView {
+    @SuppressWarnings("UnusedDeclaration")
     private static final String TAG = "CombatView";
+
     private static final float INFO_POINT_SIZE_DP = 32;
 
     /**
@@ -86,7 +90,7 @@ public final class CombatView extends SurfaceView {
 	 * For framerate tracking.  Number of seconds to use when finding the
 	 * framerate
 	 */
-	private static final int FRAMERATE_INTVL = 500;
+	private static final int FRAMERATE_INTERVAL = 500;
 
     /**
      * For the explanatory mask text, Y location of the first line in density-
@@ -106,7 +110,7 @@ public final class CombatView extends SurfaceView {
     private LineCollection mActiveLines;
 
     /**
-     * Whether tokens should be drawn as manipulatable.
+     * Whether tokens should be drawn as manipulable.
      */
     private boolean mAreTokensManipulatable = true;
 
@@ -117,7 +121,7 @@ public final class CombatView extends SurfaceView {
 
     private boolean mEditingMask = false;
 
-    private Paint mExplanatoryTextPaint;
+    private final Paint mExplanatoryTextPaint;
 
     /**
      * What to do with the fog of war when drawing.
@@ -198,7 +202,7 @@ public final class CombatView extends SurfaceView {
      * Callback for the Android graphics surface management system.
      */
     @SuppressWarnings("FieldCanBeLocal")
-    private SurfaceHolder.Callback mSurfaceHolderCallback =
+    private final SurfaceHolder.Callback mSurfaceHolderCallback =
             new SurfaceHolder.Callback() {
         @Override
         public void surfaceChanged(SurfaceHolder arg0, int arg1,
@@ -227,7 +231,7 @@ public final class CombatView extends SurfaceView {
     /**
      * Object to manage a selection of multiple tokens.
      */
-    private MultiSelectManager mTokenSelection = new MultiSelectManager();
+    private final MultiSelectManager mTokenSelection = new MultiSelectManager();
 
     /**
      * Whether tokens snap to the intersections of grid lines rather than the
@@ -245,9 +249,9 @@ public final class CombatView extends SurfaceView {
      */
     private BackgroundImage mSelectedBackgroundImage;
     
-    Paint mFrameratePaint;
+    private final Paint mFrameratePaint;
     
-    Paint mDrawRectDebugPaint;
+    private final Paint mDrawRectDebugPaint;
     
     /**
      * Frames since the framerate was last computed
@@ -258,11 +262,11 @@ public final class CombatView extends SurfaceView {
     
     private float mFramerate;
     
-    private ScrollBuffer mScrollBuffer = new ScrollBuffer();
+    private final ScrollBuffer mScrollBuffer = new ScrollBuffer();
 
     private TokenImageManager.Loader mLoader;
 
-    private Set<String> mVisibleTokenImages = new HashSet<String>();
+    private final Set<String> mVisibleTokenImages = new HashSet<String>();
     
     /**
      * Constructor.
@@ -433,7 +437,7 @@ public final class CombatView extends SurfaceView {
         
 	    if (DeveloperMode.shouldDisplayFramerate()) {
 	    	long time = System.currentTimeMillis();
-	    	if (time - mLastFramerateComputeTime >= CombatView.FRAMERATE_INTVL) {
+	    	if (time - mLastFramerateComputeTime >= CombatView.FRAMERATE_INTERVAL) {
 	    		mFramerate = ((float)mFrameCount) / (((float)(time - mLastFramerateComputeTime))/1000);
 	    		mFrameCount = 0;
 	    		mLastFramerateComputeTime = time;
@@ -548,27 +552,6 @@ public final class CombatView extends SurfaceView {
     }
 
     /**
-     * @return the newLineColor
-     */
-    public int getNewLineColor() {
-        return this.mNewLineColor;
-    }
-
-    /**
-     * @return the newLineStrokeWidth
-     */
-    public float getNewLineStrokeWidth() {
-        return this.mNewLineStrokeWidth;
-    }
-
-    /**
-     * @return the newLineStyle
-     */
-    public NewLineStyle getNewLineStyle() {
-        return this.mNewLineStyle;
-    }
-
-    /**
      * Gets a preview image of the map currently displayed in the view.
      * 
      * @return A bitmap containing the preview image.
@@ -627,7 +610,7 @@ public final class CombatView extends SurfaceView {
     }
 
     @Override
-    public boolean onTouchEvent(final MotionEvent ev) {
+    public boolean onTouchEvent(@Nonnull final MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             this.mInteractionMode.addFinger();
         }
@@ -802,13 +785,13 @@ public final class CombatView extends SurfaceView {
 
 
     /**
-     * Sets whether tokens are manipulatable.
+     * Sets whether tokens are manipulable.
      * 
-     * @param manip
+     * @param manipulable
      *            Value to set.
      */
-    public void setAreTokensManipulatable(boolean manip) {
-        this.mAreTokensManipulatable = manip;
+    public void setAreTokensManipulable(boolean manipulable) {
+        this.mAreTokensManipulatable = manipulable;
     }
 
     /**
@@ -887,8 +870,9 @@ public final class CombatView extends SurfaceView {
      * @param mode
      *            The interaction mode to use.
      */
-    private void setInteractionMode(final CombatViewInteractionMode mode, boolean areTokensManipulatable) {
-    	this.setAreTokensManipulatable(areTokensManipulatable);
+    private void setInteractionMode(final CombatViewInteractionMode mode,
+                                    boolean areTokensManipulable) {
+    	this.setAreTokensManipulable(areTokensManipulable);
     	if (this.mInteractionMode != null) {
             this.mInteractionMode.onEndMode();
         }
@@ -1076,9 +1060,9 @@ public final class CombatView extends SurfaceView {
 
     /**
      * The style that new lines should have.
-     * 
+     *
      * @author Tim
-     * 
+     *
      */
     public enum NewLineStyle {
         /**
@@ -1142,7 +1126,7 @@ public final class CombatView extends SurfaceView {
 
         /**
          * Called when a new information location is requested.
-         * @param locationWorldSpace Location in world space to place the new info point at.
+         * @param locationWorldSpace Location in world space to place the ne
          */
         void requestNewInfoEntry(PointF locationWorldSpace);
 
@@ -1198,7 +1182,7 @@ public final class CombatView extends SurfaceView {
      * Sets the listener for changes in image selection.
      * @param listener The listener to use.
      */
-    public void setImageSeletionListener(ImageSelectionListener listener) {
+    public void setImageSelectionListener(ImageSelectionListener listener) {
         mImageSelectionListener = listener;
     }
 
@@ -1280,7 +1264,7 @@ public final class CombatView extends SurfaceView {
     }
 
     /**
-     * Should be called when tokens are added to or removed from the map instead of just refrshing.
+     * Should be called when tokens are added to or removed from the map instead of just refreshing.
      */
     public void alertTokensChanged() {
         // LoadNewTokenImages and RefreshMap could each trigger a redraw, so batch full screen
