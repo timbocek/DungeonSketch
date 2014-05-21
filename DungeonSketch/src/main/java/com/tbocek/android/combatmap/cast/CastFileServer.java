@@ -53,7 +53,7 @@ public class CastFileServer extends NanoHTTPD {
         mContext = context;
     }
 
-    public void saveImage(Bitmap bitmap) throws IOException {
+    public void saveImage(Bitmap bitmap) {
         new SaveBitmapTask().execute(bitmap);
     }
 

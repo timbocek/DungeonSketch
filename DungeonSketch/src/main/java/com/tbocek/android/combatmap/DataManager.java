@@ -298,7 +298,7 @@ public final class DataManager {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public Bitmap loadTokenImage(final String filename, Bitmap existingBuffer) throws IOException {
+    public Bitmap loadTokenImage(final String filename, Bitmap existingBuffer) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(
@@ -329,7 +329,7 @@ public final class DataManager {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public Bitmap loadTokenImage(final int resource_id, Bitmap existingBuffer) throws IOException {
+    public Bitmap loadTokenImage(final int resource_id, Bitmap existingBuffer) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(this.mContext.getResources(), resource_id, options);

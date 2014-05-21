@@ -529,7 +529,7 @@ public abstract class BaseToken implements Cloneable {
      *             If the token was attempted to be deleted but there was an
      *             error.
      */
-    public boolean maybeDeletePermanently() throws IOException {
+    public boolean maybeDeletePermanently() {
         return false;
     }
 

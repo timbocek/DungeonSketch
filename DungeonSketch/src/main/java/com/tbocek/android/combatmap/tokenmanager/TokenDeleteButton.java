@@ -74,13 +74,4 @@ public final class TokenDeleteButton extends ImageView {
     public Collection<BaseToken> getManagedTokens() {
         return this.mManagedTokens;
     }
-
-    /**
-     * @param tokens
-     *            The tokens to manage.
-     */
-    public void setManagedTokens(final Collection<BaseToken> tokens) {
-        this.mManagedTokens = tokens;
-    }
-
 }

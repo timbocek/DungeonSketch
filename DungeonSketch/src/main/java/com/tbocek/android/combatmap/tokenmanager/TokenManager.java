@@ -259,13 +259,7 @@ public final class TokenManager extends ActionBarActivity {
             drawer = (DrawerLayout) findViewById(R.id.drawer_layout);     
             drawerList = (FrameLayout) findViewById(R.id.left_drawer);
             ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
-                    this, drawer, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
-                @Override
-                public void onDrawerOpened(View drawerView) {
-                    // TODO Auto-generated method stub
-                    super.onDrawerOpened(drawerView);
-                }
-            };
+                    this, drawer, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close);
             drawer.setDrawerListener(actionBarDrawerToggle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);

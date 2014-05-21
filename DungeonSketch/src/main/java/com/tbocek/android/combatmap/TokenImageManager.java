@@ -150,9 +150,6 @@ public class TokenImageManager {
         private BaseToken mToken;
         private int mReferenceCount;
 
-        public Bitmap getImage() {
-            return mImage;
-        }
         public Drawable getDrawable() { return mDrawable; }
 
         public void release() {

@@ -221,15 +221,6 @@ public final class TokenCollection implements UndoRedoTarget {
     }
 
     /**
-     * Returns whether there are tokens in this collection.
-     * 
-     * @return True if collection is empty.
-     */
-    public boolean isEmpty() {
-        return this.mTokens.isEmpty();
-    }
-
-    /**
      * Checks whether placing a token with the given radius at the give location
      * would intersect any other tokens.
      * 
@@ -326,17 +317,6 @@ public final class TokenCollection implements UndoRedoTarget {
     @Override
     public void redo() {
         this.mCommandHistory.redo();
-    }
-
-    /**
-     * Removes a token from the collection.
-     * 
-     * @param t
-     *            The token to remove.
-     */
-    public void remove(final BaseToken t) {
-        RemoveTokensCommand c = new RemoveTokensCommand(this, t);
-        this.mCommandHistory.execute(c);
     }
 
     /**

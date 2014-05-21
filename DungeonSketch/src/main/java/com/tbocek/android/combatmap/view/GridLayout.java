@@ -78,11 +78,6 @@ public class GridLayout extends ViewGroup {
         }
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-    }
-
     /**
      * Sets the width and height for each cell.
      * 

@@ -225,7 +225,7 @@ public final class MapData {
      *             On deserialization error.
      */
     public static void loadFromStream(final InputStream input,
-            TokenDatabase tokens) throws IOException, ClassNotFoundException {
+            TokenDatabase tokens) throws IOException {
         InputStreamReader inReader = new InputStreamReader(input);
         BufferedReader reader = new BufferedReader(inReader);
         MapDataDeserializer s = new MapDataDeserializer(reader);

@@ -174,7 +174,7 @@ public class ExportImageDialog extends Dialog {
      * Exports the image using the settings set up in this activity.
      * @throws IOException if the export failed.
      */
-    private void export() throws IOException {
+    private void export() {
         final boolean exportCurrentView = mRadioExportCurrentView.isChecked();
         final boolean gridLines = mCheckGridLines.isChecked();
         final boolean gmNotes = mCheckGmNotes.isChecked();
