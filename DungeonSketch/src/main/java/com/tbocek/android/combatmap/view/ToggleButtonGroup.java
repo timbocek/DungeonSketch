@@ -1,9 +1,9 @@
 package com.tbocek.android.combatmap.view;
 
+import android.view.View;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import android.view.View;
 
 /**
  * Encapsulates a group of toggle buttons that should be treated as a group,
@@ -21,7 +21,7 @@ public class ToggleButtonGroup {
     /**
      * Toggle buttons that make up the group.
      */
-    private List<ImageToggleButton> mMembers =
+    private final List<ImageToggleButton> mMembers =
             new ArrayList<ImageToggleButton>();
 
     /**

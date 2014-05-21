@@ -354,10 +354,10 @@ public class BackgroundImageInteractionMode extends BaseDrawInteractionMode {
      * 
      */
     private class HandleSet {
-        float mXmax;
-        float mXmin;
-        float mYmax;
-        float mYmin;
+        final float mXmax;
+        final float mXmin;
+        final float mYmax;
+        final float mYmin;
 
         public HandleSet(float xmin, float xmax, float ymin, float ymax) {
             this.mXmin = xmin;

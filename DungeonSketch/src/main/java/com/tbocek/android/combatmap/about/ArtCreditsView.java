@@ -53,7 +53,7 @@ public class ArtCreditsView extends LinearLayout {
      * Map that enables lookup of a list of tokens that an artist contributed
      * given the artist name.
      */
-    private Map<String, ViewGroup> mTokenViewsForArtist = Maps.newHashMap();
+    private final Map<String, ViewGroup> mTokenViewsForArtist = Maps.newHashMap();
 
     /**
      * Constructor.
@@ -164,7 +164,7 @@ public class ArtCreditsView extends LinearLayout {
         /**
          * URL for the full size image of the token.
          */
-        private String mTokenUrl;
+        private final String mTokenUrl;
 
         /**
          * Constructor.

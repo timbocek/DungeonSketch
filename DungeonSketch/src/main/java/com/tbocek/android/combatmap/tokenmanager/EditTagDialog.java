@@ -16,7 +16,7 @@ import roboguice.inject.InjectView;
 public class EditTagDialog extends RoboActivity {
 
     public static final String NEW_TAG_PATH = "NEW_TAG_PATH";
-    public static String SELECTED_TAG_PATH = "SELECTED_TAG_PATH";
+    public static final String SELECTED_TAG_PATH = "SELECTED_TAG_PATH";
 
     @InjectView(tag="new_tag_name")
     TextView tagName;

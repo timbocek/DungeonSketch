@@ -41,7 +41,7 @@ public class GridPropertiesDialog extends Dialog {
     /**
      * Button that previews and allows the user to change the background color.
      */
-    private ImageButton mBackgroundColor;
+    private final ImageButton mBackgroundColor;
 
     /**
      * The map data whose grid properties are being edited.
@@ -51,18 +51,18 @@ public class GridPropertiesDialog extends Dialog {
     /**
      * Button that previews and allows the user to change the foreground color.
      */
-    private ImageButton mForegroundColor;
+    private final ImageButton mForegroundColor;
 
     /**
      * ToggleButtonGroup that ensures that the rect/hex grid buttons behave like
      * a set of radio buttons (i.e. only one is toggled "on" at a time).
      */
-    private ToggleButtonGroup mGridTypeToggles = new ToggleButtonGroup();
+    private final ToggleButtonGroup mGridTypeToggles = new ToggleButtonGroup();
 
     /**
      * Button used to switch to a hexagonal grid geometry.
      */
-    private ImageToggleButton mHexGridButton;
+    private final ImageToggleButton mHexGridButton;
     /**
      * Color picker dialog to open when we want to select a color directly.
      */
@@ -71,7 +71,7 @@ public class GridPropertiesDialog extends Dialog {
     /**
      * ArrayAdapter of grid theme presets.
      */
-    private ArrayAdapter<CharSequence> mPresetAdapter;
+    private final ArrayAdapter<CharSequence> mPresetAdapter;
 
     /**
      * Listener to call when the grid properties change.
@@ -81,7 +81,7 @@ public class GridPropertiesDialog extends Dialog {
     /**
      * Button used to switch to a rectangular grid geometry.
      */
-    private ImageToggleButton mRectGridButton;
+    private final ImageToggleButton mRectGridButton;
 
     /**
      * Constructor.

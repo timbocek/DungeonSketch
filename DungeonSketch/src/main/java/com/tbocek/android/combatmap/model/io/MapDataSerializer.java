@@ -15,7 +15,7 @@ public class MapDataSerializer {
     /**
      * Writer to write data to.
      */
-    private Writer mWriter;
+    private final Writer mWriter;
 
     /**
      * Constructor.

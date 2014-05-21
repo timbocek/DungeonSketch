@@ -39,7 +39,7 @@ public final class TokenCollection implements UndoRedoTarget {
     /**
      * The tokens that have been added to the grid.
      */
-    private List<BaseToken> mTokens = new ArrayList<BaseToken>();
+    private final List<BaseToken> mTokens = new ArrayList<BaseToken>();
 
     /**
      * Constructor.
@@ -414,12 +414,12 @@ public final class TokenCollection implements UndoRedoTarget {
         /**
          * Token collection to modify.
          */
-        private TokenCollection mCollection;
+        private final TokenCollection mCollection;
 
         /**
          * Token to add to the collection.
          */
-        private BaseToken mToAdd;
+        private final BaseToken mToAdd;
 
         /**
          * 
@@ -461,18 +461,18 @@ public final class TokenCollection implements UndoRedoTarget {
         /**
          * State of the token after modification.
          */
-        private List<BaseToken> mAfterState = Lists.newArrayList();
+        private final List<BaseToken> mAfterState = Lists.newArrayList();
 
         /**
          * State of the token before modification.
          */
-        private List<BaseToken> mBeforeState = Lists.newArrayList();
+        private final List<BaseToken> mBeforeState = Lists.newArrayList();
 
         /**
          * The token that this command modifies. Should always be the "live"
          * version of the token.
          */
-        private List<BaseToken> mTokensToModify;
+        private final List<BaseToken> mTokensToModify;
 
         /**
          * Constructor.
@@ -536,12 +536,12 @@ public final class TokenCollection implements UndoRedoTarget {
         /**
          * Token collection to modify.
          */
-        private TokenCollection mCollection;
+        private final TokenCollection mCollection;
 
         /**
          * Token to remove from the collection.
          */
-        private Collection<BaseToken> mToRemove;
+        private final Collection<BaseToken> mToRemove;
 
         /**
          * Constructor.

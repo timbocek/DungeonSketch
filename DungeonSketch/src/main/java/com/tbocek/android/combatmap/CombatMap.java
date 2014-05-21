@@ -188,7 +188,7 @@ public final class CombatMap extends ActionBarActivity {
 	/**
 	 * Listener that fires when a new draw tool or color has been selected.
 	 */
-	private OnChangeDrawToolListener mOnChangeDrawToolListener = new OnChangeDrawToolListener() {
+	private final OnChangeDrawToolListener mOnChangeDrawToolListener = new OnChangeDrawToolListener() {
 
 		@Override
 		public void onChangeMaskEditing(boolean editingMask) {
@@ -292,8 +292,8 @@ public final class CombatMap extends ActionBarActivity {
 	 * Callback to listen for text edit/creation requests and load the required
 	 * dialog, since dialogs need to be managed at the activity level.
 	 */
-	private CombatView.ActivityRequestListener mOnNewTextEntryListener = new CombatView.ActivityRequestListener() {
-
+	private final CombatView.ActivityRequestListener mOnNewTextEntryListener =
+            new CombatView.ActivityRequestListener() {
 		@Override
 		public void requestEditTextObject(OnScreenText t) {
 			CombatMap.this.mEditedTextObject = t;
@@ -331,7 +331,7 @@ public final class CombatMap extends ActionBarActivity {
 
     };
 	
-	private TagNavigator.TagSelectedListener mTagSelectedListener = new TagNavigator.TagSelectedListener() {
+	private final TagNavigator.TagSelectedListener mTagSelectedListener = new TagNavigator.TagSelectedListener() {
 		
 		@Override
 		public void onTagSelected(TagTreeNode selectedTag) {
@@ -353,7 +353,8 @@ public final class CombatMap extends ActionBarActivity {
 	/**
 	 * Listener that fires when an image has been selected in the CombatView.
 	 */
-	private CombatView.ImageSelectionListener mOnImageSelectListener = new CombatView.ImageSelectionListener() {
+	private final CombatView.ImageSelectionListener mOnImageSelectListener =
+            new CombatView.ImageSelectionListener() {
 
 		@Override
 		public void onSelectNoBackgroundImage() {
@@ -380,7 +381,7 @@ public final class CombatMap extends ActionBarActivity {
 	 * Listener that fires when a token has been selected in the token selector
 	 * view.
 	 */
-	private TokenSelectorView.OnTokenSelectedListener mOnTokenSelectedListener = new TokenSelectorView.OnTokenSelectedListener() {
+	private final TokenSelectorView.OnTokenSelectedListener mOnTokenSelectedListener = new TokenSelectorView.OnTokenSelectedListener() {
 		@Override
 		public void onTokenSelected(final BaseToken t) {
 			CombatMap.this.mCombatView.placeToken(t);
@@ -425,7 +426,8 @@ public final class CombatMap extends ActionBarActivity {
 	 * Callback that loads the correct interaction mode when a new tab is
 	 * selected.
 	 */
-	private TabManager.TabSelectedListener mTabSelectedListener = new TabManager.TabSelectedListener() {
+	private final TabManager.TabSelectedListener mTabSelectedListener =
+            new TabManager.TabSelectedListener() {
 		@Override
 		public void onTabSelected(int tab) {
 			if (mData != null) {
@@ -1328,12 +1330,12 @@ public final class CombatMap extends ActionBarActivity {
 		/**
 		 * Context to use while saving.
 		 */
-		private Context mContext;
+		private final Context mContext;
 
 		/**
 		 * Filename to save to.
 		 */
-		private String mFilename;
+		private final String mFilename;
 
 		/**a
 		 * Constructor.
@@ -1765,7 +1767,7 @@ public final class CombatMap extends ActionBarActivity {
 		});
 	}
 
-    private CastManager.Callback mCastCallback = new CastManager.Callback() {
+    private final CastManager.Callback mCastCallback = new CastManager.Callback() {
 
         @Override
         public void onApplicationStarted() {

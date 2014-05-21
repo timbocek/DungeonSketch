@@ -1,19 +1,20 @@
 package com.tbocek.android.combatmap.tokenmanager;
 
-import com.tbocek.dungeonsketch.R;
-import com.tbocek.android.combatmap.TokenDatabase;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import com.tbocek.android.combatmap.TokenDatabase;
+import com.tbocek.dungeonsketch.R;
+
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 
 public class NewTagDialog extends RoboActivity {
-	public static String SELECTED_TAG_PATH = "SELECTED_TAG_PATH";
+	public static final String SELECTED_TAG_PATH = "SELECTED_TAG_PATH";
 	@InjectView(tag="new_tag_name") TextView tagName;
 	@InjectView(tag="new_tag_under_top_level") RadioButton underTopLevel;
 	@InjectView(tag="new_tag_under_selected") RadioButton underSelected;

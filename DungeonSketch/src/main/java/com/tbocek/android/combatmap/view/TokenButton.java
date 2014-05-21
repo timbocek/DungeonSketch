@@ -44,7 +44,7 @@ public class TokenButton extends ImageView {
     /**
      * A gesture detector used to detect long presses for drag and drop start.
      */
-    private GestureDetector mGestureDetector;
+    private final GestureDetector mGestureDetector;
 
 
     private TokenSelectedListener mTokenSelectedListener = null;
@@ -54,7 +54,7 @@ public class TokenButton extends ImageView {
      * occurs.
      */
     @SuppressWarnings("FieldCanBeLocal")
-    private SimpleOnGestureListener mGestureListener =
+    private final SimpleOnGestureListener mGestureListener =
             new SimpleOnGestureListener() {
                 @Override
                 public void onLongPress(final MotionEvent e) {

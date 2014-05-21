@@ -35,18 +35,18 @@ public class CombatViewInteractionMode extends SimpleOnScaleGestureListener
     /**
      * The CombatView that this interaction mode manipulates.
      */
-    private CombatView mView;
+    private final CombatView mView;
     
     /**
      * We are rolling our own long press in order to let a long press be
      * followed by a scroll without lifting a finger!
      */
     protected class CustomLongPressDetector {
-        private Handler mLongPressHandler = new Handler();
+        private final Handler mLongPressHandler = new Handler();
         private boolean mPossibleLongPress = false;
         private boolean mDefiniteLongPress = false;
         private MotionEvent mOriginalDownEvent = null;
-        private Runnable mLongPressRunnable = new Runnable() {
+        private final Runnable mLongPressRunnable = new Runnable() {
         	@Override
         	public void run() {
         		if (mPossibleLongPress) {

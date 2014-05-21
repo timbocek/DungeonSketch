@@ -21,12 +21,12 @@ public final class SaveFileButton extends LinearLayout {
     /**
      * The displayed preview.
      */
-    private ImageView mPreview;
+    private final ImageView mPreview;
 
     /**
      * The displayed file name.
      */
-    private TextView mText;
+    private final TextView mText;
 
     /**
      * Constructor.

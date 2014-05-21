@@ -24,17 +24,17 @@ public class FontDialog extends Dialog {
     /**
      * Spinner for font size selection.
      */
-    private Spinner mFontSize;
+    private final Spinner mFontSize;
 
     /**
      * Listener that is called when the user clicks the confirm button.
      */
-    private OnTextConfirmedListener mListener;
+    private final OnTextConfirmedListener mListener;
 
     /**
      * Text entry field.
      */
-    private TextView mNameText;
+    private final TextView mNameText;
 
     /**
      * Constructor.

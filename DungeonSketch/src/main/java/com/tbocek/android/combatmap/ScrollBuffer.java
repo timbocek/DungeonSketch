@@ -15,7 +15,7 @@ public class ScrollBuffer {
 	
 	public class DrawRequest {
 		public Canvas canvas;
-		public List<Rect> invalidRegions = Lists.newArrayList();
+		public final List<Rect> invalidRegions = Lists.newArrayList();
 		public int deltaX;
 		public int deltaY;
 		

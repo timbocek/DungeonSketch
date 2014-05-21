@@ -70,16 +70,12 @@ public final class TokenDatabase {
 		return SYSTEM_TAG_NAMES.contains(tag);
 	}
 
-    public static boolean hasInstance() {
-        return instance != null;
-    }
-
     public class TagTreeNode {
 		/**
 		 * Map of token names to the amount to deploy.  This is also just used
 		 * as the set of tokens that are directly underneath this tag.
 		 */
-		private Map<String, Integer> tokenCounts = Maps.newHashMap();
+		private final Map<String, Integer> tokenCounts = Maps.newHashMap();
 		
 		/**
 		 * Counts for tokens that should be provided a count in this tag,
@@ -87,10 +83,10 @@ public final class TokenDatabase {
 		 * probably present in child tags; if they are not this is a
 		 * problem and they should be cleaned up.
 		 */
-		private Map<String, Integer> guestTokenCounts = Maps.newHashMap();
+		private final Map<String, Integer> guestTokenCounts = Maps.newHashMap();
 		
-		protected Map<String, TagTreeNode> childTags = Maps.newHashMap();
-		private TagTreeNode parent;
+		protected final Map<String, TagTreeNode> childTags = Maps.newHashMap();
+		private final TagTreeNode parent;
 		private String name;
 		
 		/**
@@ -99,7 +95,7 @@ public final class TokenDatabase {
 		 */
 		private boolean isActive = true;
 		
-		private String TAG = "com.tbocek.android.combatmap.TagTreeNode";
+		private static final String TAG = "TagTreeNode";
 		
 		public TagTreeNode(TagTreeNode parent, String name) {
 			this.parent = parent;
@@ -123,13 +119,12 @@ public final class TokenDatabase {
          * @param name The new name of the tag.
          * @return True on success, false if the tag could not be renamed.
          */
-        public boolean rename(String name) {
-            if (this.isSystemTag() || this.getParent() == null) return false;
+        public void rename(String name) {
+            if (this.isSystemTag() || this.getParent() == null) return;
 
             this.getParent().childTags.remove(this.name);
             this.name = name;
             this.getParent().childTags.put(this.name, this);
-            return true;
         }
 		
 		public Collection<String> getImmediateTokens() {
@@ -169,8 +164,8 @@ public final class TokenDatabase {
 				this.getAllTokensHelper(result, excludedTokens, true, false);
 				excludedTokens.removeAll(result);
 				
-				// Find the system tags seperately, and include ONLY those system tags that haven't been
-				// explicity excluded.
+				// Find the system tags separately, and include ONLY those system tags that haven't
+				// been explicit excluded.
 				Set<String> tokensFromSystemTags = Sets.newHashSet();
 				this.getAllTokensHelper(tokensFromSystemTags, null, true, true);
 				
@@ -179,7 +174,9 @@ public final class TokenDatabase {
 			}
 		}
 		
-		private void getAllTokensHelper(Collection<String> result, Collection<String> excludedTokens, boolean respectExclusion, boolean systemTags) {
+		private void getAllTokensHelper(
+                Collection<String> result, Collection<String> excludedTokens,
+                boolean respectExclusion, boolean systemTags) {
 			if (!this.isActive && respectExclusion) {
 				if (excludedTokens != null) {
 					getAllTokensHelper(excludedTokens, null, false, systemTags);
@@ -343,9 +340,9 @@ public final class TokenDatabase {
 	 */
 	protected class LimitedTagTreeNode extends TagTreeNode {
 
-		private int maxSize;
+		private final int maxSize;
 		private int nextAge;
-		private Map<String, Integer> nodeAges = Maps.newHashMap();
+		private final Map<String, Integer> nodeAges = Maps.newHashMap();
 		
 		public LimitedTagTreeNode(TagTreeNode parent, String name, int maxSize) {
 			super(parent, name);
@@ -402,19 +399,10 @@ public final class TokenDatabase {
 		}
 	}
 
-    protected class RecentlyTrashedTagTreeNode {
-
-    }
-
     /**
      * Always-present member at the top of the tag list that selects all tokens.
      */
     public static final String ALL = "All";
-
-    /**
-     * Delimiter to use when saving the token database.
-     */
-    private static final String FILE_DELIMITER = "`";
 
 	public static final String RECENTLY_ADDED = "recently added";
 
@@ -428,12 +416,12 @@ public final class TokenDatabase {
     /**
      * Built in tokens that have been deleted.
      */
-    private Set<String> mDeletedBuiltInTokens = Sets.newHashSet();
+    private final Set<String> mDeletedBuiltInTokens = Sets.newHashSet();
 
     /**
      * Mapping from deprecated token IDs to their replacements.
      */
-    private Map<String, String> mOldIdMapping = Maps.newHashMap();
+    private final Map<String, String> mOldIdMapping = Maps.newHashMap();
 
     /**
      * Whether tags need to be pre-populated during the loading step. By default
@@ -446,9 +434,9 @@ public final class TokenDatabase {
     /**
      * Mapping from a Token ID to an instantiated token object that has that ID.
      */
-    private transient Map<String, BaseToken> mTokenForId = Maps.newHashMap();
+    private final transient Map<String, BaseToken> mTokenForId = Maps.newHashMap();
     
-    private transient TagTreeNode mTagTreeRoot = new TagTreeNode(null, TokenDatabase.ALL);
+    private final transient TagTreeNode mTagTreeRoot = new TagTreeNode(null, TokenDatabase.ALL);
 
     /**
      * Returns the instance of the token database.
@@ -498,7 +486,7 @@ public final class TokenDatabase {
      * @throws IOException
      *             On read error.
      */
-    public static TokenDatabase load(final Context context) throws IOException {
+    private static TokenDatabase load(final Context context) throws IOException {
         TokenDatabase d = new TokenDatabase();
         d.populate(context);
 
@@ -508,7 +496,7 @@ public final class TokenDatabase {
         d.load(dataIn);
         dataIn.close();
 
-        d.removeDeletedBuiltins();
+        d.removeDeletedBuiltIns();
         
         return d;
     }
@@ -539,16 +527,6 @@ public final class TokenDatabase {
         this.addTokenPrototype(t);
         this.mapOldId(t.getTokenId(),
                 "BuiltInImageToken" + Integer.toString(resourceId));
-    }
-
-    /**
-     * Adds a tag with no tokens associated with it to the token database.
-     * 
-     * @param tag
-     *            The tag to add.
-     */
-    public void addEmptyTag(final String tag) {
-        this.mTagTreeRoot.getNamedChild(tag, true);
     }
 
     /**
@@ -606,7 +584,7 @@ public final class TokenDatabase {
     }
 
     /**
-     * Gets a TokenId, dereferencing a deprecated ID into the new I D if
+     * Gets a TokenId, dereferencing a deprecated ID into the new ID if
      * necessary.
      * 
      * @param tokenId
@@ -620,7 +598,7 @@ public final class TokenDatabase {
         return tokenId;
     }
     
-    String TAG = "com.tbocek.android.combatmap.TokenDatabase";
+    private static final String TAG = "TokenDatabase";
 
     /**
      * Gets a list of all root tags in the token collection, sorted alphabetically
@@ -667,7 +645,7 @@ public final class TokenDatabase {
      * @throws IOException
      *             On read error.
      */
-    private void load(final BufferedReader dataIn) throws IOException {
+    private void load(final BufferedReader dataIn) {
     	try {
 	        SAXParserFactory spf = SAXParserFactory.newInstance();
 	        SAXParser sp = spf.newSAXParser();
@@ -801,7 +779,7 @@ public final class TokenDatabase {
     /**
      * Remove all built-in tokens that the user has previously deleted.
      */
-    private void removeDeletedBuiltins() {
+    private void removeDeletedBuiltIns() {
         for (String removedBuiltin : this.mDeletedBuiltInTokens) {
             this.mTokenForId.remove(removedBuiltin);
         }
@@ -847,7 +825,8 @@ public final class TokenDatabase {
      * @throws ParserConfigurationException 
      * @throws TransformerException 
      */
-    private void save(final BufferedWriter output) throws IOException, ParserConfigurationException, TransformerException {
+    private void save(final BufferedWriter output)
+            throws ParserConfigurationException, TransformerException {
     	DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 		
@@ -977,29 +956,13 @@ public final class TokenDatabase {
         });
         return tokens;
     }
-
-    /**
-     * Given a collection of tags, returns a sorted list of all tokens that have
-     * at least one of those tags.
-     * 
-     * @param tags
-     *            The tags to look for.
-     * @return The tokens for those tags.
-     */
-    public List<BaseToken> tokensForTags(final Collection<String> tags) {
-        Set<String> tokenIds = new HashSet<String>();
-        for (String tag : tags) {
-            tokenIds.addAll(this.mTagTreeRoot.getNamedChild(tag, false).getAllTokens());
-        }
-        return this.tokenIdsToTokens(tokenIds);
-    }
     
     private class DatabaseReadHandler extends DefaultHandler {
     	
     	/**
     	 * The TokenDatabase instance to read data into.
     	 */
-    	private TokenDatabase database;
+    	private final TokenDatabase database;
     	
     	/**
     	 * Argh I fucking hate having to emulate recursion.  But I need to in
@@ -1011,32 +974,32 @@ public final class TokenDatabase {
     		database = d;
     		currentTagTreeNode = d.mTagTreeRoot;
     	}
-    	String TAG = "com.tbocek.android.combatmap.DatabaseReadHandler";
+    	private static final String TAG = "DatabaseReadHandler";
     	public void startElement(String namespaceURI, String localName,
-                String qName, org.xml.sax.Attributes atts) {
+                String qName, org.xml.sax.Attributes attributes) {
     		if (localName.equalsIgnoreCase("deleted_builtin_token")) {
-    			String tokenName = atts.getValue("name");
+    			String tokenName = attributes.getValue("name");
     			Log.d(TAG, "PROCESS DELETED TOKEN: " + tokenName);
     			database.mDeletedBuiltInTokens.add(tokenName);
     		} else if (localName.equalsIgnoreCase("tag")) {
-    			String tagName = atts.getValue("name");
-    			String active = atts.getValue("active");
+    			String tagName = attributes.getValue("name");
+    			String active = attributes.getValue("active");
     			boolean isActive = active == null || Boolean.parseBoolean(active);
     			Log.d(TAG, "START TAG: " + tagName);
     			currentTagTreeNode = currentTagTreeNode.getNamedChild(tagName, true);
     			currentTagTreeNode.setIsActive(isActive);
     		} else if (localName.equalsIgnoreCase("limited_tag")) {
-    			String tagName = atts.getValue("name");
-    			int maxSize = Integer.parseInt(atts.getValue("maxSize"));
-    			String active = atts.getValue("active");
+    			String tagName = attributes.getValue("name");
+    			int maxSize = Integer.parseInt(attributes.getValue("maxSize"));
+    			String active = attributes.getValue("active");
     			boolean isActive = active == null || Boolean.parseBoolean(active);
     			Log.d(TAG, "START TAG: " + tagName);
     			currentTagTreeNode = currentTagTreeNode.createLimitedChild(tagName, maxSize);
     			currentTagTreeNode.setIsActive(isActive);
     		} else if (localName.equalsIgnoreCase("token")) {
-    			String tokenName = atts.getValue("name");
-    			String age = atts.getValue("age");
-    			String countStr = atts.getValue("count");
+    			String tokenName = attributes.getValue("name");
+    			String age = attributes.getValue("age");
+    			String countStr = attributes.getValue("count");
     			int count;
     			if (countStr != null) {
     				count = Integer.parseInt(countStr);
@@ -1051,8 +1014,8 @@ public final class TokenDatabase {
     			}
     			currentTagTreeNode.setTokenCount(tokenName, count);
     		} else if (localName.equalsIgnoreCase("guest_count")) {
-    			String tokenName = atts.getValue("name");
-    			String countStr = atts.getValue("count");
+    			String tokenName = attributes.getValue("name");
+    			String countStr = attributes.getValue("count");
     			int count;
     			if (countStr != null) {
     				count = Integer.parseInt(countStr);
@@ -1084,7 +1047,7 @@ public final class TokenDatabase {
         /**
          * Application context to load resources from.
          */
-        private Context mContext;
+        private final Context mContext;
 
         /**
          * Count of the tokens that have been loaded; used to sort them later.
@@ -1103,7 +1066,7 @@ public final class TokenDatabase {
         private String currentArtist;
         @Override
         public void startElement(String namespaceURI, String localName,
-                String qName, org.xml.sax.Attributes atts) throws SAXException {
+                String qName, org.xml.sax.Attributes attributes) throws SAXException {
         	
             // Possibly limit the number of built-in tokens loaded, for debug
             // purposes.
@@ -1113,41 +1076,34 @@ public final class TokenDatabase {
             }
 
             if (localName.equalsIgnoreCase("artist")) {
-            	currentArtist = atts.getValue("name");
+            	currentArtist = attributes.getValue("name");
             }
             else if (localName.equalsIgnoreCase("token")) {
                 int id =
                         this.mContext.getResources().getIdentifier(
-                                atts.getValue("res"), "drawable",
+                                attributes.getValue("res"), "drawable",
                                 mContext.getPackageName());
                 if (id == 0) {
-                    Log.e("com.tbocek.android.combatmap.TokenDatabase",
-                            "Image resource for name='" + atts.getValue("res")
+                    Log.e("TokenDatabase",
+                            "Image resource for name='" + attributes.getValue("res")
                             + "' not found in database");
                     return;
                 }
-                String tagList = atts.getValue("tags");
+                String tagList = attributes.getValue("tags");
                 Set<String> defaultTags = Sets.newHashSet();
                 if (tagList != null) {
                     Collections.addAll(defaultTags, tagList.split(","));
                 }
                 defaultTags.add("artist:" + currentArtist);
-                TokenDatabase.this.addBuiltin(atts.getValue("res"), id,
+                TokenDatabase.this.addBuiltin(attributes.getValue("res"), id,
                         this.mCurrentSortOrder, defaultTags);
                 this.mCurrentSortOrder++;
             }
         }
     }
 
-
-
 	public TagTreeNode getRootNode() {
 		return this.mTagTreeRoot;
-	}
-
-	public boolean isTagActive(String tagPath) {
-		if (tagPath.equals(ALL)) { return true; }
-		return this.mTagTreeRoot.getNamedChild(tagPath, false).isActive();
 	}
 
 	public void setTokenTagCount(String tokenId, String tag, int count) {
@@ -1155,7 +1111,7 @@ public final class TokenDatabase {
 	}
 
     /**
-     * Changess the name of the given tag.
+     * Changes the name of the given tag.
      * @param tagPath The full path to the tag to rename.
      * @param newName The new name of the last tag on the path.
      * @return The modified path of the tag.

@@ -15,15 +15,15 @@ import java.util.List;
 
 public class TokenDeploymentDialog extends Dialog {
 	
-	private LinearLayout mLineItemLayout;
+	private final LinearLayout mLineItemLayout;
 
     private boolean mSuccessful = false;
 	
-	private List<TokenDeploymentLineItem> mLineItems = Lists.newArrayList();
+	private final List<TokenDeploymentLineItem> mLineItems = Lists.newArrayList();
 	
 	public class TokenNumberPair {
-		private BaseToken token;
-		private int count;
+		private final BaseToken token;
+		private final int count;
 		public TokenNumberPair(BaseToken t, int n) {
 			token = t;
 			count = n;

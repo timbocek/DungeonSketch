@@ -12,19 +12,20 @@ import android.widget.ImageButton;
 public final class TwoImageToggleButton extends ImageButton {
 
     /**
+     * Resource ID of the image to use when the button is toggled.
+     */
+    private final int mToggledResourceId;
+
+    /**
      * Resource ID of the image to use when the button is not toggled.
      */
-    private int mNotToggledResourceId;
+    private final int mNotToggledResourceId;
 
     /**
      * Whether to draw the button toggled.
      */
     private boolean mToggled;
 
-    /**
-     * Resource ID of the image to use when the button is toggled.
-     */
-    private int mToggledResourceId;
 
     /**
      * Constructor.

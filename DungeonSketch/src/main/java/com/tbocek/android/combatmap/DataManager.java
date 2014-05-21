@@ -66,7 +66,7 @@ public final class DataManager {
     /**
      * The context that this data manager goes through to read and write data.
      */
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * Constructor.

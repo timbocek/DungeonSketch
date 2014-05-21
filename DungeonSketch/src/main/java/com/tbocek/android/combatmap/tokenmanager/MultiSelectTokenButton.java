@@ -1,7 +1,5 @@
 package com.tbocek.android.combatmap.tokenmanager;
 
-import java.util.ArrayList;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
@@ -10,6 +8,8 @@ import android.view.View;
 import com.tbocek.android.combatmap.model.MultiSelectManager;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.view.TokenButton;
+
+import java.util.ArrayList;
 
 /**
  * Extends the behavior of TokenButton to allow multiple tokens to be selected
@@ -25,7 +25,7 @@ public final class MultiSelectTokenButton extends TokenButton {
      * The manager that tracks which tokens are selected across a group of
      * MultiSelectTokenButton instances.
      */
-    private MultiSelectManager mMultiSelect;
+    private final MultiSelectManager mMultiSelect;
 
     /**
      * Whether this token is currently selected.

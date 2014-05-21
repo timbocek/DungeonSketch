@@ -32,7 +32,7 @@ public final class FreehandLine extends Shape {
     /**
      * The points that comprise this line.
      */
-    private List<PointF> mPoints = new ArrayList<PointF>();
+    private final List<PointF> mPoints = new ArrayList<PointF>();
 
     /**
      * Whether each point in the line should be drawn. This allows us to
@@ -40,7 +40,7 @@ public final class FreehandLine extends Shape {
      * However, it's only a temporary fix; the line should later be optimized so
      * that points that shouldn't draw get removed instead.
      */
-    private List<Boolean> mShouldDraw = new ArrayList<Boolean>();
+    private final List<Boolean> mShouldDraw = new ArrayList<Boolean>();
 
     /**
      * Constructor.

@@ -21,12 +21,12 @@ public class MapDataDeserializer {
      * A buffer for tokens that we have peeked at. This allows us to look ahead
      * without consuming.
      */
-    private LinkedList<String> mPeekBuffer = new LinkedList<String>();
+    private final LinkedList<String> mPeekBuffer = new LinkedList<String>();
 
     /**
      * The reader to read from.
      */
-    private BufferedReader mReader;
+    private final BufferedReader mReader;
 
     /**
      * Constructor.

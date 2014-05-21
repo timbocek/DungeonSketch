@@ -1,11 +1,11 @@
 package com.tbocek.android.combatmap.model;
 
-import java.io.IOException;
-
 import android.graphics.Color;
 
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
+
+import java.io.IOException;
 
 /**
  * Stores a color scheme to use when drawing the grid.
@@ -74,17 +74,17 @@ public final class GridColorScheme {
     /**
      * The color to draw in the background.
      */
-    private int mBackgroundColor;
+    private final int mBackgroundColor;
 
     /**
      * Whether the color scheme has a dark background.
      */
-    private boolean mIsDark;
+    private final boolean mIsDark;
 
     /**
      * The color to draw grid lines with.
      */
-    private int mLineColor;
+    private final int mLineColor;
 
     /**
      * Reads and returns a color scheme from the given stream.

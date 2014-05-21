@@ -283,12 +283,12 @@ public final class Util {
         /**
          * The first intersection.
          */
-        private PointF mIntersection1;
+        private final PointF mIntersection1;
 
         /**
          * The second intersection.
          */
-        private PointF mIntersection2;
+        private final PointF mIntersection2;
 
         /**
          * Constructor.

@@ -49,42 +49,42 @@ public final class DrawOptionsView extends LinearLayout {
     /**
      * The width of the space that seperates tools and colors.
      */
-    private static final int SEPERATOR_WIDTH = 32;
+    private static final int SEPARATOR_WIDTH = 32;
 
     /**
      * Button that loads images onto the background. Should only show in
      * background mode.
      */
-    private ImageToggleButton mBackgroundImageButton;
+    private final ImageToggleButton mBackgroundImageButton;
 
     /**
      * A list of all buttons that select a color, so that they can be modified
      * as a group.
      */
-    private ToggleButtonGroup mColorGroup = new ToggleButtonGroup();
+    private final ToggleButtonGroup mColorGroup = new ToggleButtonGroup();
 
     /**
      * The layout that will hold drawing buttons.
      */
-    private LinearLayout mLayout;
+    private final LinearLayout mLayout;
 
     /**
      * List of all buttons that select line widths, so that they can be modified
      * as a group.
      */
-    private ToggleButtonGroup mLineWidthGroup = new ToggleButtonGroup();
+    private final ToggleButtonGroup mLineWidthGroup = new ToggleButtonGroup();
 
     /**
      * Line widths that do not make sense when using tools that don't support
      * drawing a region (like straight lines).
      */
-    private ToggleButtonGroup mLineWidthRegionGroup = new ToggleButtonGroup();
+    private final ToggleButtonGroup mLineWidthRegionGroup = new ToggleButtonGroup();
 
     /**
      * The button used to select the mask control. Needs to be stored because it
      * needs to be conditionally hidden.
      */
-    private ImageToggleButton mMaskButton;
+    private final ImageToggleButton mMaskButton;
 
     /**
      * Button used to select the Info tool (for placing on-map information hotspots).
@@ -102,12 +102,12 @@ public final class DrawOptionsView extends LinearLayout {
      * A list of all buttons that select a drawing tool, so that they can be
      * modified as a group.
      */
-    private ToggleButtonGroup mToolsGroup = new ToggleButtonGroup();
+    private final ToggleButtonGroup mToolsGroup = new ToggleButtonGroup();
 
     /**
      * A list of all drawing tools that are applicable when drawing masks.
      */
-    private ToggleButtonGroup mToolsInMaskGroup = new ToggleButtonGroup();
+    private final ToggleButtonGroup mToolsInMaskGroup = new ToggleButtonGroup();
 
     /**
      * Constructs a new DrawOptionsView.
@@ -419,7 +419,7 @@ public final class DrawOptionsView extends LinearLayout {
     protected void createAndAddSeperator() {
         ImageView seperator = new ImageView(this.getContext());
         seperator.setLayoutParams(new LinearLayout.LayoutParams(
-                SEPERATOR_WIDTH, LinearLayout.LayoutParams.MATCH_PARENT));
+                SEPARATOR_WIDTH, LinearLayout.LayoutParams.MATCH_PARENT));
         this.mLayout.addView(seperator);
     }
 
@@ -607,7 +607,7 @@ public final class DrawOptionsView extends LinearLayout {
         /**
          * The color that this listener will pick when fired.
          */
-        private int mColor;
+        private final int mColor;
 
         /**
          * Constructor.
@@ -794,7 +794,7 @@ public final class DrawOptionsView extends LinearLayout {
          * The line width that the drawing tool will be changed to when this
          * listener fires.
          */
-        private float mWidth;
+        private final float mWidth;
 
         /**
          * Constructor.

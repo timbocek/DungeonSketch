@@ -16,9 +16,9 @@ import com.tbocek.dungeonsketch.R;
 
 public class TokenDeploymentLineItem extends LinearLayout {
 
-	private Button mDecreaseButton;
-    private TextView mAmountTextView;
-	private ImageView mTokenImageView;
+	private final Button mDecreaseButton;
+    private final TextView mAmountTextView;
+	private final ImageView mTokenImageView;
 
 	private int mNumberToDeploy;
 

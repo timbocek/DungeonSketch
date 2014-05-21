@@ -1,12 +1,12 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.util.Set;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.tbocek.android.combatmap.TokenDatabase;
+
+import java.util.Set;
 
 /**
  * This token is meant to be replaced by another token after the token database
@@ -20,7 +20,7 @@ public class PlaceholderToken extends BaseToken {
     /**
      * The ID of the token that this is a placeholder for.
      */
-    private String mReplaceWith;
+    private final String mReplaceWith;
 
     /**
      * Constructor.

@@ -41,7 +41,7 @@ public final class LineCollection implements UndoRedoTarget {
     /**
      * Undo/Redo History.
      */
-    private CommandHistory mCommandHistory;
+    private final CommandHistory mCommandHistory;
 
     /**
      * The internal list of lines.
@@ -51,12 +51,12 @@ public final class LineCollection implements UndoRedoTarget {
     /**
      * Cache of lines that should be drawn above the grid.
      */
-    private List<Shape> mAboveGridLines = Lists.newArrayList();
+    private final List<Shape> mAboveGridLines = Lists.newArrayList();
     
     /**
      * Cache of lines that should be drawn below the grid.
      */
-    private List<Shape> mBelowGridLines = Lists.newArrayList();
+    private final List<Shape> mBelowGridLines = Lists.newArrayList();
 
     /**
      * Constructor allowing multiple line collections to share one undo/redo
@@ -556,17 +556,17 @@ public final class LineCollection implements UndoRedoTarget {
         /**
          * Lines created in this operation.
          */
-        private Collection<Shape> mCreated = new ArrayList<Shape>();
+        private final Collection<Shape> mCreated = new ArrayList<Shape>();
 
         /**
          * Lines deleted in this operation.
          */
-        private Collection<Shape> mDeleted = new ArrayList<Shape>();
+        private final Collection<Shape> mDeleted = new ArrayList<Shape>();
 
         /**
          * Collection of lines to modify.
          */
-        private LineCollection mLineCollection;
+        private final LineCollection mLineCollection;
 
         /**
          * Constructor.

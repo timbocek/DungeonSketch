@@ -64,7 +64,7 @@ public final class TokenManager extends ActionBarActivity {
     /**
      * The list of token buttons that are managed by this activity.
      */
-    private Collection<TokenButton> mButtons = Lists.newArrayList();
+    private final Collection<TokenButton> mButtons = Lists.newArrayList();
 
     /**
      * When a context menu for a tag is opened, stores the tag that the menu
@@ -81,7 +81,7 @@ public final class TokenManager extends ActionBarActivity {
      */
     private ActionMode mMultiSelectActionMode;
     
-    private TagNavigator.TagSelectedListener mTagSelectedListener = 
+    private final TagNavigator.TagSelectedListener mTagSelectedListener =
     		new TagNavigator.TagSelectedListener() {
 				@Override
 				public void onTagSelected(TagTreeNode selectedTag) {

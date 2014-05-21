@@ -1,19 +1,5 @@
 package com.tbocek.android.combatmap.about;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -31,8 +17,22 @@ import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.CombatMap;
 import com.tbocek.android.combatmap.TokenImageManager;
 import com.tbocek.android.combatmap.view.ListeningScrollView;
-import com.tbocek.dungeonsketch.R;
 import com.tbocek.android.combatmap.view.TokenButton;
+import com.tbocek.dungeonsketch.R;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Set;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Activity that loads and displays art credits for each built-in token.
@@ -160,7 +160,7 @@ public class ArtCredits extends Activity {
          * List that accumulates all token buttons created to display art
          * credits; can be used to load their images as a batch.
          */
-        private List<TokenButton> mCreatedTokenButtons = Lists.newArrayList();
+        private final List<TokenButton> mCreatedTokenButtons = Lists.newArrayList();
 
         /**
          * Name of the artist currently being parsed.

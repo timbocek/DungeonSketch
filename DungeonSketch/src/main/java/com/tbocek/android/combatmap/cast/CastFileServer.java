@@ -24,7 +24,7 @@ public class CastFileServer extends NanoHTTPD {
 
     public static final String JPEG_MIME_TYPE = "image/jpeg";
     private static final int JPEG_COMPRESSION = 60;
-    private Context mContext;
+    private final Context mContext;
 
     // TODO: need to cache this on disk for memory concerns, or is it OK to keep this jpg in
     // memory?
@@ -35,7 +35,7 @@ public class CastFileServer extends NanoHTTPD {
         void onImageFetched();
     }
 
-    private Listener mNullListener = new Listener() {
+    private final Listener mNullListener = new Listener() {
         @Override
         public void onNewImageAvailable() { }
 

@@ -21,9 +21,9 @@ public class TagTreeLineItem extends LinearLayout {
 	public static final int COLOR_SELECTED = Color.WHITE;
 	public static final int COLOR_DRAG_TARGET = Util.ICS_BLUE;
 	
-	TextView mName;
-	ImageView mHasChildren;
-	ImageView mIsSystem;
+	final TextView mName;
+	final ImageView mHasChildren;
+	final ImageView mIsSystem;
 	
 	TokenDatabase.TagTreeNode mTag;
 

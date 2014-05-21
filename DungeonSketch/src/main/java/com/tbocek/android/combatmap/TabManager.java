@@ -25,12 +25,12 @@ public class TabManager {
     /**
      * Action bar that provides the tabs.
      */
-    private ActionBar mActionBar;
+    private final ActionBar mActionBar;
 
     /**
      * The Android context this tab manager is operating in.
      */
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * The currently selected tab mode. A value < 0 is undefined (and will be
@@ -42,13 +42,13 @@ public class TabManager {
      * Reverse lookup so we know what tab to select when forced into an
      * interaction mode.
      */
-    private SparseArray<ActionBar.Tab> mManipulationModeTabs = new SparseArray<ActionBar.Tab>();
+    private final SparseArray<ActionBar.Tab> mManipulationModeTabs = new SparseArray<ActionBar.Tab>();
 
     /**
      * Whether each tab mode (identified by the integer code) requires GM screen
      * confirmation.
      */
-    private SparseBooleanArray modesForGm = new SparseBooleanArray();
+    private final SparseBooleanArray modesForGm = new SparseBooleanArray();
 
     /**
      * Listener that fires when a tab is selected.

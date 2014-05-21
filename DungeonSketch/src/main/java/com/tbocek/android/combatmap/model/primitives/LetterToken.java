@@ -1,12 +1,12 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This class represents a token that draws as a capital letter inside a circle.
@@ -31,7 +31,7 @@ public final class LetterToken extends BaseToken {
      * The letter to draw in the circle. While this could be anything, it should
      * really only be a single character.
      */
-    private String mLetter;
+    private final String mLetter;
 
     /**
      * Constructor.

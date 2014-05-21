@@ -43,20 +43,20 @@ public class ExportImageDialog extends Dialog {
     private static final int MAX_IMAGE_HEIGHT = 2048;
     private static final String TAG = "ExportImageDialog";
 
-    CheckBox mCheckAnnotations;
-    CheckBox mCheckFogOfWar;
-    CheckBox mCheckGmNotes;
-    CheckBox mCheckGridLines;
-    CheckBox mCheckTokens;
+    final CheckBox mCheckAnnotations;
+    final CheckBox mCheckFogOfWar;
+    final CheckBox mCheckGmNotes;
+    final CheckBox mCheckGridLines;
+    final CheckBox mCheckTokens;
     private MapData mData;
-    EditText mEditExportName;
-    Button mExportButton;
-    private TextView mExportSizeText;
+    final EditText mEditExportName;
+    final Button mExportButton;
+    private final TextView mExportSizeText;
     private int mExportHeight;
 
     private int mExportWidth;
-    RadioButton mRadioExportCurrentView;
-    RadioButton mRadioExportFullMap;
+    final RadioButton mRadioExportCurrentView;
+    final RadioButton mRadioExportFullMap;
 
     /**
      * Constructor.
@@ -267,7 +267,7 @@ public class ExportImageDialog extends Dialog {
 
     private class SetBooleanPreferenceHandler implements
             CompoundButton.OnCheckedChangeListener {
-        String mPreference;
+        final String mPreference;
 
         public SetBooleanPreferenceHandler(String preference) {
             this.mPreference = preference;

@@ -32,7 +32,7 @@ public class BackgroundImageCollection {
     /**
      * List of managed images.
      */
-    private List<BackgroundImage> mImages = Lists.newArrayList();
+    private final List<BackgroundImage> mImages = Lists.newArrayList();
 
     private ModifyImageCommand mCheckpointedImageCommand;
 
@@ -166,7 +166,7 @@ public class BackgroundImageCollection {
         /**
          * The image added by this command.
          */
-        private BackgroundImage mImage;
+        private final BackgroundImage mImage;
 
         /**
          * Constructor.
@@ -203,7 +203,7 @@ public class BackgroundImageCollection {
         /**
          * The image added by this command.
          */
-        private BackgroundImage mImage;
+        private final BackgroundImage mImage;
 
         /**
          * Constructor.

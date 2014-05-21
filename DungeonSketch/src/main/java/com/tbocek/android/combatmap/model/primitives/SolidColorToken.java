@@ -1,13 +1,13 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.text.DecimalFormat;
-import java.util.HashSet;
-import java.util.Set;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+
+import java.text.DecimalFormat;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A built-in token type that draws as a solid color.
@@ -42,13 +42,13 @@ public final class SolidColorToken extends BaseToken {
     /**
      * This token's color.
      */
-    private int mColor;
+    private final int mColor;
 
     /**
      * A sort order for the token, since sorting on color does not produce a
      * pleasing ordering to the tokens.
      */
-    private int mSortOrder;
+    private final int mSortOrder;
 
     /**
      * Constructor.

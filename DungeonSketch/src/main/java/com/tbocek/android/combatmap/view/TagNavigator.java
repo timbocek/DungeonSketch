@@ -71,7 +71,7 @@ public class TagNavigator extends ScrollView {
      */
     private boolean mMarkSystemTags = true;
 	
-	private List<TagTreeLineItem> mTagItems = Lists.newArrayList();
+	private final List<TagTreeLineItem> mTagItems = Lists.newArrayList();
 	
 	/**
 	 * The tag that was selected when a drag and drop operation started.
@@ -304,7 +304,7 @@ public class TagNavigator extends ScrollView {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private class OnDragListener implements View.OnDragListener {
-        private Handler mLongDragHandler = new Handler();
+        private final Handler mLongDragHandler = new Handler();
         
         
         private class LongDragRunnable implements Runnable {
@@ -315,7 +315,7 @@ public class TagNavigator extends ScrollView {
 			}
         	
         }
-        private LongDragRunnable mLongDragRunnable = new LongDragRunnable();
+        private final LongDragRunnable mLongDragRunnable = new LongDragRunnable();
         
 		@Override
 		public boolean onDrag(View v, DragEvent event) {

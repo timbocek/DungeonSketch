@@ -28,12 +28,12 @@ public final class TokenStackDragShadow extends View.DragShadowBuilder {
     /**
      * The radius of a single token.
      */
-    private int mTokenRadius;
+    private final int mTokenRadius;
 
     /**
      * The tokens to display.
      */
-    private Collection<BaseToken> mTokens;
+    private final Collection<BaseToken> mTokens;
 
     /**
      * Constructor.

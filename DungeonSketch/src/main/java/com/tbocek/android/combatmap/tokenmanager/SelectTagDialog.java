@@ -11,7 +11,7 @@ import com.tbocek.dungeonsketch.R;
 
 public class SelectTagDialog extends Dialog {
 
-	private TagNavigator mTagNavigator;
+	private final TagNavigator mTagNavigator;
 
     public SelectTagDialog(Context context) {
 		super(context);

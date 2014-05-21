@@ -26,17 +26,17 @@ public final class BuiltInImageToken extends DrawableToken {
     /**
      * Tags loaded for this built-in token.
      */
-    private Set<String> mDefaultTags;
+    private final Set<String> mDefaultTags;
 
     /**
      * The name of the resource to load for this token.
      */
-    private String mResourceName;
+    private final String mResourceName;
 
     /**
      * Relative order to sort this token in.
      */
-    private int mSortOrder;
+    private final int mSortOrder;
 
     /**
      * Constructor from resource ID.

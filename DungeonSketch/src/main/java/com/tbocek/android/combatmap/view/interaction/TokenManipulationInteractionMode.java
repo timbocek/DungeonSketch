@@ -40,7 +40,7 @@ public final class TokenManipulationInteractionMode extends
     /**
      * Rectangle in which to draw the trash can.
      */
-    private Rect mTrashCanRect;
+    private final Rect mTrashCanRect;
 
     /**
      * Length of the trash can fade in, in ms.
@@ -90,12 +90,12 @@ public final class TokenManipulationInteractionMode extends
     /**
      * The tokens being moved.
      */
-    private Collection<BaseToken> mMovedTokens = Lists.newArrayList();
+    private final Collection<BaseToken> mMovedTokens = Lists.newArrayList();
     
     /**
      * Collection of ghost tokens to draw when moving a group of tokens.
      */
-    private Collection<BaseToken> mUnmovedTokens = Lists.newArrayList();
+    private final Collection<BaseToken> mUnmovedTokens = Lists.newArrayList();
 
     /**
      * Animated alpha value to use for the trash can; allows it to fade in and

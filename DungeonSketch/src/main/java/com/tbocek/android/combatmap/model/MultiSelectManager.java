@@ -1,11 +1,11 @@
 package com.tbocek.android.combatmap.model;
 
-import java.util.Collection;
-import java.util.Set;
-
 import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.BoundingRectangle;
+
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * This class tracks a selection of multiple tokens in a way that each token
@@ -19,7 +19,7 @@ public final class MultiSelectManager {
      * The selected tokens. Maps original object hash code to token (the default
      * token implementation hashes on TokenID, which isn't good enough for us).
      */
-    private Set<BaseToken> mSelection = Sets.newHashSet();
+    private final Set<BaseToken> mSelection = Sets.newHashSet();
 
     /**
      * The callback to use when the selection is modified.

@@ -18,7 +18,7 @@ public class MeasuringTapeInteractionMode extends BaseDrawInteractionMode {
 	private boolean measuring = false;
 	private float mLastPointX;
 	private float mLastPointY;
-	private Paint mPaint;
+	private final Paint mPaint;
 	public MeasuringTapeInteractionMode(CombatView view) {
 		super(view);
 		mPaint = new Paint();

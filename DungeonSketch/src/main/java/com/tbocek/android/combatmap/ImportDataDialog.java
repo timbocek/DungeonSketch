@@ -47,7 +47,7 @@ public class ImportDataDialog extends RoboActivity {
     @InjectView(tag="button_import") Button buttonImport;
     @InjectView(tag="spinner_import_data") ProgressBar spinner;
 
-    Map<File, RadioButton> mImportOptions =
+    final Map<File, RadioButton> mImportOptions =
             new HashMap<File, RadioButton>();
     
     @Override
@@ -255,8 +255,5 @@ public class ImportDataDialog extends RoboActivity {
         }
     }
     
-    ImportFilesTask mImportFilesTask = new ImportFilesTask();
-
-
-
+    final ImportFilesTask mImportFilesTask = new ImportFilesTask();
 }

@@ -49,7 +49,7 @@ public final class Load extends Activity {
     /**
      * Listener that creates a menu to delete the given save file.
      */
-    private View.OnCreateContextMenuListener mContextMenuListener =
+    private final View.OnCreateContextMenuListener mContextMenuListener =
             new View.OnCreateContextMenuListener() {
         @Override
         public void onCreateContextMenu(final ContextMenu menu,
@@ -255,12 +255,11 @@ public final class Load extends Activity {
      * @author Tim Bocek
      * 
      */
-    public final class SaveFileButtonClickListener implements
-    View.OnClickListener {
+    public final class SaveFileButtonClickListener implements View.OnClickListener {
         /**
          * Filename that this listener instance will load when it fires.
          */
-        private String mFilename;
+        private final String mFilename;
 
         /**
          * Constructor.

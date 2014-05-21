@@ -29,7 +29,7 @@ import java.util.List;
 public final class TokenSelectorView extends LinearLayout {
     private final HorizontalListView mTokenLayout;
     private final int mTokenButtonDim;
-    private Button mGroupSelector;
+    private final Button mGroupSelector;
 
 
     private OnTokenSelectedListener mOnTokenSelectedListener;

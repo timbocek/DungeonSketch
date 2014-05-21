@@ -59,7 +59,7 @@ public final class TokenCreatorView extends View {
     /**
      * Detector that will allow the user to move the candidate circle.
      */
-    private GestureDetector mGestureDetector;
+    private final GestureDetector mGestureDetector;
 
     /**
      * Whether a circle has been drawn on the loaded token yet.
@@ -70,7 +70,7 @@ public final class TokenCreatorView extends View {
      * Gesture listener that moves the candidate circle when the user scrolls.
      */
     @SuppressWarnings("FieldCanBeLocal")
-    private SimpleOnGestureListener mOnGesture = new SimpleOnGestureListener() {
+    private final SimpleOnGestureListener mOnGesture = new SimpleOnGestureListener() {
         @Override
         public boolean onScroll(final MotionEvent e1, final MotionEvent e2,
                 final float distanceX, final float distanceY) {
@@ -86,7 +86,7 @@ public final class TokenCreatorView extends View {
      * zooms.
      */
     @SuppressWarnings("FieldCanBeLocal")
-    private SimpleOnScaleGestureListener mOnScaleGesture =
+    private final SimpleOnScaleGestureListener mOnScaleGesture =
             new SimpleOnScaleGestureListener() {
                 @Override
                 public boolean onScale(final ScaleGestureDetector detector) {
@@ -104,7 +104,7 @@ public final class TokenCreatorView extends View {
      * Detector that will allow the user to pinch zoom to resize the candidate
      * circle.
      */
-    private ScaleGestureDetector mScaleDetector;
+    private final ScaleGestureDetector mScaleDetector;
 
     /**
      * Constructor.

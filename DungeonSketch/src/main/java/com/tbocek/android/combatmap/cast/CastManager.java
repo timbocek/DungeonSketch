@@ -59,7 +59,7 @@ public class CastManager {
     private MediaRouter mMediaRouter;
     private MediaRouteSelector mMediaRouteSelector;
     private CastDevice mSelectedDevice;
-    private Context mContext;
+    private final Context mContext;
     private GoogleApiClient mApiClient;
     private boolean mWaitingForReconnect;
     private boolean mApplicationStarted;
@@ -116,7 +116,7 @@ public class CastManager {
         return mMediaRouteSelector;
     }
 
-    private MediaRouter.Callback mMediaRouterCallback = new MediaRouter.Callback() {
+    private final MediaRouter.Callback mMediaRouterCallback = new MediaRouter.Callback() {
 
         @Override
         public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
@@ -148,7 +148,7 @@ public class CastManager {
     };
 
     private boolean mCasting;
-    private GoogleApiClient.ConnectionCallbacks mConnectionCallbacks = new
+    private final GoogleApiClient.ConnectionCallbacks mConnectionCallbacks = new
             GoogleApiClient.ConnectionCallbacks() {
         @Override
         public void onConnected(Bundle connectionHint) {
@@ -213,7 +213,7 @@ public class CastManager {
         }
     }
 
-    private GoogleApiClient.OnConnectionFailedListener mConnectionFailedListener = new
+    private final GoogleApiClient.OnConnectionFailedListener mConnectionFailedListener = new
     GoogleApiClient.OnConnectionFailedListener() {
         @Override
         public void onConnectionFailed(ConnectionResult result) {
@@ -268,7 +268,7 @@ public class CastManager {
         return mCasting;
     }
 
-    Cast.Listener mCastClientListener = new Cast.Listener() {
+    final Cast.Listener mCastClientListener = new Cast.Listener() {
         @Override
         public void onApplicationStatusChanged() {
             if (mApiClient != null) {
@@ -302,7 +302,7 @@ public class CastManager {
         }
     }
 
-    private CastFileServer.Listener mCastFileServerListener = new CastFileServer.Listener() {
+    private final CastFileServer.Listener mCastFileServerListener = new CastFileServer.Listener() {
         @Override
         public void onNewImageAvailable() {
             if (isCasting() && !mRequestSent) {
@@ -314,7 +314,7 @@ public class CastManager {
         public void onImageFetched() { }
     };
 
-    RemoteMediaPlayer mRemoteMediaPlayer = new RemoteMediaPlayer();
+    final RemoteMediaPlayer mRemoteMediaPlayer = new RemoteMediaPlayer();
 
     public void setCallback(Callback callback) {
         mCallback = callback;
