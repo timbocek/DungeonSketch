@@ -17,6 +17,8 @@ import java.util.Map;
 import fi.iki.elonen.NanoHTTPD;
 
 /**
+ * Encapsulates a small HTTP server used to make a snapshot of the current state available to the
+ * cast receiver.
  * Created by tbocek on 4/29/14.
  */
 public class CastFileServer extends NanoHTTPD {
