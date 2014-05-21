@@ -34,7 +34,7 @@ public abstract class TokenListAdapter extends ArrayAdapter<BaseToken> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final BaseToken prototype = this.getItem(position);
-        TokenImageManager mgr = TokenImageManager.getInstance(getContext());
+        TokenImageManager mgr = TokenImageManager.getInstance();
         if (convertView != null) {
             TokenButton oldTokenButton = ((TokenButton)convertView);
             if (oldTokenButton.getTokenId() != null) {

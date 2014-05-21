@@ -38,14 +38,8 @@ public class TokenImageManager {
     private static TokenImageManager mInstance;
 
     public static TokenImageManager getInstance() {
-        if (mInstance == null) throw new RuntimeException("No token image manager instance");
-        return mInstance;
-    }
-
-    public static TokenImageManager getInstance(Context context) {
-        context = context.getApplicationContext();
         if (mInstance == null) {
-            mInstance = new TokenImageManager(context);
+            mInstance = new TokenImageManager();
             mInstance.initializePool(INITIAL_POOL_SIZE);
         }
         return mInstance;
@@ -58,9 +52,9 @@ public class TokenImageManager {
     public static class Loader extends HandlerThread {
         private static final int MESSAGE_LOAD = 0;
         Handler mHandler;
-        Handler mResponseHandler;
-        Context mContext;
-        Map<String, Callback> mCallbacks = new HashMap<String, Callback>();
+        final Handler mResponseHandler;
+        final Context mContext;
+        final Map<String, Callback> mCallbacks = new HashMap<String, Callback>();
 
         public Loader(Context context, Handler responseHandler) {
             super("TokenImageManager.Loader");
@@ -82,7 +76,7 @@ public class TokenImageManager {
 
         private void handleRequest(final String tokenId) {
             //TODO: actually recycle bitmaps
-            TokenImageManager mgr = TokenImageManager.getInstance(mContext);
+            TokenImageManager mgr = TokenImageManager.getInstance();
             TokenDatabase db = TokenDatabase.getInstanceOrNull();
             // If this token has been loaded since the request was created, just increase
             // the ref count.
@@ -94,7 +88,7 @@ public class TokenImageManager {
                 TokenImageWrapper w = mgr.getUnusedImage();
                 Bitmap b = token.loadBitmap(w.mImage);
                 w.mImage = b;
-                w.mDrawable = new BitmapDrawable(b);
+                w.mDrawable = new BitmapDrawable(mContext.getResources(), b);
                 w.mToken = token;
                 mgr.mCurrentImages.put(tokenId, w);
             }
@@ -202,13 +196,10 @@ public class TokenImageManager {
         }
     }
 
-    LinkedList<TokenImageWrapper> mRecycledImages = Lists.newLinkedList();
-    Map<String, TokenImageWrapper> mCurrentImages =  Maps.newHashMap();
-    private Context mContext;
+    private final LinkedList<TokenImageWrapper> mRecycledImages = Lists.newLinkedList();
+    private Map<String, TokenImageWrapper> mCurrentImages =  Maps.newHashMap();
 
-    private TokenImageManager(Context context) {
-        mContext = context;
-    }
+    private TokenImageManager() { }
 
     public synchronized void requireTokenImages(Collection<String> tokens, Loader loader, MultiLoadCallback callback) {
         callback.setTokens(tokens);
@@ -237,13 +228,6 @@ public class TokenImageManager {
         }
     }
 
-    public Bitmap getTokenImage(String tokenId) {
-        if (mCurrentImages.containsKey(tokenId)) {
-            return mCurrentImages.get(tokenId).getImage();
-        }
-        return null;
-    }
-
     public Drawable getTokenDrawable(String tokenId) {
         if (mCurrentImages.containsKey(tokenId)) {
             return mCurrentImages.get(tokenId).getDrawable();
@@ -262,7 +246,7 @@ public class TokenImageManager {
     private synchronized TokenImageWrapper getUnusedImage() {
         TokenImageWrapper newImageWrapper = null;
 
-        // Remove images from the pool until we find one that is *actually* unsused
+        // Remove images from the pool until we find one that is *actually* unused
         // or the pool is empty.
         //noinspection StatementWithEmptyBody
         while (!mRecycledImages.isEmpty() &&

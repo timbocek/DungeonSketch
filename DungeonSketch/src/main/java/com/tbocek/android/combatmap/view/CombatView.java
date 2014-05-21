@@ -1248,7 +1248,7 @@ public final class CombatView extends SurfaceView {
         }
 
         if (!toLoad.isEmpty()) {
-            TokenImageManager.getInstance(getContext()).requireTokenImages(toLoad, mLoader,
+            TokenImageManager.getInstance().requireTokenImages(toLoad, mLoader,
                     new TokenImageManager.MultiLoadCallback() {
                         @Override
                         protected void imagesLoaded(Collection<String> tokenIds) {

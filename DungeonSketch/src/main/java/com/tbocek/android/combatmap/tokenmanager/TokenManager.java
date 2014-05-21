@@ -524,7 +524,7 @@ public final class TokenManager extends ActionBarActivity {
         super.onDestroy();
         mLoader.quit();
         mLoader.clearQueue();
-        TokenImageManager.getInstance(this).recycleAll();
+        TokenImageManager.getInstance().recycleAll();
     }
 
     @Override

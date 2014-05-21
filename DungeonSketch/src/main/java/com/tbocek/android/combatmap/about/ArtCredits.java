@@ -193,7 +193,7 @@ public class ArtCredits extends Activity {
         Set<String> newVisibleIds = Sets.newHashSet();
         int height = this.getWindowManager().getDefaultDisplay().getHeight();
         int location[] = new int[2];
-        TokenImageManager mgr = TokenImageManager.getInstance(this);
+        TokenImageManager mgr = TokenImageManager.getInstance();
         // Determine if each token is on screen.  Load images for only the ones that are.
         for (final TokenButton b: mTokenButtons) {
             b.getLocationOnScreen(location);
