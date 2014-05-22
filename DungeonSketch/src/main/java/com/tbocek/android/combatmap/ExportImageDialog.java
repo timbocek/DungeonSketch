@@ -52,8 +52,9 @@ public class ExportImageDialog extends Dialog {
     final EditText mEditExportName;
     final Button mExportButton;
     private final TextView mExportSizeText;
+    private final TextView mExportRowsText;
+    private final TextView mExportColsText;
     private int mExportHeight;
-
     private int mExportWidth;
     final RadioButton mRadioExportCurrentView;
     final RadioButton mRadioExportFullMap;
@@ -89,6 +90,10 @@ public class ExportImageDialog extends Dialog {
 
         this.mExportSizeText =
                 (TextView) this.findViewById(R.id.text_export_size);
+        this.mExportRowsText =
+                (TextView) this.findViewById(R.id.text_export_rows_advisory);
+        this.mExportColsText =
+                (TextView) this.findViewById(R.id.text_export_cols_advisory);
 
         this.associateControl(this.mRadioExportFullMap, "export_full_map", true);
         this.associateControl(this.mRadioExportCurrentView,
@@ -137,6 +142,26 @@ public class ExportImageDialog extends Dialog {
         mExportSizeText.setText(
                 "Exported image will be " + Integer.toString(exportSize.x) +
                         " x " + Integer.toString(exportSize.y));
+
+        Point numExportedImages = getNumExportImages();
+        if (numExportedImages.x > 1) {
+            mExportColsText.setVisibility(View.VISIBLE);
+            mExportColsText.setText(
+                "Image will be split into " + Integer.toString(numExportedImages.x) + " columns."
+            );
+        } else {
+            mExportColsText.setVisibility(View.GONE);
+
+        }
+        if (numExportedImages.y > 1) {
+            mExportRowsText.setVisibility(View.VISIBLE);
+            mExportRowsText.setText(
+                    "Image will be split into " + Integer.toString(numExportedImages.y) + " rows."
+            );
+        } else {
+            mExportRowsText.setVisibility(View.GONE);
+
+        }
     }
 
     /**
