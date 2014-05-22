@@ -3,6 +3,7 @@ package com.tbocek.android.combatmap.tokenmanager;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.util.AttributeSet;
 import android.view.View;
 
 import com.tbocek.android.combatmap.model.MultiSelectManager;
@@ -31,6 +32,24 @@ public final class MultiSelectTokenButton extends TokenButton {
      * Whether this token is currently selected.
      */
     private boolean mSelected;
+
+    /**
+     * Constructor for tools
+     * @param context The context to create this view in.
+     */
+    public MultiSelectTokenButton(final Context context) {
+        this(context, (BaseToken)null, (MultiSelectManager)null);
+    }
+
+
+    /**
+     * Constructor for tools
+     * @param context The context to create this view in.
+     */
+    @SuppressWarnings("UnusedDeclaration") // Used by tools
+    public MultiSelectTokenButton(final Context context, final AttributeSet attrs) {
+        this(context);
+    }
 
     /**
      * Constructor.

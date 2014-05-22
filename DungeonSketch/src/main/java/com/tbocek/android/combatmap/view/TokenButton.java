@@ -3,7 +3,10 @@ package com.tbocek.android.combatmap.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Build;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -25,6 +28,8 @@ import javax.annotation.Nonnull;
 public class TokenButton extends ImageView {
 
     private static final String TAG = "TokenButton";
+
+    private static Paint mNullTokenPaint = null;
 
     public interface TokenSelectedListener {
         void OnTokenSelected(BaseToken token);
@@ -88,6 +93,25 @@ public class TokenButton extends ImageView {
     private BaseToken mPrototype;
 
     /**
+     * Constructor for tools
+     * @param context The context to create this view in.
+     */
+    public TokenButton(final Context context) {
+        this(context, (BaseToken)null);
+    }
+
+
+    /**
+     * Constructor for tools
+     * @param context The context to create this view in.
+     */
+    @SuppressWarnings("UnusedDeclaration") // Used by tools
+    public TokenButton(final Context context, final AttributeSet attrs) {
+        this(context);
+    }
+
+
+    /**
      * Constructor.
      * 
      * @param context
@@ -105,6 +129,11 @@ public class TokenButton extends ImageView {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
+        if (mNullTokenPaint == null) {
+            mNullTokenPaint = new Paint();
+            mNullTokenPaint.setColor(Color.BLACK);
         }
     }
 
@@ -161,9 +190,14 @@ public class TokenButton extends ImageView {
 
     @Override
     public void onDraw(final @Nonnull Canvas c) {
-        this.mPrototype.draw(c, (float) this.getWidth() / 2,
-                (float) this.getHeight() / 2, this.getTokenRadius(),
-                this.mDrawDark, true);
+        if (mPrototype != null) {
+            this.mPrototype.draw(c, (float) this.getWidth() / 2,
+                    (float) this.getHeight() / 2, this.getTokenRadius(),
+                    this.mDrawDark, true);
+        } else {
+            c.drawCircle((float) this.getWidth() / 2,
+                    (float) this.getHeight() / 2, this.getTokenRadius(), mNullTokenPaint);
+        }
     }
 
     /**
