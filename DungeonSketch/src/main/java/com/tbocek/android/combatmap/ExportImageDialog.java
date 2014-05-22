@@ -43,21 +43,23 @@ public class ExportImageDialog extends Dialog {
     private static final int MAX_IMAGE_HEIGHT = 2048;
     private static final String TAG = "ExportImageDialog";
 
-    final CheckBox mCheckAnnotations;
-    final CheckBox mCheckFogOfWar;
-    final CheckBox mCheckGmNotes;
-    final CheckBox mCheckGridLines;
-    final CheckBox mCheckTokens;
     private MapData mData;
-    final EditText mEditExportName;
-    final Button mExportButton;
+
+    private int mExportHeight;
+    private int mExportWidth;
+
+    private final CheckBox mCheckAnnotations;
+    private final CheckBox mCheckFogOfWar;
+    private final CheckBox mCheckGmNotes;
+    private final CheckBox mCheckGridLines;
+    private final CheckBox mCheckTokens;
+    private final EditText mEditExportName;
+    private final Button mExportButton;
     private final TextView mExportSizeText;
     private final TextView mExportRowsText;
     private final TextView mExportColsText;
-    private int mExportHeight;
-    private int mExportWidth;
-    final RadioButton mRadioExportCurrentView;
-    final RadioButton mRadioExportFullMap;
+    private final RadioButton mRadioExportCurrentView;
+    private final RadioButton mRadioExportFullMap;
 
     /**
      * Constructor.
@@ -197,7 +199,6 @@ public class ExportImageDialog extends Dialog {
 
     /**
      * Exports the image using the settings set up in this activity.
-     * @throws IOException if the export failed.
      */
     private void export() {
         final boolean exportCurrentView = mRadioExportCurrentView.isChecked();
