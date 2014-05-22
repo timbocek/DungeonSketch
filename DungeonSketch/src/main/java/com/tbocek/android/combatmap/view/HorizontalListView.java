@@ -26,7 +26,8 @@ package com.tbocek.android.combatmap.view;
  * THE SOFTWARE.
  *
  */
-        import android.content.Context;
+
+import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -40,6 +41,8 @@ import android.widget.Scroller;
 
 import java.util.LinkedList;
 import java.util.Queue;
+
+import javax.annotation.Nonnull;
 
 public class HorizontalListView extends AdapterView<ListAdapter> {
 
@@ -285,7 +288,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
+    public boolean dispatchTouchEvent(@Nonnull MotionEvent ev) {
         boolean handled = super.dispatchTouchEvent(ev);
         handled |= mGesture.onTouchEvent(ev);
         return handled;

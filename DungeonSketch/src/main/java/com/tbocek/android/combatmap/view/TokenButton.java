@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Build;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
+
+import javax.annotation.Nonnull;
 
 /**
  * Represents a button that contains a prototype for a token. Draws the button
@@ -20,6 +23,8 @@ import com.tbocek.android.combatmap.model.primitives.BaseToken;
  * 
  */
 public class TokenButton extends ImageView {
+
+    private static final String TAG = "TokenButton";
 
     public interface TokenSelectedListener {
         void OnTokenSelected(BaseToken token);
@@ -117,7 +122,12 @@ public class TokenButton extends ImageView {
      * @return A clone of the token.
      */
     public final BaseToken getClone() {
-        return this.mPrototype.clone();
+        try {
+            return this.mPrototype.clone();
+        } catch (CloneNotSupportedException e) {
+            Log.e(TAG, "Failed to clone token", e);
+            return null;
+        }
     }
 
     /**
@@ -150,7 +160,7 @@ public class TokenButton extends ImageView {
     }
 
     @Override
-    public void onDraw(final Canvas c) {
+    public void onDraw(final @Nonnull Canvas c) {
         this.mPrototype.draw(c, (float) this.getWidth() / 2,
                 (float) this.getHeight() / 2, this.getTokenRadius(),
                 this.mDrawDark, true);
@@ -161,12 +171,16 @@ public class TokenButton extends ImageView {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void onStartDrag() {
-        this.startDrag(null, new View.DragShadowBuilder(TokenButton.this),
-                this.mPrototype.clone(), 0);
+        try {
+            this.startDrag(null, new DragShadowBuilder(TokenButton.this),
+                    this.mPrototype.clone(), 0);
+        } catch (CloneNotSupportedException e) {
+            Log.e(TAG, "Clone failed when starting drag", e);
+        }
     }
 
     @Override
-    public boolean onTouchEvent(final MotionEvent ev) {
+    public boolean onTouchEvent(final @Nonnull MotionEvent ev) {
         this.mGestureDetector.onTouchEvent(ev);
         return super.onTouchEvent(ev);
     }

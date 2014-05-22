@@ -8,6 +8,8 @@ import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
+import javax.annotation.Nonnull;
+
 /**
  * An ImageButton that stores a toggled state, and allows the toggle to be set.
  * The toggle is not intrinsically set by any logic in the button; client code
@@ -74,7 +76,7 @@ public final class ImageToggleButton extends ImageButton {
     }
 
     @Override
-    public void onDraw(final Canvas c) {
+    public void onDraw(final @Nonnull Canvas c) {
         super.onDraw(c);
 
         if (this.mToggled) {

@@ -20,6 +20,8 @@ import android.view.View;
 
 import com.tbocek.android.combatmap.model.primitives.PointF;
 
+import javax.annotation.Nonnull;
+
 /**
  * This view is the main rendering and manipulation logic for the token creator
  * activity.
@@ -316,7 +318,7 @@ public final class TokenCreatorView extends View {
     }
 
     @Override
-    public boolean onTouchEvent(final MotionEvent ev) {
+    public boolean onTouchEvent(final @Nonnull MotionEvent ev) {
         // Forward touch events to the gesture detectors.
         this.mGestureDetector.onTouchEvent(ev);
         this.mScaleDetector.onTouchEvent(ev);

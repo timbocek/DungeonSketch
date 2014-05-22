@@ -10,6 +10,8 @@ import com.tbocek.android.combatmap.model.primitives.BaseToken;
 
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+
 /**
  * This drag shadow draws the given collection of tokens as a stack. It is used
  * to display tokens when dragged and dropped as a group.
@@ -54,7 +56,7 @@ public final class TokenStackDragShadow extends View.DragShadowBuilder {
     /**
      * Draws up to five tokens, offset.
      */
-    public void onDrawShadow(final Canvas canvas) {
+    public void onDrawShadow(final @Nonnull Canvas canvas) {
         int displayedTokens =
                 Math.min(this.mTokens.size(), MAX_DISPLAYED_TOKENS);
         int tokenDiameter = canvas.getWidth() / 2;
@@ -89,12 +91,10 @@ public final class TokenStackDragShadow extends View.DragShadowBuilder {
      * Drag shadow should always be twice the size of a token, with the finger
      * location in the middle of the first displayed token.
      */
-    public void onProvideShadowMetrics(final Point shadowSize,
-            final Point shadowTouchPoint) {
-        // CHECKSTYLE:OFF
+    public void onProvideShadowMetrics(final @Nonnull Point shadowSize,
+            final @Nonnull Point shadowTouchPoint) {
         shadowSize.x = this.mTokenRadius * 4;
         shadowSize.y = this.mTokenRadius * 4;
-        // CHECKSTYLE:ON
         shadowTouchPoint.x = this.mTokenRadius;
         shadowTouchPoint.y = this.mTokenRadius;
     }
