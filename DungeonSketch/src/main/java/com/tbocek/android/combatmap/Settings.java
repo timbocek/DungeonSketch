@@ -18,17 +18,14 @@ import com.tbocek.dungeonsketch.R;
  * @author Tim Bocek
  * 
  */
+// Because there is no PreferenceFragment in the compatibility libraries.
+@SuppressWarnings("deprecation")
 public final class Settings extends PreferenceActivity {
 
     /**
      * ID for the about dialog.
      */
     public static final int DIALOG_ID_ABOUT = 0;
-
-    /**
-     * ID for the migrate data dialog.
-     */
-    public static final int DIALOG_ID_MIGRATE_DATA = 1;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
