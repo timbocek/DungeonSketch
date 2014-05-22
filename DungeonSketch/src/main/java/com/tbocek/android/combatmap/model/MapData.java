@@ -406,16 +406,6 @@ public final class MapData {
     public void setGrid(final Grid grid) {
         this.mGrid = grid;
     }
-
-    /**
-     * Sets whether to lock map attributes.
-     * 
-     * @param locked
-     *            True if map attributes are locked, False otherwise.
-     */
-    public void setMapAttributesLocked(boolean locked) {
-        this.mMapAttributesLocked = locked;
-    }
     
     public void setLastTag(String lastTag) {
     	mLastTag = lastTag;

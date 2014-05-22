@@ -39,11 +39,7 @@ public final class CustomBitmapToken extends DrawableToken {
 
     @Override
     public Bitmap loadBitmap(Bitmap existingBuffer) {
-        try {
-            return dataManager.loadTokenImage(this.mFilename, existingBuffer);
-        } catch (IOException e) {
-            return null;
-        }
+        return dataManager.loadTokenImage(this.mFilename, existingBuffer);
     }
 
     @Override
@@ -81,7 +77,7 @@ public final class CustomBitmapToken extends DrawableToken {
     }
 
     @Override
-    public boolean maybeDeletePermanently() throws IOException {
+    public boolean maybeDeletePermanently() {
         dataManager.deleteTokenImage(this.mFilename);
         return true;
     }

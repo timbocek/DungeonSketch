@@ -1,6 +1,7 @@
 package com.tbocek.android.combatmap.model;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.google.common.collect.Lists;
 import com.tbocek.android.combatmap.TokenDatabase;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 public final class TokenCollection implements UndoRedoTarget {
 
+    private static final String TAG = "TokenCollection";
     /**
      * Command that is checkpointed to while modifying a token, so that the
      * state can be saved for undo/redo.
@@ -57,7 +59,11 @@ public final class TokenCollection implements UndoRedoTarget {
      */
     public TokenCollection(TokenCollection copyFrom) {
         for (BaseToken t: mTokens) {
-            mTokens.add(t.clone());
+            try {
+                mTokens.add(t.clone());
+            } catch (CloneNotSupportedException e) {
+                Log.e(TAG, "Clone failed in copy operation", e);
+            }
         }
     }
 
@@ -438,6 +444,7 @@ public final class TokenCollection implements UndoRedoTarget {
      */
     private static class ModifyTokenCommand implements CommandHistory.Command {
 
+        private static final String TAG = "ModifyTokenCommand";
         /**
          * State of the token after modification.
          */
@@ -469,7 +476,11 @@ public final class TokenCollection implements UndoRedoTarget {
          */
         public void checkpointAfterState() {
             for (BaseToken t : this.mTokensToModify) {
-                this.mAfterState.add(t.clone());
+                try {
+                    this.mAfterState.add(t.clone());
+                } catch (CloneNotSupportedException e) {
+                    Log.e(TAG, "Clone failed when checkpointing state", e);
+                }
             }
         }
 
@@ -478,7 +489,11 @@ public final class TokenCollection implements UndoRedoTarget {
          */
         public void checkpointBeforeState() {
             for (BaseToken t : this.mTokensToModify) {
-                this.mBeforeState.add(t.clone());
+                try {
+                    this.mBeforeState.add(t.clone());
+                } catch (CloneNotSupportedException e) {
+                    Log.e(TAG, "Clone failed when checkpointing state", e);
+                }
             }
         }
 

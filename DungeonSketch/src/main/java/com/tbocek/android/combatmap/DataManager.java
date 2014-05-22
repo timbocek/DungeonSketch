@@ -259,10 +259,8 @@ public final class DataManager {
             FileInputStream s = new FileInputStream(f);
             MapData.loadFromStream(s, TokenDatabase.getInstanceOrNull());
             s.close();
-            MapData.getInstance().setMapAttributesLocked(true);
         } else if (name.equals(TEMP_MAP_NAME)) {
             MapData.clear();
-            MapData.getInstance().setMapAttributesLocked(false);
         }
     }
 

@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.google.common.collect.Lists;
@@ -31,6 +32,8 @@ import java.util.Collection;
  */
 public final class TokenManipulationInteractionMode extends
         ZoomPanInteractionMode {
+    private static final String TAG = "TokenManipulationInteractionMode";
+
     /**
      * Distance in screen space that a token needs to be away from a snap point
      * until it will snap.
@@ -291,7 +294,11 @@ public final class TokenManipulationInteractionMode extends
             this.fadeTrashCanIn();
             
             for (BaseToken t: this.mMovedTokens) {
-            	this.mUnmovedTokens.add(t.clone());
+                try {
+                    this.mUnmovedTokens.add(t.clone());
+                } catch (CloneNotSupportedException e1) {
+                    Log.e(TAG, "Could not clone token", e1);
+                }
             }
             this.mLastSnappedLocation = this.mCurrentToken.getLocation();
         } else {

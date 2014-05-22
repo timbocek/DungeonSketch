@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 
 import com.tbocek.android.combatmap.DungeonSketchApp;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
@@ -71,11 +70,7 @@ public final class BuiltInImageToken extends DrawableToken {
         if (id == 0) {
             return null;
         }
-        try {
-            return dataManager.loadTokenImage(id, existingBuffer);
-        } catch (IOException e) {
-            return null;
-        }
+        return dataManager.loadTokenImage(id, existingBuffer);
     }
 
     @Override

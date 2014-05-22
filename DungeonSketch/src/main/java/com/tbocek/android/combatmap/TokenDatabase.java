@@ -556,7 +556,12 @@ public final class TokenDatabase {
             Log.e("TokenDatabase", "Token did not exist for ID: " + tokenId);
             return new PlaceholderToken(tokenId);
         }
-        return prototype.clone();
+        try {
+            return prototype.clone();
+        } catch (CloneNotSupportedException e) {
+            Log.e(TAG, "Could not create the token", e);
+            return null;
+        }
     }
 
     /**

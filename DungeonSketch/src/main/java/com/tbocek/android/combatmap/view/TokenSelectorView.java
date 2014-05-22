@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import java.util.List;
  * 
  */
 public final class TokenSelectorView extends LinearLayout {
+    private static final String TAG = "TokenSelectorView";
     private final HorizontalListView mTokenLayout;
     private final int mTokenButtonDim;
     private final Button mGroupSelector;
@@ -106,7 +108,11 @@ public final class TokenSelectorView extends LinearLayout {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 BaseToken token = (BaseToken) parent.getItemAtPosition(position);
-                getOnTokenSelectedListener().onTokenSelected(token.clone());
+                try {
+                    getOnTokenSelectedListener().onTokenSelected(token.clone());
+                } catch (CloneNotSupportedException e) {
+                    Log.e(TAG, "Could not clone token for placement", e);
+                }
             }
 
             @Override

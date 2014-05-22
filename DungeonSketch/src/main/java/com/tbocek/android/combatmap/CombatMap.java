@@ -1757,9 +1757,13 @@ public final class CombatMap extends ActionBarActivity {
 			public void onDismiss(DialogInterface d) {
 				for (TokenDeploymentDialog.TokenNumberPair pair: dlg.getDeploymentList()) {
 					for (int i = 0; i < pair.getCount(); ++i) {
-						BaseToken t = pair.getToken().clone();
-						mCombatView.placeToken(t);
-						mCombatView.getMultiSelect().addToken(t);
+                        try {
+                            BaseToken t = pair.getToken().clone();
+                            mCombatView.placeToken(t);
+                            mCombatView.getMultiSelect().addToken(t);
+                        } catch (CloneNotSupportedException e) {
+                            Log.e(TAG, "Could not clone token for deployment", e);
+                        }
 					}
 					mTokenDatabase.setTokenTagCount(pair.getToken().getTokenId(), tag, pair.getCount());
 				}
