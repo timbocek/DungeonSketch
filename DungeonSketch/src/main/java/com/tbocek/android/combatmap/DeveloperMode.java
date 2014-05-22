@@ -47,7 +47,8 @@ public final class DeveloperMode {
      */
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     public static void strictMode() {
-        if (false && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD
+        //noinspection PointlessBooleanExpression
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD
                 && DEVELOPER_MODE) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
             .detectAll().penaltyLog().build());
