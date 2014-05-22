@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text_export_size_advisory"
-        android:text="Zooming the map will control the exported resolution."/>
+        android:text="@string/zooming_map_advisory"/>
     <CheckBox
         android:id="@+id/checkbox_export_grid_lines"
         android:text="@string/include_grid_lines"
