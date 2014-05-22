@@ -33,7 +33,7 @@ public class PlaceholderToken extends BaseToken {
     }
 
     @Override
-    public BaseToken clone() {
+    public BaseToken clone() throws CloneNotSupportedException {
         return new PlaceholderToken(this.mReplaceWith);
     }
 
