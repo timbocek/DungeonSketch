@@ -45,7 +45,6 @@ import com.tbocek.android.combatmap.view.TokenButton;
 import com.tbocek.android.combatmap.view.TokenListAdapter;
 import com.tbocek.dungeonsketch.R;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -151,20 +150,7 @@ public final class TokenManager extends ActionBarActivity {
     private void deleteTokens(Collection<BaseToken> tokens) {
         for (BaseToken token : tokens) {
             this.mTokenDatabase.removeToken(token);
-            try {
-                token.maybeDeletePermanently();
-            } catch (IOException e) {
-                if (this.getApplicationContext() != null) {
-                    Toast toast =
-                            Toast.makeText(
-                                    this.getApplicationContext(),
-                                    "Did not delete the token, probably because "
-                                            + "the external storage isn't writable."
-                                            + e.toString(), Toast.LENGTH_LONG
-                            );
-                    toast.show();
-                }
-            }
+            token.maybeDeletePermanently();
         }
         this.setScrollViewTag(this.mTagNavigator.getCurrentTag());
     }
