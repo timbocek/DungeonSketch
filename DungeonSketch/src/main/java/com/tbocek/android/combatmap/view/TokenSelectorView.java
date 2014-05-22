@@ -73,7 +73,7 @@ public final class TokenSelectorView extends LinearLayout {
 
         @Override
         protected TokenButton createTokenButton() {
-            TokenButton b = new TokenButton(getContext(), null);
+            TokenButton b = new TokenButton(getContext(), (BaseToken)null);
 
             b.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
             b.setMinimumWidth(mTokenButtonDim);
