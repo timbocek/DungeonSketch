@@ -280,11 +280,11 @@ public final class CoordinateTransformer {
             float width, float height, int numHorizontal, int numVertical) {
         List<CoordinateTransformer> transformers = Lists.newArrayList();
 
-        float submapWidth = width / numHorizontal;
-        float submapHeight = height / numVertical;
+        float submapWidth = (width / numHorizontal);
+        float submapHeight = (height / numVertical);
 
-        for (int i = 0; i < numHorizontal; ++i) {
-            for (int j = 0; j < numVertical; ++j) {
+        for (int j = 0; j < numVertical; ++j) {
+            for (int i = 0; i < numHorizontal; ++i) {
                 transformers.add(new CoordinateTransformer(
                         this.mOriginX - submapWidth * i,
                         this.mOriginY - submapHeight * j,

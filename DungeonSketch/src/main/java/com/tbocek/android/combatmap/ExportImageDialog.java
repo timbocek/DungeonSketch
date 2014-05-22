@@ -211,30 +211,30 @@ public class ExportImageDialog extends Dialog {
         final String exportName = this.mEditExportName.getText().toString();
         final MapData data = MapData.getCopy();
         final Point numExportedImages = this.getNumExportImages();
+        final Point exportSize = getExportedImageSize(mRadioExportFullMap.isChecked(), data);
+        final int width = exportSize.x / numExportedImages.x;
+        final int height = exportSize.y / numExportedImages.y;
+        final RectF wholeMapRect = data.getScreenSpaceBoundingRect(WHOLE_IMAGE_MARGIN_PX);
 
         if (context != null) {
             Toast.makeText(context, "Exporting image", Toast.LENGTH_LONG).show();
         }
+
         AsyncTask<Void, Void, Boolean> exportImageTask = new AsyncTask<Void, Void, Boolean>() {
 
             @Override
             protected Boolean doInBackground(Void... params) {
-                Point exportSize = getExportedImageSize(mRadioExportFullMap.isChecked(), data);
-                int width = exportSize.x;
-                int height = exportSize.y;
-                RectF wholeMapRect = data.getScreenSpaceBoundingRect(WHOLE_IMAGE_MARGIN_PX);
-
                 Bitmap bitmap =
                         Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(bitmap);
-                List<CoordinateTransformer> transformers = data.getWorldSpaceTransformer().splitMap(
-                        width, height, numExportedImages.x, numExportedImages.y);
 
-
-                if (exportCurrentView) {
+                if (!exportCurrentView) {
                     data.getWorldSpaceTransformer().moveOrigin(
                             -wholeMapRect.left, -wholeMapRect.top);
                 }
+
+                List<CoordinateTransformer> transformers = data.getWorldSpaceTransformer().splitMap(
+                        exportSize.x, exportSize.y, numExportedImages.x, numExportedImages.y);
 
                 int i = 1;
                 for (CoordinateTransformer transformer : transformers) {
