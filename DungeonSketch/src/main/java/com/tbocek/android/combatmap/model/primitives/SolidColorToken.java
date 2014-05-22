@@ -72,8 +72,8 @@ public final class SolidColorToken extends BaseToken {
 
     @Override
     public void drawBloodiedImpl(final Canvas c, final float x, final float y,
-            final float radius, final boolean isManipulatable) {
-        this.drawImpl(c, x, y, radius, false, isManipulatable);
+            final float radius, final boolean isManipulable) {
+        this.drawImpl(c, x, y, radius, false, isManipulable);
 
         Paint p = new Paint();
         // If token is already colored red, use a dark red border so it's
@@ -112,10 +112,10 @@ public final class SolidColorToken extends BaseToken {
     @Override
     public void drawImpl(final Canvas c, final float x, final float y,
             final float radius, final boolean darkBackground,
-            final boolean isManipulatable) {
+            final boolean isManipulable) {
         Paint p = new Paint();
         p.setColor(this.mColor);
-        if (!isManipulatable) {
+        if (!isManipulable) {
             p.setAlpha(GHOST_ALPHA);
         }
         c.drawCircle(x, y, radius, p);

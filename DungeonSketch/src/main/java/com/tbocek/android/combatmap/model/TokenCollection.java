@@ -177,15 +177,15 @@ public final class TokenCollection implements UndoRedoTarget {
      *            Transformer from grid space to screen space.
      * @param isDark
      *            Whether to draw as if on a dark background.
-     * @param isManipulatable
+     * @param isManipulable
      *            Whether tokens can currently be manipulated.
      */
     public void drawAllTokens(final Canvas canvas,
             final CoordinateTransformer transformer, boolean isDark,
-            boolean isManipulatable) {
+            boolean isManipulable) {
         for (BaseToken token : this.mTokens) {
             token.drawInPosition(canvas, transformer, isDark,
-                    isManipulatable);
+                    isManipulable);
         }
     }
 

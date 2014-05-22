@@ -45,7 +45,7 @@ public class PlaceholderToken extends BaseToken {
 
     @Override
     protected void drawBloodiedImpl(Canvas c, float x, float y, float radius,
-            boolean isManipulatable) {
+            boolean isManipulable) {
         this.drawImpl(c, x, y, radius, true, true);
 
     }
@@ -58,7 +58,7 @@ public class PlaceholderToken extends BaseToken {
 
     @Override
     protected void drawImpl(Canvas c, float x, float y, float radius,
-            boolean darkBackground, boolean isManipulatable) {
+            boolean darkBackground, boolean isManipulable) {
         Paint p = new Paint();
         p.setStyle(Paint.Style.STROKE);
         p.setColor(Color.BLACK);

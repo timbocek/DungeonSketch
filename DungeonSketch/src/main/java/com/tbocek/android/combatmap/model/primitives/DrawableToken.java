@@ -100,11 +100,11 @@ public abstract class DrawableToken extends BaseToken {
 
     @Override
     public final void drawBloodiedImpl(final Canvas c, final float x,
-            final float y, final float radius, final boolean isManipulatable) {
+            final float y, final float radius, final boolean isManipulable) {
         Drawable d = this.getDrawable();
         if (d != null) {
             d.setColorFilter(BLOODIED_FILTER);
-            this.drawImpl(c, x, y, radius, false, isManipulatable);
+            this.drawImpl(c, x, y, radius, false, isManipulable);
             d.setColorFilter(null);
         } else {
             this.drawPlaceholder(c, x, y, radius);
@@ -126,18 +126,18 @@ public abstract class DrawableToken extends BaseToken {
     @Override
     public final void drawImpl(final Canvas c, final float x, final float y,
             final float radius, final boolean darkBackground,
-            final boolean isManipulatable) {
+            final boolean isManipulable) {
         Drawable d = this.getDrawable();
         if (d != null) {
             c.save(Canvas.CLIP_SAVE_FLAG);
             this.clipToCircle(c, x, y, radius);
             d.setBounds(new Rect((int) (x - radius), (int) (y - radius),
                     (int) (x + radius), (int) (y + radius)));
-            if (!isManipulatable) {
+            if (!isManipulable) {
                 d.setAlpha(HALF_OPACITY);
             }
             d.draw(c);
-            if (!isManipulatable) {
+            if (!isManipulable) {
                 d.setAlpha(FULL_OPACITY);
             }
             c.restore();

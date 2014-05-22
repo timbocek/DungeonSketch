@@ -17,9 +17,9 @@ import java.util.Set;
 public final class LetterToken extends BaseToken {
 
     /**
-     * Color to use when a token is both non-manipulatable and bloodied.
+     * Color to use when a token is both non-manipulable and bloodied.
      */
-    private static final int NON_MANIPULATABLE_BLOODIED_COLOR = Color.rgb(255,
+    private static final int NON_MANIPULABLE_BLOODIED_COLOR = Color.rgb(255,
             128, 128);
 
     /**
@@ -77,11 +77,11 @@ public final class LetterToken extends BaseToken {
 
     @Override
     public void drawBloodiedImpl(final Canvas c, final float x, final float y,
-            final float radius, final boolean isManipulatable) {
+            final float radius, final boolean isManipulable) {
         Paint p = new Paint();
-        p.setColor(isManipulatable
+        p.setColor(isManipulable
                 ? Color.RED
-                : NON_MANIPULATABLE_BLOODIED_COLOR);
+                : NON_MANIPULABLE_BLOODIED_COLOR);
         this.draw(c, x, y, radius, p);
     }
 
@@ -96,9 +96,9 @@ public final class LetterToken extends BaseToken {
     @Override
     public void drawImpl(final Canvas c, final float x, final float y,
             final float radius, final boolean darkBackground,
-            final boolean isManipulatable) {
+            final boolean isManipulable) {
         Paint p = new Paint();
-        p.setColor(isManipulatable ? (darkBackground
+        p.setColor(isManipulable ? (darkBackground
                 ? Color.WHITE
                 : Color.BLACK) : Color.GRAY);
         this.draw(c, x, y, radius, p);

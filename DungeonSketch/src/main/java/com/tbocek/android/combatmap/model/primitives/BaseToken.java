@@ -241,15 +241,15 @@ public abstract class BaseToken implements Cloneable {
      * @param darkBackground
      *            Whether the token is drawn against a dark background. The
      *            token can try to make its self more visible in this case.
-     * @param isManipulatable
+     * @param isManipulable
      *            Whether the token can currently be manipulated.
      */
     public void draw(Canvas c, float x, float y, float radius,
-            final boolean darkBackground, boolean isManipulatable) {
+            final boolean darkBackground, boolean isManipulable) {
         if (this.isBloodied()) {
-            this.drawBloodiedImpl(c, x, y, radius, isManipulatable);
+            this.drawBloodiedImpl(c, x, y, radius, isManipulable);
         } else {
-            this.drawImpl(c, x, y, radius, darkBackground, isManipulatable);
+            this.drawImpl(c, x, y, radius, darkBackground, isManipulable);
         }
 
         if (this.mHasCustomBorder) {
@@ -278,11 +278,11 @@ public abstract class BaseToken implements Cloneable {
      *            The y coordinate in screen space to draw the token at.
      * @param radius
      *            The radius of the token in screen space.
-     * @param isManipulatable
+     * @param isManipulable
      *            Whether the token can currently be manipulated.
      */
     protected abstract void drawBloodiedImpl(Canvas c, float x, float y,
-            float radius, boolean isManipulatable);
+            float radius, boolean isManipulable);
 
     /**
      * Draw a ghost version of this token on the given canvas at the given point
@@ -334,11 +334,11 @@ public abstract class BaseToken implements Cloneable {
      * @param darkBackground
      *            Whether the token is drawn against a dark background. The
      *            token can try to make its self more visible in this case.
-     * @param isManipulatable
+     * @param isManipulable
      *            Whether the token can currently be manipulated.
      */
     protected abstract void drawImpl(Canvas c, float x, float y, float radius,
-            final boolean darkBackground, boolean isManipulatable);
+            final boolean darkBackground, boolean isManipulable);
 
     /**
      * Draws this token in the correct position on the given canvas.
@@ -350,12 +350,12 @@ public abstract class BaseToken implements Cloneable {
      * @param darkBackground
      *            Whether the token is drawn against a dark background. The
      *            token can try to make its self more visible in this case.
-     * @param isManipulatable
+     * @param isManipulable
      *            Whether the token can currently be manipulated.
      */
     public final void drawInPosition(final Canvas c,
             final CoordinateTransformer transformer,
-            final boolean darkBackground, boolean isManipulatable) {
+            final boolean darkBackground, boolean isManipulable) {
         PointF center = transformer.worldSpaceToScreenSpace(this.getLocation());
         float radius =
                 transformer.worldSpaceToScreenSpace(this.getSize()
@@ -363,10 +363,10 @@ public abstract class BaseToken implements Cloneable {
 
         if (this.isBloodied()) {
             this.drawBloodiedImpl(c, center.x, center.y, radius,
-                    isManipulatable);
+                    isManipulable);
         } else {
             this.drawImpl(c, center.x, center.y, radius, darkBackground,
-                    isManipulatable);
+                    isManipulable);
         }
 
         if (this.mHasCustomBorder) {
