@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -90,7 +91,7 @@ public class TokenImageManager {
             } else {
                 BaseToken token = db.createToken(tokenId);
 
-                TokenImageWrapper w = mgr.getUnusedImage();
+                TokenImageWrapper w = mgr.getUnusedImage(mContext, mResponseHandler);
                 Bitmap b = token.loadBitmap(w.mImage);
                 w.mImage = b;
                 w.mDrawable = new BitmapDrawable(mContext.getResources(), b);
@@ -245,7 +246,8 @@ public class TokenImageManager {
         }
     }
 
-    private synchronized TokenImageWrapper getUnusedImage() {
+    private synchronized TokenImageWrapper getUnusedImage(final Context context,
+                                                          Handler mResponseHandler) {
         TokenImageWrapper newImageWrapper = null;
 
         // Remove images from the pool until we find one that is *actually* unused
@@ -257,7 +259,19 @@ public class TokenImageManager {
         if (mRecycledImages.isEmpty()) {
             // Pool empty, allocate some more.
             int poolIncrease = (int)(mCurrentImages.size() * POOL_EXPANSION_RATIO) + 1;
-            Log.w(TAG, "Increasing image pool size by " + poolIncrease);
+            final String warning = "Increasing image pool size by " + poolIncrease;
+            Log.w(TAG, warning);
+
+            // If in a debug configuration, attempt to open a toast warning that we potentially
+            // leaked images.
+            if (DeveloperMode.DEVELOPER_MODE && mResponseHandler != null) {
+                mResponseHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, warning, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
             initializePool(poolIncrease);
             return mRecycledImages.removeFirst();
         } else {
