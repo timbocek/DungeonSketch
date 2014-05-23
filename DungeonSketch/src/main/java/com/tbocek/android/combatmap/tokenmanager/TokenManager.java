@@ -76,6 +76,11 @@ public final class TokenManager extends ActionBarActivity {
     private MenuItem mRenameTagMenuItem;
 
     /**
+     * Stores the previously selected tag.
+     */
+    private String mOldTag;
+
+    /**
      * The action mode that was started to manage the selection.
      */
     private ActionMode mMultiSelectActionMode;
@@ -538,6 +543,16 @@ public final class TokenManager extends ActionBarActivity {
      *            The new tag to display tokens for.
      */
     private void setScrollViewTag(final String tag) {
+        // Release memory for the current set of tokens, so we don't leak them.
+        if (mOldTag != null) {
+            List<BaseToken> oldTokens = mTokenDatabase.getTokensForTag(mOldTag);
+            for (BaseToken t: oldTokens) {
+                mLoader.discardOrCancelTokenLoad(t.getTokenId());
+            }
+        }
+
+        mOldTag = tag;
+
         List<BaseToken> tokens = mTokenDatabase.getTokensForTag(tag);
 	    this.mGridView.setAdapter(new Adapter(tokens));
 
