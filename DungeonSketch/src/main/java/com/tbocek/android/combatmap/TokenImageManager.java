@@ -34,7 +34,7 @@ public class TokenImageManager {
     private static final String TAG = "TokenImageManager";
 
     private static final float POOL_EXPANSION_RATIO = 0.2f;
-    private static final int INITIAL_POOL_SIZE = 100;
+    private static final int INITIAL_POOL_SIZE = 50;
     private static TokenImageManager mInstance;
 
     public static TokenImageManager getInstance() {
@@ -75,7 +75,12 @@ public class TokenImageManager {
         }
 
         private void handleRequest(final String tokenId) {
-            //TODO: actually recycle bitmaps
+            // If this request no longer has a callback associated with it, assume that the load
+            // has been cancelled.
+            if (!mCallbacks.containsKey(tokenId)) {
+                return;
+            }
+
             TokenImageManager mgr = TokenImageManager.getInstance();
             TokenDatabase db = TokenDatabase.getInstanceOrNull();
             // If this token has been loaded since the request was created, just increase
