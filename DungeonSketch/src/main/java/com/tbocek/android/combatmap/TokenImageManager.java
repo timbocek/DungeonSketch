@@ -78,11 +78,13 @@ public class TokenImageManager {
         private void handleRequest(final String tokenId) {
             // If this request no longer has a callback associated with it, assume that the load
             // has been cancelled.
-            if (!mCallbacks.containsKey(tokenId)) {
-                return;
+            synchronized(this) {
+                if (!mCallbacks.containsKey(tokenId)) {
+                    return;
+                }
             }
 
-            TokenImageManager mgr = TokenImageManager.getInstance();
+            final TokenImageManager mgr = TokenImageManager.getInstance();
             TokenDatabase db = TokenDatabase.getInstanceOrNull();
             // If this token has been loaded since the request was created, just increase
             // the ref count.
@@ -103,20 +105,30 @@ public class TokenImageManager {
                 @Override
                 public void run() {
                     Log.d(TAG, "Posting token load callback for " + tokenId);
-                    if (mCallbacks.containsKey(tokenId)) {
-                        mCallbacks.get(tokenId).imageLoaded(tokenId);
-                        mCallbacks.remove(tokenId);
+                    Callback cb = null;
+                    synchronized(Loader.this) {
+                        if (mCallbacks.containsKey(tokenId)) {
+                            cb = mCallbacks.get(tokenId);
+                            mCallbacks.remove(tokenId);
+                        } else {
+                            mgr.releaseTokenImage(tokenId);
+                        }
+                    }
+                    if (cb != null) {
+                        cb.imageLoaded(tokenId);
                     }
                 }
             });
         }
 
         public void queueTokenLoad(String tokenId, Callback callback) {
-            mCallbacks.put(tokenId, callback);
-            if (mHandler != null) {
-                Message m = mHandler.obtainMessage(MESSAGE_LOAD, tokenId);
-                m.sendToTarget();
-                Log.d(TAG, "Token load queued: " + tokenId);
+            synchronized(this) {
+                mCallbacks.put(tokenId, callback);
+                if (mHandler != null) {
+                    Message m = mHandler.obtainMessage(MESSAGE_LOAD, tokenId);
+                    m.sendToTarget();
+                    Log.d(TAG, "Token load queued: " + tokenId);
+                }
             }
         }
 
@@ -127,9 +139,15 @@ public class TokenImageManager {
 
         public void cancelTokenLoad(String tokenId) {
             // TODO: Do something sane in the case of a multi-token load callback.
-            if (mCallbacks.containsKey(tokenId)) {
-                mCallbacks.get(tokenId).loadCancelled(tokenId);
-                mCallbacks.remove(tokenId);
+            Callback cb = null;
+            synchronized(this) {
+                if (mCallbacks.containsKey(tokenId)) {
+                    cb = mCallbacks.get(tokenId);
+                    mCallbacks.remove(tokenId);
+                }
+            }
+            if (cb != null) {
+                cb.loadCancelled(tokenId);
             }
         }
 
