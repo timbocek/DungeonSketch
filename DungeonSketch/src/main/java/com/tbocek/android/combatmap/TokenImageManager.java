@@ -50,14 +50,14 @@ public class TokenImageManager {
         return mInstance;
     }
 
-    public static class Loader extends HandlerThread {
+    public class Loader extends HandlerThread {
         private static final int MESSAGE_LOAD = 0;
         Handler mHandler;
         final Handler mResponseHandler;
         final Context mContext;
         final Map<String, Callback> mCallbacks = new HashMap<String, Callback>();
 
-        public Loader(Context context, Handler responseHandler) {
+        private Loader(Context context, Handler responseHandler) {
             super("TokenImageManager.Loader");
             mResponseHandler = responseHandler;
             mContext = context.getApplicationContext();
@@ -68,7 +68,7 @@ public class TokenImageManager {
                 public void handleMessage(Message msg) {
                     if (msg.what == MESSAGE_LOAD) {
                         String tokenId = (String)msg.obj;
-                        Log.d(TAG, "Handling load request for " + tokenId);
+                        Log.v(TAG, "Handling load request for " + tokenId);
                         handleRequest(tokenId);
                     }
                 }
@@ -78,43 +78,54 @@ public class TokenImageManager {
         private void handleRequest(final String tokenId) {
             // If this request no longer has a callback associated with it, assume that the load
             // has been cancelled.
-            synchronized(this) {
+            TokenImageWrapper newImage = null;
+            final TokenImageManager mgr = TokenImageManager.getInstance();
+            TokenDatabase db = TokenDatabase.getInstanceOrNull();
+
+            synchronized(TokenImageManager.this) {
                 if (!mCallbacks.containsKey(tokenId)) {
+                    Log.v(TAG, "Load request for " + tokenId + " cancelled before loading.");
                     return;
+                }
+                // If this token has been loaded since the request was created, just increase
+                // the ref count.
+                if (mgr.mCurrentImages.containsKey(tokenId)) {
+                    mgr.mCurrentImages.get(tokenId).mReferenceCount++;
+                    Log.v(TAG, "Image for " + tokenId + " already found.  Now refcnt=" +
+                            mgr.mCurrentImages.get(tokenId).mReferenceCount );
+                } else {
+                    newImage = mgr.getUnusedImage(mContext, mResponseHandler);
+
                 }
             }
 
-            final TokenImageManager mgr = TokenImageManager.getInstance();
-            TokenDatabase db = TokenDatabase.getInstanceOrNull();
-            // If this token has been loaded since the request was created, just increase
-            // the ref count.
-            if (mgr.mCurrentImages.containsKey(tokenId)) {
-                mgr.mCurrentImages.get(tokenId).mReferenceCount++;
-            } else {
+            // Check if a new bitmap needs to be loaded.  This should be done outside of a
+            // synchronized block because it is an expensive process and is the reason we are doing
+            // this off the main thread.
+            if (newImage != null) {
                 BaseToken token = db.createToken(tokenId);
-
-                TokenImageWrapper w = mgr.getUnusedImage(mContext, mResponseHandler);
-                Bitmap b = token.loadBitmap(w.mImage);
-                w.mImage = b;
-                w.mDrawable = new BitmapDrawable(mContext.getResources(), b);
-                w.mToken = token;
-                mgr.mCurrentImages.put(tokenId, w);
+                Bitmap b = token.loadBitmap(newImage.mImage);
+                newImage.mImage = b;
+                newImage.mDrawable = new BitmapDrawable(mContext.getResources(), b);
+                newImage.mToken = token;
+                mgr.mCurrentImages.put(tokenId, newImage);
             }
 
             mResponseHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d(TAG, "Posting token load callback for " + tokenId);
                     Callback cb = null;
-                    synchronized(Loader.this) {
+                    synchronized(TokenImageManager.this) {
                         if (mCallbacks.containsKey(tokenId)) {
                             cb = mCallbacks.get(tokenId);
                             mCallbacks.remove(tokenId);
                         } else {
+                            Log.v(TAG, "Load request for " + tokenId + " cancelled during loading.");
                             mgr.releaseTokenImage(tokenId);
                         }
                     }
                     if (cb != null) {
+                        Log.v(TAG, "Posting token load callback for " + tokenId);
                         cb.imageLoaded(tokenId);
                     }
                 }
@@ -122,12 +133,12 @@ public class TokenImageManager {
         }
 
         public void queueTokenLoad(String tokenId, Callback callback) {
-            synchronized(this) {
+            synchronized(TokenImageManager.this) {
                 mCallbacks.put(tokenId, callback);
                 if (mHandler != null) {
                     Message m = mHandler.obtainMessage(MESSAGE_LOAD, tokenId);
                     m.sendToTarget();
-                    Log.d(TAG, "Token load queued: " + tokenId);
+                    Log.v(TAG, "Token load queued: " + tokenId);
                 }
             }
         }
@@ -140,7 +151,7 @@ public class TokenImageManager {
         public void cancelTokenLoad(String tokenId) {
             // TODO: Do something sane in the case of a multi-token load callback.
             Callback cb = null;
-            synchronized(this) {
+            synchronized(TokenImageManager.this) {
                 if (mCallbacks.containsKey(tokenId)) {
                     cb = mCallbacks.get(tokenId);
                     mCallbacks.remove(tokenId);
@@ -157,13 +168,15 @@ public class TokenImageManager {
          * @param tokenId ID of the token to discard or dequeue.
          */
         public void discardOrCancelTokenLoad(String tokenId) {
-            TokenImageManager mgr = TokenImageManager.getInstance();
-            if (this.mCallbacks.containsKey(tokenId)) {
-                Log.d(TAG, "Cancelling token load: " + tokenId);
-                cancelTokenLoad(tokenId);
-            } else {
-                mgr.releaseTokenImage(tokenId);
-                Log.d(TAG, "Releasing token image: " + tokenId);
+            synchronized (TokenImageManager.this) {
+                TokenImageManager mgr = TokenImageManager.getInstance();
+                if (this.mCallbacks.containsKey(tokenId)) {
+                    Log.v(TAG, "Cancelling token load: " + tokenId);
+                    cancelTokenLoad(tokenId);
+                } else {
+                    mgr.releaseTokenImage(tokenId);
+                    Log.v(TAG, "Releasing token image: " + tokenId);
+                }
             }
         }
     }
@@ -178,11 +191,13 @@ public class TokenImageManager {
 
         public void release() {
             mReferenceCount--;
-            if (mReferenceCount == 0) {
+            if (mReferenceCount <= 0) {
                 mRecycledImages.addLast(this);
-                Log.d(TAG, "Image added to garbage heap.  Size=" + mRecycledImages.size());
+                Log.v(TAG, "Image for " + mToken.getTokenId() + " added to garbage heap.  Size=" +
+                        mRecycledImages.size());
             } else {
-                Log.d(TAG, "Image still has " + mReferenceCount + " users.");
+                Log.v(TAG, "Image for " + mToken.getTokenId() + " still has " + mReferenceCount +
+                        " users.");
             }
         }
     }
@@ -222,7 +237,8 @@ public class TokenImageManager {
 
     private TokenImageManager() { }
 
-    public synchronized void requireTokenImages(Collection<String> tokens, Loader loader, MultiLoadCallback callback) {
+    public synchronized void requireTokenImages(
+            Collection<String> tokens, Loader loader, MultiLoadCallback callback) {
         callback.setTokens(tokens);
         for (String t: tokens) {
             requireTokenImage(t, loader, callback);
@@ -304,7 +320,7 @@ public class TokenImageManager {
             newImageWrapper.mToken = null;
             newImageWrapper.mReferenceCount++;
 
-            Log.d(TAG, "Token garbage heap size=" + mRecycledImages.size());
+            Log.v(TAG, "Token garbage heap size=" + mRecycledImages.size());
             return newImageWrapper;
         }
     }
@@ -315,5 +331,9 @@ public class TokenImageManager {
             mRecycledImages.addLast(image);
         }
         mCurrentImages = Maps.newHashMap();
+    }
+
+    public Loader createLoader(Context context, Handler responseHandler) {
+        return new Loader(context, responseHandler);
     }
 }
