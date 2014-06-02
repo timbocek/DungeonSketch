@@ -84,7 +84,7 @@ public class ArtCredits extends Activity {
             }
         });
 
-        mLoader = new TokenImageManager.Loader(this, new Handler());
+        mLoader = TokenImageManager.getInstance().createLoader(this, new Handler());
         mLoader.start();
         mLoader.getLooper(); // Make sure loader thread is ready to go.
 

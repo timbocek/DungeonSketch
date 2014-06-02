@@ -636,7 +636,7 @@ public final class CombatMap extends ActionBarActivity {
 		this.mTokenSelector = new TokenSelectorView(
 				this.getApplicationContext());
 
-        mLoader = new TokenImageManager.Loader(this, new Handler());
+        mLoader = TokenImageManager.getInstance().createLoader(this, new Handler());
         mLoader.start();
         mLoader.getLooper(); // Make sure loader thread is ready to go.
         mTokenSelector.setLoader(mLoader);
