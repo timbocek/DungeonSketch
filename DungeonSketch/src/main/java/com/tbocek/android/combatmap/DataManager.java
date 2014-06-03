@@ -31,6 +31,7 @@ import java.util.List;
  * 
  */
 public final class DataManager {
+    private static final String TAG = "DataManager";
 
     /**
      * Extension to use for image files.
@@ -86,8 +87,12 @@ public final class DataManager {
      *            Name of the save file without the extension to delete.
      */
     public void deleteSaveFile(final String fileName) {
-        this.getSavedMapFile(fileName).delete();
-        this.getSavedMapPreviewImageFile(fileName).delete();
+        if (!this.getSavedMapFile(fileName).delete()) {
+            Log.w(TAG, "Could not delete map file " + fileName);
+        }
+        if (!this.getSavedMapPreviewImageFile(fileName).delete()) {
+            Log.w(TAG, "Could not delete map preview image " + fileName);
+        }
     }
 
     /**
@@ -97,7 +102,9 @@ public final class DataManager {
      *            Name of the token to delete.
      */
     public void deleteTokenImage(final String fileName) {
-        this.getTokenImageFile(fileName).delete();
+        if (!this.getTokenImageFile(fileName).delete()) {
+            Log.w(TAG, "Could not delete token image " + fileName);
+        }
     }
 
     /**
@@ -105,9 +112,15 @@ public final class DataManager {
      * been created.
      */
     private void ensureExternalDirectoriesCreated() {
-        this.getTokenImageDir().mkdirs();
-        this.getSavedMapDir().mkdirs();
-        this.getExportedImageDir().mkdirs();
+        if (!this.getTokenImageDir().mkdirs()) {
+            Log.e(TAG, "Could not create token image dir");
+        }
+        if (!this.getSavedMapDir().mkdirs()) {
+            Log.e(TAG, "Could not create saved map dir");
+        }
+        if (!this.getExportedImageDir().mkdirs()) {
+            Log.e(TAG, "Could not create exported image dir");
+        }
     }
 
     /**
@@ -163,7 +176,9 @@ public final class DataManager {
         File sdcard = this.mContext.getExternalFilesDir(null);
         File dir = new File(sdcard, "maps");
         if (!dir.exists()) {
-            dir.mkdirs();
+            if (!dir.mkdirs()) {
+                Log.e(TAG, "Could not create saved map dir at " + dir.getAbsolutePath());
+            }
         }
         return dir;
     }
@@ -200,7 +215,9 @@ public final class DataManager {
         File sdcard = this.mContext.getExternalFilesDir(null);
         File dir = new File(sdcard, "tokens");
         if (!dir.exists()) {
-            dir.mkdirs();
+            if (!dir.mkdirs()) {
+                Log.e(TAG, "Could not create token image dir at " + dir.getAbsolutePath());
+            }
         }
         return dir;
     }
@@ -212,7 +229,9 @@ public final class DataManager {
         File sdcard = this.mContext.getExternalFilesDir(null);
         File dir = new File(sdcard, "mapdata");
         if (!dir.exists()) {
-            dir.mkdirs();
+            if (!dir.mkdirs()) {
+                Log.e(TAG, "Could not create map data dir at " + dir.getAbsolutePath());
+            }
         }
         return dir;
     }
@@ -237,7 +256,7 @@ public final class DataManager {
      *            Filename to check.
      * @return True if an image.
      */
-    public boolean isImageFileName(final String file) {
+    boolean isImageFileName(final String file) {
         return file.endsWith(IMAGE_EXTENSION);
     }
 
@@ -247,13 +266,10 @@ public final class DataManager {
      * 
      * @param name
      *            The name of the map to load, without the extension.
-     * @throws ClassNotFoundException
-     *             On deserialize error.
      * @throws IOException
      *             On read error.
      */
-    public void loadMapName(final String name) throws IOException,
-    ClassNotFoundException {
+    public void loadMapName(final String name) throws IOException {
         File f = this.getSavedMapFile(name);
         if (f.exists()) {
             FileInputStream s = new FileInputStream(f);
@@ -288,49 +304,39 @@ public final class DataManager {
      * @param filename
      *            Filename to load, with extension.
      * @return Bitmap of the loaded image.
-     * @throws IOException
-     *             On read error.
      */
-    public Bitmap loadTokenImage(final String filename) throws IOException {
+    public Bitmap loadTokenImage(final String filename) {
         return loadTokenImage(filename, null);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public Bitmap loadTokenImage(final String filename, Bitmap existingBuffer) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(
-                this.getTokenImageFile(filename).getAbsolutePath(), options);
-        options.inJustDecodeBounds = false;
+    private interface BitmapLoader {
+        Bitmap load(BitmapFactory.Options options);
+    }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            options.inMutable = true; // Make bitmaps mutable so they are reusable.
-        }
-        if (existingBuffer != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && existingBuffer.isMutable() && canUseForInBitmap(existingBuffer, options)) {
-                options.inBitmap = existingBuffer;
-            } else {
-                existingBuffer.recycle();
+    public Bitmap loadTokenImage(final String filename, Bitmap existingBuffer) {
+        final String tokenImageFilePath = this.getTokenImageFile(filename).getAbsolutePath();
+        return loadTokenImage(existingBuffer, new BitmapLoader() {
+            @Override
+            public Bitmap load(BitmapFactory.Options options) {
+                return BitmapFactory.decodeFile(tokenImageFilePath, options);
             }
-        }
-        Bitmap b;
-        try {
-            b = BitmapFactory.decodeFile(
-                    this.getTokenImageFile(filename).getAbsolutePath(), options);
-        } catch (IllegalArgumentException e) {
-            options.inBitmap = null;
-            existingBuffer.recycle();
-            b = BitmapFactory.decodeFile(
-                    this.getTokenImageFile(filename).getAbsolutePath(), options);
-        }
-        return b;
+        });
+    }
+
+    public Bitmap loadTokenImage(final int resource_id, Bitmap existingBuffer) {
+        return loadTokenImage(existingBuffer, new BitmapLoader() {
+            @Override
+            public Bitmap load(BitmapFactory.Options options) {
+                return BitmapFactory.decodeResource(mContext.getResources(), resource_id, options);
+            }
+        });
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public Bitmap loadTokenImage(final int resource_id, Bitmap existingBuffer) {
+    private Bitmap loadTokenImage(Bitmap existingBuffer, BitmapLoader loader) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(this.mContext.getResources(), resource_id, options);
+        loader.load(options);
         options.inJustDecodeBounds = false;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -338,19 +344,30 @@ public final class DataManager {
         }
 
         if (existingBuffer != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && existingBuffer.isMutable() && canUseForInBitmap(existingBuffer, options)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && existingBuffer.isMutable()
+                    && canUseForInBitmap(existingBuffer, options)) {
                 options.inBitmap = existingBuffer;
             } else {
-                existingBuffer.recycle();
+                try {
+                    existingBuffer.recycle();
+                } catch (NullPointerException e) {
+                    Log.w(TAG, "NPE when attempting to recycle a bitmap", e);
+                }
             }
         }
         Bitmap b;
         try {
-            b = BitmapFactory.decodeResource(this.mContext.getResources(), resource_id, options);
+            b = loader.load(options);
         } catch (IllegalArgumentException e) {
             options.inBitmap = null;
-            existingBuffer.recycle();
-            b = BitmapFactory.decodeResource(this.mContext.getResources(), resource_id, options);
+            if (existingBuffer != null) {
+                try {
+                    existingBuffer.recycle();
+                } catch (NullPointerException ex) {
+                    Log.w(TAG, "NPE when attempting to recycle a bitmap", ex);
+                }
+            }
+            b = loader.load(options);
         }
         return b;
     }
@@ -495,7 +512,7 @@ public final class DataManager {
      * @param filename The filename to load.
      * @return The full path to the file.
      */
-    public File getMapDataFile(String filename) {
+    File getMapDataFile(String filename) {
         return new File(this.getMapDataDir(), filename);
     }
 
@@ -516,7 +533,7 @@ public final class DataManager {
         return b;
     }
 
-    static boolean canUseForInBitmap(
+    private static boolean canUseForInBitmap(
             Bitmap candidate, BitmapFactory.Options targetOptions) {
         if (targetOptions.inSampleSize == 0) targetOptions.inSampleSize = 1;
 
@@ -539,7 +556,7 @@ public final class DataManager {
     /**
      * A helper function to return the byte usage per pixel of a bitmap based on its configuration.
      */
-    static int getBytesPerPixel(Bitmap.Config config) {
+    private static int getBytesPerPixel(Bitmap.Config config) {
         if (config == Bitmap.Config.ARGB_8888) {
             return 4;
         } else if (config == Bitmap.Config.RGB_565) {
