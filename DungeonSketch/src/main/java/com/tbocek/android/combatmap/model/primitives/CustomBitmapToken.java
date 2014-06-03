@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,14 +47,8 @@ public final class CustomBitmapToken extends DrawableToken {
             return null;
         }
 
-        Bitmap b;
-        try {
-            b = dataManager.loadTokenImage(this.mFilename);
-            return new BitmapDrawable(dataManager.getContext().getResources(), b);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        Bitmap b = dataManager.loadTokenImage(this.mFilename);
+        return new BitmapDrawable(dataManager.getContext().getResources(), b);
     }
 
     @Override
