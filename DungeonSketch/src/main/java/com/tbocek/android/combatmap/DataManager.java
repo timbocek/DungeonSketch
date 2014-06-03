@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.tbocek.android.combatmap.model.MapData;
+import com.tbocek.android.combatmap.model.primitives.Util;
 
 import org.apache.commons.io.FileUtils;
 
@@ -298,24 +299,14 @@ public final class DataManager {
         return b;
     }
 
-    /**
-     * Loads the given token image.
-     * 
-     * @param filename
-     *            Filename to load, with extension.
-     * @return Bitmap of the loaded image.
-     */
-    public Bitmap loadTokenImage(final String filename) {
-        return loadTokenImage(filename, null);
-    }
-
     private interface BitmapLoader {
         Bitmap load(BitmapFactory.Options options);
     }
 
-    public Bitmap loadTokenImage(final String filename, Bitmap existingBuffer) {
+    public Bitmap loadTokenImage(final String filename, Bitmap existingBuffer, int maxWidth,
+                                 int maxHeight) {
         final String tokenImageFilePath = this.getTokenImageFile(filename).getAbsolutePath();
-        return loadTokenImage(existingBuffer, new BitmapLoader() {
+        return loadTokenImage(existingBuffer, maxWidth, maxHeight, new BitmapLoader() {
             @Override
             public Bitmap load(BitmapFactory.Options options) {
                 return BitmapFactory.decodeFile(tokenImageFilePath, options);
@@ -323,8 +314,9 @@ public final class DataManager {
         });
     }
 
-    public Bitmap loadTokenImage(final int resource_id, Bitmap existingBuffer) {
-        return loadTokenImage(existingBuffer, new BitmapLoader() {
+    public Bitmap loadTokenImage(final int resource_id, Bitmap existingBuffer, int maxWidth,
+                                 int maxHeight) {
+        return loadTokenImage(existingBuffer, maxWidth, maxHeight, new BitmapLoader() {
             @Override
             public Bitmap load(BitmapFactory.Options options) {
                 return BitmapFactory.decodeResource(mContext.getResources(), resource_id, options);
@@ -333,16 +325,30 @@ public final class DataManager {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private Bitmap loadTokenImage(Bitmap existingBuffer, BitmapLoader loader) {
+    private Bitmap loadTokenImage(Bitmap existingBuffer, int maxWidthDp, int maxHeightDp,
+                                  BitmapLoader loader) {
+
+        int maxWidthPx = (int) Util.convertDpToPixel(maxWidthDp, mContext);
+        int maxHeightPx = (int) Util.convertDpToPixel(maxHeightDp, mContext);
+
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         loader.load(options);
         options.inJustDecodeBounds = false;
 
+        // Make bitmaps mutable so they are reusable.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            options.inMutable = true; // Make bitmaps mutable so they are reusable.
+            options.inMutable = true;
         }
 
+        // Set the sample size so that we load into maxWidth and maxHeight.
+        options.inSampleSize = 1;
+        while (options.outWidth / options.inSampleSize > maxWidthPx &&
+                options.outHeight / options.inSampleSize > maxHeightPx) {
+            options.inSampleSize *= 2;  // Sample size must be a power of 2.
+        }
+
+        // Detect whether we can reuse the existing buffer.
         if (existingBuffer != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && existingBuffer.isMutable()
                     && canUseForInBitmap(existingBuffer, options)) {
@@ -355,6 +361,9 @@ public final class DataManager {
                 }
             }
         }
+
+        // Attempt to load this bitmap into the existing buffer.  If this fails, recycle the bitmap
+        // and load a bitmap into a new buffer.
         Bitmap b;
         try {
             b = loader.load(options);

@@ -22,6 +22,7 @@ import com.tbocek.android.combatmap.TokenImageManager;
  * 
  */
 public abstract class DrawableToken extends BaseToken {
+    protected static final int LOAD_DIM_DP = 96;
 
     /**
      * The data manager that is used to load custom images.
@@ -65,11 +66,6 @@ public abstract class DrawableToken extends BaseToken {
     private static final int HALF_OPACITY = 128;
 
     /**
-     * The loaded drawable to use.
-     */
-    private transient Drawable mDrawable;
-
-    /**
      * Sets the clip of the given canvas to a circle centered at (x,y) with
      * radius r.
      * 
@@ -88,15 +84,6 @@ public abstract class DrawableToken extends BaseToken {
         p.addCircle(x, y, radius, Path.Direction.CW);
         c.clipPath(p);
     }
-
-    /**
-     * Loads the drawable. Subclasses override this to specify how to load their
-     * specific type of drawable.
-     * 
-     * @return The created drawable, or null if the drawable could not be
-     *         created.
-     */
-    protected abstract Drawable createDrawable();
 
     @Override
     public final void drawBloodiedImpl(final Canvas c, final float x,
@@ -180,7 +167,6 @@ public abstract class DrawableToken extends BaseToken {
         return mgr.getTokenDrawable(this.getTokenId());
     }
 
-    // TODO: make use of cached buffers.
     public abstract Bitmap loadBitmap(Bitmap image);
 
     @Override

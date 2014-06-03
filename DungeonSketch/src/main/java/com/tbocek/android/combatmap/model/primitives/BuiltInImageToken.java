@@ -1,7 +1,6 @@
 package com.tbocek.android.combatmap.model.primitives;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 
 import com.tbocek.android.combatmap.DungeonSketchApp;
 
@@ -70,19 +69,7 @@ public final class BuiltInImageToken extends DrawableToken {
         if (id == 0) {
             return null;
         }
-        return dataManager.loadTokenImage(id, existingBuffer);
-    }
-
-    @Override
-    protected Drawable createDrawable() {
-        int id =
-                DungeonSketchApp.getContext().getResources().getIdentifier(
-                        this.mResourceName, "drawable",
-                        DungeonSketchApp.getContext().getPackageName());
-        if (id == 0) {
-            return null;
-        }
-        return DungeonSketchApp.getContext().getResources().getDrawable(id);
+        return dataManager.loadTokenImage(id, existingBuffer, LOAD_DIM_DP, LOAD_DIM_DP);
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.tbocek.android.combatmap.model.primitives;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,17 +36,7 @@ public final class CustomBitmapToken extends DrawableToken {
 
     @Override
     public Bitmap loadBitmap(Bitmap existingBuffer) {
-        return dataManager.loadTokenImage(this.mFilename, existingBuffer);
-    }
-
-    @Override
-    protected Drawable createDrawable() {
-        if (dataManager == null) {
-            return null;
-        }
-
-        Bitmap b = dataManager.loadTokenImage(this.mFilename);
-        return new BitmapDrawable(dataManager.getContext().getResources(), b);
+        return dataManager.loadTokenImage(this.mFilename, existingBuffer, LOAD_DIM_DP, LOAD_DIM_DP);
     }
 
     @Override
