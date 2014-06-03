@@ -110,8 +110,8 @@ public final class TokenDatabase implements Cloneable {
 			if (!childTags.containsKey(tag)) {
 				TagTreeNode node = new TagTreeNode(this, tag);
 				childTags.put(tag, node);
-				Log.d(TAG, "Adding child tag: " + tag + " to " + name);
-				Log.d(TAG, Integer.toString(childTags.size()));
+				Log.v(TAG, "Adding child tag: " + tag + " to " + name);
+				Log.v(TAG, Integer.toString(childTags.size()));
 				return node;
 			} else {
 				return childTags.get(tag);
@@ -265,7 +265,7 @@ public final class TokenDatabase implements Cloneable {
 
 		public void addToken(String tokenId) {
 			this.tokenCounts.put(tokenId, 1);
-			Log.d(TAG, "Adding token: " + tokenId + " to " + name);
+			Log.v(TAG, "Adding token: " + tokenId + " to " + name);
 		}
 		
 		public void setTokenCount(String tokenId, int count) {
@@ -618,7 +618,7 @@ public final class TokenDatabase implements Cloneable {
     public List<String> getTags() {
         ArrayList<String> l =
                 new ArrayList<String>(this.mTagTreeRoot.getTagNames());
-        Log.d(TAG, "getTags returning " + l.size() + "tags:");
+        Log.v(TAG, "getTags returning " + l.size() + "tags:");
         Collections.sort(l, new Comparator<String>() {
             @Override
             public int compare(final String s1, final String s2) {
@@ -626,7 +626,7 @@ public final class TokenDatabase implements Cloneable {
             }
         });
         for (String s: l) {
-        	Log.d(TAG, s);
+        	Log.v(TAG, s);
         }
         return l;
     }
@@ -988,13 +988,13 @@ public final class TokenDatabase implements Cloneable {
                 String qName, org.xml.sax.Attributes attributes) {
     		if (localName.equalsIgnoreCase("deleted_builtin_token")) {
     			String tokenName = attributes.getValue("name");
-    			Log.d(TAG, "PROCESS DELETED TOKEN: " + tokenName);
+    			Log.v(TAG, "PROCESS DELETED TOKEN: " + tokenName);
     			database.mDeletedBuiltInTokens.add(tokenName);
     		} else if (localName.equalsIgnoreCase("tag")) {
     			String tagName = attributes.getValue("name");
     			String active = attributes.getValue("active");
     			boolean isActive = active == null || Boolean.parseBoolean(active);
-    			Log.d(TAG, "START TAG: " + tagName);
+    			Log.v(TAG, "START TAG: " + tagName);
     			currentTagTreeNode = currentTagTreeNode.getNamedChild(tagName, true);
     			currentTagTreeNode.setIsActive(isActive);
     		} else if (localName.equalsIgnoreCase("limited_tag")) {
@@ -1002,7 +1002,7 @@ public final class TokenDatabase implements Cloneable {
     			int maxSize = Integer.parseInt(attributes.getValue("maxSize"));
     			String active = attributes.getValue("active");
     			boolean isActive = active == null || Boolean.parseBoolean(active);
-    			Log.d(TAG, "START TAG: " + tagName);
+    			Log.v(TAG, "START TAG: " + tagName);
     			currentTagTreeNode = currentTagTreeNode.createLimitedChild(tagName, maxSize);
     			currentTagTreeNode.setIsActive(isActive);
     		} else if (localName.equalsIgnoreCase("token")) {
@@ -1015,7 +1015,7 @@ public final class TokenDatabase implements Cloneable {
     			} else {
     				count = 1;
     			}
-    			Log.d(TAG, "ADD TOKEN " + tokenName + " TO TAG " + currentTagTreeNode.name);
+    			Log.v(TAG, "ADD TOKEN " + tokenName + " TO TAG " + currentTagTreeNode.name);
     			if (age != null) {
     				((LimitedTagTreeNode)currentTagTreeNode).addToken(tokenName, Integer.parseInt(age));
     			} else {
@@ -1037,7 +1037,7 @@ public final class TokenDatabase implements Cloneable {
     	
     	public void endElement(java.lang.String uri, java.lang.String localName, java.lang.String qName) {
     		if (localName.equalsIgnoreCase("tag") || localName.equalsIgnoreCase("limited_tag")) {
-    			Log.d(TAG, "LEAVE TAG: " + currentTagTreeNode.name);
+    			Log.v(TAG, "LEAVE TAG: " + currentTagTreeNode.name);
     			currentTagTreeNode = currentTagTreeNode.parent;
     		}
         }
