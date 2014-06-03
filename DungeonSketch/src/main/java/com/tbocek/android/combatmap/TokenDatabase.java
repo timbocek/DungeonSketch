@@ -58,7 +58,7 @@ import javax.xml.transform.stream.StreamResult;
  * @author Tim
  * 
  */
-public final class TokenDatabase {
+public final class TokenDatabase implements Cloneable {
 	private static final Set<String> SYSTEM_TAG_NAMES = Sets.newHashSet("built-in","custom","image","letter","solid color","recently added","artist");
 	
 	public static boolean isSystemTag(String tag) {
@@ -70,7 +70,11 @@ public final class TokenDatabase {
 		return SYSTEM_TAG_NAMES.contains(tag);
 	}
 
-    public class TagTreeNode {
+    public static TokenDatabase getCopy() throws CloneNotSupportedException {
+        return (TokenDatabase) instance.clone();
+    }
+
+    public class TagTreeNode implements Cloneable {
 		/**
 		 * Map of token names to the amount to deploy.  This is also just used
 		 * as the set of tokens that are directly underneath this tag.

@@ -35,6 +35,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.DeveloperMode;
 import com.tbocek.android.combatmap.Help;
+import com.tbocek.android.combatmap.SaverService;
 import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
 import com.tbocek.android.combatmap.TokenImageManager;
@@ -497,11 +498,7 @@ public final class TokenManager extends ActionBarActivity {
     @Override
     public void onPause() {
         super.onPause();
-        try {
-            this.mTokenDatabase.save(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SaverService.startSavingTokenDatabase(getApplicationContext());
     }
 
     @Override

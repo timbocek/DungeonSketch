@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -814,8 +813,7 @@ public final class CombatMap extends ActionBarActivity {
 										.showDialog(CombatMap.DIALOG_ID_SAVE_NAME_CONFIRM);
 							} else {
 								CombatMap.this.setFilenamePreference(text);
-								new MapSaver(text, CombatMap.this
-										.getApplicationContext()).run();
+                                SaverService.startSavingMap(getApplicationContext(), text);
 							}
 						}
 					}, this.getString(R.string.save_map), this
@@ -879,11 +877,7 @@ public final class CombatMap extends ActionBarActivity {
 										int id) {
 									CombatMap.this
 											.setFilenamePreference(CombatMap.this.mAttemptedMapName);
-									new MapSaver(
-											CombatMap.this.mAttemptedMapName,
-											CombatMap.this
-													.getApplicationContext())
-											.run();
+                                    SaverService.startSavingMap(getApplicationContext(), mAttemptedMapName);
 								}
 							})
 					.setNegativeButton("No",
@@ -944,8 +938,8 @@ public final class CombatMap extends ActionBarActivity {
 		if (itemId == R.id.menu_clear_all) {
 			// Save the current map, if autosave was requested.
 			if (this.mSharedPreferences.getBoolean("autosave", true)) {
-				new MapSaver(this.mSharedPreferences.getString("filename", ""),
-						this.getApplicationContext()).run();
+				SaverService.startSavingMap(getApplicationContext(),
+                        this.mSharedPreferences.getString("filename", ""));
 			}
 			Grid g = mData.getGrid();
 			MapData.clear();
@@ -1031,7 +1025,7 @@ public final class CombatMap extends ActionBarActivity {
 		}
 		this.mCombatView.getMultiSelect().selectNone();
 
-		new MapSaver(filename, this.getApplicationContext()).run();
+        SaverService.startSavingMap(getApplicationContext(), filename);
         mLoader.clearQueue();
         TokenImageManager.getInstance().recycleAll();
         super.onPause();
@@ -1317,71 +1311,6 @@ public final class CombatMap extends ActionBarActivity {
 			this.mRedoMenuItem
 					.setIcon(this.mRedoMenuItem.isEnabled() ? R.drawable.redo
 							: R.drawable.redo_greyscale);
-		}
-	}
-
-	/**
-	 * This helper class allows a map to be saved asynchronously.
-	 * 
-	 * @author Tim Bocek
-	 * 
-	 */
-	private class MapSaver implements Runnable {
-		/**
-		 * Context to use while saving.
-		 */
-		private final Context mContext;
-
-		/**
-		 * Filename to save to.
-		 */
-		private final String mFilename;
-
-		/**a
-		 * Constructor.
-		 * 
-		 * @param filename
-		 *            Filename to save to.
-		 * @param context
-		 *            Context to use while saving.
-		 */
-		public MapSaver(final String filename, final Context context) {
-			this.mFilename = filename;
-			this.mContext = context;
-		}
-
-		@Override
-		public void run() {
-			try {
-				DataManager dm = new DataManager(this.mContext);
-				dm.saveMapName(this.mFilename);
-				// Only save preview if not saving to temp file.
-				if (!this.mFilename.equals(DataManager.TEMP_MAP_NAME)) {
-					Bitmap preview = CombatMap.this.mCombatView.getPreview();
-					if (preview != null) {
-						dm.savePreviewImage(this.mFilename, preview);
-					}
-				}
-			} catch (Exception e) {
-				MapData.clear();
-				// Persist the filename that we saved to so that we can load
-				// from that file again.
-				Editor editor = CombatMap.this.mSharedPreferences.edit();
-				editor.putString("filename", null);
-                savePrefChanges(editor);
-
-				// Log the error in a toast
-				Log.e(TAG, "Could not load map data", e);
-				Toast toast = Toast.makeText(this.mContext,
-						"Could not save file.  Reason: " + e.toString(),
-						Toast.LENGTH_LONG);
-				toast.show();
-
-				if (DeveloperMode.DEVELOPER_MODE) {
-					throw new RuntimeException(e);
-				}
-
-			}
 		}
 	}
 

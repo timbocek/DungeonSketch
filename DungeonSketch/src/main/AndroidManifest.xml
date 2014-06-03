@@ -67,6 +67,9 @@
             android:label="Edit Tag"
             android:theme="@android:style/Theme.Holo.Dialog">
         </activity>
+        <service
+            android:name="com.tbocek.android.combatmap.SaverService">
+        </service>
 
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
     </application>
