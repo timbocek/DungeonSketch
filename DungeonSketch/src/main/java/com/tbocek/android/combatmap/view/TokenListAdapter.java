@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.tbocek.android.combatmap.DeveloperMode;
 import com.tbocek.android.combatmap.TokenImageManager;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 
@@ -22,6 +23,7 @@ public abstract class TokenListAdapter extends ArrayAdapter<BaseToken> {
 
     private static final String TAG = "TokenListAdapter";
     private final TokenImageManager.Loader mLoader;
+    private int nViewsCreatedForDebug = 0;
 
     public TokenListAdapter(Context context, List<BaseToken> objects,
             TokenImageManager.Loader imageLoader) {
@@ -39,12 +41,14 @@ public abstract class TokenListAdapter extends ArrayAdapter<BaseToken> {
             TokenButton oldTokenButton = ((TokenButton)convertView);
             if (oldTokenButton.getTokenId() != null) {
                 String oldTokenId = oldTokenButton.getTokenId();
-                Log.d(TAG, "Reusing button: " + oldTokenId + "-->" + prototype.getTokenId());
+                Log.v(TAG, "Reusing button: " + oldTokenId + "-->" + prototype.getTokenId());
                 mLoader.discardOrCancelTokenLoad(oldTokenId);
                 oldTokenButton.setPrototype(null);
             }
-        } else {
-            Log.d(TAG, "Creating new button for: " + prototype.getTokenId());
+        } else if (DeveloperMode.DEVELOPER_MODE) {
+            nViewsCreatedForDebug++;
+            Log.v(TAG, "Creating new button for: " + prototype.getTokenId() +
+                    ".  Total buttons created = " + nViewsCreatedForDebug);
         }
 
         final TokenButton newTokenButton = (convertView!=null) ? (TokenButton)convertView : createTokenButton();
