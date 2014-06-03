@@ -1032,15 +1032,15 @@ public final class CombatMap extends ActionBarActivity {
 		this.mCombatView.getMultiSelect().selectNone();
 
 		new MapSaver(filename, this.getApplicationContext()).run();
+        mLoader.clearQueue();
+        TokenImageManager.getInstance().recycleAll();
         super.onPause();
 	}
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mLoader.clearQueue();
         mLoader.quit();
-        TokenImageManager.getInstance().recycleAll();
     }
 
 	@Override
