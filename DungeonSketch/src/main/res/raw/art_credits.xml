@@ -271,7 +271,7 @@
 	<artist name="~bchart" copyright="Noncommercial use only.  Used with permission."
 	    url="http://www.bchart.deviantart.com/">
 	    <token res="adventuring_princess" tags="humanoid:female" url="http://bchart.deviantart.com/art/C-Lan-Bennet-265004614"/>
-	    <token res="daemon_blooded_dark_elf_sorcerer" tags="humanoid:female,demon" url="http://bchart.deviantart.com/art/R-Daemon-blooded-Dark-Elf-Sorceress-376472746"/>
+	    <token res="daemon_blooded_dark_elf_sorceres" tags="humanoid:female,demon" url="http://bchart.deviantart.com/art/R-Daemon-blooded-Dark-Elf-Sorceress-376472746"/>
 	    <token res="steampunk_gal" tags="humanoid:female" url="http://bchart.deviantart.com/art/R-Steampunk-Gal-378093558"/>
 	    <token res="swordmage" tags="humanoid:female" url="http://bchart.deviantart.com/art/C-Sword-Mage-Windsoul-Genasi-440538237"/>
 	    <token res="bchart_paladin" tags="humanoid:female" url="http://bchart.deviantart.com/art/R-Paladin-381083323"/>
@@ -291,7 +291,7 @@
 	    url="http://kingagrian.deviantart.com/">
 	    <token res="barbados" tags="humanoid:male"/>
 	    <token res="martial_artist" tags="humanoid:male"/>
-	    <token res="kensai_bladebount" tags="humanoid:male"/>
+	    <token res="kensai_bladebound" tags="humanoid:male"/>
 	</artist>
 	<artist name="Sir Edwin Henry Landseer" copyright="Available in the public domain">
 		<token res="cheetah" tags="animal"/>
