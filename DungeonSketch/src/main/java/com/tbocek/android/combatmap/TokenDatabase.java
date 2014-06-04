@@ -655,6 +655,7 @@ public final class TokenDatabase implements Cloneable {
      *             On read error.
      */
     private void load(final BufferedReader dataIn) {
+        Log.w(TAG, "Loading token database from file");
     	try {
 	        SAXParserFactory spf = SAXParserFactory.newInstance();
 	        SAXParser sp = spf.newSAXParser();
@@ -774,6 +775,7 @@ public final class TokenDatabase implements Cloneable {
      *            database.
      */
     public void populate(Context context) {
+        Log.w(TAG, "Populating token database defaults.");
         this.mPrePopulateTags = !this.tagsLoaded();
         this.loadCustomImageTokens(new DataManager(context));
         this.loadBuiltInImageTokens(context);
