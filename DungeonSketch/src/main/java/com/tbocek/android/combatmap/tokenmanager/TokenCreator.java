@@ -1,13 +1,16 @@
 package com.tbocek.android.combatmap.tokenmanager;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,6 +36,7 @@ import java.util.Date;
  * 
  */
 public final class TokenCreator extends ActionBarActivity {
+    private static final String TAG = "TokenCreator";
 
     /**
      * Maximum dimension allowed in any image before the image starts being
@@ -62,34 +66,53 @@ public final class TokenCreator extends ActionBarActivity {
 
 	private String mTagPathToAdd;
 
+    private ProgressDialog mProgressDialog;
+
     @Override
     protected void onActivityResult(final int requestCode,
             final int resultCode, final Intent data) {
         // If an image was successfully picked, use it.
         if (requestCode == PICK_IMAGE_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                try {
-                    Uri selectedImage = data.getData();
-                    Bitmap bitmap =
-                            Util.loadImageWithMaxBounds(selectedImage,
-                                    MAX_IMAGE_DIMENSION, MAX_IMAGE_DIMENSION,
-                                    this.getContentResolver());
-                    this.mTokenCreatorView.setImage(
-                            new BitmapDrawable(this.getResources(), bitmap));
+                Uri selectedImage = data.getData();
 
-                    Toast t =
-                            Toast.makeText(this.getApplicationContext(),
-                                    "Pinch to change the cut out region",
-                                    Toast.LENGTH_LONG);
-                    t.show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast toast =
-                            Toast.makeText(this.getApplicationContext(),
-                                    "Couldn't load image: " + e.toString(),
-                                    Toast.LENGTH_LONG);
-                    toast.show();
-                }
+                showProgressDialog(getString(R.string.loading_selected_image));
+                AsyncTask<Uri, Void, Bitmap> loadImageTask =
+                        new AsyncTask<Uri, Void, Bitmap>() {
+                            @Override
+                            protected Bitmap doInBackground(Uri... uris) {
+                                try {
+                                    return Util.loadImageWithMaxBounds(uris[0],
+                                            MAX_IMAGE_DIMENSION, MAX_IMAGE_DIMENSION,
+                                            getContentResolver());
+                                } catch (IOException e) {
+                                    Log.e(TAG, "Error loading bitmap", e);
+                                    return null;
+                                }
+                            }
+
+                            @Override
+                            protected void onPostExecute(Bitmap bitmap) {
+                                if (bitmap != null) {
+                                    mTokenCreatorView.setImage(
+                                            new BitmapDrawable(getResources(), bitmap));
+                                    Toast t =  Toast.makeText(
+                                            getApplicationContext(),
+                                            getString(R.string.token_creator_help),
+                                            Toast.LENGTH_LONG);
+                                    t.show();
+                                } else {
+                                    Toast toast = Toast.makeText(getApplicationContext(),
+                                            getString(R.string.token_creator_error),
+                                            Toast.LENGTH_LONG);
+                                    toast.show();
+                                }
+                                mProgressDialog.dismiss();
+                            }
+                        };
+
+                loadImageTask.execute(selectedImage);
+
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 if (this.mImageSelectorStartedAutomatically) {
                     this.finish();
@@ -127,34 +150,48 @@ public final class TokenCreator extends ActionBarActivity {
             this.startImageSelectorActivity();
             return true;
         } else if (itemId == R.id.token_image_creator_accept) {
-            try {
-                // Pick a filename based on the current date and time. This
-                // ensures that the tokens load in the order added.
-                Date now = new Date();
-                String filename = Long.toString(now.getTime());
-                filename = this.saveToInternalImage(filename);
 
-                // Add this token to the token database
-                TokenDatabase tokenDatabase =
-                        TokenDatabase.getInstance(this.getApplicationContext());
-                BaseToken t = new CustomBitmapToken(filename);
-                tokenDatabase.addTokenPrototype(t);
-                tokenDatabase.tagToken(t.getTokenId(), t.getDefaultTags());
-                tokenDatabase.tagToken(t.getTokenId(), TokenDatabase.RECENTLY_ADDED);
-                if (this.mTagPathToAdd != null) {
-                	tokenDatabase.tagToken(t.getTokenId(), this.mTagPathToAdd);
+            showProgressDialog(getString(R.string.saving_token));
+            AsyncTask<Void, Void, Boolean> saveTokenTask = new AsyncTask<Void, Void, Boolean>() {
+                @Override
+                protected Boolean doInBackground(Void... voids) {
+                    try {
+                        Date now = new Date();
+                        String filename = Long.toString(now.getTime());
+                        filename = saveToInternalImage(filename);
+
+                        // Add this token to the token database
+                        TokenDatabase tokenDatabase =
+                                TokenDatabase.getInstance(getApplicationContext());
+                        BaseToken t = new CustomBitmapToken(filename);
+                        tokenDatabase.addTokenPrototype(t);
+                        tokenDatabase.tagToken(t.getTokenId(), t.getDefaultTags());
+                        tokenDatabase.tagToken(t.getTokenId(), TokenDatabase.RECENTLY_ADDED);
+                        if (mTagPathToAdd != null) {
+                            tokenDatabase.tagToken(t.getTokenId(), mTagPathToAdd);
+                        }
+                        return true;
+                    } catch (IOException e) {
+                        Log.e(TAG, "Error saving token image", e);
+                        return false;
+                    }
                 }
 
-                this.setResult(Activity.RESULT_OK);
-                this.finish();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast toast =
-                        Toast.makeText(this.getApplicationContext(),
-                                "Couldn't save image: " + e.toString(),
-                                Toast.LENGTH_LONG);
-                toast.show();
-            }
+                protected void onPostExecute(Boolean success) {
+                    if (success) {
+                        setResult(Activity.RESULT_OK);
+                    } else {
+                        Toast toast =
+                                Toast.makeText(getApplicationContext(),
+                                        getString(R.string.error_saving_token), Toast.LENGTH_LONG);
+                        toast.show();
+                        setResult(Activity.RESULT_CANCELED);
+                    }
+                    finish();
+                }
+            };
+
+            saveTokenTask.execute();
             return true;
         } else if (itemId == android.R.id.home) {
             // app icon in action bar clicked; go home
@@ -195,5 +232,14 @@ public final class TokenCreator extends ActionBarActivity {
         this.startActivityForResult(new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
                 PICK_IMAGE_REQUEST);
+    }
+
+    private void showProgressDialog(String message) {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setTitle(getString(R.string.please_wait));
+        }
+        mProgressDialog.setMessage(message);
+        mProgressDialog.show();
     }
 }

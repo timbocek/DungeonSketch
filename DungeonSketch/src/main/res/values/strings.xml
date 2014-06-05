@@ -166,5 +166,12 @@ Why not press "back" and create one?</string>
     <string name="stop_casting_view">Stop Casting View</string>
     <string name="rename_tag">Rename Tag</string>
     <string name="zooming_map_advisory">Zooming the map will control the exported resolution.</string>
+    <string name="token_creator_help">Pinch to change the cut out region</string>
+    <string name="token_creator_error">Couldn\'t load image</string>
+    <string name="loading">Loading</string>
+    <string name="loading_selected_image">Loading selected image.</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="saving_token">Saving token</string>
+    <string name="error_saving_token">Error saving token.</string>
 
 </resources>
