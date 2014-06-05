@@ -187,6 +187,7 @@ public final class TokenCreator extends ActionBarActivity {
                         toast.show();
                         setResult(Activity.RESULT_CANCELED);
                     }
+                    mProgressDialog.dismiss();
                     finish();
                 }
             };
