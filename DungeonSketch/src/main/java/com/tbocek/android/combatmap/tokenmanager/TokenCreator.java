@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.tbocek.android.combatmap.CombatMap;
 import com.tbocek.android.combatmap.DataManager;
 import com.tbocek.android.combatmap.DeveloperMode;
+import com.tbocek.android.combatmap.SaverService;
 import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.CustomBitmapToken;
@@ -179,6 +180,7 @@ public final class TokenCreator extends ActionBarActivity {
 
                 protected void onPostExecute(Boolean success) {
                     if (success) {
+                        SaverService.startSavingTokenDatabase(getApplicationContext());
                         setResult(Activity.RESULT_OK);
                     } else {
                         Toast toast =
