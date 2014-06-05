@@ -240,8 +240,7 @@ public final class Util {
         BitmapFactory.Options o2 = new BitmapFactory.Options();
         o2.inSampleSize = scale;
         is = contentResolver.openInputStream(selectedImage);
-        Bitmap b = BitmapFactory.decodeStream(
-                contentResolver.openInputStream(selectedImage), null, o2);
+        Bitmap b = BitmapFactory.decodeStream(is, null, o2);
         is.close();
 
         return b;
