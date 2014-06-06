@@ -1132,4 +1132,16 @@ public final class TokenDatabase implements Cloneable {
         n.rename(newName);
         return n.getPath();
     }
+
+    /**
+     * Restores all previously deleted tokens to the token library.  Newly added tokens will still
+     * be present.
+     *
+     * Note that this will read the art credits file to restore tags, so it should ideally be done
+     * off the main thread.
+     */
+    public void restoreDefaults(Context context) {
+        this.mDeletedBuiltInTokens.clear();
+        this.loadBuiltInImageTokens(context);
+    }
 }

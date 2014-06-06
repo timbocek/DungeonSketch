@@ -173,5 +173,13 @@ Why not press "back" and create one?</string>
     <string name="please_wait">Please Wait</string>
     <string name="saving_token">Saving token</string>
     <string name="error_saving_token">Error saving token.</string>
+    <string name="restore_all_default_tokens">Restore all default tokens</string>
+    <string name="restore_all_default_tokens_summary">Restore all previously deleted default tokens to the token library.</string>
+    <string name="migrate_data_summary">Copy data from another installed version of Dungeon Sketch.</string>
+    <string name="confirm_restore_tokens_title">Confirm</string>
+    <string name="confirm_restore_tokens_message">
+        Are you sure you want to restore all default tokens to the token library?\n
+        Custom tokens will NOT be deleted.
+    </string>
 
 </resources>

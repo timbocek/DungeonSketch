@@ -97,6 +97,14 @@
             android:title="@string/import_data"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:summary="Copy data from another installed version of Dungeon Sketch"/>
-        </PreferenceCategory>
+            android:summary="@string/migrate_data_summary"/>
+        <Preference
+            android:key="restore_all_default_tokens"
+            android:title="@string/restore_all_default_tokens"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:summary="@string/restore_all_default_tokens_summary">
+
+        </Preference>
+    </PreferenceCategory>
 </PreferenceScreen>

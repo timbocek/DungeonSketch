@@ -1,6 +1,8 @@
 package com.tbocek.android.combatmap;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -68,6 +70,27 @@ public final class Settings extends PreferenceActivity {
                 return true;
             }
 
+        });
+
+        Preference restoreDefaultsPref = this.findPreference("restore_all_default_tokens");
+        restoreDefaultsPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new AlertDialog.Builder(Settings.this)
+                        .setTitle(getString(R.string.confirm_restore_tokens_title))
+                        .setMessage(getString(R.string.confirm_restore_tokens_message))
+                        .setCancelable(true)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                               TokenDatabase.getInstance(Settings.this.getApplicationContext())
+                                       .restoreDefaults(Settings.this.getApplicationContext());
+                            }
+                        })
+                        .show();
+
+                return true;
+            }
         });
     }
 
