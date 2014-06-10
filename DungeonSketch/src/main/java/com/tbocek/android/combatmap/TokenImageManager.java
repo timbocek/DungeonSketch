@@ -247,10 +247,17 @@ public class TokenImageManager {
 
     public synchronized void requireTokenImage(String tokenId, Loader loader, Callback callback) {
         TokenDatabase db = TokenDatabase.getInstanceOrNull();
-        if (db.createToken(tokenId).needsLoad()) {
+        // If the token does not require an image load, the token is ready to draw.  This could
+        // be the case in e.g. color or letter tokens.  In this case, run the callback and return
+        // immediately.
+        if (!db.createToken(tokenId).needsLoad()) {
             callback.imageLoaded(tokenId);
+            return;
         }
+
         if (mCurrentImages.containsKey(tokenId)) {
+            // If the token image is already loaded, we don't need to wait on anything.  Just
+            // increase the refcount and return immediately.
             TokenImageWrapper image = mCurrentImages.get(tokenId);
             image.mReferenceCount++;
             callback.imageLoaded(tokenId);
