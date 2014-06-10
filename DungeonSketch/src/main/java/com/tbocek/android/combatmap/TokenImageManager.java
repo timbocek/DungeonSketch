@@ -134,6 +134,10 @@ public class TokenImageManager {
                         }
                     }
                     if (cb != null) {
+                        if (TokenImageManager.this.getTokenDrawable(tokenId) == null) {
+                            Log.e(TAG, "Lost token image for " + tokenId + " before callback called.");
+                            return;
+                        }
                         Log.v(TAG, "Posting token load callback for " + tokenId);
                         cb.imageLoaded(tokenId);
                     }
