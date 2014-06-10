@@ -103,12 +103,21 @@ public class TokenImageManager {
             // synchronized block because it is an expensive process and is the reason we are doing
             // this off the main thread.
             if (newImage != null) {
+                Log.v(TAG, "Image allocated.  Now loading token image for " + tokenId);
                 BaseToken token = db.createToken(tokenId);
                 Bitmap b = token.loadBitmap(newImage.mImage);
                 newImage.mImage = b;
                 newImage.mDrawable = new BitmapDrawable(mContext.getResources(), b);
                 newImage.mToken = token;
                 mgr.mCurrentImages.put(tokenId, newImage);
+            }
+
+            if (TokenImageManager.this.getTokenDrawable(tokenId) == null) {
+                Log.e(TAG, "Failed to allocate an unused image for " + tokenId);
+                synchronized(TokenImageManager.this) {
+                    mCallbacks.remove(tokenId);
+                }
+                return;
             }
 
             mResponseHandler.post(new Runnable() {
@@ -251,6 +260,7 @@ public class TokenImageManager {
         // be the case in e.g. color or letter tokens.  In this case, run the callback and return
         // immediately.
         if (!db.createToken(tokenId).needsLoad()) {
+            Log.v(TAG, "Token " + tokenId +  " does not need a load.");
             callback.imageLoaded(tokenId);
             return;
         }
@@ -258,6 +268,7 @@ public class TokenImageManager {
         if (mCurrentImages.containsKey(tokenId)) {
             // If the token image is already loaded, we don't need to wait on anything.  Just
             // increase the refcount and return immediately.
+            Log.v(TAG, "Token " + tokenId + " already loaded.");
             TokenImageWrapper image = mCurrentImages.get(tokenId);
             image.mReferenceCount++;
             callback.imageLoaded(tokenId);
@@ -272,9 +283,11 @@ public class TokenImageManager {
         }
     }
 
-    public Drawable getTokenDrawable(String tokenId) {
+    public synchronized Drawable getTokenDrawable(String tokenId) {
         if (mCurrentImages.containsKey(tokenId)) {
             return mCurrentImages.get(tokenId).getDrawable();
+        } else {
+            Log.d(TAG, "Token image requested for " + tokenId + " before image was ready");
         }
         return null;
     }
