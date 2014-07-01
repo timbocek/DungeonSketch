@@ -8,14 +8,14 @@
     <FrameLayout
         android:id="@+id/mainContentFrame"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent">
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/bottomControlAreaFrame"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/control_area_size"
-        android:layout_alignBottom="@+id/mainContentFrame" >
+        android:layout_alignBottom="@+id/mainContentFrame">
     </FrameLayout>
 
     <LinearLayout
@@ -80,6 +80,6 @@
         android:layout_above="@+id/bottomControlAreaExpandButton"
         android:layout_alignParentLeft="true"
         android:textOff="Measuring Tape"
-        android:textOn="Stop Measuring" />
+        android:textOn="Stop Measuring"/>
 
 </RelativeLayout>
