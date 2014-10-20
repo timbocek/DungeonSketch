@@ -28,6 +28,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.MediaRouteActionProvider;
 import android.support.v7.view.ActionMode;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -956,6 +959,8 @@ public final class CombatMap extends ActionBarActivity {
             mSaveMenuItem.setIcon(mData.getGrid().getColorScheme().isDark()
                     ? R.drawable.document_save : R.drawable.document_save_dark);
         }
+
+        setTitle(); // Called to update color.
     }
 
     private void setTitle() {
@@ -963,7 +968,13 @@ public final class CombatMap extends ActionBarActivity {
         if (filename.isEmpty()) {
             filename = "Untitled Map";
         }
-        this.getSupportActionBar().setTitle(filename);
+        this.getSupportActionBar().setTitle(colorTextForBackground(filename));
+    }
+
+    private Spannable colorTextForBackground(String text) {
+        Spannable span = new SpannableString(text);
+        span.setSpan(new ForegroundColorSpan(mData.getGrid().getColorScheme().isDark() ? Color.WHITE : Color.BLACK), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        return span;
     }
 
     @Override
