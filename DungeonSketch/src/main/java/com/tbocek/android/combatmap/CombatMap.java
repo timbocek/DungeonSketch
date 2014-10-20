@@ -917,7 +917,7 @@ public final class CombatMap extends ActionBarActivity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void styleActionBar() {
         this.getSupportActionBar().setStackedBackgroundDrawable( new ColorDrawable(
-                mData.getGrid().getColorScheme().getBackgroundColor()));
+                mData.getGrid().getColorScheme().getLineColor()));
         this.getSupportActionBar().setBackgroundDrawable( new ColorDrawable(
                 mData.getGrid().getColorScheme().getBackgroundColor()));
 
