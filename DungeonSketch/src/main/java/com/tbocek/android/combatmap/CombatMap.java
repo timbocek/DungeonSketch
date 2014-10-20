@@ -678,7 +678,9 @@ public final class CombatMap extends ActionBarActivity {
 		this.mTagNavigator.setLayoutParams(new FrameLayout.LayoutParams(
 						FrameLayout.LayoutParams.MATCH_PARENT,
 						FrameLayout.LayoutParams.MATCH_PARENT));
-		this.mTagNavigator.setTagSelectedListener(this.mTagSelectedListener);
+		this.mTagNavigator.setBackgroundDrawable(new ColorDrawable(Color.argb(60, 100, 100, 100)));
+        this.mTagNavigator.setTagSelectedListener(this.mTagSelectedListener);
+
 
 		//this.mPopupFrame.addView(this.mTokenCategorySelector);
 		innerPopupFrame.addView(this.mTagNavigator);

@@ -31,9 +31,6 @@
 	        android:id="@+id/popupControlAreaInnerFrame"
 	        android:layout_width="200dp"
 	        android:layout_height="350dp">
-	        <Button
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent" />
 	    </FrameLayout>
 	    <Button
 	        android:id="@+id/deployTokensButton"

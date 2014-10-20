@@ -12,7 +12,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/token_selector_list_view">
 
-
         </com.tbocek.android.combatmap.view.HorizontalListView>
         </FrameLayout>
         <Button
