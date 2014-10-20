@@ -16,6 +16,7 @@
         </com.tbocek.android.combatmap.view.HorizontalListView>
         </FrameLayout>
         <Button
+            android:theme="@style/Theme.AppCompat.Light"
             android:id="@+id/token_category_selector_button"
             android:layout_width="80dp"
             android:layout_height="match_parent"
