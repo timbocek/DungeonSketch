@@ -13,6 +13,8 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -502,6 +504,7 @@ public final class CombatMap extends ActionBarActivity {
 		mData = MapData.getInstance();
 		this.mCombatView.setData(mData);
 		this.mTagNavigator.setTagPath(mData.getLastTag());
+        styleActionBar();
 	}
 
 	@Override
@@ -893,8 +896,9 @@ public final class CombatMap extends ActionBarActivity {
 			gpd.setOnPropertiesChangedListener(new GridPropertiesDialog.PropertiesChangedListener() {
 				@Override
 				public void onPropertiesChanged() {
-					CombatMap.this.mCombatView.refreshMap();
-				}
+                    CombatMap.this.mCombatView.refreshMap();
+                    styleActionBar();
+                }
 
                 @Override
                 public void onResizeGridRequested() {
@@ -910,7 +914,14 @@ public final class CombatMap extends ActionBarActivity {
 		}
 	}
 
-	@Override
+    private void styleActionBar() {
+        this.getSupportActionBar().setStackedBackgroundDrawable( new ColorDrawable(
+                mData.getGrid().getColorScheme().getBackgroundColor()));
+        this.getSupportActionBar().setBackgroundDrawable( new ColorDrawable(
+                mData.getGrid().getColorScheme().getBackgroundColor()));
+    }
+
+    @Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		MenuInflater inflater = this.getMenuInflater();
 		inflater.inflate(R.menu.combat_map_menu, menu);

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
+import android.view.ContextThemeWrapper;
 import android.widget.ImageButton;
 
 import javax.annotation.Nonnull;
@@ -45,17 +46,21 @@ public final class ImageToggleButton extends ImageButton {
      *            Context to use.
      */
     public ImageToggleButton(final Context context) {
-        super(context);
+        super(new ContextThemeWrapper(
+                context, android.support.v7.appcompat.R.style.Theme_AppCompat_Light));
         createBorderPaint();
     }
 
     public ImageToggleButton(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        super(new ContextThemeWrapper(
+                context, android.support.v7.appcompat.R.style.Theme_AppCompat_Light), attrs);
         createBorderPaint();
     }
 
     public ImageToggleButton(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+        super(new ContextThemeWrapper(
+                context, android.support.v7.appcompat.R.style.Theme_AppCompat_Light), attrs,
+                defStyle);
         createBorderPaint();
     }
 
