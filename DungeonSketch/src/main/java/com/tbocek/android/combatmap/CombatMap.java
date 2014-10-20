@@ -931,6 +931,14 @@ public final class CombatMap extends ActionBarActivity {
         }
     }
 
+    private void setTitle() {
+        String filename = this.mSharedPreferences.getString("filename", "");
+        if (filename.isEmpty()) {
+            filename = "Untitled Map";
+        }
+        this.getSupportActionBar().setTitle(filename);
+    }
+
     @Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		MenuInflater inflater = this.getMenuInflater();
@@ -1124,6 +1132,7 @@ public final class CombatMap extends ActionBarActivity {
 
 		this.mCombatView.refreshMap();
 		new TokenDatabaseLoadTask().execute();
+        setTitle();
 		// android.os.Debug.stopMethodTracing();
 	}
 
@@ -1158,6 +1167,7 @@ public final class CombatMap extends ActionBarActivity {
 		Editor editor = this.mSharedPreferences.edit();
 		editor.putString("filename", newFilename);
         savePrefChanges(editor);
+        setTitle();
     }
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
