@@ -914,11 +914,21 @@ public final class CombatMap extends ActionBarActivity {
 		}
 	}
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void styleActionBar() {
         this.getSupportActionBar().setStackedBackgroundDrawable( new ColorDrawable(
                 mData.getGrid().getColorScheme().getBackgroundColor()));
         this.getSupportActionBar().setBackgroundDrawable( new ColorDrawable(
                 mData.getGrid().getColorScheme().getBackgroundColor()));
+
+        // On Lollipop, set the status bar color as well.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Create a color that is slightly darker.
+            float[] hsv = new float[3];
+            Color.colorToHSV(mData.getGrid().getColorScheme().getBackgroundColor(), hsv);
+            hsv[2] *= .75;
+            getWindow().setStatusBarColor(Color.HSVToColor(hsv));
+        }
     }
 
     @Override
