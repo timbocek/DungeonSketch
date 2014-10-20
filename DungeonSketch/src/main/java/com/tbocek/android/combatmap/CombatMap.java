@@ -967,6 +967,11 @@ public final class CombatMap extends ActionBarActivity {
             mViewMenuItem.setTitle(colorTextForBackground(mViewMenuItem.getTitle().toString()));
         }
         setTitle(); // Called to update color.
+
+        for (int i = 0; i < this.getSupportActionBar().getTabCount(); ++i) {
+            ActionBar.Tab t = getSupportActionBar().getTabAt(i);
+            t.setText(colorTextForBackground(t.getText().toString()));
+        }
     }
 
     private void setTitle() {
