@@ -186,6 +186,13 @@ public final class CombatMap extends ActionBarActivity {
 	
 	private ToggleButton mMeasuringToggle;
 
+    /**
+     * The drawables that should be used for undo and redo IF the action is available.  These
+     * change based on whether the theme is dark or not.
+     */
+    int mUndoMenuItemDrawable = R.drawable.undo;
+    int mRedoMenuItemDrawable = R.drawable.redo;
+
 	/**
 	 * Listener that fires when a new draw tool or color has been selected.
 	 */
@@ -400,6 +407,13 @@ public final class CombatMap extends ActionBarActivity {
 	 * The saved menu item that performs the redo operation.
 	 */
 	private MenuItem mRedoMenuItem;
+
+
+    /**
+     * The saved "save" menu item; this is cached because its appearence needs to change base on
+     * grid theme.
+     */
+    private MenuItem mSaveMenuItem;
 
 	/**
 	 * Cached SharedPreferences.
@@ -931,6 +945,17 @@ public final class CombatMap extends ActionBarActivity {
             hsv[2] *= .75;
             getWindow().setStatusBarColor(Color.HSVToColor(hsv));
         }
+
+        mUndoMenuItemDrawable = mData.getGrid().getColorScheme().isDark()
+                ? R.drawable.undo : R.drawable.undo_dark;
+        mRedoMenuItemDrawable = mData.getGrid().getColorScheme().isDark()
+                ? R.drawable.redo : R.drawable.redo_dark;
+        setUndoRedoEnabled();   // Refresh the undo/redo icons.
+
+        if (mSaveMenuItem != null) {
+            mSaveMenuItem.setIcon(mData.getGrid().getColorScheme().isDark()
+                    ? R.drawable.document_save : R.drawable.document_save_dark);
+        }
     }
 
     private void setTitle() {
@@ -955,6 +980,10 @@ public final class CombatMap extends ActionBarActivity {
 		this.mUndoMenuItem = menu.findItem(R.id.menu_undo);
 		this.mRedoMenuItem = menu.findItem(R.id.menu_redo);
 		this.setUndoRedoEnabled();
+
+        this.mSaveMenuItem = menu.findItem(R.id.menu_save);
+        mSaveMenuItem.setIcon(mData.getGrid().getColorScheme().isDark()
+                ? R.drawable.document_save : R.drawable.document_save_dark);
 
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
         MediaRouteActionProvider mediaRouteActionProvider =
@@ -1336,13 +1365,13 @@ public final class CombatMap extends ActionBarActivity {
 		if (this.mUndoMenuItem != null && mUndoMenuItem.isEnabled() != canUndo) {
 			this.mUndoMenuItem.setEnabled(canUndo);
 			this.mUndoMenuItem
-					.setIcon(this.mUndoMenuItem.isEnabled() ? R.drawable.undo
+					.setIcon(this.mUndoMenuItem.isEnabled() ? mUndoMenuItemDrawable
 							: R.drawable.undo_greyscale);
 		}
 		if (this.mRedoMenuItem != null && mRedoMenuItem.isEnabled() != canRedo) {
 			this.mRedoMenuItem.setEnabled(canRedo);
 			this.mRedoMenuItem
-					.setIcon(this.mRedoMenuItem.isEnabled() ? R.drawable.redo
+					.setIcon(this.mRedoMenuItem.isEnabled() ? mRedoMenuItemDrawable
 							: R.drawable.redo_greyscale);
 		}
 	}

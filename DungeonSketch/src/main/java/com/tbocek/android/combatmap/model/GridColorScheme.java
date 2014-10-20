@@ -177,7 +177,7 @@ public final class GridColorScheme {
     /**
      * @return Whether the grid has a dark background.
      */
-    boolean isDark() {
+    public boolean isDark() {
         return this.mIsDark;
     }
 
