@@ -418,6 +418,8 @@ public final class CombatMap extends ActionBarActivity {
      */
     private MenuItem mSaveMenuItem;
 
+    private MenuItem mViewMenuItem;
+
 	/**
 	 * Cached SharedPreferences.
 	 */
@@ -960,6 +962,9 @@ public final class CombatMap extends ActionBarActivity {
                     ? R.drawable.document_save : R.drawable.document_save_dark);
         }
 
+        if (mViewMenuItem != null) {
+            mViewMenuItem.setTitle(colorTextForBackground(mViewMenuItem.getTitle().toString()));
+        }
         setTitle(); // Called to update color.
     }
 
@@ -986,6 +991,10 @@ public final class CombatMap extends ActionBarActivity {
         this.mRestoreViewMenuItem = menu.findItem(R.id.menu_restore_view);
         this.mCastViewMenuItem = menu.findItem(R.id.menu_cast_view);
         this.mStopCastingViewMenuItem = menu.findItem(R.id.menu_stop_casting_view);
+
+        this.mViewMenuItem = menu.findItem(R.id.menu_view);
+        mViewMenuItem.setTitle(colorTextForBackground(mViewMenuItem.getTitle().toString()));
+
 		this.loadModeSpecificSnapPreference();
 
 		this.mUndoMenuItem = menu.findItem(R.id.menu_undo);

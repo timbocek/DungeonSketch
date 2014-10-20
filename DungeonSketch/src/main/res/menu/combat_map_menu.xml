@@ -7,7 +7,7 @@
         android:title="@string/media_route_menu_title"
         app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
         app:showAsAction="always"/>
-    <item android:title="@string/view" abc:showAsAction="ifRoom|withText">
+    <item android:title="@string/view" abc:showAsAction="ifRoom|withText" android:id="@+id/menu_view">
         <menu>
             <item android:id="@+id/menu_save_view"
                   android:title="@string/save_view"/>
