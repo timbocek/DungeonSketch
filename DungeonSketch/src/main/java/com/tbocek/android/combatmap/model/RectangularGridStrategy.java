@@ -5,6 +5,7 @@ import android.graphics.Paint;
 
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.PointF;
+import com.tbocek.android.combatmap.model.primitives.Units;
 
 /**
  * Represents a grid of squares that will draw as virtual "graph paper".
@@ -19,7 +20,7 @@ public final class RectangularGridStrategy extends GridDrawStrategy {
     private static final int MAJOR_GRID_LINE_FREQUENCY = 5;
 
     /**
-     * Maximum size of squares formed by major grid lines in pixels.
+     * Maximum size of squares formed by major grid lines in dp.
      */
     private static final int MAJOR_GRID_LINE_SIZE_LIMIT = 4;
 
@@ -29,7 +30,7 @@ public final class RectangularGridStrategy extends GridDrawStrategy {
     private static final float MAJOR_GRID_LINE_WIDTH = 3;
 
     /**
-     * Maximum size of squares formed by minor grid lines in pixels.
+     * Maximum size of squares formed by minor grid lines in dp.
      */
     private static final int MINOR_GRID_LINE_SIZE_LIMIT = 8;
 
@@ -47,11 +48,11 @@ public final class RectangularGridStrategy extends GridDrawStrategy {
     	// a draw is requested.
         Paint thinPaint = new Paint();
         thinPaint.setColor(colorScheme.getLineColor());
-        thinPaint.setStrokeWidth(MINOR_GRID_LINE_WIDTH);
+        thinPaint.setStrokeWidth(Units.dpToPx(MINOR_GRID_LINE_WIDTH));
         
         Paint thickPaint = new Paint();
         thickPaint.setColor(colorScheme.getLineColor());
-        thickPaint.setStrokeWidth(MAJOR_GRID_LINE_WIDTH);
+        thickPaint.setStrokeWidth(Units.dpToPx(MAJOR_GRID_LINE_WIDTH));
         
         int width = canvas.getWidth();
         int height = canvas.getHeight();
@@ -61,8 +62,8 @@ public final class RectangularGridStrategy extends GridDrawStrategy {
         float numSquaresVertical =
                 numSquaresHorizontal * ((float) height) / ((float) width);
 
-        boolean shouldDrawMinorLines = squareSize >= MINOR_GRID_LINE_SIZE_LIMIT;
-        boolean shouldDrawMajorLines = squareSize >= MAJOR_GRID_LINE_SIZE_LIMIT;
+        boolean shouldDrawMinorLines = squareSize >= Units.dpToPx(MINOR_GRID_LINE_SIZE_LIMIT);
+        boolean shouldDrawMajorLines = squareSize >= Units.dpToPx(MAJOR_GRID_LINE_SIZE_LIMIT);
 
         PointF origin = transformer.getOrigin();
 
