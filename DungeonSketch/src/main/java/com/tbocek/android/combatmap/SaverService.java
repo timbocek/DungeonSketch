@@ -67,6 +67,8 @@ public class SaverService extends Service {
         switch(operation) {
             case SAVE_MAP:
                 final MapData mapData = MapData.getCopy();
+                if (mapData == null) break;
+
                 final String filename = intent.getStringExtra(EXTRA_MAP_NAME);
 
                 mOperationQueue.add(new Runnable() {

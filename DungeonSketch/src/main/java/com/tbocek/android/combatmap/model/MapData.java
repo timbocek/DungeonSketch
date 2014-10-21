@@ -187,6 +187,7 @@ public final class MapData {
      * @return A copy of the map data.
      */
     public static MapData getCopy() {
+        if (instance == null) return null;
         return new MapData(instance);
     }
 

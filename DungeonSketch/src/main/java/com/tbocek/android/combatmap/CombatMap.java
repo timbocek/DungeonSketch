@@ -62,6 +62,7 @@ import com.tbocek.android.combatmap.view.CombatView;
 import com.tbocek.android.combatmap.view.DrawOptionsView;
 import com.tbocek.android.combatmap.view.TagNavigator;
 import com.tbocek.android.combatmap.view.TokenSelectorView;
+import com.tbocek.dungeonsketch.BuildConfig;
 import com.tbocek.dungeonsketch.R;
 
 import java.io.IOException;
@@ -487,6 +488,8 @@ public final class CombatMap extends ActionBarActivity {
     private CastManager mCastManager;
     private int mOldBottomControlFrameHeight;
 
+    private int lastUsedTheme = -1;
+
     /**
 	 * Given a combat mode, returns the snap to grid preference name associated
 	 * with that combat mode.
@@ -522,9 +525,13 @@ public final class CombatMap extends ActionBarActivity {
 			this.setFilenamePreference(null);
 		}
 		mData = MapData.getInstance();
-		this.mCombatView.setData(mData);
-		this.mTagNavigator.setTagPath(mData.getLastTag());
-        styleActionBar();
+        if (mCombatView != null) {
+            this.mCombatView.setData(mData);
+        }
+
+        if (mTagNavigator != null) {
+            this.mTagNavigator.setTagPath(mData.getLastTag());
+        }
 	}
 
 	@Override
@@ -588,7 +595,9 @@ public final class CombatMap extends ActionBarActivity {
 	private void loadOrCreateMap() {
 		if (MapData.hasValidInstance()) {
 			mData = MapData.getInstance();
-			this.mCombatView.setData(mData);
+            if (this.mCombatView != null) {
+                this.mCombatView.setData(mData);
+            }
 		} else {
 			this.loadMap(DataManager.TEMP_MAP_NAME);
 		}
@@ -604,19 +613,28 @@ public final class CombatMap extends ActionBarActivity {
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
-		DeveloperMode.strictMode();
+        // Fix spurious strict mode errors that fire when recreating the activity.
+        if (BuildConfig.DEBUG)
+        {
+            System.gc();
+        }
+        DeveloperMode.strictMode();
+
+        this.mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(this.getApplicationContext());
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+
+        this.loadOrCreateMap();
+
+        setCorrectTheme();
+
 		// android.os.Debug.startMethodTracing("main_activity_load");
 		super.onCreate(savedInstanceState);
 
         if (this.getApplicationContext() == null) return;
 
-		this.mSharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(this.getApplicationContext());
-
 		BackgroundImage.registerDataManager(new DataManager(this
 				.getApplicationContext()));
-
-		PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
         mCastManager = CastManager.getInstance(this);
         mCastManager.setCallback(mCastCallback);
@@ -650,6 +668,7 @@ public final class CombatMap extends ActionBarActivity {
 
 		if (mCombatView == null) {
 			this.mCombatView = new CombatView(this);
+            this.mCombatView.setData(mData);
 		}
 		this.registerForContextMenu(this.mCombatView);
 		this.mCombatView.setNewTextEntryListener(this.mOnNewTextEntryListener);
@@ -745,14 +764,12 @@ public final class CombatMap extends ActionBarActivity {
 		
 		this.mDeployTokensButton = (Button) this.findViewById(R.id.deployTokensButton);
 		mDeployTokensButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				openDeployTokensDialog();
-			}
-		});
-		
-		this.loadOrCreateMap();
+
+            @Override
+            public void onClick(View v) {
+                openDeployTokensDialog();
+            }
+        });
 
 		if (this.mTabManager != null) {
 			this.mTabManager.addTab(this.getString(R.string.background),
@@ -790,6 +807,8 @@ public final class CombatMap extends ActionBarActivity {
 
 		this.mCombatView.alertTokensChanged();
 		this.mCombatView.requestFocus();
+
+        this.styleActionBar();
 
 	}
 
@@ -919,7 +938,8 @@ public final class CombatMap extends ActionBarActivity {
 				@Override
 				public void onPropertiesChanged() {
                     CombatMap.this.mCombatView.refreshMap();
-                    styleActionBar();
+                    setCorrectTheme();
+                    recreate();
                 }
 
                 @Override
@@ -937,7 +957,14 @@ public final class CombatMap extends ActionBarActivity {
 	}
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setCorrectTheme() {
+        this.setTheme(mData.getGrid().getColorScheme().isDark() ?
+                R.style.MapStyleDarkGrid : R.style.MapStyleLightGrid);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void styleActionBar() {
+
         this.getSupportActionBar().setStackedBackgroundDrawable( new ColorDrawable(
                 mData.getGrid().getColorScheme().getLineColor()));
         this.getSupportActionBar().setBackgroundDrawable( new ColorDrawable(
@@ -968,10 +995,6 @@ public final class CombatMap extends ActionBarActivity {
         }
         setTitle(); // Called to update color.
 
-        for (int i = 0; i < this.getSupportActionBar().getTabCount(); ++i) {
-            ActionBar.Tab t = getSupportActionBar().getTabAt(i);
-            t.setText(colorTextForBackground(t.getText().toString()));
-        }
     }
 
     private void setTitle() {
@@ -979,7 +1002,8 @@ public final class CombatMap extends ActionBarActivity {
         if (filename.isEmpty()) {
             filename = "Untitled Map";
         }
-        this.getSupportActionBar().setTitle(colorTextForBackground(filename));
+        //this.getSupportActionBar().setTitle(colorTextForBackground(filename));
+        this.getSupportActionBar().setTitle(filename);
     }
 
     private Spannable colorTextForBackground(String text) {

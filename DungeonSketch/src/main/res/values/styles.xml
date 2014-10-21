@@ -5,4 +5,29 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="MapStyleDarkGrid" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarStyle">@style/DarkActionBar</item>
+        <item name="actionBarTabTextStyle">@style/DarkActionBarTabText</item>
+    </style>
+    <style name="MapStyleLightGrid" parent="Theme.AppCompat.Light"></style>
+
+
+    <style name="DarkActionBar"
+        parent="@style/Widget.AppCompat.ActionBar">
+        <item name="titleTextStyle">@style/DarkActionBarTitleText</item>
+    </style>
+
+    <!-- ActionBar title text -->
+    <style name="DarkActionBarTitleText"
+        parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/actionbar_text</item>
+        <!-- The textColor property is backward compatible with the Support Library -->
+    </style>
+
+    <!-- ActionBar tabs text -->
+    <style name="DarkActionBarTabText"
+        parent="@style/Widget.AppCompat.ActionBar.TabText">
+        <item name="android:textColor">@color/actionbar_text</item>
+        <!-- The textColor property is backward compatible with the Support Library -->
+    </style>
 </resources>
