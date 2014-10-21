@@ -958,8 +958,19 @@ public final class CombatMap extends ActionBarActivity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setCorrectTheme() {
-        this.setTheme(mData.getGrid().getColorScheme().isDark() ?
-                R.style.MapStyleDarkGrid : R.style.MapStyleLightGrid);
+        if (mData.getGrid().getColorScheme().isDark()) {
+            if (mData.getGrid().getColorScheme().isSecondaryDark()) {
+                this.setTheme(R.style.MapStyleDarkGrid);
+            } else {
+               this.setTheme(R.style.MapStyleDarkGridLightSecondary);
+            }
+        } else {
+            if (mData.getGrid().getColorScheme().isSecondaryDark()) {
+                this.setTheme(R.style.MapStyleLightGridDarkSecondary);
+            } else {
+                this.setTheme(R.style.MapStyleLightGrid);
+            }
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

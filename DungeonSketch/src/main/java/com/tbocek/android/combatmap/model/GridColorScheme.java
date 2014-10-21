@@ -100,7 +100,10 @@ public final class GridColorScheme {
         s.expectObjectStart();
         int bkg = s.readInt();
         int line = s.readInt();
+
+        // For backwards compat, BUT this is dynamically computed now.
         boolean dark = s.readBoolean();
+
         s.expectObjectEnd();
         return new GridColorScheme(bkg, line, dark);
     }
@@ -178,7 +181,7 @@ public final class GridColorScheme {
      * @return Whether the grid has a dark background.
      */
     public boolean isDark() {
-        return this.mIsDark;
+        return getColorValue(mBackgroundColor) < .5;
     }
 
     /**
@@ -195,5 +198,15 @@ public final class GridColorScheme {
         s.serializeInt(this.mLineColor);
         s.serializeBoolean(this.mIsDark);
         s.endObject();
+    }
+
+    public boolean isSecondaryDark() {
+        return getColorValue(mLineColor) < .5;
+    }
+
+    private float getColorValue(int color) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        return hsv[2];
     }
 }

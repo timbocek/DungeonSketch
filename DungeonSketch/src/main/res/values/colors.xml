@@ -1,4 +1,4 @@
 <resources>
-    <color
-        name="actionbar_text">#F0F0F0</color>
+    <color name="actionbar_text">#F0F0F0</color>
+    <color name="actionbar_text_light">#000000</color>
 </resources>
