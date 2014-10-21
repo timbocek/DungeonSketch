@@ -9,7 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.Handler;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
@@ -146,6 +146,7 @@ public final class TokenManager extends ActionBarActivity {
     private TokenImageManager.Loader mLoader;
 
     private GridView mGridView;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
 
     /**
      * Deletes the given list of tokens.
@@ -250,9 +251,9 @@ public final class TokenManager extends ActionBarActivity {
         } else {
             drawer = (DrawerLayout) findViewById(R.id.drawer_layout);     
             drawerList = (FrameLayout) findViewById(R.id.left_drawer);
-            ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
-                    this, drawer, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close);
-            drawer.setDrawerListener(actionBarDrawerToggle);
+            mActionBarDrawerToggle = new ActionBarDrawerToggle(
+                    this, drawer, R.string.drawer_open, R.string.drawer_close);
+            drawer.setDrawerListener(mActionBarDrawerToggle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
             tagListFrame =
@@ -319,6 +320,12 @@ public final class TokenManager extends ActionBarActivity {
 			}
         });
 
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mActionBarDrawerToggle.syncState();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
