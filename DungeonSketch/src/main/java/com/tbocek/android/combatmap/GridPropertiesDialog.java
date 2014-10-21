@@ -372,6 +372,7 @@ public class GridPropertiesDialog extends Dialog {
          * options.
          */
         private static final int THEME_PREVIEW_PADDING = 16;
+        private static final int THEME_PREVIEW_FONT_SIZE = 12;
 
         /**
          * Constructor.
@@ -397,12 +398,16 @@ public class GridPropertiesDialog extends Dialog {
             // With all these different colors, changing the padding works
             // wonders!
             // TODO: DO this in the XML!!!!
-            float dp16 =
+            float padding =
                     TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                             THEME_PREVIEW_PADDING, this.getContext()
                                     .getResources().getDisplayMetrics());
-            v.setPadding(0, (int) dp16, 0, (int) dp16);
-            v.setTextSize(2 * dp16);
+            float font_size =
+                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PT,
+                            THEME_PREVIEW_FONT_SIZE, this.getContext()
+                                    .getResources().getDisplayMetrics());
+            v.setPadding(0, (int) padding, 0, (int) padding);
+            v.setTextSize(font_size);
 
             return v;
         }
