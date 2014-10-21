@@ -382,7 +382,7 @@ public final class TokenManipulationInteractionMode extends
                                 currentPointScreenSpace);
 
                 PointF newLocationWorldSpace =
-                        distanceToSnapPoint < GRID_SNAP_THRESHOLD
+                        distanceToSnapPoint < Units.dpToPx(GRID_SNAP_THRESHOLD)
                                 ? nearestSnapPointWorldSpace
                                 : currentPointWorldSpace;
 
