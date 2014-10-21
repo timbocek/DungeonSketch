@@ -56,6 +56,7 @@ import com.tbocek.android.combatmap.model.primitives.Information;
 import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Text;
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.tokenmanager.TokenManager;
 import com.tbocek.android.combatmap.view.CombatView;
@@ -619,6 +620,8 @@ public final class CombatMap extends ActionBarActivity {
             System.gc();
         }
         DeveloperMode.strictMode();
+
+        Units.initialize(this.getApplicationContext());
 
         this.mSharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(this.getApplicationContext());

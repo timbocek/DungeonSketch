@@ -19,6 +19,7 @@ import com.tbocek.android.combatmap.model.GridColorScheme;
 import com.tbocek.android.combatmap.model.HexGridStrategy;
 import com.tbocek.android.combatmap.model.MapData;
 import com.tbocek.android.combatmap.model.RectangularGridStrategy;
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.view.ImageToggleButton;
 import com.tbocek.android.combatmap.view.ToggleButtonGroup;
 import com.tbocek.dungeonsketch.R;
@@ -220,9 +221,7 @@ public class GridPropertiesDialog extends Dialog {
      * @return The generated bitmap.
      */
     private Bitmap createColorPreviewBitmap(int color) {
-        float density =
-                this.getContext().getResources().getDisplayMetrics().density;
-        int d = (int) (density * PREVIEW_BITMAP_SIZE_DP);
+        int d = (int) Units.dpToPx(PREVIEW_BITMAP_SIZE_DP);
         Bitmap bm = Bitmap.createBitmap(d, d, Config.ARGB_8888);
         int w = bm.getWidth();
         int h = bm.getHeight();
@@ -398,14 +397,8 @@ public class GridPropertiesDialog extends Dialog {
             // With all these different colors, changing the padding works
             // wonders!
             // TODO: DO this in the XML!!!!
-            float padding =
-                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                            THEME_PREVIEW_PADDING, this.getContext()
-                                    .getResources().getDisplayMetrics());
-            float font_size =
-                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PT,
-                            THEME_PREVIEW_FONT_SIZE, this.getContext()
-                                    .getResources().getDisplayMetrics());
+            float padding = Units.dpToPx(THEME_PREVIEW_PADDING);
+            float font_size = Units.ptToPx(THEME_PREVIEW_FONT_SIZE);
             v.setPadding(0, (int) padding, 0, (int) padding);
             v.setTextSize(font_size);
 

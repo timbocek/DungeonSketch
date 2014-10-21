@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 
 import com.google.common.collect.Lists;
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.model.primitives.Util;
 
 import java.util.List;
@@ -33,12 +34,12 @@ public class ScrollBuffer {
 		invalidated = true;
 	}
 	
-	public void allocateBitmaps(int width, int height, Context context) {
+	public void allocateBitmaps(int width, int height) {
 		// TODO: Do we need to use ARGB_8888 instead?
 		primary = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 		secondary = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 		invalidated = true;
-		mMinDraw = (int) (Util.convertDpToPixel(MIN_DRAW_DIP, context));
+		mMinDraw = (int) (Units.dpToPx(MIN_DRAW_DIP));
 	}
 	
 	public DrawRequest scroll(float deltaX, float deltaY) {

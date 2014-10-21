@@ -6,6 +6,7 @@ import android.view.ScaleGestureDetector;
 import com.tbocek.android.combatmap.model.primitives.BoundingRectangle;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Shape;
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.CombatView;
 
@@ -81,10 +82,9 @@ public class FingerDrawInteractionMode extends BaseDrawInteractionMode {
 
         redrawRect.updateBounds(mCurrentLine.getBoundingRectangle());
         if (mCurrentLine.getStrokeWidth() != Float.POSITIVE_INFINITY) {
-	        redrawRect.expand(Util.convertDpToPixel(
-	        		this.getView().getWorldSpaceTransformer().worldSpaceToScreenSpace(
-	        				mCurrentLine.getStrokeWidth()),
-	        		this.getView().getContext()));
+	        redrawRect.expand(Units.dpToPx(
+                    this.getView().getWorldSpaceTransformer().worldSpaceToScreenSpace(
+                            mCurrentLine.getStrokeWidth())));
         }
         this.getView().refreshMap(
         		redrawRect.toRectF(),

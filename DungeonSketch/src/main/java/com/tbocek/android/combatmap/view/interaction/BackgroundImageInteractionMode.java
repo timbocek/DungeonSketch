@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import com.tbocek.android.combatmap.model.primitives.BackgroundImage;
 import com.tbocek.android.combatmap.model.primitives.BoundingRectangle;
 import com.tbocek.android.combatmap.model.primitives.PointF;
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.CombatView;
 
@@ -122,9 +123,7 @@ public class BackgroundImageInteractionMode extends BaseDrawInteractionMode {
     }
 
     private int handleCircleRadiusPx() {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                HANDLE_CIRCLE_RADIUS_DP, this.getView().getResources()
-                .getDisplayMetrics());
+        return (int) Units.dpToPx(HANDLE_CIRCLE_RADIUS_DP);
     }
 
     @Override

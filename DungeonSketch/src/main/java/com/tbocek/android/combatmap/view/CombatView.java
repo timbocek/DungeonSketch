@@ -41,6 +41,7 @@ import com.tbocek.android.combatmap.model.primitives.Information;
 import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Shape;
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.interaction.BackgroundImageInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CombatViewInteractionMode;
@@ -460,9 +461,7 @@ public final class CombatView extends SurfaceView {
 
             int i = EXPLANATORY_TEXT_INITIAL_Y_DP;
             for (String s : explanatoryText.split("\n")) {
-                float scaledDensity =
-                        this.getContext().getResources().getDisplayMetrics().scaledDensity;
-                canvas.drawText(s, this.getWidth() / 2, i * scaledDensity,
+                canvas.drawText(s, this.getWidth() / 2, Units.ptToPx(i),
                         this.mExplanatoryTextPaint);
                 i += EXPLANATORY_TEXT_LINE_HEIGHT_DP;
             }
@@ -704,7 +703,7 @@ public final class CombatView extends SurfaceView {
 
         // Make sure that any scale changes are reflected in the way that scale-independent sprites
         // (such as info points) are drawn.
-        float infoWidthScreenSpace = Util.convertDpToPixel(INFO_POINT_SIZE_DP, this.getContext());
+        float infoWidthScreenSpace = Units.dpToPx(INFO_POINT_SIZE_DP);
         Information.setSizeWorldSpace(
                 getData().getWorldSpaceTransformer().screenSpaceToWorldSpace(infoWidthScreenSpace));
 
@@ -1209,7 +1208,7 @@ public final class CombatView extends SurfaceView {
 	
 	@Override
 	protected void onSizeChanged (int w, int h, int oldW, int oldH) {
-		mScrollBuffer.allocateBitmaps(w, h, this.getContext());
+		mScrollBuffer.allocateBitmaps(w, h);
 	}
 	
 	public void scroll(float deltaXF, float deltaYF) {

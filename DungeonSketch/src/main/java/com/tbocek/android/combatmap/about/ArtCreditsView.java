@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.common.collect.Maps;
 import com.tbocek.android.combatmap.model.primitives.BuiltInImageToken;
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.view.GridLayout;
 import com.tbocek.android.combatmap.view.TokenButton;
 
@@ -126,8 +127,7 @@ public class ArtCreditsView extends LinearLayout {
 
         // Add a scrollable view of contributed tokens
         GridLayout tokenView = new GridLayout(this.getContext());
-        int cellDimension =
-                (int) (this.getResources().getDisplayMetrics().density * TOKEN_SIZE);
+        int cellDimension = (int) Units.dpToPx(TOKEN_SIZE);
         tokenView.setCellDimensions(cellDimension, cellDimension);
         this.addView(tokenView);
         this.mTokenViewsForArtist.put(name, tokenView);
@@ -137,7 +137,7 @@ public class ArtCreditsView extends LinearLayout {
         seperator
                 .setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
-                        (int) (this.getResources().getDisplayMetrics().density * SEPERATOR_SIZE)));
+                        (int) Units.dpToPx(SEPERATOR_SIZE)));
         this.addView(seperator);
     }
 

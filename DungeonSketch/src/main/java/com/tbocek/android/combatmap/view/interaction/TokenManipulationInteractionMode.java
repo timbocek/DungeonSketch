@@ -17,6 +17,7 @@ import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.BoundingRectangle;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.PointF;
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.CombatView;
 import com.tbocek.dungeonsketch.R;
@@ -315,9 +316,7 @@ public final class TokenManipulationInteractionMode extends
         if (this.mCurrentToken != null) {
             this.getView().getMultiSelect().addToken(this.mCurrentToken);
             BoundingRectangle redrawRect = this.mCurrentToken.getBoundingRectangle();
-            redrawRect.expand(Util.convertDpToPixel(
-            		BaseToken.SELECTION_STROKE_WIDTH,
-            		getView().getContext()));
+            redrawRect.expand(Units.dpToPx(BaseToken.SELECTION_STROKE_WIDTH));
             this.getView().refreshMap(redrawRect.toRectF(),
 	                  this.getView().getGridSpaceTransformer());
         } else {
@@ -338,9 +337,7 @@ public final class TokenManipulationInteractionMode extends
 	        if (t != null) {
 	            this.getView().getMultiSelect().toggleToken(t);
 	            BoundingRectangle redrawRect = t.getBoundingRectangle();
-	            redrawRect.expand(Util.convertDpToPixel(
-	            		BaseToken.SELECTION_STROKE_WIDTH,
-	            		getView().getContext()));
+	            redrawRect.expand(Units.dpToPx(BaseToken.SELECTION_STROKE_WIDTH));
 	            this.getView().refreshMap(redrawRect.toRectF(),
 		                  this.getView().getGridSpaceTransformer());
 	        }
@@ -412,9 +409,7 @@ public final class TokenManipulationInteractionMode extends
             // pixels around the refresh area because the select indicator draws around the
             // edge of the tokens.
             if (this.getView().getMultiSelect().isActive()) {
-	            redrawRect.expand(Util.convertDpToPixel(
-	            		BaseToken.SELECTION_STROKE_WIDTH,
-	            		getView().getContext()));
+	            redrawRect.expand(Units.dpToPx(BaseToken.SELECTION_STROKE_WIDTH));
             }
             this.getView().refreshMap(redrawRect.toRectF(), this.getView().getGridSpaceTransformer());
         } else {

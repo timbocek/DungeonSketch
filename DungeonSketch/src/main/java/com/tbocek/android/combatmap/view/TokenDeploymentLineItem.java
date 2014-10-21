@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.dungeonsketch.R;
 
@@ -93,8 +94,8 @@ public class TokenDeploymentLineItem extends LinearLayout {
 	}
 
 	private void createTokenImage() {
-		int width = (int) Util.convertDpToPixel(48, this.getContext());
-		int height = (int) Util.convertDpToPixel(48, this.getContext());
+		int width = (int) Units.dpToPx(48);
+		int height = (int) Units.dpToPx(48);
 		
 		if (width > 0 && height > 0) {
 			Bitmap tokenImage = Bitmap.createBitmap(

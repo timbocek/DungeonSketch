@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.tbocek.android.combatmap.model.MapData;
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.model.primitives.Util;
 
 import org.apache.commons.io.FileUtils;
@@ -328,8 +329,8 @@ public final class DataManager {
     private Bitmap loadTokenImage(Bitmap existingBuffer, int maxWidthDp, int maxHeightDp,
                                   BitmapLoader loader) {
 
-        int maxWidthPx = (int) Util.convertDpToPixel(maxWidthDp, mContext);
-        int maxHeightPx = (int) Util.convertDpToPixel(maxHeightDp, mContext);
+        int maxWidthPx = (int) Units.dpToPx(maxWidthDp);
+        int maxHeightPx = (int) Units.dpToPx(maxHeightDp);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
