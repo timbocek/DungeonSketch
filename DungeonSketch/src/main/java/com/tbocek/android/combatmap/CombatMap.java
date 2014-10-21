@@ -811,9 +811,22 @@ public final class CombatMap extends ActionBarActivity {
 		this.mCombatView.alertTokensChanged();
 		this.mCombatView.requestFocus();
 
+        this.setElevations();
+
         this.styleActionBar();
 
 	}
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setElevations() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mBottomControlFrame.setElevation(5.0f);
+            mTagNavigator.setElevation(5.0f);
+            mMeasuringToggle.setElevation(5.0f);
+            this.findViewById(R.id.bottomControlAreaExpandButton).setElevation(5.0f);
+            mCombatView.setElevation(-1);
+        }
+    }
 
     private void exportToChromecast() {
         if (mCastManager.isCasting()) {
