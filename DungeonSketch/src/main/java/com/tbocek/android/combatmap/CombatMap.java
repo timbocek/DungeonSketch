@@ -937,7 +937,6 @@ public final class CombatMap extends ActionBarActivity {
 			gpd.setOnPropertiesChangedListener(new GridPropertiesDialog.PropertiesChangedListener() {
 				@Override
 				public void onPropertiesChanged() {
-                    CombatMap.this.mCombatView.refreshMap();
                     setCorrectTheme();
                     recreate();
                 }

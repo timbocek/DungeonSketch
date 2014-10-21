@@ -79,6 +79,7 @@ public final class TokenSelectorView extends LinearLayout {
             b.setMinimumWidth(mTokenButtonDim);
             b.setMinimumHeight(mTokenButtonDim);
             b.allowDrag(false); // Will be handling dragging in the horizontal scroll view.
+            b.setShouldDrawDark(mShouldDrawDark);
 
             return b;
         }
