@@ -2,9 +2,15 @@ package com.tbocek.android.combatmap;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.os.Debug;
+import android.os.Environment;
 import android.os.StrictMode;
 
 import com.tbocek.dungeonsketch.BuildConfig;
+
+import java.io.File;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 /**
  * Central location to enable debug options.
@@ -55,6 +61,11 @@ public final class DeveloperMode {
             .detectAll().penaltyLog().build());
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
             .detectAll().penaltyLog().penaltyDeath().build());
+
+            // Replace System.err with one that'll monitor for StrictMode
+            // killing us and perform a hprof heap dump just before it does.
+            System.setErr (new PrintStreamThatDumpsHprofWhenStrictModeKillsUs(
+                    System.err));
         }
     }
 
@@ -70,5 +81,28 @@ public final class DeveloperMode {
 
     public static boolean shouldDisplayDrawRects() {
         return false;
+    }
+
+    private static class PrintStreamThatDumpsHprofWhenStrictModeKillsUs
+            extends PrintStream {
+        public PrintStreamThatDumpsHprofWhenStrictModeKillsUs(OutputStream outs) {
+            super (outs);
+        }
+
+        @Override
+        public synchronized void println(String str) {
+            super.println(str);
+            if (str.startsWith("StrictMode VmPolicy violation with POLICY_DEATH;")) {
+                // StrictMode is about to terminate us... do a heap dump!
+                try {
+                    File dir = Environment.getExternalStorageDirectory();
+                    File file = new File(dir, "strictmode-violation.hprof");
+                    super.println("Dumping HPROF to: " + file);
+                    Debug.dumpHprofData(file.getAbsolutePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
