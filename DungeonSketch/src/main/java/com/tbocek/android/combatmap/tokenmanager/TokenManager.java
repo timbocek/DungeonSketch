@@ -325,7 +325,9 @@ public final class TokenManager extends ActionBarActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mActionBarDrawerToggle.syncState();
+        if (mActionBarDrawerToggle != null) {
+            mActionBarDrawerToggle.syncState();
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
