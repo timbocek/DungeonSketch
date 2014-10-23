@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,6 +40,7 @@ import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
 import com.tbocek.android.combatmap.TokenImageManager;
 import com.tbocek.android.combatmap.model.MultiSelectManager;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
+import com.tbocek.android.combatmap.view.GridViewCompat;
 import com.tbocek.android.combatmap.view.TagNavigator;
 import com.tbocek.android.combatmap.view.TokenButton;
 import com.tbocek.android.combatmap.view.TokenListAdapter;
@@ -145,7 +145,7 @@ public final class TokenManager extends ActionBarActivity {
 
     private TokenImageManager.Loader mLoader;
 
-    private GridView mGridView;
+    private GridViewCompat mGridView;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
 
     /**
@@ -221,7 +221,7 @@ public final class TokenManager extends ActionBarActivity {
         this.mTagNavigator.setTagSelectedListener(this.mTagSelectedListener);
         this.mTagNavigator.setAllowContextMenu(true);
 
-        this.mGridView = (GridView) findViewById(R.id.token_manager_grid_view);
+        this.mGridView = (GridViewCompat) findViewById(R.id.token_manager_grid_view);
 
         mLoader = TokenImageManager.getInstance().createLoader(this, new Handler());
         mLoader.start();
