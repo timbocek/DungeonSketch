@@ -615,9 +615,25 @@ public final class TokenManager extends ActionBarActivity {
 	                                Sets.newHashSet(tagPath);
                             TokenManager.this.mTokenDatabase
                             	.tagToken(token, tags);
+
                         }
 					}
-				});
+
+                    @Override
+                    public void onNewTagRequested(String currentTagPath) {
+                        List<String> tokenNames = Lists.newArrayList();
+                        for (BaseToken token : tokens) {
+                            tokenNames.add(token.getTokenId());
+                        }
+
+                        Intent i = new Intent(TokenManager.this, NewTagDialog.class);
+                        i.putExtra(NewTagDialog.SELECTED_TAG_PATH, currentTagPath);
+                        i.putExtra(NewTagDialog.TOKENS_TO_ADD, tokenNames.toArray(new String[0]));
+                        TokenManager.this.startActivity(i);
+
+                    }
+                });
+                selectTagDlg.setAllowNewTag(true);
                 selectTagDlg.show();
                 return true;
             }

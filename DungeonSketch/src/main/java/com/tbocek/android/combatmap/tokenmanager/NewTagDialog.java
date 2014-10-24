@@ -15,7 +15,8 @@ import roboguice.inject.InjectView;
 
 public class NewTagDialog extends RoboActivity {
 	public static final String SELECTED_TAG_PATH = "SELECTED_TAG_PATH";
-	@InjectView(tag="new_tag_name") TextView tagName;
+    public static final String TOKENS_TO_ADD = "TOKENS_TO_ADD";
+    @InjectView(tag="new_tag_name") TextView tagName;
 	@InjectView(tag="new_tag_under_top_level") RadioButton underTopLevel;
 	@InjectView(tag="new_tag_under_selected") RadioButton underSelected;
 	@InjectView(tag="new_tag_create") Button create;
@@ -53,11 +54,20 @@ public class NewTagDialog extends RoboActivity {
     }
     
     protected void createTagClicked() {
+        TokenDatabase.TagTreeNode tag;
+
     	if (underTopLevel.isChecked()) {
-    		mDatabase.getRootNode().getNamedChild(tagName.getText().toString(), true);
+    		tag = mDatabase.getRootNode().getNamedChild(tagName.getText().toString(), true);
     	} else {
-    		mSelectedTag.getNamedChild(tagName.getText().toString(), true);
+    		tag = mSelectedTag.getNamedChild(tagName.getText().toString(), true);
     	}
+
+        if (this.getIntent().hasExtra(TOKENS_TO_ADD)) {
+            String[] tokens = this.getIntent().getStringArrayExtra(TOKENS_TO_ADD);
+            for (String token : tokens) {
+                tag.addToken(token);
+            }
+        }
     	finish();
     }
  }
