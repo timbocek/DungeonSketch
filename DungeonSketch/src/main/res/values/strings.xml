@@ -181,5 +181,7 @@ Why not press "back" and create one?</string>
         Are you sure you want to restore all default tokens to the token library?\n
         Custom tokens will NOT be deleted.
     </string>
+    <string name="import_data_alert_message">Found another version of Dungeon Sketch.  Do you want to import data?</string>
+    <string name="import_data_alert_title">Import Data?</string>
 
 </resources>

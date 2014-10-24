@@ -627,12 +627,15 @@ public final class CombatMap extends ActionBarActivity {
                 .getDefaultSharedPreferences(this.getApplicationContext());
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
+
         this.loadOrCreateMap();
 
         setCorrectTheme();
 
 		// android.os.Debug.startMethodTracing("main_activity_load");
 		super.onCreate(savedInstanceState);
+
+        maybeShowImportPromo();
 
         if (this.getApplicationContext() == null) return;
 
@@ -1231,6 +1234,7 @@ public final class CombatMap extends ActionBarActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
+
         mCastManager.attachCallbacks();
 
 		this.loadOrCreateMap();
@@ -1243,7 +1247,30 @@ public final class CombatMap extends ActionBarActivity {
 		// android.os.Debug.stopMethodTracing();
 	}
 
-	/**this.mCombatView.setTokenManipulationMode();
+    private void maybeShowImportPromo() {
+        boolean shown = mSharedPreferences.getBoolean("shown_import_promo", false);
+        if (shown) return;
+
+        if (ImportDataDialog.hasOtherVersion(this)) {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.import_data_alert_message)
+                    .setTitle(R.string.import_data_alert_title)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(CombatMap.this, ImportDataDialog.class));
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) { }
+                    }).show();
+        }
+
+        mSharedPreferences.edit().putBoolean("shown_import_promo", true).commit();
+    }
+
+    /**this.mCombatView.setTokenManipulationMode();
 	 * Modifies the current map data according to any preferences the user has
 	 * set.
 	 */

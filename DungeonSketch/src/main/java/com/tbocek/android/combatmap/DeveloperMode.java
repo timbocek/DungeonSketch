@@ -70,7 +70,7 @@ public final class DeveloperMode {
     }
 
 	public static boolean shouldDisplayFramerate() {
-		return DEVELOPER_MODE;
+		return false && DEVELOPER_MODE;
 	}
 
     /**

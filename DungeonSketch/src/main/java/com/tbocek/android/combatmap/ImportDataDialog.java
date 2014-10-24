@@ -1,5 +1,6 @@
 package com.tbocek.android.combatmap;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -88,19 +89,19 @@ public class ImportDataDialog extends RoboActivity {
             importOption.setVisibility(View.GONE);
             importOption.setChecked(false);
             return false;
-        } else if (!getExternalFilesDirForPackage(packageName).exists()) {
+        } else if (!getExternalFilesDirForPackage(packageName, this).exists()) {
             importOption.setVisibility(View.GONE);
             importOption.setChecked(false);
             return false;
         } else {
             importOption.setVisibility(View.VISIBLE);
-            mImportOptions.put(getExternalFilesDirForPackage(packageName), importOption);
+            mImportOptions.put(getExternalFilesDirForPackage(packageName, this), importOption);
             importOption.setChecked(true);
             return true;
         }
     }
 
-    File pathJoin(String ... path) {
+    static File pathJoin(String ... path) {
         File result = null;
         for (String s: path) {
             if (result == null) {
@@ -112,8 +113,8 @@ public class ImportDataDialog extends RoboActivity {
         return result;
     }
 
-    File getExternalFilesDirForPackage(String packageName) {
-        return pathJoin(this.getExternalFilesDir(null).toString(),
+    static File getExternalFilesDirForPackage(String packageName, Context context) {
+        return pathJoin(context.getExternalFilesDir(null).toString(),
                 "..", "..", packageName, "files");
     }
 
@@ -256,4 +257,19 @@ public class ImportDataDialog extends RoboActivity {
     }
     
     final ImportFilesTask mImportFilesTask = new ImportFilesTask();
+
+    static boolean hasOtherVersion(Context context) {
+        String[] packages = new String[]{
+                "com.tbocek.dungeonsketchbeta",
+                "com.tbocek.dungeonsketch",
+                "com.tbocek.android.combatmap",
+                "com.tbocek.dungeonsketchdebug"
+        };
+
+        for (String pkg: packages) {
+            if (context.getPackageName() == pkg) continue;
+            if (getExternalFilesDirForPackage(pkg, context).exists()) return true;
+        }
+        return false;
+    }
 }
