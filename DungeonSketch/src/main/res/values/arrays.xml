@@ -10,5 +10,10 @@
         <item>4.0</item>
         <item>5.0</item>
     </string-array>
-    
+    <string-array name="units">
+        <item>ft</item>
+        <item>m</item>
+        <item>miles</item>
+        <item>km</item>
+    </string-array>
 </resources>

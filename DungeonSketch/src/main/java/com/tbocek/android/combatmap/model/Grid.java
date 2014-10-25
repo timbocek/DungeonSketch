@@ -24,6 +24,9 @@ public class Grid {
 
     private GridDrawStrategy mDrawStrategy = new RectangularGridStrategy();
 
+    private String mUnits = "ft";
+    private float mScale = 5;
+
     /**
      * The transformation from grid space to world space. We track this
      * seperately as a property of the grid so that the grid can easily be
@@ -44,6 +47,8 @@ public class Grid {
     public Grid(Grid copyFrom) {
         mColorScheme = copyFrom.mColorScheme;
         mDrawStrategy = copyFrom.mDrawStrategy;
+        mUnits = copyFrom.mUnits;
+        mScale = copyFrom.mScale;
     }
 
     /**
@@ -84,8 +89,15 @@ public class Grid {
         String type = s.readString();
         GridColorScheme colorScheme = GridColorScheme.deserialize(s);
         CoordinateTransformer transform = CoordinateTransformer.deserialize(s);
+
+        Grid g = createGrid(type, colorScheme, transform);
+        if (!s.isObjectEnd()) {
+            g.mScale = s.readFloat();
+            g.mUnits = s.readString();
+        }
+
         s.expectObjectEnd();
-        return createGrid(type, colorScheme, transform);
+        return g;
     }
 
     /**
@@ -188,12 +200,30 @@ public class Grid {
         s.serializeString(this.mDrawStrategy.getTypeString());
         this.mColorScheme.serialize(s);
         this.mGridToWorldTransformer.serialize(s);
+        s.serializeFloat(this.mScale);
+        s.serializeString(this.mUnits);
         s.endObject();
     }
 
     public void setColorScheme(GridColorScheme scheme) {
         this.mColorScheme = scheme;
 
+    }
+
+    public String getUnits() {
+        return mUnits;
+    }
+
+    public void setUnits(String units) {
+        mUnits = units;
+    }
+
+    public float getScale() {
+        return mScale;
+    }
+
+    public void setScale(float scale) {
+        mScale = scale;
     }
 
     public void setDrawStrategy(GridDrawStrategy s) {

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.tbocek.android.combatmap.model.GridColorScheme;
@@ -84,6 +85,10 @@ public class GridPropertiesDialog extends Dialog {
      */
     private final ImageToggleButton mRectGridButton;
 
+    private TextView mScaleText;
+
+    private Spinner mUnitSpinner;
+
     /**
      * Constructor.
      * 
@@ -104,6 +109,9 @@ public class GridPropertiesDialog extends Dialog {
         this.mRectGridButton =
                 (ImageToggleButton) this
                         .findViewById(R.id.button_toggle_rect_grid);
+        this.mUnitSpinner = (Spinner) this.findViewById(R.id.background_props_square_unit);
+        this.mScaleText = (TextView) this.findViewById(R.id.background_props_square_size);
+
         this.mGridTypeToggles.add(this.mHexGridButton);
         this.mGridTypeToggles.add(this.mRectGridButton);
 
