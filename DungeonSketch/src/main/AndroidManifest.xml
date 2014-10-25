@@ -55,17 +55,17 @@
         <activity
             android:name="com.tbocek.android.combatmap.ImportDataDialog"
             android:label="Token Manager"
-            android:theme="@android:style/Theme.Holo.Dialog">
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
         </activity>
         <activity
             android:name="com.tbocek.android.combatmap.tokenmanager.NewTagDialog"
             android:label="New Tag"
-            android:theme="@android:style/Theme.Holo.Dialog">
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
         </activity>
         <activity
             android:name="com.tbocek.android.combatmap.tokenmanager.EditTagDialog"
             android:label="Edit Tag"
-            android:theme="@android:style/Theme.Holo.Dialog">
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
         </activity>
         <service
             android:name="com.tbocek.android.combatmap.SaverService">
