@@ -57,7 +57,10 @@ public class MeasuringTapeInteractionMode extends BaseDrawInteractionMode {
     	if (!measuring) return;
     	c.drawLine(this.mStartPointX, this.mStartPointY, this.mLastPointX, mLastPointY, mPaint);
     	CoordinateTransformer transformer = getView().getData().getGrid().gridSpaceToScreenSpaceTransformer(getView().getData().getWorldSpaceTransformer());
-    	String s = Float.toString(transformer.screenSpaceToWorldSpace(Util.distance(mStartPointX, mStartPointY, mLastPointX, mLastPointY)));
+        Float dist = transformer.screenSpaceToWorldSpace(
+                Util.distance(mStartPointX, mStartPointY, mLastPointX, mLastPointY))
+                * getView().getData().getGrid().getScale();
+        String s = String.format("%.2f %s", dist, getView().getData().getGrid().getUnits());
     	c.drawText(s, this.getView().getWidth() / 2, 16,
                    this.mPaint);
     }
