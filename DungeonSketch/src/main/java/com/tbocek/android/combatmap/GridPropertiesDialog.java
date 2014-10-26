@@ -349,7 +349,9 @@ public class GridPropertiesDialog extends Dialog {
     }
 
     private void scaleTextChanged() {
-        this.mData.getGrid().setScale(Float.parseFloat(this.mScaleText.getText().toString()));
+        if (mScaleText.getText().length() > 0) {
+            this.mData.getGrid().setScale(Float.parseFloat(this.mScaleText.getText().toString()));
+        }
     }
 
     private void unitTextChanged() {
