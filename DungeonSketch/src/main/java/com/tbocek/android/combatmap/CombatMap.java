@@ -627,7 +627,6 @@ public final class CombatMap extends ActionBarActivity {
                 .getDefaultSharedPreferences(this.getApplicationContext());
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
-
         this.loadOrCreateMap();
 
         setCorrectTheme();

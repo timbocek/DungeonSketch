@@ -7,12 +7,16 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Color;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.tbocek.android.combatmap.model.GridColorScheme;
@@ -43,6 +47,7 @@ public class GridPropertiesDialog extends Dialog {
      * Button that previews and allows the user to change the background color.
      */
     private final ImageButton mBackgroundColor;
+    private ArrayAdapter<CharSequence> mUnitAdapter;
 
     /**
      * The map data whose grid properties are being edited.
@@ -84,6 +89,10 @@ public class GridPropertiesDialog extends Dialog {
      */
     private final ImageToggleButton mRectGridButton;
 
+    private TextView mScaleText;
+
+    private Spinner mUnitSpinner;
+
     /**
      * Constructor.
      * 
@@ -104,8 +113,18 @@ public class GridPropertiesDialog extends Dialog {
         this.mRectGridButton =
                 (ImageToggleButton) this
                         .findViewById(R.id.button_toggle_rect_grid);
+        this.mUnitSpinner = (Spinner) this.findViewById(R.id.background_props_square_unit);
+        this.mScaleText = (TextView) this.findViewById(R.id.background_props_square_size);
+
         this.mGridTypeToggles.add(this.mHexGridButton);
         this.mGridTypeToggles.add(this.mRectGridButton);
+
+        this.mUnitAdapter = ArrayAdapter.createFromResource(
+                this.getContext(),
+                R.array.units, android.R.layout.simple_spinner_item);
+        this.mUnitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mUnitSpinner.setAdapter(this.mUnitAdapter);
+
 
         this.mHexGridButton.setOnClickListener(new View.OnClickListener() {
 
@@ -140,6 +159,33 @@ public class GridPropertiesDialog extends Dialog {
             }
 
         });
+        this.mScaleText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                GridPropertiesDialog.this.scaleTextChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        this.mUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                GridPropertiesDialog.this.unitTextChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         this.mPresetAdapter =
                 new GridPropertiesDialog.MapThemeArrayAdapter(this.getContext());
 
@@ -161,7 +207,6 @@ public class GridPropertiesDialog extends Dialog {
                 }
             }
         });
-
     }
 
     /**
@@ -303,6 +348,14 @@ public class GridPropertiesDialog extends Dialog {
                         }).create().show();
     }
 
+    private void scaleTextChanged() {
+        this.mData.getGrid().setScale(Float.parseFloat(this.mScaleText.getText().toString()));
+    }
+
+    private void unitTextChanged() {
+        this.mData.getGrid().setUnits(this.mUnitSpinner.getSelectedItem().toString());
+    }
+
     /**
      * Calls the property changed listener to notify of new grid properties, if
      * one has been specified.
@@ -342,6 +395,11 @@ public class GridPropertiesDialog extends Dialog {
             this.mRectGridButton.setToggled(true);
         }
         this.mData = data;
+        int currentUnitPosition = this.mUnitAdapter.getPosition(mData.getGrid().getUnits());
+        if (currentUnitPosition >= 0) {
+            mUnitSpinner.setSelection(currentUnitPosition);
+        }
+        mScaleText.setText(String.format("%.2f", mData.getGrid().getScale()));
     }
 
     /**

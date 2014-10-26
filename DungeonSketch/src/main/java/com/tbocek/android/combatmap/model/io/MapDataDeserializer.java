@@ -73,6 +73,16 @@ public class MapDataDeserializer {
         return this.mArrayLevel - 1;
     }
 
+    public boolean isArrayEnd() throws IOException {
+        String t = this.peek();
+        return t.equals("]");
+    }
+
+    public boolean isObjectEnd() throws IOException {
+        String t = this.peek();
+        return t.equals("}");
+    }
+
     /**
      * Consumes the end of an object if we are at the end of an object. If not,
      * throws an exception.

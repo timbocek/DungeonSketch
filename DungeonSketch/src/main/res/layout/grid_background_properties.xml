@@ -82,6 +82,23 @@
 
     <TableRow
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+        <TextView
+            android:text="@string/square_size"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="18sp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"/>
+        <EditText
+            android:id="@+id/background_props_square_size"
+            android:inputType="number|numberDecimal"/>
+        <Spinner
+            android:id="@+id/background_props_square_unit"
+            />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp">
         <Button
