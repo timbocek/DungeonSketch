@@ -14,7 +14,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -28,9 +27,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.MediaRouteActionProvider;
 import android.support.v7.view.ActionMode;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -1019,7 +1015,7 @@ public final class CombatMap extends ActionBarActivity {
         }
 
         if (mViewMenuItem != null) {
-            mViewMenuItem.setTitle(colorTextForBackground(mViewMenuItem.getTitle().toString()));
+            mViewMenuItem.setTitle(mViewMenuItem.getTitle().toString());
         }
         setTitle(); // Called to update color.
 
@@ -1030,14 +1026,7 @@ public final class CombatMap extends ActionBarActivity {
         if (filename.isEmpty()) {
             filename = "Untitled Map";
         }
-        //this.getSupportActionBar().setTitle(colorTextForBackground(filename));
         this.getSupportActionBar().setTitle(filename);
-    }
-
-    private Spannable colorTextForBackground(String text) {
-        Spannable span = new SpannableString(text);
-        span.setSpan(new ForegroundColorSpan(mData.getGrid().getColorScheme().isDark() ? Color.WHITE : Color.BLACK), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        return span;
     }
 
     @Override
@@ -1051,7 +1040,7 @@ public final class CombatMap extends ActionBarActivity {
         this.mStopCastingViewMenuItem = menu.findItem(R.id.menu_stop_casting_view);
 
         this.mViewMenuItem = menu.findItem(R.id.menu_view);
-        mViewMenuItem.setTitle(colorTextForBackground(mViewMenuItem.getTitle().toString()));
+        mViewMenuItem.setTitle(mViewMenuItem.getTitle().toString());
 
 		this.loadModeSpecificSnapPreference();
 
