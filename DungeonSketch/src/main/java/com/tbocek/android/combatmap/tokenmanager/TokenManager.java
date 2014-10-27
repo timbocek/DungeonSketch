@@ -612,6 +612,9 @@ public final class TokenManager extends ActionBarActivity {
                             TokenManager.this.mTokenDatabase
                             	.tagToken(token, tags);
                         }
+                        if (mMultiSelectActionMode != null) {
+                            mMultiSelectActionMode.finish();
+                        }
 					}
 				});
                 selectTagDlg.show();
