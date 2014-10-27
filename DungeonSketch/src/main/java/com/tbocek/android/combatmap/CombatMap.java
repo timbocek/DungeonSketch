@@ -1022,10 +1022,14 @@ public final class CombatMap extends ActionBarActivity {
     }
 
     private void setTitle() {
+        if (this.mSharedPreferences == null) return;
+
         String filename = this.mSharedPreferences.getString("filename", "");
-        if (filename.isEmpty()) {
+        if (filename == null || filename.isEmpty()) {
             filename = "Untitled Map";
         }
+
+        if (this.getSupportActionBar() == null) return;
         this.getSupportActionBar().setTitle(filename);
     }
 
