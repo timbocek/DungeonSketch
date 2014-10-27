@@ -629,6 +629,9 @@ public final class TokenManager extends ActionBarActivity {
                         i.putExtra(NewTagDialog.TOKENS_TO_ADD, tokenNames.toArray(new String[0]));
                         TokenManager.this.startActivity(i);
 
+                        if (mMultiSelectActionMode != null) {
+                            mMultiSelectActionMode.finish();
+                        }
                     }
                 });
                 selectTagDlg.setAllowNewTag(true);
