@@ -62,11 +62,6 @@ public final class TokenManager extends ActionBarActivity {
     private static final String TAG = "TokenManager";
 
     /**
-     * The list of token buttons that are managed by this activity.
-     */
-    private final Collection<TokenButton> mButtons = Lists.newArrayList();
-
-    /**
      * When a context menu for a tag is opened, stores the tag that the menu
      * opened on.
      */
@@ -293,7 +288,8 @@ public final class TokenManager extends ActionBarActivity {
                             m.finish();
                         }
 
-                        for (TokenButton b : TokenManager.this.mButtons) {
+                        for (int i = 0; i < TokenManager.this.mGridView.getChildCount(); ++i) {
+                            View b = mGridView.getChildAt(i);
                             MultiSelectTokenButton msb =
                                     (MultiSelectTokenButton) b;
                             msb.setSelected(false);
