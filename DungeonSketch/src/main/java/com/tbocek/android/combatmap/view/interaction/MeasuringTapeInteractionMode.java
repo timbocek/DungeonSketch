@@ -66,7 +66,7 @@ public class MeasuringTapeInteractionMode extends BaseDrawInteractionMode {
         NumberFormat fmt = NumberFormat.getInstance();
         fmt.setMaximumFractionDigits(2);
         String s = String.format("%s %s",
-                fmt.format(getView().getData().getGrid().getScale()),
+                fmt.format(dist),
                 getView().getData().getGrid().getUnits());
     	c.drawText(s, this.getView().getWidth() / 2, 16,
                    this.mPaint);
