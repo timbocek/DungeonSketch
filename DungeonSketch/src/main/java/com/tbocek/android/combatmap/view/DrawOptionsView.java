@@ -103,6 +103,7 @@ public final class DrawOptionsView extends LinearLayout {
      * A list of all drawing tools that are applicable when drawing masks.
      */
     private final ToggleButtonGroup mToolsInMaskGroup = new ToggleButtonGroup();
+    private final ToggleButtonGroup mToolsOnlyInMaskGroup = new ToggleButtonGroup();
 
     /**
      * Constructs a new DrawOptionsView.
@@ -124,13 +125,14 @@ public final class DrawOptionsView extends LinearLayout {
         this.mMaskButton = this.createAndAddMaskButton();
         this.createAndAddSeperator();
 
-        this.createAndAddEraserButton();
+        this.createAndAddEraserButton(false);
         this.createAndAddStraightLineButton();
         this.createAndAddFreehandLineButton();
         this.createAndAddRectangleButton();
         this.createAndAddCircleButton();
         this.createAndAddTextButton();
         this.createAndAddInfoButton();
+        this.createAndAddEraserButton(true);
 
         this.mBackgroundImageButton = this.createAndAddBackgroundImageButton();
         this.createAndAddSeperator();
@@ -249,9 +251,9 @@ public final class DrawOptionsView extends LinearLayout {
     /**
      * Creates the eraser button and adds it to the view.
      */
-    protected void createAndAddEraserButton() {
+    protected void createAndAddEraserButton(boolean mask) {
         final ImageToggleButton eraserButton = createAndAddButton();
-        eraserButton.setImageResource(R.drawable.eraser);
+        eraserButton.setImageResource(mask ? R.drawable.delete_mask_region : R.drawable.eraser);
         eraserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -271,8 +273,11 @@ public final class DrawOptionsView extends LinearLayout {
 
             }
         });
+        if (mask) {
+            this.mToolsInMaskGroup.add(eraserButton);
+            this.mToolsOnlyInMaskGroup.add(eraserButton);
+        }
         this.mToolsGroup.add(eraserButton);
-        this.mToolsInMaskGroup.add(eraserButton);
     }
 
     /**
@@ -351,6 +356,8 @@ public final class DrawOptionsView extends LinearLayout {
                 } else {
                     DrawOptionsView.this.returnToNonMaskState();
                 }
+
+
             }
         });
         return maskButton;
@@ -526,6 +533,7 @@ public final class DrawOptionsView extends LinearLayout {
     void returnToNonMaskState() {
         // Return to non-mask state.
         this.mToolsGroup.setGroupVisibility(View.VISIBLE);
+        this.mToolsOnlyInMaskGroup.setGroupVisibility(View.GONE);
         this.mToolsGroup.maybeSelectDefault();
         this.mOnChangeDrawToolListener.onChangeMaskEditing(false);
     }
