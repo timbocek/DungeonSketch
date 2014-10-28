@@ -136,7 +136,8 @@ public final class DrawOptionsView extends LinearLayout {
 
         this.mBackgroundImageButton = this.createAndAddBackgroundImageButton();
         this.createAndAddSeperator();
-        
+
+        this.createAndAddSelectRegionButton();
         this.createAndAddMoveTokenButton();
         this.createAndAddSeperator();
 
@@ -529,6 +530,26 @@ public final class DrawOptionsView extends LinearLayout {
         });
         this.mToolsGroup.add(button);
     }
+
+    protected void createAndAddSelectRegionButton() {
+        final ImageToggleButton button = createAndAddButton();
+
+        button.setImageResource(R.drawable.selection);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DrawOptionsView.this.mOnChangeDrawToolListener.onChooseSelectionTool();
+                DrawOptionsView.this.mToolsGroup.untoggle();
+                DrawOptionsView.this.mColorGroup
+                        .setGroupVisibility(View.GONE);
+                DrawOptionsView.this.mLineWidthGroup
+                        .setGroupVisibility(View.GONE);
+                button.setToggled(true);
+                DrawOptionsView.this.mLineWidthGroup.maybeSelectDefault();
+                DrawOptionsView.this.mColorGroup.maybeSelectDefault();
+            }
+        });
+    }
     
     void returnToNonMaskState() {
         // Return to non-mask state.
@@ -681,9 +702,7 @@ public final class DrawOptionsView extends LinearLayout {
 
         @Override
         public void onChooseRectangleTool() {
-        }			// TODO Auto-generated method stub
-		
-		
+        }
 
         @Override
         public void onChooseStraightLineTool() {
@@ -703,6 +722,10 @@ public final class DrawOptionsView extends LinearLayout {
 
         @Override
         public void onChooseInfoTool() {
+        }
+
+        @Override
+        public void onChooseSelectionTool() {
         }
     }
 
@@ -784,6 +807,11 @@ public final class DrawOptionsView extends LinearLayout {
          * Called when the "info spot" tool is chosen.
          */
         void onChooseInfoTool();
+
+        /**
+         * Called when the "selection" tool is chosen.
+         */
+        void onChooseSelectionTool();
     }
 
     /**

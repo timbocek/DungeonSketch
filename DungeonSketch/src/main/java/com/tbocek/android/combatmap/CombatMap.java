@@ -292,6 +292,11 @@ public final class CombatMap extends ActionBarActivity {
         }
 
         @Override
+        public void onChooseSelectionTool() {
+
+        }
+
+        @Override
 		public void onChooseMoveTokenTool() {
             mSelectedToolTextView.setText("Move Tokens");
 			CombatMap.this.mCombatView.setTokenManipulationMode();
