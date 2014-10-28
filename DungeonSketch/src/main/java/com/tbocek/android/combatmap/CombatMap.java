@@ -239,7 +239,7 @@ public final class CombatMap extends ActionBarActivity {
 
 		@Override
 		public void onChooseMaskEraser() {
-            mSelectedToolTextView.setText("Eraser");
+            mSelectedToolTextView.setText("Delete Mask Region");
 			CombatMap.this.mCombatView.setFogOfWarEraseMode();
 		}
 
