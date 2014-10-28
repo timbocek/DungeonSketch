@@ -11,6 +11,8 @@ import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.CombatView;
 
+import java.text.NumberFormat;
+
 public class MeasuringTapeInteractionMode extends BaseDrawInteractionMode {
 
 	private float mStartPointX;
@@ -60,7 +62,12 @@ public class MeasuringTapeInteractionMode extends BaseDrawInteractionMode {
         Float dist = transformer.screenSpaceToWorldSpace(
                 Util.distance(mStartPointX, mStartPointY, mLastPointX, mLastPointY))
                 * getView().getData().getGrid().getScale();
-        String s = String.format("%.2f %s", dist, getView().getData().getGrid().getUnits());
+
+        NumberFormat fmt = NumberFormat.getInstance();
+        fmt.setMaximumFractionDigits(2);
+        String s = String.format("%s %s",
+                fmt.format(getView().getData().getGrid().getScale()),
+                getView().getData().getGrid().getUnits());
     	c.drawText(s, this.getView().getWidth() / 2, 16,
                    this.mPaint);
     }

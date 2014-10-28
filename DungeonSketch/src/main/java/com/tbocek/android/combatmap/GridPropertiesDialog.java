@@ -30,6 +30,9 @@ import com.tbocek.dungeonsketch.R;
 
 import net.margaritov.preference.colorpicker.ColorPickerDialog;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+
 /**
  * A dialog that allows the user to edit the grid geometry and color.
  * 
@@ -350,7 +353,13 @@ public class GridPropertiesDialog extends Dialog {
 
     private void scaleTextChanged() {
         if (mScaleText.getText().length() > 0) {
-            this.mData.getGrid().setScale(Float.parseFloat(this.mScaleText.getText().toString()));
+            try {
+                this.mData.getGrid().setScale(
+                        NumberFormat.getInstance().parse(this.mScaleText.getText().toString())
+                                .floatValue());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -401,7 +410,9 @@ public class GridPropertiesDialog extends Dialog {
         if (currentUnitPosition >= 0) {
             mUnitSpinner.setSelection(currentUnitPosition);
         }
-        mScaleText.setText(String.format("%.2f", mData.getGrid().getScale()));
+        NumberFormat fmt = NumberFormat.getInstance();
+        fmt.setMaximumFractionDigits(2);
+        mScaleText.setText(fmt.format(mData.getGrid().getScale()));
     }
 
     /**
