@@ -91,7 +91,8 @@
             android:layout_marginRight="6dp"/>
         <EditText
             android:id="@+id/background_props_square_size"
-            android:inputType="number|numberDecimal"/>
+            android:inputType="number"
+            android:digits="0123456789.,"/>
         <Spinner
             android:id="@+id/background_props_square_unit"
             />
