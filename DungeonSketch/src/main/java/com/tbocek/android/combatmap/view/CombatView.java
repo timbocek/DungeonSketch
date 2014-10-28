@@ -94,16 +94,14 @@ public final class CombatView extends SurfaceView {
 	private static final int FRAMERATE_INTERVAL = 500;
 
     /**
-     * For the explanatory mask text, Y location of the first line in density-
-     * Independent pixels.
+     * For the explanatory mask text, Y location of the first line in font ponts
      */
-    private static final int EXPLANATORY_TEXT_INITIAL_Y_DP = 16;
+    private static final int EXPLANATORY_TEXT_INITIAL_Y_PT = 15;
 
     /**
-     * For the explanatory mask text, height of each line in density-
-     * Independent pixels.
+     * For the explanatory mask text, height of each line in font ponts
      */
-    private static final int EXPLANATORY_TEXT_LINE_HEIGHT_DP = 20;
+    private static final int EXPLANATORY_TEXT_LINE_HEIGHT_PT = 10;
 
     /**
      * Reference to the collection of lines that are actively being drawn.
@@ -459,11 +457,11 @@ public final class CombatView extends SurfaceView {
         if (this.mEditingMask) {
             String explanatoryText = this.getMaskExplanatoryText();
 
-            int i = EXPLANATORY_TEXT_INITIAL_Y_DP;
+            int i = EXPLANATORY_TEXT_INITIAL_Y_PT;
             for (String s : explanatoryText.split("\n")) {
                 canvas.drawText(s, this.getWidth() / 2, Units.ptToPx(i),
                         this.mExplanatoryTextPaint);
-                i += EXPLANATORY_TEXT_LINE_HEIGHT_DP;
+                i += EXPLANATORY_TEXT_LINE_HEIGHT_PT;
             }
         }
 
