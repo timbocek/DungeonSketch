@@ -293,7 +293,8 @@ public final class CombatMap extends ActionBarActivity {
 
         @Override
         public void onChooseSelectionTool() {
-
+            mSelectedToolTextView.setText("Select Region");
+            CombatMap.this.mCombatView.setSelectMode();
         }
 
         @Override

@@ -46,6 +46,7 @@ import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.interaction.BackgroundImageInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CombatViewInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CreateInfoInteractionMode;
+import com.tbocek.android.combatmap.view.interaction.DrawSelectionInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.DrawTextInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.EraserInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.FingerDrawInteractionMode;
@@ -992,6 +993,8 @@ public final class CombatView extends SurfaceView {
     public void setZoomPanMode() {
         this.setInteractionMode(new ZoomPanInteractionMode(this));
     }
+
+    public void setSelectMode() { this.setInteractionMode(new DrawSelectionInteractionMode(this)); }
 
     /**
      * @return the shouldSnapToGrid
