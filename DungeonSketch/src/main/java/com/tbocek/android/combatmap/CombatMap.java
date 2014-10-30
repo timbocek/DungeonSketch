@@ -13,6 +13,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -345,6 +346,10 @@ public final class CombatMap extends ActionBarActivity {
             CombatMap.this.showDialog(DIALOG_ID_CREATE_INFO_LOCATION);
         }
 
+        @Override
+        public void requestRegionSelected() {
+            getSupportActionBar().startActionMode(new LineSelectionActionModeCallback());
+        }
     };
 	
 	private final TagNavigator.TagSelectedListener mTagSelectedListener = new TagNavigator.TagSelectedListener() {
@@ -1836,6 +1841,31 @@ public final class CombatMap extends ActionBarActivity {
 		}
 
 	}
+
+    private class LineSelectionActionModeCallback implements
+            Callback {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            actionMode.getMenuInflater().inflate(R.menu.line_selection_action_mode, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            mCombatView.setSelectedRegion(null);
+        }
+    }
 	
 	private void openDeployTokensDialog() {
 		final TokenDeploymentDialog dlg = new TokenDeploymentDialog(CombatMap.this);

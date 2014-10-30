@@ -75,6 +75,8 @@ public final class CombatView extends SurfaceView {
     private static final String TAG = "CombatView";
 
     private static final float INFO_POINT_SIZE_DP = 32;
+    private RectF mLineSelectionRect;
+
 
     /**
 	 * A simple 3-state machine to make sure that full-screen draws performed during
@@ -425,6 +427,7 @@ public final class CombatView extends SurfaceView {
         .drawTokens(true)
         .areTokensManipulable(this.mAreTokensManipulable)
         .drawAnnotations(this.mShouldDrawAnnotations)
+        .drawSelectionRectangle(mLineSelectionRect)
         .gmNotesFogOfWar(
                 this.mActiveLines == this.getData().getGmNoteLines()
                 ? FogOfWarMode.DRAW
@@ -434,6 +437,8 @@ public final class CombatView extends SurfaceView {
                         .draw(canvas, this.getData(), dirty);
 
         this.mInteractionMode.draw(canvas);
+
+
         
 	    if (DeveloperMode.shouldDisplayFramerate()) {
 	    	long time = System.currentTimeMillis();
@@ -782,6 +787,15 @@ public final class CombatView extends SurfaceView {
     }
 
 
+    public void requestSelectRegion(RectF selectionWorldSpace) {
+        this.mLineSelectionRect = selectionWorldSpace;
+        invalidate();
+        if (mLineSelectionRect != null) {
+            mActivityRequestListener.requestRegionSelected();
+        }
+    }
+
+
     /**
      * Sets whether tokens are manipulable.
      * 
@@ -1126,6 +1140,8 @@ public final class CombatView extends SurfaceView {
         void requestNewInfoEntry(PointF locationWorldSpace);
 
         void requestEditInfoObject(Information information);
+
+        void requestRegionSelected();
     }
 
     /**
@@ -1268,5 +1284,10 @@ public final class CombatView extends SurfaceView {
         loadNewTokenImages();
         refreshMap();
         stopBatchingDraws();
+    }
+
+    public void setSelectedRegion(RectF selectedRegion) {
+        this.mLineSelectionRect = selectedRegion;
+        refreshMap(); // TODO: Smarter Invalidation
     }
 }

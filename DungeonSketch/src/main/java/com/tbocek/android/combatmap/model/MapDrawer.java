@@ -1,11 +1,15 @@
 package com.tbocek.android.combatmap.model;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
+import com.tbocek.android.combatmap.model.primitives.Units;
 
 public class MapDrawer {
     private boolean mAreTokensManipulable;
@@ -19,6 +23,24 @@ public class MapDrawer {
     private CoordinateTransformer mTransformer;
 
     private boolean mApplyMaskToTokens;
+    private RectF mLineSelectionRect;
+
+    private Paint mSelectionInteriorPaint;
+    private Paint mSelectionExteriorPaint;
+
+    public MapDrawer() {
+
+        mSelectionInteriorPaint = new Paint();
+        mSelectionInteriorPaint.setColor(Color.argb(64, 128, 128, 255));
+        mSelectionInteriorPaint.setStyle(Paint.Style.FILL);
+
+        mSelectionExteriorPaint = new Paint();
+        mSelectionExteriorPaint.setColor(Color.argb(255, 64, 64, 255));
+        mSelectionExteriorPaint.setStyle(Paint.Style.STROKE);
+        mSelectionExteriorPaint.setStrokeWidth(Units.dpToPx(2));
+        mSelectionExteriorPaint.setPathEffect(
+                new DashPathEffect(new float[]{Units.dpToPx(4.0f), Units.dpToPx(8.0f)}, 0));
+    }
 
     public MapDrawer areTokensManipulable(boolean val) {
         this.mAreTokensManipulable = val;
@@ -85,10 +107,17 @@ public class MapDrawer {
         }
 
         if (this.mDrawAnnotations) {
-
             m.getAnnotationLines().drawAllLines(canvas);
         }
         canvas.restore();
+
+        // Manually convert to screen space so that line thickness doesn't get scaled.
+        if (this.mLineSelectionRect != null) {
+            Rect rectScreenSpace = m.getWorldSpaceTransformer().worldSpaceToScreenSpace(
+                    mLineSelectionRect);
+            canvas.drawRect(rectScreenSpace, mSelectionInteriorPaint);
+            canvas.drawRect(rectScreenSpace, mSelectionExteriorPaint);
+        }
 
         canvas.save();
         if (this.mBackgroundFogOfWar == FogOfWarMode.CLIP
@@ -146,6 +175,11 @@ public class MapDrawer {
      */
     public MapDrawer useCustomWorldSpaceTransformer(CoordinateTransformer transformer) {
         mTransformer = transformer;
+        return this;
+    }
+
+    public MapDrawer drawSelectionRectangle(RectF lineSelectionRect) {
+        mLineSelectionRect = lineSelectionRect;
         return this;
     }
 

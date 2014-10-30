@@ -294,4 +294,9 @@ public final class CoordinateTransformer {
 
         return transformers;
     }
+
+    public RectF screenSpaceToWorldSpace(RectF r) {
+        return new RectF(screenSpaceToWorldSpace(r.left), screenSpaceToWorldSpace(r.top),
+                screenSpaceToWorldSpace(r.right), screenSpaceToWorldSpace(r.bottom));
+    }
 }

@@ -16,8 +16,6 @@ import com.tbocek.android.combatmap.view.CombatView;
 public class DrawSelectionInteractionMode extends CombatViewInteractionMode {
     private RectF mSelectionScreenSpace;
 
-    private Paint mSelectionInteriorPaint;
-    private Paint mSelectionExteriorPaint;
 
     /**
      * Constructor.
@@ -27,20 +25,11 @@ public class DrawSelectionInteractionMode extends CombatViewInteractionMode {
     public DrawSelectionInteractionMode(CombatView view) {
         super(view);
 
-        mSelectionInteriorPaint = new Paint();
-        mSelectionInteriorPaint.setColor(Color.argb(64, 128, 128, 255));
-        mSelectionInteriorPaint.setStyle(Paint.Style.FILL);
-
-        mSelectionExteriorPaint = new Paint();
-        mSelectionExteriorPaint.setColor(Color.argb(255, 64, 64, 255));
-        mSelectionExteriorPaint.setStyle(Paint.Style.STROKE);
-        mSelectionExteriorPaint.setStrokeWidth(Units.dpToPx(2));
-        mSelectionExteriorPaint.setPathEffect(
-                new DashPathEffect(new float[]{Units.dpToPx(4.0f), Units.dpToPx(8.0f)}, 0));
     }
 
     @Override
     public boolean onDown(final MotionEvent e) {
+        super.onDown(e);
         return true;
     }
 
@@ -49,16 +38,15 @@ public class DrawSelectionInteractionMode extends CombatViewInteractionMode {
                             final float distanceX, final float distanceY) {
         if (this.getNumberOfFingers() == 1) {
             mSelectionScreenSpace = new RectF(e1.getX(), e1.getY(), e2.getX(), e2.getY());
-            this.getView().refreshMap(); // TODO: smarter invalidation.
+            getView().setSelectedRegion(getData().getWorldSpaceTransformer().screenSpaceToWorldSpace(mSelectionScreenSpace));
+            return true;
+        } else {
+            return super.onScroll(e1, e2, distanceX, distanceY);
         }
-        return true;
     }
 
-    @Override
-    public void draw(final Canvas c) {
-        if (mSelectionScreenSpace != null) {
-            c.drawRect(mSelectionScreenSpace, mSelectionInteriorPaint);
-            c.drawRect(mSelectionScreenSpace, mSelectionExteriorPaint);
-        }
+    public void onUp(final MotionEvent event) {
+        getView().requestSelectRegion(
+                getData().getWorldSpaceTransformer().screenSpaceToWorldSpace(mSelectionScreenSpace));
     }
 }
