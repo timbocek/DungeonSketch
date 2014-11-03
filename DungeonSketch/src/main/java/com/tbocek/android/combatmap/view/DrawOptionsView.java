@@ -277,6 +277,7 @@ public final class DrawOptionsView extends LinearLayout {
         if (mask) {
             this.mToolsInMaskGroup.add(eraserButton);
             this.mToolsOnlyInMaskGroup.add(eraserButton);
+            eraserButton.setVisibility(View.GONE);
         }
         this.mToolsGroup.add(eraserButton);
     }
