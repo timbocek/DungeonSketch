@@ -1292,6 +1292,6 @@ public final class CombatView extends SurfaceView {
 
     public void clearSelection() {
         mLineSelection = null;
-        invalidate();
+        refreshMap();
     }
 }

@@ -39,7 +39,7 @@ public class DrawSelectionInteractionMode extends CombatViewInteractionMode {
             RectF r = new RectF(e1.getX(), e1.getY(), e2.getX(), e2.getY());
             getView().getSelection().setRectangle(
                     getData().getWorldSpaceTransformer().screenSpaceToWorldSpace(r));
-            getView().invalidate();
+            getView().refreshMap();
             return true;
         } else {
             return super.onScroll(e1, e2, distanceX, distanceY);
