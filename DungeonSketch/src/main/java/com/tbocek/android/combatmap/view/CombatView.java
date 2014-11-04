@@ -32,6 +32,7 @@ import com.tbocek.android.combatmap.model.MapData;
 import com.tbocek.android.combatmap.model.MapDrawer;
 import com.tbocek.android.combatmap.model.MapDrawer.FogOfWarMode;
 import com.tbocek.android.combatmap.model.MultiSelectManager;
+import com.tbocek.android.combatmap.model.Selection;
 import com.tbocek.android.combatmap.model.TokenCollection;
 import com.tbocek.android.combatmap.model.UndoRedoTarget;
 import com.tbocek.android.combatmap.model.primitives.BackgroundImage;
@@ -75,7 +76,6 @@ public final class CombatView extends SurfaceView {
     private static final String TAG = "CombatView";
 
     private static final float INFO_POINT_SIZE_DP = 32;
-    private RectF mLineSelectionRect;
 
 
     /**
@@ -269,6 +269,8 @@ public final class CombatView extends SurfaceView {
     private TokenImageManager.Loader mLoader;
 
     private final Set<String> mVisibleTokenImages = new HashSet<String>();
+
+    private Selection mLineSelection;
     
     /**
      * Constructor.
@@ -427,7 +429,7 @@ public final class CombatView extends SurfaceView {
         .drawTokens(true)
         .areTokensManipulable(this.mAreTokensManipulable)
         .drawAnnotations(this.mShouldDrawAnnotations)
-        .drawSelectionRectangle(mLineSelectionRect)
+        .drawSelection(mLineSelection)
         .gmNotesFogOfWar(
                 this.mActiveLines == this.getData().getGmNoteLines()
                 ? FogOfWarMode.DRAW
@@ -785,16 +787,6 @@ public final class CombatView extends SurfaceView {
                     .requestNewInfoEntry(pointF);
         }
     }
-
-
-    public void requestSelectRegion(RectF selectionWorldSpace) {
-        this.mLineSelectionRect = selectionWorldSpace;
-        invalidate();
-        if (mLineSelectionRect != null) {
-            mActivityRequestListener.requestRegionSelected();
-        }
-    }
-
 
     /**
      * Sets whether tokens are manipulable.
@@ -1286,8 +1278,20 @@ public final class CombatView extends SurfaceView {
         stopBatchingDraws();
     }
 
-    public void setSelectedRegion(RectF selectedRegion) {
-        this.mLineSelectionRect = selectedRegion;
-        refreshMap(); // TODO: Smarter Invalidation
+    public void startSelection() {
+        mLineSelection = new Selection();
+    }
+
+    public Selection getSelection() {
+        return mLineSelection;
+    }
+
+    public void finalizeSelection() {
+        mActivityRequestListener.requestRegionSelected();
+    }
+
+    public void clearSelection() {
+        mLineSelection = null;
+        invalidate();
     }
 }

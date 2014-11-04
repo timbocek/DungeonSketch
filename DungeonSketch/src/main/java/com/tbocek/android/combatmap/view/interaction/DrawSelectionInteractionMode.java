@@ -14,8 +14,6 @@ import com.tbocek.android.combatmap.view.CombatView;
  * Created by tbocek on 10/29/14.
  */
 public class DrawSelectionInteractionMode extends CombatViewInteractionMode {
-    private RectF mSelectionScreenSpace;
-
 
     /**
      * Constructor.
@@ -30,6 +28,7 @@ public class DrawSelectionInteractionMode extends CombatViewInteractionMode {
     @Override
     public boolean onDown(final MotionEvent e) {
         super.onDown(e);
+        getView().startSelection();
         return true;
     }
 
@@ -37,8 +36,10 @@ public class DrawSelectionInteractionMode extends CombatViewInteractionMode {
     public boolean onScroll(final MotionEvent e1, final MotionEvent e2,
                             final float distanceX, final float distanceY) {
         if (this.getNumberOfFingers() == 1) {
-            mSelectionScreenSpace = new RectF(e1.getX(), e1.getY(), e2.getX(), e2.getY());
-            getView().setSelectedRegion(getData().getWorldSpaceTransformer().screenSpaceToWorldSpace(mSelectionScreenSpace));
+            RectF r = new RectF(e1.getX(), e1.getY(), e2.getX(), e2.getY());
+            getView().getSelection().setRectangle(
+                    getData().getWorldSpaceTransformer().screenSpaceToWorldSpace(r));
+            getView().invalidate();
             return true;
         } else {
             return super.onScroll(e1, e2, distanceX, distanceY);
@@ -46,7 +47,6 @@ public class DrawSelectionInteractionMode extends CombatViewInteractionMode {
     }
 
     public void onUp(final MotionEvent event) {
-        getView().requestSelectRegion(
-                getData().getWorldSpaceTransformer().screenSpaceToWorldSpace(mSelectionScreenSpace));
+        getView().finalizeSelection();
     }
 }

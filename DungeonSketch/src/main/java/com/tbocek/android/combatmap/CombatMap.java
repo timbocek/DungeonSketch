@@ -1863,7 +1863,7 @@ public final class CombatMap extends ActionBarActivity {
 
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
-            mCombatView.setSelectedRegion(null);
+            mCombatView.clearSelection();
         }
     }
 	
