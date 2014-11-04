@@ -11,6 +11,7 @@ import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.Shape;
 import com.tbocek.android.combatmap.model.primitives.Units;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ import java.util.List;
 public class Selection {
     private RectF mWorldSpaceSelection;
     private List<Shape> mSelectedShapes;
+    private LineCollection mManagedCollection;
 
     private Paint mSelectionInteriorPaint;
     private Paint mSelectionExteriorPaint;
@@ -50,5 +52,18 @@ public class Selection {
                 mWorldSpaceSelection);
         c.drawRect(rectScreenSpace, mSelectionInteriorPaint);
         c.drawRect(rectScreenSpace, mSelectionExteriorPaint);
+    }
+
+    public void finalizeSelection(LineCollection shapes) {
+        mManagedCollection = shapes;
+        mSelectedShapes = new ArrayList<Shape>();
+
+        // Figure out which shapes are included.
+        // TODO: Better logic behind which shapes are included.
+        for (Shape s: shapes.allShapes()) {
+            if (s.getBoundingRectangle().toRectF().intersect(mWorldSpaceSelection)) {
+                mSelectedShapes.add(s);
+            }
+        }
     }
 }

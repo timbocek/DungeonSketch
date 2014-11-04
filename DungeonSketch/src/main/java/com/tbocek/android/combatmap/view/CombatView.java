@@ -1287,6 +1287,7 @@ public final class CombatView extends SurfaceView {
     }
 
     public void finalizeSelection() {
+        mLineSelection.finalizeSelection(getActiveLines());
         mActivityRequestListener.requestRegionSelected();
     }
 

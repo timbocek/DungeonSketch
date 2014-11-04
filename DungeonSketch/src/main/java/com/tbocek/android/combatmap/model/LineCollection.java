@@ -539,6 +539,10 @@ public final class LineCollection implements UndoRedoTarget {
     	}
     }
 
+    public Iterable<Shape> allShapes() {
+        return mLines;
+    }
+
     /**
      * This class represents a command that adds and deletes lines.
      * 
