@@ -23,7 +23,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * This class manages saved map and token data and provides an interface to
@@ -410,20 +413,35 @@ public final class DataManager {
         return this.getSavedMapFile(file).exists();
     }
 
+    Queue<MapData> dataToSave = new LinkedList<MapData>();
+    /**
+     * Checkpoints a copy of the map data for saving.
+     */
+    public void checkpointForSaving() {
+        dataToSave.add(MapData.getCopy());
+    }
+
     /**
      * Saves the map to the given name. This takes care of looking up the full
      * path.
-     * 
+     *
      * @param name
      *            Name of the map to save, without the extension.
      * @throws IOException
      *             On write error.
+     * @return The data that was actually saved.
      */
-    public void saveMapName(final String name) throws IOException {
+    public MapData saveMapName(final String name) throws IOException {
+        MapData data;
+        if (dataToSave.isEmpty()) {
+            data = MapData.getInstance();
+        } else {
+            data = dataToSave.remove();
+        }
         // Save to temporary map.
         FileOutputStream s =
                 new FileOutputStream(this.getSavedMapFile(TEMP_MAP_NAME));
-        MapData.saveToStream(s);
+        data.saveToStream(s);
         s.close();
 
         // Copy temp to desired location
@@ -431,6 +449,7 @@ public final class DataManager {
             FileUtils.copyFile(this.getSavedMapFile(TEMP_MAP_NAME),
                     this.getSavedMapFile(name));
         }
+        return data;
     }
 
     /**

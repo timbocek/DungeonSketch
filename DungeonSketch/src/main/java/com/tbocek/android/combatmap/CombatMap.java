@@ -1072,9 +1072,9 @@ public final class CombatMap extends ActionBarActivity {
 				SaverService.startSavingMap(getApplicationContext(),
                         this.mSharedPreferences.getString("filename", ""));
 			}
+            this.setFilenamePreference(null);
 			Grid g = mData.getGrid();
 			MapData.clear();
-			this.setFilenamePreference(null);
 			mData = MapData.getInstance();
 			// Make sure the new map data has the same grid.
 			mData.setGrid(g);
