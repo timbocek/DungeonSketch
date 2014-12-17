@@ -320,16 +320,6 @@ public class TokenImageManager {
             final String warning = "Increasing image pool size by " + poolIncrease;
             Log.w(TAG, warning);
 
-            // If in a debug configuration, attempt to open a toast warning that we potentially
-            // leaked images.
-            if (DeveloperMode.DEVELOPER_MODE && mResponseHandler != null) {
-                mResponseHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, warning, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
             initializePool(poolIncrease);
             return mRecycledImages.removeFirst();
         } else {
