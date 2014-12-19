@@ -260,6 +260,8 @@ public class TokenImageManager {
 
     public synchronized void requireTokenImage(String tokenId, Loader loader, Callback callback) {
         TokenDatabase db = TokenDatabase.getInstanceOrNull();
+        if (db == null) return;
+        if (db.createToken(tokenId) == null) return;
         // If the token does not require an image load, the token is ready to draw.  This could
         // be the case in e.g. color or letter tokens.  In this case, run the callback and return
         // immediately.
