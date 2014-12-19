@@ -29,12 +29,18 @@ public class SaverService extends Service {
     private static final int SAVE_TOKEN_DB = 1;
 
     private static final String EXTRA_MAP_NAME = "map_name";
-
     private BlockingQueue<Runnable> mOperationQueue = new LinkedBlockingQueue<Runnable>();
 
+    private static DataManager sDataManager;
 
     public static void startSavingMap(Context context, String saveName) {
         Intent i = new Intent(context, SaverService.class);
+
+        if (sDataManager == null) {
+            sDataManager = new DataManager(context.getApplicationContext());
+        }
+        sDataManager.checkpointForSaving();
+
         i.putExtra(EXTRA_DATA_TO_SAVE, SAVE_MAP);
         i.putExtra(EXTRA_MAP_NAME, saveName);
         context.startService(i);
@@ -66,17 +72,13 @@ public class SaverService extends Service {
 
         switch(operation) {
             case SAVE_MAP:
-                final MapData mapData = MapData.getCopy();
-                if (mapData == null) break;
-
                 final String filename = intent.getStringExtra(EXTRA_MAP_NAME);
 
                 mOperationQueue.add(new Runnable() {
                     @Override
                     public void run() {
-                        DataManager dm = new DataManager(getApplicationContext());
                         try {
-                            dm.saveMapName(filename);
+                            MapData savedMap = sDataManager.saveMapName(filename);
                             // Only save preview if not saving to temp file.
                             if (!filename.equals(DataManager.TEMP_MAP_NAME)) {
                                 // TODO: pick better dimensions.
@@ -89,9 +91,9 @@ public class SaverService extends Service {
                                         .drawAnnotations(false)
                                         .gmNotesFogOfWar(MapDrawer.FogOfWarMode.NOTHING)
                                         .backgroundFogOfWar(MapDrawer.FogOfWarMode.CLIP)
-                                        .draw(canvas, mapData, canvas.getClipBounds());
+                                        .draw(canvas, savedMap, canvas.getClipBounds());
 
-                                dm.savePreviewImage(filename, bitmap);
+                                sDataManager.savePreviewImage(filename, bitmap);
                             }
                         } catch (IOException e) {
                             Log.e(TAG, "Error while saving map", e);

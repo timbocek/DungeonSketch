@@ -239,14 +239,14 @@ public final class MapData {
      * @throws IOException
      *             On write error.
      */
-    public static void saveToStream(final OutputStream output)
+    public void saveToStream(final OutputStream output)
             throws IOException {
         OutputStreamWriter outWriter = new OutputStreamWriter(output);
         BufferedWriter writer = new BufferedWriter(outWriter);
         MapDataSerializer s = new MapDataSerializer(writer);
         // TODO: Buffer this into memory and then write on a different thread.
         try {
-            instance.serialize(s);
+            serialize(s);
         } finally {
             writer.close();
             outWriter.close();
