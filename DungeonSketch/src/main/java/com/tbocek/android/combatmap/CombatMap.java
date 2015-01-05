@@ -1859,7 +1859,7 @@ public final class CombatMap extends ActionBarActivity {
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             int itemId = menuItem.getItemId();
             if (itemId == R.id.line_selection_copy) {
-
+                mCombatView.stampSelection();
             } else if (itemId == R.id.menu_undo) {
                 mCombatView.getUndoRedoTarget().undo();
             } else if (itemId == R.id.menu_redo) {

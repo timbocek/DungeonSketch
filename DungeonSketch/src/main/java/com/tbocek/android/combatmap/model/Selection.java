@@ -6,6 +6,7 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.Shape;
@@ -18,6 +19,7 @@ import java.util.List;
  * Created by tbocek on 11/4/14.
  */
 public class Selection {
+    private static final String TAG = "Selection";
     private RectF mWorldSpaceSelection;
     private List<Shape> mSelectedShapes;
     private LineCollection mManagedCollection;
@@ -65,5 +67,17 @@ public class Selection {
                 mSelectedShapes.add(s);
             }
         }
+    }
+
+    public void stampSelection() {
+        List<Shape> copies = new ArrayList<>();
+        for (Shape s: mSelectedShapes) {
+            try {
+                copies.add(s.clone());
+            } catch (CloneNotSupportedException e) {
+                Log.e(TAG, "CLONE NOT SUPPORTED: " + e.toString());
+            }
+        }
+        mManagedCollection.addAll(copies);
     }
 }

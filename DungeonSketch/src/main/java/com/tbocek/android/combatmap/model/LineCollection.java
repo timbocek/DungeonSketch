@@ -539,6 +539,12 @@ public final class LineCollection implements UndoRedoTarget {
     	}
     }
 
+    public void addAll(Collection<Shape> lines) {
+        Command c = new Command(this);
+        c.addCreatedShapes(lines);
+        this.mCommandHistory.execute(c);
+    }
+
     public Iterable<Shape> allShapes() {
         return mLines;
     }

@@ -1299,4 +1299,19 @@ public final class CombatView extends SurfaceView {
             setInteractionMode(new DrawSelectionInteractionMode(this));
         }
     }
+
+    public void stampSelection() {
+        if (mLineSelection != null) {
+            mLineSelection.stampSelection();
+        }
+    }
+
+    /**
+     * Moves the currently selected lines.  Coordinates given in world space.
+     * @param deltaX
+     * @param deltaY
+     */
+    public void moveSelection(float deltaX, float deltaY) {
+
+    }
 }
