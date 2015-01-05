@@ -642,7 +642,12 @@ public final class TokenDatabase implements Cloneable {
         if (tag.equals(ALL)) {
             return this.getAllTokens();
         }
-        Set<String> tokenIds = this.mTagTreeRoot.getNamedChild(tag, false).getAllTokens();
+        if (this.mTagTreeRoot == null) return new ArrayList<>();
+
+        TagTreeNode node = this.mTagTreeRoot.getNamedChild(tag, false);
+        if (node == null) return new ArrayList<>();
+
+        Set<String> tokenIds = node.getAllTokens();
         return this.tokenIdsToTokens(tokenIds);
     }
 
