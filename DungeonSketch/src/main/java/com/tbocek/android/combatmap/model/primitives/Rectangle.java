@@ -1,13 +1,13 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.graphics.Path;
 
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a drawn rectangle.
@@ -154,4 +154,14 @@ public class Rectangle extends Shape {
         s.expectObjectEnd();
     }
 
+
+    protected Shape getMovedShape(float deltaX, float deltaY) {
+        Rectangle r = new Rectangle(getColor(), this.getStrokeWidth());
+
+        r.mP1 = new PointF(this.mP1.x + deltaX, this.mP1.y + deltaY);
+        r.mP2 = new PointF(this.mP2.x + deltaX, this.mP2.y + deltaY);
+        r.getBoundingRectangle().updateBounds(this.getBoundingRectangle());
+        r.getBoundingRectangle().move(deltaX, deltaY);
+        return r;
+    }
 }

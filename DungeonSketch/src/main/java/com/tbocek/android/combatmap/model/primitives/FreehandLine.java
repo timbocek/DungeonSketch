@@ -44,11 +44,9 @@ public final class FreehandLine extends Shape {
 
     /**
      * Constructor.
-     * 
-     * @param color
-     *            Line color.
-     * @param newLineStrokeWidth
-     *            Line stroke width.
+     *
+     * @param color              Line color.
+     * @param newLineStrokeWidth Line stroke width.
      */
     public FreehandLine(final int color, final float newLineStrokeWidth) {
         this.setColor(color);
@@ -57,9 +55,8 @@ public final class FreehandLine extends Shape {
 
     /**
      * Adds the given point to the line.
-     * 
-     * @param p
-     *            The point to add.
+     *
+     * @param p The point to add.
      */
     @Override
     public void addPoint(final PointF p) {
@@ -72,9 +69,8 @@ public final class FreehandLine extends Shape {
     /**
      * Checks whether this point falls in the polygon created by closing this
      * path.
-     * 
-     * @param p
-     *            The point to test
+     *
+     * @param p The point to test
      * @return True if the polygon contains the point.
      */
     @Override
@@ -117,7 +113,7 @@ public final class FreehandLine extends Shape {
 
     /**
      * Creates a new Path object that draws this shape.
-     * 
+     *
      * @return The created path;
      */
     @Override
@@ -155,11 +151,9 @@ public final class FreehandLine extends Shape {
      * given center and radius. This does not delete the points, just marks them
      * as erased. removeErasedPoints() needs to be called afterward to get the
      * true result of the erase operation.
-     * 
-     * @param center
-     *            Center of the circle to erase.
-     * @param radius
-     *            Radius of the circle to erase.
+     *
+     * @param center Center of the circle to erase.
+     * @param radius Radius of the circle to erase.
      */
     @Override
     public void erase(final PointF center, final float radius) {
@@ -197,7 +191,7 @@ public final class FreehandLine extends Shape {
 
     /**
      * @return True if an optimization pass is needed on this line (i.e. if it
-     *         was just erased).
+     * was just erased).
      */
     @Override
     public boolean needsOptimization() {
@@ -214,7 +208,7 @@ public final class FreehandLine extends Shape {
      * from this line. There will often be more than one line returned, as it is
      * a common case to erase the middle of the line. The current line is set to
      * draw all points again.
-     * 
+     *
      * @return A list of lines that results from removing erased points.
      */
     @Override
@@ -278,5 +272,15 @@ public final class FreehandLine extends Shape {
         }
         s.expectArrayEnd();
         s.expectObjectEnd();
+    }
+
+    protected Shape getMovedShape(float deltaX, float deltaY) {
+        FreehandLine l = new FreehandLine(getColor(), this.getStrokeWidth());
+        for (PointF point : this.mPoints) {
+            l.mPoints.add(new PointF(point.x + deltaX, point.y + deltaY));
+        }
+        l.getBoundingRectangle().updateBounds(this.getBoundingRectangle());
+        l.getBoundingRectangle().move(deltaX, deltaY);
+        return l;
     }
 }

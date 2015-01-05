@@ -1,14 +1,14 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.graphics.Path;
 
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Shape class that represents a single straight line segment. Contains methods
@@ -302,5 +302,15 @@ public class StraightLine extends Shape {
         this.mEnd.x = s.readFloat();
         this.mEnd.y = s.readFloat();
         s.expectObjectEnd();
+    }
+
+
+    protected Shape getMovedShape(float deltaX, float deltaY) {
+        StraightLine l = new StraightLine(getColor(), this.getStrokeWidth());
+        l.mStart = new PointF(this.mStart.x + deltaX, this.mStart.y + deltaY);
+        l.mEnd = new PointF(this.mEnd.x + deltaX, this.mEnd.y + deltaY);
+        l.getBoundingRectangle().updateBounds(this.getBoundingRectangle());
+        l.getBoundingRectangle().move(deltaX, deltaY);
+        return l;
     }
 }
