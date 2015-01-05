@@ -1862,8 +1862,10 @@ public final class CombatMap extends ActionBarActivity {
                 mCombatView.stampSelection();
             } else if (itemId == R.id.menu_undo) {
                 mCombatView.getUndoRedoTarget().undo();
+                mCombatView.refreshMap();
             } else if (itemId == R.id.menu_redo) {
                 mCombatView.getUndoRedoTarget().redo();
+                mCombatView.refreshMap();
             }
             return false;
         }
