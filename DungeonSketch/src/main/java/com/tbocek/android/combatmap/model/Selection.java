@@ -80,4 +80,10 @@ public class Selection {
         }
         mManagedCollection.addAll(copies);
     }
+
+    public void setTemporaryOffset(float deltaX, float deltaY) {
+        for (Shape s: mSelectedShapes) {
+            s.setDrawOffset(deltaX, deltaY);
+        }
+    }
 }

@@ -1305,13 +1305,4 @@ public final class CombatView extends SurfaceView {
             mLineSelection.stampSelection();
         }
     }
-
-    /**
-     * Moves the currently selected lines.  Coordinates given in world space.
-     * @param deltaX
-     * @param deltaY
-     */
-    public void moveSelection(float deltaX, float deltaY) {
-
-    }
 }

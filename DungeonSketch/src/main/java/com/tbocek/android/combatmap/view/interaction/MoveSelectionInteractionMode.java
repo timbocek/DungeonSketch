@@ -2,6 +2,7 @@ package com.tbocek.android.combatmap.view.interaction;
 
 import android.view.MotionEvent;
 
+import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.view.CombatView;
 
 /**
@@ -28,7 +29,12 @@ public class MoveSelectionInteractionMode extends CombatViewInteractionMode {
     @Override
     public boolean onScroll(final MotionEvent e1, final MotionEvent e2,
                             final float distanceX, final float distanceY) {
+        CoordinateTransformer t = this.getView().getWorldSpaceTransformer();
         if (this.getNumberOfFingers() == 1) {
+            getView().getSelection().setTemporaryOffset(
+                    t.screenSpaceToWorldSpace(e2.getX() - e1.getX()),
+                    t.screenSpaceToWorldSpace(e2.getY() - e1.getY()));
+            getView().refreshMap();
             return true;
         } else {
             return super.onScroll(e1, e2, distanceX, distanceY);
@@ -36,6 +42,7 @@ public class MoveSelectionInteractionMode extends CombatViewInteractionMode {
     }
 
     public void onUp(final MotionEvent event) {
-
+        this.getView().getActiveLines().optimize();
+        this.getView().refreshMap();
     }
 }
