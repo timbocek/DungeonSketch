@@ -296,7 +296,8 @@ public final class CoordinateTransformer {
     }
 
     public RectF screenSpaceToWorldSpace(RectF r) {
-        return new RectF(screenSpaceToWorldSpace(r.left), screenSpaceToWorldSpace(r.top),
-                screenSpaceToWorldSpace(r.right), screenSpaceToWorldSpace(r.bottom));
+        PointF topLeft = screenSpaceToWorldSpace(r.left, r.top);
+        PointF bottomRight = screenSpaceToWorldSpace(r.right, r.bottom);
+        return new RectF(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
     }
 }
