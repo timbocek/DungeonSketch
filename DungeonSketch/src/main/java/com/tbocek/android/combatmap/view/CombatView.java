@@ -43,7 +43,6 @@ import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Shape;
 import com.tbocek.android.combatmap.model.primitives.Units;
-import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.interaction.BackgroundImageInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CombatViewInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CreateInfoInteractionMode;
@@ -55,6 +54,7 @@ import com.tbocek.android.combatmap.view.interaction.GridRepositioningInteractio
 import com.tbocek.android.combatmap.view.interaction.MaskDrawInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.MaskEraseInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.MeasuringTapeInteractionMode;
+import com.tbocek.android.combatmap.view.interaction.MoveSelectionInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.TokenManipulationInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.ZoomPanInteractionMode;
 
@@ -1288,11 +1288,15 @@ public final class CombatView extends SurfaceView {
 
     public void finalizeSelection() {
         mLineSelection.finalizeSelection(getActiveLines());
+        setInteractionMode(new MoveSelectionInteractionMode(this));
         mActivityRequestListener.requestRegionSelected();
     }
 
     public void clearSelection() {
         mLineSelection = null;
         refreshMap();
+        if (mInteractionMode instanceof MoveSelectionInteractionMode) {
+            setInteractionMode(new DrawSelectionInteractionMode(this));
+        }
     }
 }

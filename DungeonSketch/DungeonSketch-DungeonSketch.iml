@@ -10,7 +10,7 @@
       <configuration>
         <option name="SELECTED_BUILD_VARIANT" value="debugFlavorDebug" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebugFlavorDebug" />
-        <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugFlavorDebugJava" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugFlavorDebugSources" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugFlavorDebugTest" />
         <option name="SOURCE_GEN_TASK_NAME" value="generateDebugFlavorDebugSources" />
         <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateDebugFlavorDebugTestSources" />
@@ -31,6 +31,7 @@
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/debugFlavor/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/debugFlavor/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/debugFlavor/debug" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/debugFlavor/debug" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debugFlavorDebug/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debugFlavorDebug/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debugFlavorDebug/assets" type="java-resource" />
@@ -43,6 +44,7 @@
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/test/debugFlavor/debug" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/test/debugFlavor/debug" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/test/debugFlavor/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/test/debugFlavor/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debugFlavor/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debugFlavor/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debugFlavor/assets" type="java-resource" />
@@ -98,20 +100,21 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="jsr305-1.3.9" level="project" />
     <orderEntry type="library" exported="" name="gridlayout-v7-19.1.0" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-21.0.0" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-21.0.0" level="project" />
+    <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="guava-11.0" level="project" />
     <orderEntry type="library" exported="" name="roboguice-2.0" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
     <orderEntry type="library" exported="" name="commons-io-2.1" level="project" />
-    <orderEntry type="library" exported="" name="play-services-6.1.11" level="project" />
     <orderEntry type="library" exported="" name="mediarouter-v7-19.1.0" level="project" />
-    <orderEntry type="library" exported="" name="appcompat-v7-21.0.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-6.1.71" level="project" />
     <orderEntry type="library" exported="" name="guice-2.0-no_aop" level="project" />
     <orderEntry type="module" module-name="lib" exported="" />
   </component>
