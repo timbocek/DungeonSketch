@@ -1,13 +1,13 @@
 package com.tbocek.android.combatmap.model.primitives;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.graphics.Path;
 
 import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.io.MapDataSerializer;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a circle drawn on the map.
@@ -183,5 +183,14 @@ public class Circle extends Shape {
         this.mCenter.x = s.readFloat();
         this.mCenter.y = s.readFloat();
         s.expectObjectEnd();
+    }
+
+    protected Shape getMovedShape(float deltaX, float deltaY) {
+        Circle c = new Circle(getColor(), this.getStrokeWidth());
+        c.mRadius = this.mRadius;
+        c.mCenter = new PointF(this.mCenter.x + deltaX, this.mCenter.y + deltaY);
+        c.getBoundingRectangle().updateBounds(this.getBoundingRectangle());
+        c.getBoundingRectangle().move(deltaX, deltaY);
+        return c;
     }
 }
