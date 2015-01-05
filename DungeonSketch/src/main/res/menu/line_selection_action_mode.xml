@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:abc="http://schemas.android.com/apk/res-auto">
     <item android:title="@string/copy" android:id="@+id/line_selection_copy"
         android:icon="@drawable/ic_menu_copy_holo_light"/>
+    <item android:id="@+id/menu_undo" android:icon="@drawable/undo" abc:showAsAction="ifRoom" android:title="@string/undo"/>
+    <item android:id="@+id/menu_redo" android:icon="@drawable/redo" abc:showAsAction="ifRoom" android:title="@string/redo"/>
 </menu>

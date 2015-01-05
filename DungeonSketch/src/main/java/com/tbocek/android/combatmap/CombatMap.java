@@ -13,7 +13,6 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -1858,6 +1857,14 @@ public final class CombatMap extends ActionBarActivity {
 
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            int itemId = menuItem.getItemId();
+            if (itemId == R.id.line_selection_copy) {
+
+            } else if (itemId == R.id.menu_undo) {
+                mCombatView.getUndoRedoTarget().undo();
+            } else if (itemId == R.id.menu_redo) {
+                mCombatView.getUndoRedoTarget().redo();
+            }
             return false;
         }
 
