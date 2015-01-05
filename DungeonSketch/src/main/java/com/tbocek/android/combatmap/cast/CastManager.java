@@ -13,7 +13,6 @@ import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
-import com.google.android.gms.cast.MediaStatus;
 import com.google.android.gms.cast.RemoteMediaPlayer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -87,9 +86,6 @@ public class CastManager {
                 new RemoteMediaPlayer.OnStatusUpdatedListener() {
                     @Override
                     public void onStatusUpdated() {
-                        MediaStatus mediaStatus = mRemoteMediaPlayer.getMediaStatus();
-                        boolean isPlaying = mediaStatus.getPlayerState() ==
-                                MediaStatus.PLAYER_STATE_PLAYING;
                     }
                 });
 
@@ -97,8 +93,6 @@ public class CastManager {
                 new RemoteMediaPlayer.OnMetadataUpdatedListener() {
                     @Override
                     public void onMetadataUpdated() {
-                        MediaInfo mediaInfo = mRemoteMediaPlayer.getMediaInfo();
-                        MediaMetadata metadata = mediaInfo.getMetadata();
                     }
                 });
     }
