@@ -626,7 +626,14 @@ public final class LineCollection implements UndoRedoTarget {
          */
         @Override
         public void execute() {
-            this.mLineCollection.mSelection.replace(mDeleted, mCreated);
+            // If the size of the created and deleted lists are the same, it means that these are
+            // the same lines that have been modified (like moved) and should be replaced in the
+            // selection so that the selection is still seen as modifying the "same" lines.
+            // If the sizes are different it means that a line has been added or deleted, and
+            // shouldn't modify the currently selected lines.
+            if (mDeleted.size() == mCreated.size()) {
+                this.mLineCollection.mSelection.replace(mDeleted, mCreated);
+            }
             List<Shape> newLines = new LinkedList<Shape>();
             for (Shape l : this.mLineCollection.mLines) {
                 if (!this.mDeleted.contains(l)) {
@@ -654,7 +661,9 @@ public final class LineCollection implements UndoRedoTarget {
          */
         @Override
         public void undo() {
-            this.mLineCollection.mSelection.replace(mCreated, mDeleted);
+            if (mDeleted.size() == mCreated.size()) {
+                this.mLineCollection.mSelection.replace(mCreated, mDeleted);
+            }
             List<Shape> newLines = new LinkedList<Shape>();
             for (Shape l : this.mLineCollection.mLines) {
                 if (!this.mCreated.contains(l)) {
