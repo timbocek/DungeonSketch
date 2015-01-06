@@ -1279,7 +1279,7 @@ public final class CombatView extends SurfaceView {
     }
 
     public void startSelection() {
-        mLineSelection = new Selection();
+        mLineSelection = getActiveLines().startSelection();
     }
 
     public Selection getSelection() {
@@ -1287,7 +1287,7 @@ public final class CombatView extends SurfaceView {
     }
 
     public void finalizeSelection() {
-        mLineSelection.finalizeSelection(getActiveLines());
+        mLineSelection.finalizeSelection();
         setInteractionMode(new MoveSelectionInteractionMode(this));
         mActivityRequestListener.requestRegionSelected();
     }

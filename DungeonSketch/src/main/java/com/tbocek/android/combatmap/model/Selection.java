@@ -13,6 +13,7 @@ import com.tbocek.android.combatmap.model.primitives.Shape;
 import com.tbocek.android.combatmap.model.primitives.Units;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -27,7 +28,8 @@ public class Selection {
     private Paint mSelectionInteriorPaint;
     private Paint mSelectionExteriorPaint;
 
-    public Selection() {
+    Selection(LineCollection managedCollection) {
+        mManagedCollection = managedCollection;
         createPaints();
     }
 
@@ -56,13 +58,12 @@ public class Selection {
         c.drawRect(rectScreenSpace, mSelectionExteriorPaint);
     }
 
-    public void finalizeSelection(LineCollection shapes) {
-        mManagedCollection = shapes;
+    public void finalizeSelection() {
         mSelectedShapes = new ArrayList<Shape>();
 
         // Figure out which shapes are included.
         // TODO: Better logic behind which shapes are included.
-        for (Shape s: shapes.allShapes()) {
+        for (Shape s: mManagedCollection.allShapes()) {
             if (s.getBoundingRectangle().toRectF().intersect(mWorldSpaceSelection)) {
                 mSelectedShapes.add(s);
             }
@@ -85,5 +86,15 @@ public class Selection {
         for (Shape s: mSelectedShapes) {
             s.setDrawOffset(deltaX, deltaY);
         }
+    }
+
+    public void clear() {
+        mWorldSpaceSelection = null;
+        mSelectedShapes = null;
+    }
+
+    public void replace(Collection<Shape> mDeleted, Collection<Shape> mCreated) {
+        mSelectedShapes.removeAll(mDeleted);
+        mSelectedShapes.addAll(mCreated);
     }
 }

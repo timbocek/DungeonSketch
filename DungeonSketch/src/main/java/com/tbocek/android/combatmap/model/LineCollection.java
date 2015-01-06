@@ -59,6 +59,11 @@ public final class LineCollection implements UndoRedoTarget {
     private final List<Shape> mBelowGridLines = Lists.newArrayList();
 
     /**
+     * The selection managed by this line collection.
+     */
+    private final Selection mSelection = new Selection(this);
+
+    /**
      * Constructor allowing multiple line collections to share one undo/redo
      * history.
      * 
@@ -549,6 +554,11 @@ public final class LineCollection implements UndoRedoTarget {
         return mLines;
     }
 
+    public Selection startSelection() {
+        mSelection.clear();
+        return mSelection;
+    }
+
     /**
      * This class represents a command that adds and deletes lines.
      * 
@@ -616,6 +626,7 @@ public final class LineCollection implements UndoRedoTarget {
          */
         @Override
         public void execute() {
+            this.mLineCollection.mSelection.replace(mDeleted, mCreated);
             List<Shape> newLines = new LinkedList<Shape>();
             for (Shape l : this.mLineCollection.mLines) {
                 if (!this.mDeleted.contains(l)) {
@@ -643,6 +654,7 @@ public final class LineCollection implements UndoRedoTarget {
          */
         @Override
         public void undo() {
+            this.mLineCollection.mSelection.replace(mCreated, mDeleted);
             List<Shape> newLines = new LinkedList<Shape>();
             for (Shape l : this.mLineCollection.mLines) {
                 if (!this.mCreated.contains(l)) {
