@@ -82,10 +82,11 @@ public class Selection {
         mManagedCollection.addAll(copies);
     }
 
-    public void setTemporaryOffset(float deltaX, float deltaY) {
+    public void setTemporaryOffset(float deltaX, float deltaY, float newDeltaX, float newDeltaY) {
         for (Shape s: mSelectedShapes) {
             s.setDrawOffset(deltaX, deltaY);
         }
+        mWorldSpaceSelection.offset(-newDeltaX, -newDeltaY);
     }
 
     public void clear() {

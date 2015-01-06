@@ -33,7 +33,9 @@ public class MoveSelectionInteractionMode extends CombatViewInteractionMode {
         if (this.getNumberOfFingers() == 1) {
             getView().getSelection().setTemporaryOffset(
                     t.screenSpaceToWorldSpace(e2.getX() - e1.getX()),
-                    t.screenSpaceToWorldSpace(e2.getY() - e1.getY()));
+                    t.screenSpaceToWorldSpace(e2.getY() - e1.getY()),
+                    t.screenSpaceToWorldSpace(distanceX),
+                    t.screenSpaceToWorldSpace(distanceY));
             getView().refreshMap();
             return true;
         } else {
