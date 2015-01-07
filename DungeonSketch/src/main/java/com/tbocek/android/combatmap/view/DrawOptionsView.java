@@ -123,6 +123,7 @@ public final class DrawOptionsView extends LinearLayout {
 
         this.createAndAddSeperator();
         this.mMaskButton = this.createAndAddMaskButton();
+        this.createAndAddSelectRegionButton();
         this.createAndAddSeperator();
 
         this.createAndAddEraserButton(false);
@@ -137,7 +138,6 @@ public final class DrawOptionsView extends LinearLayout {
         this.mBackgroundImageButton = this.createAndAddBackgroundImageButton();
         this.createAndAddSeperator();
 
-        this.createAndAddSelectRegionButton();
         this.createAndAddMoveTokenButton();
         this.createAndAddSeperator();
 
