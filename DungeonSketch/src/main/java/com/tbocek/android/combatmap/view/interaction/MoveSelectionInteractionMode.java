@@ -23,6 +23,7 @@ public class MoveSelectionInteractionMode extends CombatViewInteractionMode {
     @Override
     public boolean onDown(final MotionEvent e) {
         super.onDown(e);
+        this.getView().beginBatchMove();
         return true;
     }
 
@@ -44,7 +45,6 @@ public class MoveSelectionInteractionMode extends CombatViewInteractionMode {
     }
 
     public void onUp(final MotionEvent event) {
-        this.getView().getActiveLines().optimize();
-        this.getView().refreshMap();
+        this.getView().endBatchMove();
     }
 }

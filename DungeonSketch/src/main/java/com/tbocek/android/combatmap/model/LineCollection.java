@@ -2,6 +2,7 @@ package com.tbocek.android.combatmap.model;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Region.Op;
 import android.util.Log;
 
@@ -480,6 +481,11 @@ public final class LineCollection implements UndoRedoTarget {
      * disjoint sections.
      */
     public void optimize() {
+        Command c = createOptimizeLineCommand();
+        this.mCommandHistory.execute(c);
+    }
+
+    private Command createOptimizeLineCommand() {
         Command c = new Command(this);
         for (Shape shape : this.mLines) {
             if (!shape.isValid()) {
@@ -494,6 +500,12 @@ public final class LineCollection implements UndoRedoTarget {
                 c.addCreatedShape(shape.commitDrawOffset());
             }
         }
+        return c;
+    }
+
+    public void finalizeBatchMove(RectF beforeRect) {
+        Command c = createOptimizeLineCommand();
+        c.setSelectionInfo(mSelection, beforeRect);
         this.mCommandHistory.execute(c);
     }
 
@@ -582,6 +594,21 @@ public final class LineCollection implements UndoRedoTarget {
         private final LineCollection mLineCollection;
 
         /**
+         * The selection that managed this move.  May be null.
+         */
+        private Selection mSelection;
+
+        /**
+         * The before rect for this move's selection.  May not be null if mSelection is non-null.
+         */
+        private RectF mSelectionBeforeRect;
+
+        /**
+         * The after rect for this move's selection.  May not be null if mSelection is non-null.
+         */
+        private RectF mSelectionAfterRect;
+
+        /**
          * Constructor.
          * 
          * @param lineCollection
@@ -621,18 +648,22 @@ public final class LineCollection implements UndoRedoTarget {
             this.mDeleted.add(l);
         }
 
+        public void setSelectionInfo(Selection selection, RectF beforeRect) {
+            mSelection = selection;
+            mSelectionBeforeRect = beforeRect;
+            mSelectionAfterRect = mSelection.getRectangle();
+        }
+
         /**
          * Executes the command on the LineCollection that this command mutates.
          */
         @Override
         public void execute() {
-            // If the size of the created and deleted lists are the same, it means that these are
-            // the same lines that have been modified (like moved) and should be replaced in the
-            // selection so that the selection is still seen as modifying the "same" lines.
-            // If the sizes are different it means that a line has been added or deleted, and
-            // shouldn't modify the currently selected lines.
-            if (mDeleted.size() == mCreated.size()) {
+            if (mSelection != null) {
                 this.mLineCollection.mSelection.replace(mDeleted, mCreated);
+                if (mSelection == mLineCollection.mSelection) {
+                    mSelection.setRectangle(mSelectionAfterRect);
+                }
             }
             List<Shape> newLines = new LinkedList<Shape>();
             for (Shape l : this.mLineCollection.mLines) {
@@ -661,8 +692,11 @@ public final class LineCollection implements UndoRedoTarget {
          */
         @Override
         public void undo() {
-            if (mDeleted.size() == mCreated.size()) {
+            if (mSelection != null) {
                 this.mLineCollection.mSelection.replace(mCreated, mDeleted);
+                if (mSelection == mLineCollection.mSelection) {
+                    mSelection.setRectangle(mSelectionBeforeRect);
+                }
             }
             List<Shape> newLines = new LinkedList<Shape>();
             for (Shape l : this.mLineCollection.mLines) {
@@ -678,5 +712,4 @@ public final class LineCollection implements UndoRedoTarget {
             this.mLineCollection.partitionLinesBelowAboveGrid();
         }
     }
-
 }

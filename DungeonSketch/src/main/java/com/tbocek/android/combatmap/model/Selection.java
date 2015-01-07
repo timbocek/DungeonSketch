@@ -50,6 +50,8 @@ public class Selection {
         mWorldSpaceSelection = rect;
     }
 
+    public RectF getRectangle() { return mWorldSpaceSelection; }
+
     public void draw(Canvas c, CoordinateTransformer wsTransformer) {
         // Draw in screen space so that the border doesn't get scaled.
         Rect rectScreenSpace = wsTransformer.worldSpaceToScreenSpace(

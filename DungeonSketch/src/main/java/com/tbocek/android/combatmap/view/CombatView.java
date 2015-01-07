@@ -201,6 +201,12 @@ public final class CombatView extends SurfaceView {
     private boolean mApplyMaskToTokens;
 
     /**
+     * Cached version of a selection rectangle before a move operation happens.  This is needed
+     * to properly support undo and redo operations while in a selection.
+     */
+    private RectF mBeforeSelectionRect;
+
+    /**
      * Callback for the Android graphics surface management system.
      */
     @SuppressWarnings("FieldCanBeLocal")
@@ -1304,5 +1310,17 @@ public final class CombatView extends SurfaceView {
         if (mLineSelection != null) {
             mLineSelection.stampSelection();
         }
+    }
+
+    /**
+     * Begins an operation where several selected lines are moved.
+     */
+    public void beginBatchMove() {
+        this.mBeforeSelectionRect = new RectF(mLineSelection.getRectangle());
+    }
+
+    public void endBatchMove() {
+        this.getActiveLines().finalizeBatchMove(this.mBeforeSelectionRect);
+        this.refreshMap();
     }
 }
