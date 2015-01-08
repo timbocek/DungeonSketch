@@ -60,6 +60,11 @@ public abstract class Shape implements Cloneable {
     private transient Paint mPaint;
 
     /**
+     * The paint object that will be used to draw this line's selection indicator.
+     */
+    private transient Paint mSelectionPaint;
+
+    /**
      * Cached path that represents this line.
      */
     private transient Path mPath;
@@ -185,6 +190,17 @@ public abstract class Shape implements Cloneable {
     protected abstract Path createPath();
 
     /**
+     * Draws a selection indicator for the line on the given canvas (this is always blue, and
+     * always a bit thicker than the line its self).
+     */
+    public void drawSelectionIndicator(final Canvas c) {
+        this.ensurePaintCreated();
+        this.ensurePathCreated();
+        if (this.mPath != null) {
+            c.drawPath(this.mPath, this.mSelectionPaint);
+        }
+    }
+    /**
      * Draws the line on the given canvas.
      *
      * @param c Canvas to draw on.
@@ -232,6 +248,14 @@ public abstract class Shape implements Cloneable {
                 this.mPaint.setStrokeWidth(this.getWidth());
                 this.mPaint.setStyle(Paint.Style.STROKE);
             }
+        }
+
+        if (this.mSelectionPaint == null) {
+            this.mSelectionPaint = new Paint();
+            this.mSelectionPaint.setColor(Util.ICS_BLUE);
+            this.mSelectionPaint.setStrokeWidth(
+                    this.getWidth() == Float.POSITIVE_INFINITY ? .15f : this.getWidth() + .15f);
+            this.mSelectionPaint.setStyle(Paint.Style.STROKE);
         }
     }
 

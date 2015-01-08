@@ -302,6 +302,9 @@ public final class LineCollection implements UndoRedoTarget {
     public void drawAllLinesAboveGrid(final Canvas canvas) {
         for (Shape shape: mAboveGridLines) {
             shape.applyDrawOffsetToCanvas(canvas);
+            if (mSelection.contains(shape)) {
+                shape.drawSelectionIndicator(canvas);
+            }
             shape.draw(canvas);
             shape.revertDrawOffsetFromCanvas(canvas);
         }
@@ -316,6 +319,9 @@ public final class LineCollection implements UndoRedoTarget {
     public void drawAllLinesBelowGrid(final Canvas canvas) {
         for (Shape shape: mBelowGridLines) {
             shape.applyDrawOffsetToCanvas(canvas);
+            if (mSelection.contains(shape)) {
+                shape.drawSelectionIndicator(canvas);
+            }
             shape.draw(canvas);
             shape.revertDrawOffsetFromCanvas(canvas);
         }

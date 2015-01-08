@@ -1299,6 +1299,7 @@ public final class CombatView extends SurfaceView {
     }
 
     public void clearSelection() {
+        mLineSelection.clear();
         mLineSelection = null;
         refreshMap();
         if (mInteractionMode instanceof MoveSelectionInteractionMode) {

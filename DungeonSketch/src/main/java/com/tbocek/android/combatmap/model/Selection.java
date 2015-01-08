@@ -100,4 +100,8 @@ public class Selection {
         mSelectedShapes.removeAll(mDeleted);
         mSelectedShapes.addAll(mCreated);
     }
+
+    public boolean contains(Shape shape) {
+        return mSelectedShapes != null && mSelectedShapes.contains(shape);
+    }
 }
