@@ -510,7 +510,7 @@ public final class CombatMap extends ActionBarActivity {
 	public void loadMap(final String name) {
 
 			String errorString = new DataManager(this.getApplicationContext()).loadMapName(name);
-            if (errorString != null) {
+            if (errorString != null || errorString.isEmpty()) {
                 if (this.getApplicationContext() != null) {
                     Toast toast = Toast.makeText(this.getApplicationContext(),
                             "Could not load file.  Reason: " + errorString,
