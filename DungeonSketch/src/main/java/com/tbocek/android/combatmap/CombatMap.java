@@ -62,6 +62,7 @@ import com.tbocek.android.combatmap.view.TokenSelectorView;
 import com.tbocek.dungeonsketch.BuildConfig;
 import com.tbocek.dungeonsketch.R;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -507,20 +508,22 @@ public final class CombatMap extends ActionBarActivity {
 	 *            Name of the map to load.
 	 */
 	public void loadMap(final String name) {
-		try {
-			new DataManager(this.getApplicationContext()).loadMapName(name);
-		} catch (Exception e) {
-			e.printStackTrace();
-            if (this.getApplicationContext() != null) {
-                Toast toast = Toast.makeText(this.getApplicationContext(),
-                        "Could not load file.  Reason: " + e.toString(),
-                        Toast.LENGTH_LONG);
-                toast.show();
+
+			String errorString = new DataManager(this.getApplicationContext()).loadMapName(name);
+            if (errorString != null) {
+                if (this.getApplicationContext() != null) {
+                    Toast toast = Toast.makeText(this.getApplicationContext(),
+                            "Could not load file.  Reason: " + errorString,
+                            Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                this.setFilenamePreference(null);
+                MapData.clear();
+
+                // Open map error reporting dialog.
+                reportBadMap(name, errorString);
             }
 
-			MapData.clear();
-			this.setFilenamePreference(null);
-		}
 		mData = MapData.getInstance();
         if (mCombatView != null) {
             this.mCombatView.setData(mData);
@@ -531,7 +534,48 @@ public final class CombatMap extends ActionBarActivity {
         }
 	}
 
-	@Override
+    /**
+     * Gives the user the opportunity to report that a map failed to load.
+     * @param mapName
+     * @param errorString
+     */
+    private void reportBadMap(String mapName, final String errorString) {
+        final File mapFile = new DataManager(this).getSavedMapFile(mapName);
+        new AlertDialog.Builder(this)
+                .setPositiveButton(R.string.report_via_email,
+                        new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_EMAIL, R.array.error_email_destinations);
+                        intent.putExtra(Intent.EXTRA_SUBJECT,
+                                getString(R.string.error_email_subject));
+                        intent.putExtra(Intent.EXTRA_TEXT, errorString);
+
+                        if (!mapFile.exists() || !mapFile.canRead()) {
+                            Toast.makeText(
+                                    CombatMap.this, getString(R.string.attachment_issue),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        Uri uri = Uri.parse("file://" + mapFile.getAbsolutePath());
+                        intent.putExtra(Intent.EXTRA_STREAM, uri);
+                        startActivity(Intent.createChooser(
+                                intent, getString(R.string.report_via_email)));
+                    }
+                })
+                .setNegativeButton(R.string.dont_report,
+                        new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Intentionally empty
+                    }
+                })
+                .setMessage(getString(R.string.map_error_report))
+                .create().show();
+    }
+
+    @Override
 	protected void onActivityResult(final int requestCode,
 			final int resultCode, final Intent data) {
 		// If an image was successfully picked, use it.
