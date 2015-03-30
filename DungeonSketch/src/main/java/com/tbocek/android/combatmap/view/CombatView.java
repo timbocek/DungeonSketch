@@ -43,7 +43,6 @@ import com.tbocek.android.combatmap.model.primitives.OnScreenText;
 import com.tbocek.android.combatmap.model.primitives.PointF;
 import com.tbocek.android.combatmap.model.primitives.Shape;
 import com.tbocek.android.combatmap.model.primitives.Units;
-import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.interaction.BackgroundImageInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CombatViewInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.CreateInfoInteractionMode;
@@ -403,9 +402,12 @@ public final class CombatView extends SurfaceView {
         float textSize =
                 this.getData().getGrid().gridSpaceToWorldSpaceTransformer()
                 .worldSpaceToScreenSpace(size);
-        this.mActiveLines.createText(text, textSize, this.mNewLineColor,
+        Shape s = this.mActiveLines.createText(text, textSize, this.mNewLineColor,
                 Float.POSITIVE_INFINITY, newTextLocationWorldSpace,
                 this.getWorldSpaceTransformer());
+        if (s == null) {
+            Toast.makeText(this.getContext(), R.string.text_creation_failed, Toast.LENGTH_SHORT);
+        }
         this.refreshMap();
     }
 

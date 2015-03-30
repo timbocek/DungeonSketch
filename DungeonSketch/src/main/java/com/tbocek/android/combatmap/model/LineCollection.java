@@ -218,6 +218,10 @@ public final class LineCollection implements UndoRedoTarget {
     public Shape
     createText(String text, float size, int color, float strokeWidth,
             PointF location, CoordinateTransformer transform) {
+        if (location == null) {
+            return null;
+        }
+
         OnScreenText t = new OnScreenText(text, size, color, strokeWidth, location, transform);
         Command c = new Command(this);
         c.addCreatedShape(t);
