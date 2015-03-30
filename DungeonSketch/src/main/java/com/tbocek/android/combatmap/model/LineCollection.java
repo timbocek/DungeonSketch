@@ -228,6 +228,10 @@ public final class LineCollection implements UndoRedoTarget {
 
 
     public Shape createInfo(String text, PointF newObjectLocationWorldSpace, int iconId) {
+        if (newObjectLocationWorldSpace == null) {
+            return null;
+        }
+
         Information m = new Information(newObjectLocationWorldSpace, text);
         m.setIcon(iconId);
         Command c = new Command(this);
