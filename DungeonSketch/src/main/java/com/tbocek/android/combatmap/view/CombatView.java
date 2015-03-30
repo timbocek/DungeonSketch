@@ -21,6 +21,7 @@ import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.DeveloperMode;
@@ -57,6 +58,7 @@ import com.tbocek.android.combatmap.view.interaction.MeasuringTapeInteractionMod
 import com.tbocek.android.combatmap.view.interaction.MoveSelectionInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.TokenManipulationInteractionMode;
 import com.tbocek.android.combatmap.view.interaction.ZoomPanInteractionMode;
+import com.tbocek.dungeonsketch.R;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -417,7 +419,10 @@ public final class CombatView extends SurfaceView {
     }
 
     public void createNewInfo(PointF newObjectLocationWorldSpace, String text, int iconId) {
-        this.mActiveLines.createInfo(text, newObjectLocationWorldSpace, iconId);
+        Shape info = this.mActiveLines.createInfo(text, newObjectLocationWorldSpace, iconId);
+        if (info == null) {
+            Toast.makeText(this.getContext(), R.string.info_creation_failed, Toast.LENGTH_SHORT);
+        }
         this.refreshMap();
     }
 
