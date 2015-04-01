@@ -9,9 +9,10 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
+import com.google.common.base.Joiner;
 import com.tbocek.android.combatmap.model.MapData;
+import com.tbocek.android.combatmap.model.io.MapDataDeserializer;
 import com.tbocek.android.combatmap.model.primitives.Units;
-import com.tbocek.android.combatmap.model.primitives.Util;
 
 import org.apache.commons.io.FileUtils;
 
@@ -26,7 +27,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * This class manages saved map and token data and provides an interface to
@@ -195,7 +195,7 @@ public final class DataManager {
      *            Name of the map, without extension.
      * @return The saved map's file object.
      */
-    private File getSavedMapFile(String mapName) {
+    public File getSavedMapFile(String mapName) {
         File sdcard = this.getSavedMapDir();
         return new File(sdcard, mapName + MAP_EXTENSION);
     }
@@ -271,18 +271,37 @@ public final class DataManager {
      * 
      * @param name
      *            The name of the map to load, without the extension.
+     * @return An error string, or null if no error occurred.
      * @throws IOException
      *             On read error.
      */
-    public void loadMapName(final String name) throws IOException {
+    public String loadMapName(final String name) {
         File f = this.getSavedMapFile(name);
         if (f.exists()) {
-            FileInputStream s = new FileInputStream(f);
-            MapData.loadFromStream(s, TokenDatabase.getInstanceOrNull());
-            s.close();
+            FileInputStream s = null;
+            try {
+                s = new FileInputStream(f);
+            } catch (IOException e) {
+                return "Could not open file: " + e.toString();
+            }
+
+            MapDataDeserializer deserializer = MapData.loadFromStream(
+                    s, TokenDatabase.getInstanceOrNull());
+
+            try {
+                s.close();
+            } catch (IOException e) {
+                // Intentionally ignored.
+            }
+
+            if (deserializer.hasErrors()) {
+                return Joiner.on("--------\n").join(deserializer.errorMessages());
+            }
+
         } else if (name.equals(TEMP_MAP_NAME)) {
             MapData.clear();
         }
+        return null;
     }
 
     /**

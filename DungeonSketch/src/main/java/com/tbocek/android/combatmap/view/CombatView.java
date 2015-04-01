@@ -412,9 +412,12 @@ public final class CombatView extends SurfaceView {
         float textSize =
                 this.getData().getGrid().gridSpaceToWorldSpaceTransformer()
                 .worldSpaceToScreenSpace(size);
-        this.mActiveLines.createText(text, textSize, this.mNewLineColor,
+        Shape s = this.mActiveLines.createText(text, textSize, this.mNewLineColor,
                 Float.POSITIVE_INFINITY, newTextLocationWorldSpace,
                 this.getWorldSpaceTransformer());
+        if (s == null) {
+            Toast.makeText(this.getContext(), R.string.text_creation_failed, Toast.LENGTH_SHORT);
+        }
         this.refreshMap();
     }
 

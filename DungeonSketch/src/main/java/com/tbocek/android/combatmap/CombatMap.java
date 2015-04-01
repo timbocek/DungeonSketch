@@ -36,7 +36,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.tbocek.android.combatmap.TokenDatabase.TagTreeNode;
@@ -517,20 +516,8 @@ public final class CombatMap extends ActionBarActivity {
 	 *            Name of the map to load.
 	 */
 	public void loadMap(final String name) {
-		try {
-			new DataManager(this.getApplicationContext()).loadMapName(name);
-		} catch (Exception e) {
-			e.printStackTrace();
-            if (this.getApplicationContext() != null) {
-                Toast toast = Toast.makeText(this.getApplicationContext(),
-                        "Could not load file.  Reason: " + e.toString(),
-                        Toast.LENGTH_LONG);
-                toast.show();
-            }
-
-			MapData.clear();
-			this.setFilenamePreference(null);
-		}
+        MapLoadUtils.loadMap(this, name, null);
+        setTitle();
 		mData = MapData.getInstance();
         if (mCombatView != null) {
             this.mCombatView.setData(mData);
@@ -541,7 +528,9 @@ public final class CombatMap extends ActionBarActivity {
         }
 	}
 
-	@Override
+
+
+    @Override
 	protected void onActivityResult(final int requestCode,
 			final int resultCode, final Intent data) {
 		// If an image was successfully picked, use it.
@@ -1298,11 +1287,7 @@ public final class CombatMap extends ActionBarActivity {
 	 *            The filename to set.
 	 */
 	private void setFilenamePreference(final String newFilename) {
-		// Persist the filename that we saved to so that we can load from that
-		// file again.
-		Editor editor = this.mSharedPreferences.edit();
-		editor.putString("filename", newFilename);
-        savePrefChanges(editor);
+		MapLoadUtils.setFilenamePreference(this, newFilename);
         setTitle();
     }
 

@@ -105,11 +105,18 @@ public abstract class Shape implements Cloneable {
         } else if (shapeType.equals(Information.SHAPE_TYPE)) {
             shape = new Information();
         } else {
-            throw new IOException("Unrecognized shape type: " + shapeType);
+            s.addError("Unrecognized shape type: " + shapeType);
+            return null;
         }
 
         shape.mBoundingRectangle = r;
-        shape.shapeSpecificDeserialize(s);
+        try {
+            shape.shapeSpecificDeserialize(s);
+        } catch (Exception e) {
+            s.recoverToObjectEnd();
+            s.addError("Failed to deserialize " + shapeType + ": " + e.toString());
+            return null;
+        }
         return shape;
     }
 

@@ -16,4 +16,7 @@
         <item>miles</item>
         <item>km</item>
     </string-array>
+    <string-array name="error_email_destinations">
+        <item>tim.bocek@gmail.com</item>
+    </string-array>
 </resources>

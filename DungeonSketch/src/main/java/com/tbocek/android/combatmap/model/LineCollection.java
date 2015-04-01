@@ -224,6 +224,10 @@ public final class LineCollection implements UndoRedoTarget {
     public Shape
     createText(String text, float size, int color, float strokeWidth,
             PointF location, CoordinateTransformer transform) {
+        if (location == null) {
+            return null;
+        }
+
         OnScreenText t = new OnScreenText(text, size, color, strokeWidth, location, transform);
         Command c = new Command(this);
         c.addCreatedShape(t);
@@ -273,11 +277,13 @@ public final class LineCollection implements UndoRedoTarget {
         int arrayLevel = s.expectArrayStart();
         while (s.hasMoreArrayItems(arrayLevel)) {
         	Shape shape = Shape.deserialize(s);
-            this.mLines.add(shape);
-            if (shape.shouldDrawBelowGrid()) {
-            	mBelowGridLines.add(shape);
-            } else {
-            	mAboveGridLines.add(shape);
+            if (shape != null) {
+                this.mLines.add(shape);
+                if (shape.shouldDrawBelowGrid()) {
+                    mBelowGridLines.add(shape);
+                } else {
+                    mAboveGridLines.add(shape);
+                }
             }
         }
         s.expectArrayEnd();

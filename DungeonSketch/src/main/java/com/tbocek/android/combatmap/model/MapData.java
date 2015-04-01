@@ -165,6 +165,7 @@ public final class MapData {
         if (mapDataVersion >= 2) {
         	data.mLastTag = s.readString();
         }
+
         return data;
     }
 
@@ -213,22 +214,26 @@ public final class MapData {
      *            The stream to read from.
      * @param tokens
      *            Token database to use when creating tokens.
-     * @throws IOException
-     *             On read error.
-     * @throws ClassNotFoundException
-     *             On deserialization error.
+     * @return The final state of the map data deserializer, to check for error messages.
      */
-    public static void loadFromStream(final InputStream input,
-            TokenDatabase tokens) throws IOException {
+    public static MapDataDeserializer loadFromStream(final InputStream input,
+            TokenDatabase tokens) {
         InputStreamReader inReader = new InputStreamReader(input);
         BufferedReader reader = new BufferedReader(inReader);
         MapDataDeserializer s = new MapDataDeserializer(reader);
         try {
             instance = MapData.deserialize(s, tokens);
+        } catch (Exception e) {
+            s.addError(e.toString());
         } finally {
-            reader.close();
-            inReader.close();
+            try {
+                reader.close();
+                inReader.close();
+            } catch (IOException e) {
+                // Intentionally swallowed.
+            }
         }
+        return s;
     }
 
     /**

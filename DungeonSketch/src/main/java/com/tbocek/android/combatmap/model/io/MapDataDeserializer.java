@@ -2,6 +2,7 @@ package com.tbocek.android.combatmap.model.io;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedList;
 
 /**
@@ -27,6 +28,8 @@ public class MapDataDeserializer {
      * The reader to read from.
      */
     private final BufferedReader mReader;
+
+    private final LinkedList<String> mErrorLog = new LinkedList<String>();
 
     /**
      * Constructor.
@@ -95,6 +98,17 @@ public class MapDataDeserializer {
         if (!t.equals("}")) {
             throw new SyncException("Expected object end, got " + t);
         }
+    }
+
+    /**
+     * Scans for the object end marker, discarding the rest of the object.
+     * @throws IOException On read error.
+     */
+    public void recoverToObjectEnd() throws IOException {
+        String t = null;
+        do {
+            t = this.nextToken();
+        } while (!t.equals("}"));
     }
 
     /**
@@ -192,7 +206,7 @@ public class MapDataDeserializer {
      *             On read error.
      */
     public boolean readBoolean() throws IOException {
-        return !this.nextToken().equals("0");
+        return !this.nextDataToken().equals("0");
     }
 
     /**
@@ -203,7 +217,7 @@ public class MapDataDeserializer {
      *             On read error.
      */
     public float readFloat() throws IOException {
-        return Float.parseFloat(this.nextToken());
+        return Float.parseFloat(this.nextDataToken());
     }
 
     /**
@@ -214,7 +228,15 @@ public class MapDataDeserializer {
      *             On read error.
      */
     public int readInt() throws IOException {
-        return Integer.parseInt(this.nextToken());
+        return Integer.parseInt(this.nextDataToken());
+    }
+
+    public String nextDataToken() throws IOException {
+        String t = peek();
+        if (t.equals("}") || t.equals("]") || t.equals("{") || t.equals("[")) {
+            throw new IOException("Expected data token, got " + t);
+        }
+        return nextToken();
     }
 
     /**
@@ -226,6 +248,18 @@ public class MapDataDeserializer {
      */
     public String readString() throws IOException {
         return this.nextToken();
+    }
+
+    public void addError(String errorMessage) {
+        mErrorLog.add(errorMessage);
+    }
+
+    public boolean hasErrors() {
+        return !mErrorLog.isEmpty();
+    }
+
+    public Collection<String> errorMessages() {
+        return mErrorLog;
     }
 
     /**
