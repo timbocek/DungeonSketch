@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
 import com.tbocek.android.combatmap.model.primitives.PointF;
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.view.CombatView;
 
@@ -27,7 +28,7 @@ public class MeasuringTapeInteractionMode extends BaseDrawInteractionMode {
 		mPaint.setColor(Color.RED);
 		mPaint.setStrokeWidth(3.0f);
         mPaint.setTextAlign(Align.CENTER);
-        mPaint.setTextSize(24);
+        mPaint.setTextSize(Units.ptToPx(16));
 	}
     @Override
     public boolean onDown(final MotionEvent e) {
@@ -68,7 +69,10 @@ public class MeasuringTapeInteractionMode extends BaseDrawInteractionMode {
         String s = String.format("%s %s",
                 fmt.format(dist),
                 getView().getData().getGrid().getUnits());
-    	c.drawText(s, this.getView().getWidth() / 2, 16,
+
+        int height = (int) Units.ptToPx(20);
+
+    	c.drawText(s, this.getView().getWidth() / 2, height,
                    this.mPaint);
     }
 }

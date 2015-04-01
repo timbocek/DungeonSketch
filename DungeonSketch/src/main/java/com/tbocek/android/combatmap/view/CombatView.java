@@ -79,7 +79,6 @@ public final class CombatView extends SurfaceView {
 
     private static final float INFO_POINT_SIZE_DP = 32;
 
-
     /**
 	 * A simple 3-state machine to make sure that full-screen draws performed during
 	 * input processing are batched, and performed once at the very end of the draw.
@@ -99,14 +98,16 @@ public final class CombatView extends SurfaceView {
 	private static final int FRAMERATE_INTERVAL = 500;
 
     /**
-     * For the explanatory mask text, Y location of the first line in font ponts
+     * For the explanatory mask text, Y location of the first line in density-
+     * Independent pixels.
      */
-    private static final int EXPLANATORY_TEXT_INITIAL_Y_PT = 15;
+    private static final int EXPLANATORY_TEXT_INITIAL_Y_SP = 16;
 
     /**
-     * For the explanatory mask text, height of each line in font ponts
+     * For the explanatory mask text, height of each line in density-
+     * Independent pixels.
      */
-    private static final int EXPLANATORY_TEXT_LINE_HEIGHT_PT = 10;
+    private static final int EXPLANATORY_TEXT_LINE_HEIGHT_SP = 20;
 
     /**
      * Reference to the collection of lines that are actively being drawn.
@@ -453,8 +454,6 @@ public final class CombatView extends SurfaceView {
                         .draw(canvas, this.getData(), dirty);
 
         this.mInteractionMode.draw(canvas);
-
-
         
 	    if (DeveloperMode.shouldDisplayFramerate()) {
 	    	long time = System.currentTimeMillis();
@@ -479,11 +478,11 @@ public final class CombatView extends SurfaceView {
         if (this.mEditingMask) {
             String explanatoryText = this.getMaskExplanatoryText();
 
-            int i = EXPLANATORY_TEXT_INITIAL_Y_PT;
+            int i = EXPLANATORY_TEXT_INITIAL_Y_SP;
             for (String s : explanatoryText.split("\n")) {
                 canvas.drawText(s, this.getWidth() / 2, Units.ptToPx(i),
                         this.mExplanatoryTextPaint);
-                i += EXPLANATORY_TEXT_LINE_HEIGHT_PT;
+                i += EXPLANATORY_TEXT_LINE_HEIGHT_SP;
             }
         }
 
@@ -802,6 +801,7 @@ public final class CombatView extends SurfaceView {
         }
     }
 
+
     /**
      * Sets whether tokens are manipulable.
      * 
@@ -1014,8 +1014,6 @@ public final class CombatView extends SurfaceView {
         this.setInteractionMode(new ZoomPanInteractionMode(this));
     }
 
-    public void setSelectMode() { this.setInteractionMode(new DrawSelectionInteractionMode(this)); }
-
     /**
      * @return the shouldSnapToGrid
      */
@@ -1146,8 +1144,6 @@ public final class CombatView extends SurfaceView {
         void requestNewInfoEntry(PointF locationWorldSpace);
 
         void requestEditInfoObject(Information information);
-
-        void requestRegionSelected();
     }
 
     /**
