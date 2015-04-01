@@ -271,7 +271,7 @@ public final class LineCollection implements UndoRedoTarget {
         int arrayLevel = s.expectArrayStart();
         while (s.hasMoreArrayItems(arrayLevel)) {
         	Shape shape = Shape.deserialize(s);
-            if (s != null) {
+            if (shape != null) {
                 this.mLines.add(shape);
                 if (shape.shouldDrawBelowGrid()) {
                     mBelowGridLines.add(shape);

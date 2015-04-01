@@ -206,7 +206,7 @@ public class MapDataDeserializer {
      *             On read error.
      */
     public boolean readBoolean() throws IOException {
-        return !this.nextToken().equals("0");
+        return !this.nextDataToken().equals("0");
     }
 
     /**
@@ -217,7 +217,7 @@ public class MapDataDeserializer {
      *             On read error.
      */
     public float readFloat() throws IOException {
-        return Float.parseFloat(this.nextToken());
+        return Float.parseFloat(this.nextDataToken());
     }
 
     /**
@@ -228,7 +228,15 @@ public class MapDataDeserializer {
      *             On read error.
      */
     public int readInt() throws IOException {
-        return Integer.parseInt(this.nextToken());
+        return Integer.parseInt(this.nextDataToken());
+    }
+
+    public String nextDataToken() throws IOException {
+        String t = peek();
+        if (t.equals("}") || t.equals("]") || t.equals("{") || t.equals("[")) {
+            throw new IOException("Expected data token, got " + t);
+        }
+        return nextToken();
     }
 
     /**
@@ -247,7 +255,7 @@ public class MapDataDeserializer {
     }
 
     public boolean hasErrors() {
-        return mErrorLog.isEmpty();
+        return !mErrorLog.isEmpty();
     }
 
     public Collection<String> errorMessages() {

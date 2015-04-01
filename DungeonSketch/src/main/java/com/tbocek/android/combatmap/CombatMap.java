@@ -510,7 +510,7 @@ public final class CombatMap extends ActionBarActivity {
 	public void loadMap(final String name) {
 
 			String errorString = new DataManager(this.getApplicationContext()).loadMapName(name);
-            if (errorString != null || errorString.isEmpty()) {
+            if (errorString != null && !errorString.isEmpty()) {
                 if (this.getApplicationContext() != null) {
                     Toast toast = Toast.makeText(this.getApplicationContext(),
                             "Could not load file.  Reason: " + errorString,
@@ -546,12 +546,13 @@ public final class CombatMap extends ActionBarActivity {
                         new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Intent.ACTION_SEND);
+
+                        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
                         intent.setType("text/plain");
-                        intent.putExtra(Intent.EXTRA_EMAIL, R.array.error_email_destinations);
-                        intent.putExtra(Intent.EXTRA_SUBJECT,
-                                getString(R.string.error_email_subject));
+                        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.error_email_destination)} );
+                        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.error_email_subject));
                         intent.putExtra(Intent.EXTRA_TEXT, errorString);
+                        intent.setType("text/plain");
 
                         if (!mapFile.exists() || !mapFile.canRead()) {
                             Toast.makeText(
