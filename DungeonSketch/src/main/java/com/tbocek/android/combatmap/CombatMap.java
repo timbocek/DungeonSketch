@@ -55,6 +55,7 @@ import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.tokenmanager.TokenManager;
 import com.tbocek.android.combatmap.view.CombatView;
+import com.tbocek.android.combatmap.view.Dice;
 import com.tbocek.android.combatmap.view.DrawOptionsView;
 import com.tbocek.android.combatmap.view.TagNavigator;
 import com.tbocek.android.combatmap.view.TokenSelectorView;
@@ -485,6 +486,8 @@ public final class CombatMap extends ActionBarActivity {
     private int mOldBottomControlFrameHeight;
 
     private int lastUsedTheme = -1;
+    private ToggleButton mDiceToggle;
+    private Dice mDice;
 
     /**
 	 * Given a combat mode, returns the snap to grid preference name associated
@@ -751,6 +754,20 @@ public final class CombatMap extends ActionBarActivity {
 				}
 			}
 		});
+
+        this.mDice = (Dice) this.findViewById(R.id.combat_map_dice);
+        this.mDiceToggle = (ToggleButton) this.findViewById(R.id.combat_map_toggle_dice);
+        this.mDiceToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToggleButton tb = (ToggleButton)v;
+                if (tb.isChecked()) {
+                    mDice.setVisibility(View.VISIBLE);
+                } else {
+                    mDice.setVisibility(View.GONE);
+                }
+            }
+        });
 		
 		this.mDeployTokensButton = (Button) this.findViewById(R.id.deployTokensButton);
 		mDeployTokensButton.setOnClickListener(new View.OnClickListener() {
