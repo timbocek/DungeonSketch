@@ -69,7 +69,7 @@ public class Dice extends LinearLayout {
             if (!mRolls.containsKey(sides)) {
                 mRolls.put(sides, new ArrayList<Integer>());
             }
-            mRolls.get(sides).add(rand.nextInt(sides - 1) + 1);
+            mRolls.get(sides).add(rand.nextInt(sides) + 1);
         }
     }
 
