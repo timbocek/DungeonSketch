@@ -3,7 +3,6 @@ package com.tbocek.android.combatmap;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.ContextMenu;
@@ -14,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.Toast;
 
 import com.tbocek.android.combatmap.model.MapData;
 import com.tbocek.android.combatmap.view.SaveFileButton;
@@ -128,34 +126,6 @@ public final class Load extends Activity {
         return b;
     }
 
-    /**
-     * Loads the map with the given name (no extension), and replaces the
-     * currently loaded map with it.
-     * 
-     * @param name
-     *            Name of the map to load.
-     */
-    private void loadMap(final String name) {
-        try {
-            new DataManager(this.getApplicationContext()).loadMapName(name);
-            this.setFilenamePreference(name);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast toast =
-                    Toast.makeText(this.getApplicationContext(),
-                            "Could not load file.  Reason: " + e.toString(),
-                            Toast.LENGTH_LONG);
-            toast.show();
-
-            MapData.clear();
-            this.setFilenamePreference(null);
-
-            if (DeveloperMode.DEVELOPER_MODE) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
     @Override
     public boolean onContextItemSelected(final MenuItem item) {
         int itemId = item.getItemId();
@@ -169,7 +139,7 @@ public final class Load extends Activity {
             // file when we return to the main activity.
             if (this.mContextMenuTrigger.getFileName().equals(
                     sharedPreferences.getString("filename", null))) {
-                this.setFilenamePreference(null);
+                MapLoadUtils.setFilenamePreference(getApplicationContext(), null);
                 MapData.invalidate();
             }
             // Re-run the setup to remove the deleted file.
@@ -211,17 +181,7 @@ public final class Load extends Activity {
      * @param newFilename
      *            The new filename to load.
      */
-    private void setFilenamePreference(final String newFilename) {
-        SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(this
-                        .getApplicationContext());
 
-        // Persist the filename that we saved to so that we can load from that
-        // file again.
-        Editor editor = sharedPreferences.edit();
-        editor.putString("filename", newFilename);
-        editor.commit();
-    }
 
     /**
      * Loads a list of files and sets up and lays out views to represent all the
@@ -273,9 +233,12 @@ public final class Load extends Activity {
 
         @Override
         public void onClick(final View v) {
-            Load.this.setFilenamePreference(this.mFilename);
-            Load.this.loadMap(this.mFilename);
-            Load.this.finish();
+            MapLoadUtils.loadMap(Load.this, this.mFilename, new MapLoadUtils.LoadFinishedCallback() {
+                @Override
+                public void loadFinished(boolean success) {
+                    Load.this.finish();
+                }
+            });
         }
     }
 }
