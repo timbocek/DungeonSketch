@@ -2,11 +2,14 @@ package com.tbocek.android.combatmap.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.dungeonsketch.R;
 
 import java.util.ArrayList;
@@ -33,6 +36,13 @@ public class Dice extends LinearLayout {
                 n = Math.max(n, rollList.size());
             }
             return n;
+        }
+
+        public int getNumberOfRolls(int sides) {
+            if (mRolls.containsKey(sides)) {
+                return mRolls.get(sides).size();
+            }
+            return 0;
         }
 
         public int getRoll(int sides, int index) {
@@ -132,23 +142,27 @@ public class Dice extends LinearLayout {
             }
         }
 
-        if (rollCount > 2) {
+        if (rollCount >= 2) {
             for (int i = 0; i < SIDES.length; ++i) {
-                int total = mModel.getRollTotal(rollCount);
-                setText(i, rollCount, total > 0 ? "=" : "");
-                setText(i, rollCount + 1, total > 0 ? Integer.toString(total) : "");
+                int total = mModel.getRollTotal(SIDES[i]);
+                setText(i, rollCount, mModel.getNumberOfRolls(SIDES[i]) > 1 && total > 0 ? "=" : "");
+                setText(i, rollCount + 1, mModel.getNumberOfRolls(SIDES[i]) > 1 && total > 0 ? Integer.toString(total) : "");
             }
         }
     }
 
     private void setColumnCount(int columns) {
         this.removeAllViews();
+        this.clearParent(mControlColumn);
         this.addView(mControlColumn);
         for (int i = 0; i < columns; ++i) {
             if (i < mDisplayColumns.size()) {
+                mDisplayColumns.get(i).setTag("c" + Integer.toString(i));
+                this.clearParent(mDisplayColumns.get(i));
                 this.addView(mDisplayColumns.get(i));
             } else {
                 LinearLayout col = newDisplayColumn();
+                col.setTag("c" + Integer.toString(i));
                 this.addView(col);
                 mDisplayColumns.add(col);
             }
@@ -157,15 +171,32 @@ public class Dice extends LinearLayout {
 
     private LinearLayout newDisplayColumn() {
         LinearLayout layout = new LinearLayout(getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        View exampleView = findViewById(R.id.dice_d4);
+
         for (int i = 0; i < mControlColumn.getChildCount(); ++i) {
             TextView tv = new TextView(getContext());
+            tv.setTag(i);
+            tv.setTextSize(24);
+            tv.setWidth((int) Units.dpToPx(32));
+            tv.setHeight(exampleView.getHeight());
+            tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+            exampleView.setPadding(0, exampleView.getPaddingTop(), 0, exampleView.getPaddingBottom());
             layout.addView(tv);
+
         }
         return layout;
     }
 
-    private void setText(int col, int row, String text) {
-        TextView tv = (TextView) ((LinearLayout)this.getChildAt(col + 1)).getChildAt(row);
+    private void setText(int row, int col, String text) {
+        LinearLayout column = (LinearLayout)this.getChildAt(col + 1);
+        TextView tv = (TextView) column.getChildAt(row);
         tv.setText(text);
+    }
+
+    private void clearParent(View child) {
+        if (child != null && child.getParent() != null)
+            ((ViewGroup)child.getParent()).removeView(child);
     }
 }
