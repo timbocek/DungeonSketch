@@ -1101,9 +1101,7 @@ public final class CombatMap extends ActionBarActivity {
 			this.startActivity(new Intent(this, Settings.class));
 			return true;
 		} else if (itemId == R.id.menu_snap_to_grid) {
-			this.mSnapToGridMenuItem.setChecked(!this.mSnapToGridMenuItem
-					.isChecked());
-			this.setModeSpecificSnapPreference(this.mSnapToGridMenuItem
+			this.setModeSpecificSnapPreference(!this.mSnapToGridMenuItem
 					.isChecked());
 			return true;
 		} else if (itemId == R.id.menu_save) {
@@ -1451,6 +1449,8 @@ public final class CombatMap extends ActionBarActivity {
 				this.getModeSpecificSnapPreferenceName(manipulationMode),
 				this.mSnapToGridMenuItem.isChecked());
         savePrefChanges(editor);
+
+        this.mSnapToGridMenuItem.setChecked(shouldSnap);
 
 		this.mCombatView.setShouldSnapToGrid(shouldSnap);
 	}
@@ -1865,7 +1865,13 @@ public final class CombatMap extends ActionBarActivity {
 
         @Override
         public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            return false;
+            int manipulationMode = mSharedPreferences.getInt(
+                    "manipulation_mode", MODE_TOKENS);
+            boolean shouldSnap = mSharedPreferences.getBoolean(
+                    getModeSpecificSnapPreferenceName(manipulationMode), true);
+            MenuItem snap = menu.findItem(R.id.menu_snap_to_grid);
+            snap.setChecked(shouldSnap);
+            return true;
         }
 
         @Override
@@ -1879,6 +1885,10 @@ public final class CombatMap extends ActionBarActivity {
             } else if (itemId == R.id.menu_redo) {
                 mCombatView.getUndoRedoTarget().redo();
                 mCombatView.refreshMap();
+            } else if (itemId == R.id.menu_snap_to_grid) {
+                setModeSpecificSnapPreference(!menuItem.isChecked());
+                menuItem.setChecked(!menuItem.isChecked());
+                return true;
             }
             return false;
         }
