@@ -882,6 +882,12 @@ public final class CombatView extends SurfaceView {
         this.refreshMap();
     }
 
+
+    public void setSelectMode() {
+        this.setInteractionMode(new DrawSelectionInteractionMode(this));
+    }
+
+
     /**
      * Sets the interaction mode to the given listener.
      * 
@@ -1144,6 +1150,8 @@ public final class CombatView extends SurfaceView {
         void requestNewInfoEntry(PointF locationWorldSpace);
 
         void requestEditInfoObject(Information information);
+
+        void requestRegionSelected();
     }
 
     /**
