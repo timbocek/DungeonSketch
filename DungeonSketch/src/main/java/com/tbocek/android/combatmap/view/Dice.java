@@ -157,12 +157,10 @@ public class Dice extends LinearLayout {
         this.addView(mControlColumn);
         for (int i = 0; i < columns; ++i) {
             if (i < mDisplayColumns.size()) {
-                mDisplayColumns.get(i).setTag("c" + Integer.toString(i));
                 this.clearParent(mDisplayColumns.get(i));
                 this.addView(mDisplayColumns.get(i));
             } else {
                 LinearLayout col = newDisplayColumn();
-                col.setTag("c" + Integer.toString(i));
                 this.addView(col);
                 mDisplayColumns.add(col);
             }
@@ -177,12 +175,12 @@ public class Dice extends LinearLayout {
 
         for (int i = 0; i < mControlColumn.getChildCount(); ++i) {
             TextView tv = new TextView(getContext());
-            tv.setTag(i);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, exampleView.getHeight());
+            tv.setLayoutParams(layoutParams);
             tv.setTextSize(24);
-            tv.setWidth((int) Units.dpToPx(32));
-            tv.setHeight(exampleView.getHeight());
             tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-            exampleView.setPadding(0, exampleView.getPaddingTop(), 0, exampleView.getPaddingBottom());
+            tv.setPadding(0, exampleView.getPaddingTop(), (int) Units.dpToPx(16), exampleView.getPaddingBottom());
             layout.addView(tv);
 
         }
