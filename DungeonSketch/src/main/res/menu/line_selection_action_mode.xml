@@ -6,8 +6,9 @@
         android:icon="@drawable/ic_menu_copy_holo_light"/>
     <item android:id="@+id/menu_undo" android:icon="@drawable/undo" abc:showAsAction="ifRoom" android:title="@string/undo"/>
     <item android:id="@+id/menu_redo" android:icon="@drawable/redo" abc:showAsAction="ifRoom" android:title="@string/redo"/>
+    <item android:id="@+id/menu_delete_selection" android:title="@string/delete_selection" />
     <item
-        android:id="@+id/menu_snap_to_grid"
+        android:id="@+id/menu_snap_to_grid_context"
         android:title="@string/snap_to_grid"
         android:checkable = "true"/>
 </menu>

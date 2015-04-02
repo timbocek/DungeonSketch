@@ -194,6 +194,7 @@ public final class CombatMap extends ActionBarActivity {
     int mUndoMenuItemDrawable = R.drawable.undo;
     int mRedoMenuItemDrawable = R.drawable.redo;
 
+
 	/**
 	 * Listener that fires when a new draw tool or color has been selected.
 	 */
@@ -347,7 +348,13 @@ public final class CombatMap extends ActionBarActivity {
 
         @Override
         public void requestRegionSelected() {
-            getSupportActionBar().startActionMode(new LineSelectionActionModeCallback());
+            mActionMode = getSupportActionBar().startActionMode(new LineSelectionActionModeCallback());
+
+            int manipulationMode = mSharedPreferences.getInt(
+                    "manipulation_mode", MODE_TOKENS);
+            boolean shouldSnap = mSharedPreferences.getBoolean(
+                    getModeSpecificSnapPreferenceName(manipulationMode), true);
+            mActionMode.getMenu().findItem(R.id.menu_snap_to_grid_context).setChecked(shouldSnap);
         }
     };
 	
@@ -1452,6 +1459,10 @@ public final class CombatMap extends ActionBarActivity {
 
         this.mSnapToGridMenuItem.setChecked(shouldSnap);
 
+        if (mActionMode != null && mActionMode.getMenu().findItem(R.id.menu_snap_to_grid_context) != null) {
+            mActionMode.getMenu().findItem(R.id.menu_snap_to_grid_context).setChecked(shouldSnap);
+        }
+
 		this.mCombatView.setShouldSnapToGrid(shouldSnap);
 	}
 
@@ -1865,13 +1876,7 @@ public final class CombatMap extends ActionBarActivity {
 
         @Override
         public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            int manipulationMode = mSharedPreferences.getInt(
-                    "manipulation_mode", MODE_TOKENS);
-            boolean shouldSnap = mSharedPreferences.getBoolean(
-                    getModeSpecificSnapPreferenceName(manipulationMode), true);
-            MenuItem snap = menu.findItem(R.id.menu_snap_to_grid);
-            snap.setChecked(shouldSnap);
-            return true;
+            return false;
         }
 
         @Override
@@ -1885,9 +1890,11 @@ public final class CombatMap extends ActionBarActivity {
             } else if (itemId == R.id.menu_redo) {
                 mCombatView.getUndoRedoTarget().redo();
                 mCombatView.refreshMap();
-            } else if (itemId == R.id.menu_snap_to_grid) {
+            } else if (itemId == R.id.menu_snap_to_grid_context) {
                 setModeSpecificSnapPreference(!menuItem.isChecked());
-                menuItem.setChecked(!menuItem.isChecked());
+                return true;
+            } else if (itemId == R.id.menu_delete_selection) {
+                mActionMode.finish();
                 return true;
             }
             return false;
