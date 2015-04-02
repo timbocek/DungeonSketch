@@ -1274,6 +1274,7 @@ public final class CombatMap extends ActionBarActivity {
 	 */
 	private void reloadPreferences() {
 		this.mTokenSelector.setShouldDrawDark(mData.getGrid().isDark());
+        this.mDice.setIsBackgroundDark(mData.getGrid().isDark());
 
 		if (this.mTabManager != null) {
 			this.mTabManager.pickTab(this.mSharedPreferences.getInt(

@@ -1,6 +1,7 @@
 package com.tbocek.android.combatmap.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -91,6 +92,13 @@ public class Dice extends LinearLayout {
 
     List<LinearLayout> mDisplayColumns = new ArrayList<>();
     LinearLayout mControlColumn;
+
+    private boolean mDarkBackground;
+
+    private static final int TEXT_COLOR_LIGHT_BACKGROUND = Color.BLACK;
+    private static final int TEXT_COLOR_DARK_BACKGROUND = Color.WHITE;
+
+
     /**
      * Constructor.
      *
@@ -181,8 +189,8 @@ public class Dice extends LinearLayout {
             tv.setTextSize(24);
             tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
             tv.setPadding(0, exampleView.getPaddingTop(), (int) Units.dpToPx(16), exampleView.getPaddingBottom());
+            setTextViewColor(tv);
             layout.addView(tv);
-
         }
         return layout;
     }
@@ -196,5 +204,20 @@ public class Dice extends LinearLayout {
     private void clearParent(View child) {
         if (child != null && child.getParent() != null)
             ((ViewGroup)child.getParent()).removeView(child);
+    }
+
+    public void setIsBackgroundDark(boolean isDark) {
+        mDarkBackground = isDark;
+
+        for (LinearLayout col : mDisplayColumns) {
+            for (int i = 0; i < col.getChildCount(); ++i) {
+                TextView tv = (TextView) col.getChildAt(i);
+                setTextViewColor(tv);
+            }
+        }
+    }
+
+    private void setTextViewColor(TextView tv) {
+        tv.setTextColor(mDarkBackground ? TEXT_COLOR_DARK_BACKGROUND : TEXT_COLOR_LIGHT_BACKGROUND);
     }
 }
