@@ -97,8 +97,10 @@ public class Selection {
     }
 
     public void replace(Collection<Shape> mDeleted, Collection<Shape> mCreated) {
-        mSelectedShapes.removeAll(mDeleted);
-        mSelectedShapes.addAll(mCreated);
+        if (mSelectedShapes != null) {
+            mSelectedShapes.removeAll(mDeleted);
+            mSelectedShapes.addAll(mCreated);
+        }
     }
 
     public boolean contains(Shape shape) {
