@@ -71,12 +71,32 @@
     </HorizontalScrollView>
 
     <ToggleButton
-        android:id="@+id/combat_map_toggle_measuring_tape"
+        android:id = "@+id/combat_map_toggle_dice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottomControlAreaExpandButton"
         android:layout_alignParentLeft="true"
-        android:textOff="Measuring Tape"
-        android:textOn="Stop Measuring"/>
+        android:textOff="@string/dice"
+        android:textOn="@string/dice"
+        />
+
+    <com.tbocek.android.combatmap.view.Dice
+        android:id="@+id/combat_map_dice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/combat_map_toggle_dice"
+        android:layout_alignLeft="@id/combat_map_toggle_dice"
+        android:visibility="gone"
+        />
+
+
+    <ToggleButton
+        android:id="@+id/combat_map_toggle_measuring_tape"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottomControlAreaExpandButton"
+        android:layout_toRightOf="@id/combat_map_toggle_dice"
+        android:textOff="@string/measure"
+        android:textOn="@string/measure_stop"/>
 
 </RelativeLayout>

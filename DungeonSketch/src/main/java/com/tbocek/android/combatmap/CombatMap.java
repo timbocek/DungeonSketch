@@ -55,6 +55,7 @@ import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.model.primitives.Util;
 import com.tbocek.android.combatmap.tokenmanager.TokenManager;
 import com.tbocek.android.combatmap.view.CombatView;
+import com.tbocek.android.combatmap.view.Dice;
 import com.tbocek.android.combatmap.view.DrawOptionsView;
 import com.tbocek.android.combatmap.view.TagNavigator;
 import com.tbocek.android.combatmap.view.TokenSelectorView;
@@ -495,6 +496,8 @@ public final class CombatMap extends ActionBarActivity {
     private int mOldBottomControlFrameHeight;
 
     private int lastUsedTheme = -1;
+    private ToggleButton mDiceToggle;
+    private Dice mDice;
 
     /**
 	 * Given a combat mode, returns the snap to grid preference name associated
@@ -761,6 +764,20 @@ public final class CombatMap extends ActionBarActivity {
 				}
 			}
 		});
+
+        this.mDice = (Dice) this.findViewById(R.id.combat_map_dice);
+        this.mDiceToggle = (ToggleButton) this.findViewById(R.id.combat_map_toggle_dice);
+        this.mDiceToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToggleButton tb = (ToggleButton)v;
+                if (tb.isChecked()) {
+                    mDice.setVisibility(View.VISIBLE);
+                } else {
+                    mDice.setVisibility(View.GONE);
+                }
+            }
+        });
 		
 		this.mDeployTokensButton = (Button) this.findViewById(R.id.deployTokensButton);
 		mDeployTokensButton.setOnClickListener(new View.OnClickListener() {
@@ -1267,6 +1284,7 @@ public final class CombatMap extends ActionBarActivity {
 	 */
 	private void reloadPreferences() {
 		this.mTokenSelector.setShouldDrawDark(mData.getGrid().isDark());
+        this.mDice.setIsBackgroundDark(mData.getGrid().isDark());
 
 		if (this.mTabManager != null) {
 			this.mTabManager.pickTab(this.mSharedPreferences.getInt(
@@ -1329,6 +1347,9 @@ public final class CombatMap extends ActionBarActivity {
 			this.setTagSelectorVisibility(false);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.GONE);
+            this.mDiceToggle.setVisibility(View.GONE);
+            this.mDiceToggle.setChecked(false);
+            this.mDice.setVisibility(View.GONE);
             this.mSelectedToolTextView.setVisibility(View.VISIBLE);
 			this.mCombatView.setEditingLayerMask(this.mDrawOptionsView.isMaskToolSelected());
 			return;
@@ -1349,6 +1370,9 @@ public final class CombatMap extends ActionBarActivity {
 			this.setTagSelectorVisibility(false);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.GONE);
+            this.mDiceToggle.setVisibility(View.GONE);
+            this.mDiceToggle.setChecked(false);
+            this.mDice.setVisibility(View.GONE);
             this.mSelectedToolTextView.setVisibility(View.VISIBLE);
 			this.mCombatView.setEditingLayerMask(false);
 			return;
@@ -1367,6 +1391,9 @@ public final class CombatMap extends ActionBarActivity {
 			this.setTagSelectorVisibility(false);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.GONE);
+            this.mDiceToggle.setVisibility(View.GONE);
+            this.mDiceToggle.setChecked(false);
+            this.mDice.setVisibility(View.GONE);
             this.mSelectedToolTextView.setVisibility(View.VISIBLE);
 			this.mCombatView.setEditingLayerMask(this.mDrawOptionsView.isMaskToolSelected());
 			return;
@@ -1385,6 +1412,7 @@ public final class CombatMap extends ActionBarActivity {
 			this.setModePreference(manipulationMode);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.VISIBLE);
+            this.mDiceToggle.setVisibility(View.VISIBLE);
             this.mSelectedToolTextView.setVisibility(View.GONE);
 			this.mCombatView.setEditingLayerMask(false);
 			return;
