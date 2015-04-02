@@ -1337,6 +1337,9 @@ public final class CombatMap extends ActionBarActivity {
 			this.setTagSelectorVisibility(false);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.GONE);
+            this.mDiceToggle.setVisibility(View.GONE);
+            this.mDiceToggle.setChecked(false);
+            this.mDice.setVisibility(View.GONE);
             this.mSelectedToolTextView.setVisibility(View.VISIBLE);
 			this.mCombatView.setEditingLayerMask(this.mDrawOptionsView.isMaskToolSelected());
 			return;
@@ -1357,6 +1360,9 @@ public final class CombatMap extends ActionBarActivity {
 			this.setTagSelectorVisibility(false);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.GONE);
+            this.mDiceToggle.setVisibility(View.GONE);
+            this.mDiceToggle.setChecked(false);
+            this.mDice.setVisibility(View.GONE);
             this.mSelectedToolTextView.setVisibility(View.VISIBLE);
 			this.mCombatView.setEditingLayerMask(false);
 			return;
@@ -1375,6 +1381,9 @@ public final class CombatMap extends ActionBarActivity {
 			this.setTagSelectorVisibility(false);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.GONE);
+            this.mDiceToggle.setVisibility(View.GONE);
+            this.mDiceToggle.setChecked(false);
+            this.mDice.setVisibility(View.GONE);
             this.mSelectedToolTextView.setVisibility(View.VISIBLE);
 			this.mCombatView.setEditingLayerMask(this.mDrawOptionsView.isMaskToolSelected());
 			return;
@@ -1393,6 +1402,7 @@ public final class CombatMap extends ActionBarActivity {
 			this.setModePreference(manipulationMode);
 			this.loadModeSpecificSnapPreference();
 			this.mMeasuringToggle.setVisibility(View.VISIBLE);
+            this.mDiceToggle.setVisibility(View.VISIBLE);
             this.mSelectedToolTextView.setVisibility(View.GONE);
 			this.mCombatView.setEditingLayerMask(false);
 			return;
