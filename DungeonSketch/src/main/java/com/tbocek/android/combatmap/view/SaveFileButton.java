@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tbocek.dungeonsketch.R;
@@ -16,7 +16,7 @@ import com.tbocek.dungeonsketch.R;
  * @author Tim Bocek
  * 
  */
-public final class SaveFileButton extends LinearLayout {
+public final class SaveFileButton extends RelativeLayout {
 
     /**
      * The displayed preview.

@@ -15,6 +15,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import com.tbocek.android.combatmap.model.MapData;
+import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.view.SaveFileButton;
 import com.tbocek.dungeonsketch.R;
 
@@ -32,7 +33,7 @@ public final class Load extends Activity {
     /**
      * Height of a file button.
      */
-    private static final int FILE_VIEW_HEIGHT = 200;
+    private static final int FILE_VIEW_HEIGHT = 150;
 
     /**
      * Padding on each file button.
@@ -42,7 +43,7 @@ public final class Load extends Activity {
     /**
      * Width of a file button.
      */
-    private static final int FILE_VIEW_WIDTH = 200;
+    private static final int FILE_VIEW_WIDTH = 150;
 
     /**
      * Listener that creates a menu to delete the given save file.
@@ -87,7 +88,7 @@ public final class Load extends Activity {
         TableRow currentRow = null;
         int viewsPerRow =
                 this.getWindowManager().getDefaultDisplay().getWidth()
-                / (FILE_VIEW_WIDTH + 2 * FILE_VIEW_PADDING);
+                / ((int)Units.dpToPx(FILE_VIEW_WIDTH + 2 * FILE_VIEW_PADDING));
         int i = 0;
         for (View v : views) {
             if (i % viewsPerRow == 0) {
@@ -103,7 +104,7 @@ public final class Load extends Activity {
     /**
      * Creates a button that represents the given save file and will load it
      * when pressed.
-     * 
+     * new TableRow(this)
      * @param saveFile
      *            Name of the save file to represent with this button.
      * @return The button.
@@ -116,10 +117,11 @@ public final class Load extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        b.setPadding(FILE_VIEW_PADDING, FILE_VIEW_PADDING, FILE_VIEW_PADDING,
-                FILE_VIEW_PADDING);
-        b.setMinimumWidth(FILE_VIEW_WIDTH);
-        b.setMinimumHeight(FILE_VIEW_HEIGHT);
+        int padding = (int) Units.dpToPx(FILE_VIEW_PADDING);
+        b.setPadding(padding, padding, padding, padding);
+        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
+                (int)Units.dpToPx(FILE_VIEW_WIDTH), (int)Units.dpToPx(FILE_VIEW_HEIGHT));
+        b.setLayoutParams(layoutParams);
         b.setOnClickListener(new SaveFileButtonClickListener(saveFile));
         this.registerForContextMenu(b);
         b.setOnCreateContextMenuListener(this.mContextMenuListener);
