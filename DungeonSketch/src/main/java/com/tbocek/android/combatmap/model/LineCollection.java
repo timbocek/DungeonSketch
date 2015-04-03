@@ -587,6 +587,12 @@ public final class LineCollection implements UndoRedoTarget {
         return mSelection;
     }
 
+    public void deleteAll(List<Shape> shapes) {
+        Command c = new Command(this);
+        c.addDeletedShapes(shapes);
+        this.mCommandHistory.execute(c);
+    }
+
     /**
      * This class represents a command that adds and deletes lines.
      * 
@@ -663,6 +669,8 @@ public final class LineCollection implements UndoRedoTarget {
         public void addDeletedShape(final Shape l) {
             this.mDeleted.add(l);
         }
+
+        public void addDeletedShapes(final Collection<Shape> lc) { this.mDeleted.addAll(lc); }
 
         public void setSelectionInfo(Selection selection, RectF beforeRect) {
             mSelection = selection;

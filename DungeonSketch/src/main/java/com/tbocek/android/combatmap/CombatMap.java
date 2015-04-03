@@ -1894,6 +1894,8 @@ public final class CombatMap extends ActionBarActivity {
                 setModeSpecificSnapPreference(!menuItem.isChecked());
                 return true;
             } else if (itemId == R.id.menu_delete_selection) {
+                mCombatView.getSelection().delete();
+                mCombatView.refreshMap();
                 mActionMode.finish();
                 return true;
             }

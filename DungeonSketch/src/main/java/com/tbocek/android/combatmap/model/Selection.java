@@ -106,4 +106,8 @@ public class Selection {
     public boolean contains(Shape shape) {
         return mSelectedShapes != null && mSelectedShapes.contains(shape);
     }
+
+    public void delete() {
+        mManagedCollection.deleteAll(mSelectedShapes);
+    }
 }
