@@ -31,6 +31,8 @@ public class MapDataDeserializer {
 
     private final LinkedList<String> mErrorLog = new LinkedList<String>();
 
+    private int tokenCount = 0;
+
     /**
      * Constructor.
      * 
@@ -53,7 +55,8 @@ public class MapDataDeserializer {
         if (t.equals("]")) {
             this.mArrayLevel--;
         } else {
-            throw new SyncException("Expected array end, got " + t);
+            throw new SyncException(
+                    Integer.toString(tokenCount) + ": Expected array end, got " + t);
         }
     }
 
@@ -70,7 +73,8 @@ public class MapDataDeserializer {
         if (t.equals("[")) {
             this.mArrayLevel++;
         } else {
-            throw new SyncException("Expected array start, got " + t);
+            throw new SyncException(
+                    Integer.toString(tokenCount) + ": Expected array start, got " + t);
         }
         // Return the array level at which this array will end.
         return this.mArrayLevel - 1;
@@ -96,7 +100,8 @@ public class MapDataDeserializer {
     public void expectObjectEnd() throws IOException {
         String t = this.nextToken();
         if (!t.equals("}")) {
-            throw new SyncException("Expected object end, got " + t);
+            throw new SyncException(
+                    Integer.toString(tokenCount) + ": Expected object end, got " + t);
         }
     }
 
@@ -121,7 +126,8 @@ public class MapDataDeserializer {
     public void expectObjectStart() throws IOException {
         String t = this.nextToken();
         if (!t.equals("{")) {
-            throw new SyncException("Expected object start, got " + t);
+            throw new SyncException(
+                    Integer.toString(tokenCount) + ": Expected object start, got " + t);
         }
     }
 
@@ -178,6 +184,8 @@ public class MapDataDeserializer {
         if (s == null) {
             return null;
         }
+
+        tokenCount++;
         return s;
     }
 
@@ -234,7 +242,7 @@ public class MapDataDeserializer {
     public String nextDataToken() throws IOException {
         String t = peek();
         if (t.equals("}") || t.equals("]") || t.equals("{") || t.equals("[")) {
-            throw new IOException("Expected data token, got " + t);
+            throw new IOException(Integer.toString(tokenCount) + ": Expected data token, got " + t);
         }
         return nextToken();
     }
