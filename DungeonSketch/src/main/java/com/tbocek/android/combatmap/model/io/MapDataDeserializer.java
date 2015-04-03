@@ -240,11 +240,12 @@ public class MapDataDeserializer {
     }
 
     public String nextDataToken() throws IOException {
-        String t = peek();
+        String t = nextToken();
         if (t.equals("}") || t.equals("]") || t.equals("{") || t.equals("[")) {
+            mPeekBuffer.add(t);
             throw new IOException(Integer.toString(tokenCount) + ": Expected data token, got " + t);
         }
-        return nextToken();
+        return t;
     }
 
     /**
