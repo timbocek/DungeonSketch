@@ -94,7 +94,7 @@ public class MapDataSerializer {
      *             On write error.
      */
     public void serializeString(String value) throws IOException {
-        this.mWriter.write(value);
+        this.mWriter.write(value.replace("\n", "\\n"));
         this.mWriter.write('\n');
     }
 
