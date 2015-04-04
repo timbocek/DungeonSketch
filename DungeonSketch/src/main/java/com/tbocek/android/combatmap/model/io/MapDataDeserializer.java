@@ -256,7 +256,7 @@ public class MapDataDeserializer {
      *             On read error.
      */
     public String readString() throws IOException {
-        return this.nextToken();
+        return this.nextToken().replace("\\n", "\n");
     }
 
     public void addError(String errorMessage) {
