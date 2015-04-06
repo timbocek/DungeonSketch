@@ -276,8 +276,10 @@ public final class FreehandLine extends Shape {
 
     protected Shape getMovedShape(float deltaX, float deltaY) {
         FreehandLine l = new FreehandLine(getColor(), this.getStrokeWidth());
-        for (PointF point : this.mPoints) {
+        for (int i = 0; i < mPoints.size(); ++i) {
+            PointF point = this.mPoints.get(i);
             l.mPoints.add(new PointF(point.x + deltaX, point.y + deltaY));
+            l.mShouldDraw.add(mShouldDraw.get(i));
         }
         l.getBoundingRectangle().updateBounds(this.getBoundingRectangle());
         l.getBoundingRectangle().move(deltaX, deltaY);

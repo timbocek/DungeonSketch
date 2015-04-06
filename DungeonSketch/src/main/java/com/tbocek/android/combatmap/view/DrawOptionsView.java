@@ -557,6 +557,7 @@ public final class DrawOptionsView extends LinearLayout {
                     DrawOptionsView.this.mLineWidthGroup.setGroupVisibility(View.VISIBLE);
                     DrawOptionsView.this.mColorGroup.setGroupVisibility(View.VISIBLE);
                     DrawOptionsView.this.mMaskButton.setVisibility(View.VISIBLE);
+                    DrawOptionsView.this.mOnChangeDrawToolListener.onLeaveSelectionMode();
                 }
             }
         });
@@ -738,6 +739,10 @@ public final class DrawOptionsView extends LinearLayout {
         @Override
         public void onChooseSelectionTool() {
         }
+
+        @Override
+        public void onLeaveSelectionMode() {
+        }
     }
 
     /**
@@ -823,6 +828,11 @@ public final class DrawOptionsView extends LinearLayout {
          * Called when the "selection" tool is chosen.
          */
         void onChooseSelectionTool();
+
+        /**
+         * Called when the "selection" tool is deselected.
+         */
+        void onLeaveSelectionMode();
     }
 
     /**
