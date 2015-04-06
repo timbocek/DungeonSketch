@@ -300,4 +300,14 @@ public final class CoordinateTransformer {
         PointF bottomRight = screenSpaceToWorldSpace(r.right, r.bottom);
         return new RectF(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
     }
+
+    public void zoomToFit(BoundingRectangle worldSpaceBounds, int screenWidth, int screenHeight) {
+        // Prevent divide by 0.
+        if (worldSpaceBounds.getWidth() == 0 || worldSpaceBounds.getHeight() == 0) return;
+
+        this.mZoomLevel = Math.max(screenWidth / worldSpaceBounds.getWidth(), screenHeight / worldSpaceBounds.getHeight());
+        this.mOriginX = -this.mZoomLevel * worldSpaceBounds.getXMin();
+        this.mOriginY = -this.mZoomLevel * worldSpaceBounds.getYMin();
+
+    }
 }

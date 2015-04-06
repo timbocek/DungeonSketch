@@ -49,6 +49,8 @@
 	   android:id="@+id/menu_snap_to_grid"
 	   android:title="@string/snap_to_grid"
 	   android:checkable = "true"/>
+    <item android:id="@+id/menu_zoom_to_fit"
+        android:title="@string/zoom_to_fit"/>
 	<item
 	    android:id="@+id/menu_export"
 	    android:title="@string/export_image">

@@ -323,6 +323,7 @@ public final class MapData {
 
         r.updateBounds(this.mBackgroundLines.getBoundingRectangle());
         r.updateBounds(this.mAnnotationLines.getBoundingRectangle());
+        r.updateBounds(this.mGmNoteLines.getBoundingRectangle());
         r.updateBounds(this.getTokens().getBoundingRectangle());
 
         return r;

@@ -1158,6 +1158,13 @@ public final class CombatMap extends ActionBarActivity {
             mCastViewMenuItem.setVisible(true);
             mStopCastingViewMenuItem.setVisible(false);
             return true;
+        } else if (itemId == R.id.menu_zoom_to_fit) {
+            mData.getWorldSpaceTransformer().zoomToFit(
+                    mData.getBoundingRectangle(),
+                    getWindowManager().getDefaultDisplay().getWidth(),
+                    getWindowManager().getDefaultDisplay().getHeight());
+            mCombatView.refreshMap();
+            return true;
         } else {
 			return false;
 		}
