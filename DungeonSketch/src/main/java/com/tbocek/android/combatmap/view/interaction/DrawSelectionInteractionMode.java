@@ -1,13 +1,8 @@
 package com.tbocek.android.combatmap.view.interaction;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 
-import com.tbocek.android.combatmap.model.primitives.Units;
 import com.tbocek.android.combatmap.view.CombatView;
 
 /**
@@ -36,7 +31,11 @@ public class DrawSelectionInteractionMode extends CombatViewInteractionMode {
     public boolean onScroll(final MotionEvent e1, final MotionEvent e2,
                             final float distanceX, final float distanceY) {
         if (this.getNumberOfFingers() == 1) {
-            RectF r = new RectF(e1.getX(), e1.getY(), e2.getX(), e2.getY());
+            RectF r = new RectF(
+                    Math.min(e1.getX(), e2.getX()),
+                    Math.min(e1.getY(), e2.getY()),
+                    Math.max(e1.getX(), e2.getX()),
+                    Math.max(e1.getY(), e2.getY()));
             getView().getSelection().setRectangle(
                     getData().getWorldSpaceTransformer().screenSpaceToWorldSpace(r));
             getView().refreshMap();
