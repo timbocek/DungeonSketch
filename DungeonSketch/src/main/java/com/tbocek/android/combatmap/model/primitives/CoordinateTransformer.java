@@ -305,7 +305,7 @@ public final class CoordinateTransformer {
         // Prevent divide by 0.
         if (worldSpaceBounds.getWidth() == 0 || worldSpaceBounds.getHeight() == 0) return;
 
-        this.mZoomLevel = Math.max(screenWidth / worldSpaceBounds.getWidth(), screenHeight / worldSpaceBounds.getHeight());
+        this.mZoomLevel = Math.min(screenWidth / worldSpaceBounds.getWidth(), screenHeight / worldSpaceBounds.getHeight());
         this.mOriginX = -this.mZoomLevel * worldSpaceBounds.getXMin();
         this.mOriginY = -this.mZoomLevel * worldSpaceBounds.getYMin();
 
