@@ -539,15 +539,25 @@ public final class DrawOptionsView extends LinearLayout {
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                DrawOptionsView.this.mOnChangeDrawToolListener.onChooseSelectionTool();
-                DrawOptionsView.this.mToolsGroup.untoggle();
-                DrawOptionsView.this.mColorGroup
-                        .setGroupVisibility(View.GONE);
-                DrawOptionsView.this.mLineWidthGroup
-                        .setGroupVisibility(View.GONE);
-                button.setToggled(true);
-                DrawOptionsView.this.mLineWidthGroup.maybeSelectDefault();
-                DrawOptionsView.this.mColorGroup.maybeSelectDefault();
+                button.setToggled(!button.isToggled());
+
+                if (button.isToggled()) {
+                    DrawOptionsView.this.mOnChangeDrawToolListener.onChooseSelectionTool();
+                    DrawOptionsView.this.mToolsGroup.untoggle();
+                    DrawOptionsView.this.mColorGroup
+                            .setGroupVisibility(View.GONE);
+                    DrawOptionsView.this.mLineWidthGroup
+                            .setGroupVisibility(View.GONE);
+                    DrawOptionsView.this.mToolsGroup.setGroupVisibility(View.GONE);
+                    DrawOptionsView.this.mMaskButton.setVisibility(View.GONE);
+
+                } else {
+                    DrawOptionsView.this.mToolsGroup.maybeSelectDefault();
+                    DrawOptionsView.this.mToolsGroup.setGroupVisibility(View.VISIBLE);
+                    DrawOptionsView.this.mLineWidthGroup.setGroupVisibility(View.VISIBLE);
+                    DrawOptionsView.this.mColorGroup.setGroupVisibility(View.VISIBLE);
+                    DrawOptionsView.this.mMaskButton.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
