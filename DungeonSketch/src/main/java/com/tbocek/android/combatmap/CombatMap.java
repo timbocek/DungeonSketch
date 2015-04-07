@@ -1194,6 +1194,8 @@ public final class CombatMap extends ActionBarActivity {
 		this.mCombatView.getMultiSelect().selectNone();
 
         SaverService.startSavingMap(getApplicationContext(), filename);
+        SaverService.startSavingTokenDatabase(getApplicationContext());
+
         mLoader.clearQueue();
         TokenImageManager.getInstance().recycleAll();
         super.onPause();
