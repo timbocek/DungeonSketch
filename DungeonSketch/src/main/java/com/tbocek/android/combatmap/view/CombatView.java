@@ -27,6 +27,7 @@ import com.google.common.collect.Sets;
 import com.tbocek.android.combatmap.DeveloperMode;
 import com.tbocek.android.combatmap.ScrollBuffer;
 import com.tbocek.android.combatmap.ScrollBuffer.DrawRequest;
+import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.TokenImageManager;
 import com.tbocek.android.combatmap.model.LineCollection;
 import com.tbocek.android.combatmap.model.MapData;
@@ -335,6 +336,8 @@ public final class CombatView extends SurfaceView {
                         toAdd.setLocation(location);
                         CombatView.this.getData().getTokens().addToken(toAdd);
                         CombatView.this.alertTokensChanged();
+                        TokenDatabase.getInstance(CombatView.this.getContext())
+                                .tagToken(toAdd.getTokenId(), TokenDatabase.RECENTLY_USED);
                         return true;
                     } else if (event.getAction() == DragEvent.ACTION_DRAG_STARTED) {
                         return true;

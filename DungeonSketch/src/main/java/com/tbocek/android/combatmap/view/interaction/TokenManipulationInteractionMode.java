@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 
 import com.google.common.collect.Lists;
 import com.tbocek.android.combatmap.DeveloperMode;
+import com.tbocek.android.combatmap.TokenDatabase;
 import com.tbocek.android.combatmap.model.primitives.BaseToken;
 import com.tbocek.android.combatmap.model.primitives.BoundingRectangle;
 import com.tbocek.android.combatmap.model.primitives.CoordinateTransformer;
@@ -425,7 +426,12 @@ public final class TokenManipulationInteractionMode extends
             if (this.mAboutToTrash) {
                 this.getView().getTokens().restoreCheckpointedTokens();
                 this.getView().getTokens().removeAll(new ArrayList<BaseToken>(this.mMovedTokens));
+                for (BaseToken t: mMovedTokens) {
+                    TokenDatabase.getInstanceOrNull().tagToken(
+                            t.getTokenId(), TokenDatabase.RECENTLY_REMOVED);
+                }
                 this.getView().getMultiSelect().selectNone();
+
             } else {
                 this.getView().getTokens().createCommandHistory();
             }

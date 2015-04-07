@@ -420,6 +420,7 @@ public final class CombatMap extends ActionBarActivity {
 		@Override
 		public void onTokenSelected(final BaseToken t) {
 			CombatMap.this.mCombatView.placeToken(t);
+            mTokenDatabase.tagToken(t.getTokenId(), TokenDatabase.RECENTLY_USED);
 		}
 	};
 
@@ -1767,7 +1768,11 @@ public final class CombatMap extends ActionBarActivity {
 				this.setTokenSize(tokens, 6);
 				// CHECKSTYLE:ON
 			} else if (item.getItemId() == R.id.token_action_mode_delete) {
-				mData.getTokens().removeAll(tokens);
+                mData.getTokens().removeAll(tokens);
+                for (BaseToken t : tokens) {
+                    TokenDatabase.getInstanceOrNull().tagToken(
+                            t.getTokenId(), TokenDatabase.RECENTLY_REMOVED);
+                }
 				// We just deleted all the tokens, select none.
 				CombatMap.this.mCombatView.getMultiSelect().selectNone();
 			}

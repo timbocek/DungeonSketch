@@ -412,6 +412,14 @@ public final class TokenDatabase implements Cloneable {
 
 	private static final int RECENTLY_ADDED_LIMIT = 20;
 
+    public static final String RECENTLY_USED = "recently removed";
+
+    private static final int RECENTLY_USED_LIMIT = 20;
+
+    public static final String RECENTLY_REMOVED = "recently removed";
+
+    private static final int RECENTLY_REMOVED_LIMIT = 20;
+
     /**
      * The singleton token database instance.
      */
@@ -787,8 +795,11 @@ public final class TokenDatabase implements Cloneable {
         this.loadColorTokens();
         this.loadLetterTokens();
         
-        // Create the "recently added" tag.
+        // Create the "recently added/used/removed" tags.
         this.mTagTreeRoot.createLimitedChild(RECENTLY_ADDED, RECENTLY_ADDED_LIMIT);
+        this.mTagTreeRoot.createLimitedChild(RECENTLY_USED, RECENTLY_USED_LIMIT);
+        this.mTagTreeRoot.createLimitedChild(RECENTLY_REMOVED, RECENTLY_REMOVED_LIMIT);
+
         this.mPrePopulateTags = false;
     }
 
