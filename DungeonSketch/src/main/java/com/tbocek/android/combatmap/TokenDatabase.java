@@ -59,7 +59,9 @@ import javax.xml.transform.stream.StreamResult;
  * 
  */
 public final class TokenDatabase implements Cloneable {
-	private static final Set<String> SYSTEM_TAG_NAMES = Sets.newHashSet("built-in","custom","image","letter","solid color","recently added","artist");
+	private static final Set<String> SYSTEM_TAG_NAMES = Sets.newHashSet(
+            "built-in", "custom", "image", "letter", "solid color", "recently added",
+            "recently used", "recently removed", "artist");
 	
 	public static boolean isSystemTag(String tag) {
 		int colonIndex = tag.indexOf(':');
@@ -412,7 +414,7 @@ public final class TokenDatabase implements Cloneable {
 
 	private static final int RECENTLY_ADDED_LIMIT = 20;
 
-    public static final String RECENTLY_USED = "recently removed";
+    public static final String RECENTLY_USED = "recently used";
 
     private static final int RECENTLY_USED_LIMIT = 20;
 
