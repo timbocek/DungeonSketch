@@ -171,7 +171,7 @@ public abstract class DrawableToken extends BaseToken {
         p.setColor(Color.BLACK);
         p.setStyle(Paint.Style.STROKE);
         p.setStrokeWidth(2.0f);
-        c.drawCircle(x, y, radius, p);
+        drawBorder(c, x, y, radius, p);
     }
 
     /**

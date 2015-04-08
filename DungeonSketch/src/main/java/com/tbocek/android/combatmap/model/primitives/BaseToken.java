@@ -260,12 +260,7 @@ public abstract class BaseToken implements Cloneable {
         }
 
         if (this.mHasCustomBorder) {
-            if (this.isSquare()) {
-                c.drawRect(x - radius, y - radius, x + radius, y + radius,
-                        this.getCustomBorderPaint());
-            } else {
-                c.drawCircle(x, y, radius, this.getCustomBorderPaint());
-            }
+            drawBorder(c, x, y, radius, this.getCustomBorderPaint());
         }
 
         if (this.mSelected) {
@@ -274,7 +269,23 @@ public abstract class BaseToken implements Cloneable {
             selectPaint.setStrokeWidth(SELECTION_STROKE_WIDTH);
             selectPaint.setColor(Util.ICS_BLUE);
             selectPaint.setStyle(Style.STROKE);
-            c.drawCircle(x, y, radius + SELECTION_STROKE_WIDTH, selectPaint);
+            drawBorder(c, x, y, radius + SELECTION_STROKE_WIDTH, selectPaint);
+        }
+    }
+
+    /**
+     * Draws a border around the token with the given paint.
+     * @param c
+     * @param x
+     * @param y
+     * @param radius
+     * @param paint
+     */
+    protected void drawBorder(Canvas c, float x, float y, float radius, Paint paint) {
+        if (isSquare()) {
+            c.drawRect(x - radius, y - radius, x + radius, y + radius, paint);
+        } else {
+            c.drawCircle(x, y, radius, paint);
         }
     }
 
@@ -382,8 +393,7 @@ public abstract class BaseToken implements Cloneable {
         }
 
         if (this.mHasCustomBorder) {
-            c.drawCircle(center.x, center.y, radius,
-                    this.getCustomBorderPaint());
+            drawBorder(c, center.x, center.y, radius, this.getCustomBorderPaint());
         }
 
         if (this.mSelected) {
@@ -392,8 +402,7 @@ public abstract class BaseToken implements Cloneable {
             selectPaint.setStrokeWidth(SELECTION_STROKE_WIDTH);
             selectPaint.setColor(Util.ICS_BLUE);
             selectPaint.setStyle(Style.STROKE);
-            c.drawCircle(center.x, center.y, radius + SELECTION_STROKE_WIDTH,
-                    selectPaint);
+            drawBorder(c, center.x, center.y, radius + SELECTION_STROKE_WIDTH, selectPaint);
         }
     }
 
