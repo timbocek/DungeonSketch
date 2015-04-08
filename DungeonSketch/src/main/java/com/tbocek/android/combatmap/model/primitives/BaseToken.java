@@ -92,6 +92,11 @@ public abstract class BaseToken implements Cloneable {
     private float mSize = 1.0f;
 
     /**
+     * Whether the token should draw as a square.
+     */
+    private boolean mSquare;
+
+    /**
      * Checks whether all tokens in the given collection are bloodied.
      * 
      * @param tokens
@@ -212,6 +217,7 @@ public abstract class BaseToken implements Cloneable {
         clone.mHasCustomBorder = this.mHasCustomBorder;
         clone.mLocation = new PointF(this.mLocation.x, this.mLocation.y);
         clone.mSize = this.mSize;
+        clone.mSquare = this.mSquare;
         return clone;
     }
 
@@ -223,6 +229,7 @@ public abstract class BaseToken implements Cloneable {
      * @return A fully loaded token if this token is a placeholder.
      */
     public BaseToken deplaceholderize(TokenDatabase database) {
+        this.setSquare(database.getTokenPrototype(this.getTokenId()).isSquare());
         return this;
     }
 
@@ -253,7 +260,12 @@ public abstract class BaseToken implements Cloneable {
         }
 
         if (this.mHasCustomBorder) {
-            c.drawCircle(x, y, radius, this.getCustomBorderPaint());
+            if (this.isSquare()) {
+                c.drawRect(x - radius, y - radius, x + radius, y + radius,
+                        this.getCustomBorderPaint());
+            } else {
+                c.drawCircle(x, y, radius, this.getCustomBorderPaint());
+            }
         }
 
         if (this.mSelected) {
@@ -630,5 +642,13 @@ public abstract class BaseToken implements Cloneable {
 
     public Bitmap loadBitmap(Bitmap existingBuffer) {
         return null;
+    }
+
+    public void setSquare(boolean square) {
+        this.mSquare = square;
+    }
+
+    public boolean isSquare() {
+        return mSquare;
     }
 }

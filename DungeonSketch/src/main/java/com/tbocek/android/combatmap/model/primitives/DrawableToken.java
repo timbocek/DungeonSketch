@@ -85,6 +85,21 @@ public abstract class DrawableToken extends BaseToken {
         c.clipPath(p);
     }
 
+    /**
+     * Sets the clip of the given canvas to a square in which a circle centered at (x,y) with radius
+     * r would be inscribed.
+     *
+     * @param c
+     * @param x
+     * @param y
+     * @param radius
+     */
+    private void clipToSquare(final Canvas c, final float x, final float y, final float radius) {
+        Path p = new Path();
+        p.addRect(x - radius, y - radius, x + radius, y + radius, Path.Direction.CW);
+        c.clipPath(p);
+    }
+
     @Override
     public final void drawBloodiedImpl(final Canvas c, final float x,
             final float y, final float radius, final boolean isManipulable) {
@@ -117,7 +132,11 @@ public abstract class DrawableToken extends BaseToken {
         Drawable d = this.getDrawable();
         if (d != null) {
             c.save(Canvas.CLIP_SAVE_FLAG);
-            this.clipToCircle(c, x, y, radius);
+            if (this.isSquare()) {
+                this.clipToSquare(c, x, y, radius);
+            } else {
+                this.clipToCircle(c, x, y, radius);
+            }
             d.setBounds(new Rect((int) (x - radius), (int) (y - radius),
                     (int) (x + radius), (int) (y + radius)));
             if (!isManipulable) {

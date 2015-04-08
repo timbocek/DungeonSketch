@@ -59,8 +59,9 @@ import javax.xml.transform.stream.StreamResult;
  * 
  */
 public final class TokenDatabase implements Cloneable {
-	
-	public static boolean isSystemTag(String tag) {
+
+
+    public static boolean isSystemTag(String tag) {
 		int colonIndex = tag.indexOf(':');
 		// All children of system tags are also system tags.
 		if (colonIndex >= 0) {
@@ -333,6 +334,16 @@ public final class TokenDatabase implements Cloneable {
 				return childTags.get(tagName);
 			}
 		}
+
+        public TagTreeNode createSquareTagTreeNode(String tagName, TokenDatabase tokenDatabase) {
+            if (!childTags.containsKey(tagName)) {
+                TagTreeNode node = new SquareTokenTag(this, tagName, tokenDatabase);
+                childTags.put(tagName, node);
+                return node;
+            } else {
+                return childTags.get(tagName);
+            }
+        }
 	}
 	
 	/**
@@ -403,6 +414,55 @@ public final class TokenDatabase implements Cloneable {
 	}
 
     /**
+     * Special tag that makes all tokens that are added to the tag draw as a square instead of a
+     * circle.
+     */
+    protected class SquareTokenTag extends TagTreeNode {
+
+        /**
+         * The token database that this square token belongs to.  This is needed so that, as
+         * tokens are added to and removed from this tag, they can be given a "square" attribute.
+         */
+        private final TokenDatabase tokenDatabase;
+
+        public SquareTokenTag(TagTreeNode parent, String name, TokenDatabase tokenDatabase) {
+            super(parent, name);
+            this.tokenDatabase = tokenDatabase;
+        }
+
+        public void addToken(String tokenId) {
+            tokenDatabase.getTokenPrototype(tokenId).setSquare(true);
+            super.addToken(tokenId);
+        }
+
+        public void deleteToken(String tokenId) {
+            tokenDatabase.getTokenPrototype(tokenId).setSquare(false);
+            super.deleteToken(tokenId);
+        }
+
+        public Element toXml(Document document) {
+            Element el = document.createElement("square_tag");
+            el.setAttribute("name", this.getName());
+            el.setAttribute("active", Boolean.toString(this.isActive()));
+            for (String tokenId: this.getImmediateTokens()) {
+                Element tokenEl = document.createElement("token");
+                tokenEl.setAttribute("name", tokenId);
+                el.appendChild(tokenEl);
+            }
+
+            for (TagTreeNode treeNode: this.childTags.values()) {
+                el.appendChild(treeNode.toXml(document));
+            }
+
+            return el;
+        }
+    }
+
+    public BaseToken getTokenPrototype(String tokenId) {
+        return mTokenForId.get(tokenId);
+    }
+
+    /**
      * Always-present member at the top of the tag list that selects all tokens.
      */
     public static final String ALL = "All";
@@ -418,6 +478,12 @@ public final class TokenDatabase implements Cloneable {
     public static final String RECENTLY_REMOVED = "recently killed";
 
     private static final int RECENTLY_REMOVED_LIMIT = 20;
+
+    /**
+     * Tag name for tokens that should be drawn as squares.
+     */
+    public static final String SQUARE = "square tokens";
+
 
     private static final Set<String> SYSTEM_TAG_NAMES = Sets.newHashSet(
             "built-in", "custom", "image", "letter", "solid color", RECENTLY_ADDED,
@@ -803,6 +869,9 @@ public final class TokenDatabase implements Cloneable {
         this.mTagTreeRoot.createLimitedChild(RECENTLY_USED, RECENTLY_USED_LIMIT);
         this.mTagTreeRoot.createLimitedChild(RECENTLY_REMOVED, RECENTLY_REMOVED_LIMIT);
 
+        // Make sure there is always a "square" tag.
+        this.mTagTreeRoot.createSquareTagTreeNode(SQUARE, this);
+
         this.mPrePopulateTags = false;
     }
 
@@ -1019,13 +1088,20 @@ public final class TokenDatabase implements Cloneable {
     			currentTagTreeNode = currentTagTreeNode.getNamedChild(tagName, true);
     			currentTagTreeNode.setIsActive(isActive);
     		} else if (localName.equalsIgnoreCase("limited_tag")) {
-    			String tagName = attributes.getValue("name");
-    			int maxSize = Integer.parseInt(attributes.getValue("maxSize"));
-    			String active = attributes.getValue("active");
-    			boolean isActive = active == null || Boolean.parseBoolean(active);
-    			Log.v(TAG, "START TAG: " + tagName);
-    			currentTagTreeNode = currentTagTreeNode.createLimitedChild(tagName, maxSize);
-    			currentTagTreeNode.setIsActive(isActive);
+                String tagName = attributes.getValue("name");
+                int maxSize = Integer.parseInt(attributes.getValue("maxSize"));
+                String active = attributes.getValue("active");
+                boolean isActive = active == null || Boolean.parseBoolean(active);
+                Log.v(TAG, "START TAG: " + tagName);
+                currentTagTreeNode = currentTagTreeNode.createLimitedChild(tagName, maxSize);
+                currentTagTreeNode.setIsActive(isActive);
+            } else if (localName.equalsIgnoreCase("square_tag")) {
+                String tagName = attributes.getValue("name");
+                String active = attributes.getValue("active");
+                boolean isActive = active == null || Boolean.parseBoolean(active);
+                Log.v(TAG, "START TAG: " + tagName);
+                currentTagTreeNode = currentTagTreeNode.createSquareTagTreeNode(tagName, this.database);
+                currentTagTreeNode.setIsActive(isActive);
     		} else if (localName.equalsIgnoreCase("token")) {
     			String tokenName = attributes.getValue("name");
     			String age = attributes.getValue("age");
